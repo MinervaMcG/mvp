@@ -29,6 +29,8 @@ import Tooltip from "src/components/design_system/tooltip";
 import ThemeContainer, { ThemeContext } from "src/contexts/ThemeContext";
 import cx from "classnames";
 import Verified from "../icons/Verified";
+import { toast } from "react-toastify";
+import { ToastBody } from "src/components/design_system/toasts";
 
 const TalentShow = ({
   admin,
@@ -217,6 +219,7 @@ const TalentShow = ({
     });
 
     if (response && !response.error) {
+      toast.success(<ToastBody heading="Success!" body="Impersonation started successfully!" />);
       window.location.reload();
     }
   };

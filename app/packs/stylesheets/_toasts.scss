@@ -77,7 +77,15 @@
   }
 }
 
-.toast-content.dark-body {
+.light-body .Toastify__toast--error .toast-heading {
+  color: var(--toastify-icon-color-error) !important; 
+}
+
+.dark-body .Toastify__toast--error .toast-heading {
+  color: $danger-tint-01 !important; 
+}
+
+.dark-body .toast-content {
   background-color: $gray-800 !important;
 
   .toast-heading {
@@ -89,6 +97,14 @@
   }
 }
 
-.toast-content.light-body {
-  background-color: #FFF !important;
+.light-body .Toastify__toast {
+  background-color: var(--toastify-color-light) !important;
+}
+
+.dark-body .Toastify__close-button {
+  color: var(--toastify-text-color-dark);
+}
+
+.light-body .Toastify__close-button {
+  color: var(--toastify-text-color-light);
 }
