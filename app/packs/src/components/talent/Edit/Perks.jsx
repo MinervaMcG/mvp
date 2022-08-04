@@ -13,7 +13,7 @@ import Link from "src/components/design_system/link";
 import Divider from "src/components/design_system/other/Divider";
 
 import cx from "classnames";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { ToastBody } from "src/components/design_system/toasts";
 
 const emptyPerk = (id) => ({
@@ -220,7 +220,9 @@ const Perks = (props) => {
           perks: newPerksProps,
         }));
       } else {
-        toast.error(<ToastBody heading="Error!" body={response?.error} mode={mode}/>);
+        toast.error(
+          <ToastBody heading="Error!" body={response?.error} mode={mode} />
+        );
       }
     } else {
       if (Object.keys(errors).length != 2 || id != "new") {

@@ -33,15 +33,13 @@
 
   // Used when no type is provided
   // toast("**hello**")
-  --toastify-color-progress-light: linear-gradient(
-    to right,
-    #4cd964,
-    #5ac8fa,
-    #007aff,
-    #34aadc,
-    #5856d6,
-    #ff2d55
-  );
+  --toastify-color-progress-light: linear-gradient(to right,
+      #4cd964,
+      #5ac8fa,
+      #007aff,
+      #34aadc,
+      #5856d6,
+      #ff2d55);
   // Used when no type is provided
   --toastify-color-progress-dark: #bb86fc;
   --toastify-color-progress-info: var(--toastify-color-info);
@@ -78,11 +76,11 @@
 }
 
 .light-body .Toastify__toast--error .toast-heading {
-  color: var(--toastify-icon-color-error) !important; 
+  color: var(--toastify-icon-color-error) !important;
 }
 
 .dark-body .Toastify__toast--error .toast-heading {
-  color: $danger-tint-01 !important; 
+  color: $danger-tint-01 !important;
 }
 
 .dark-body .toast-content {
