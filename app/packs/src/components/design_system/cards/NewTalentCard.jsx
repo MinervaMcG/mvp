@@ -27,6 +27,7 @@ const NewTalentCard = ({
   supporterCount,
   publicPageViewer,
   isVerified,
+  profileType,
 }) => {
   const { mobile } = useWindowDimensionsHook();
   const [showUserDetails, setShowUserDetails] = useState(false);
@@ -89,7 +90,15 @@ const NewTalentCard = ({
               <P2 className="text-primary" bold text={`$${ticker}`} />
             ) : (
               <Tag className="coming-soon-tag">
-                <P3 className="current-color" bold text="Coming Soon" />
+                <P3
+                  className="current-color"
+                  bold
+                  text={
+                    profileType == "waiting_for_approval"
+                      ? "Waiting For Approval"
+                      : "Coming Soon"
+                  }
+                />
               </Tag>
             )}
           </div>

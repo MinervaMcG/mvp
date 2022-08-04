@@ -348,7 +348,15 @@ const TalentTableListMode = ({
                   />
                 ) : (
                   <Tag className="coming-soon-tag ml-2">
-                    <P3 className="current-color" bold text="Coming Soon" />
+                    <P3
+                      className="current-color"
+                      bold
+                      text={
+                        talent.user.profileType == "waiting_for_approval"
+                          ? "Waiting For Approval"
+                          : "Coming Soon"
+                      }
+                    />
                   </Tag>
                 )}
               </div>

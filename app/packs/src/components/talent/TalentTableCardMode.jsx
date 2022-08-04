@@ -34,6 +34,7 @@ const TalentTableCardMode = ({
             supporterCount={talent.supportersCount}
             publicPageViewer={publicPageViewer}
             isVerified={talent.isVerified}
+            profileType={talent.user.profileType}
           />
         </div>
       ))}

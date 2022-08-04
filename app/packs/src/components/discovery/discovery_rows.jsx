@@ -163,6 +163,7 @@ const DiscoveryRows = ({ discoveryRows, updateFollow }) => {
                       talentLink={`/u/${talent.username}`}
                       marketCap={talent.marketCap}
                       supporterCount={talent.supportersCount}
+                      profileType={talent.profileType}
                     />
                   </div>
                 ))}

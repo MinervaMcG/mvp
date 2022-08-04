@@ -2,7 +2,7 @@ class UserBlueprint < Blueprinter::Base
   fields :id
 
   view :normal do
-    fields :username, :display_name
+    fields :username, :display_name, :profile_type
     field :name do |user, _options|
       user.display_name || user.username
     end
