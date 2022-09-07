@@ -41,6 +41,7 @@ import {
   getUTCDate,
   getMarketCapVariance,
 } from "src/utils/viewHelpers";
+import ChangeStakeWalletModal from "./components/ChangeStakeWalletModal";
 
 const TransakDone = ({ show, hide }) => (
   <Modal show={show} onHide={hide} centered>
@@ -160,6 +161,8 @@ const NewPortfolio = ({
   const [localLoading, setLocalLoading] = useState(true);
   const [listLoaded, setListLoaded] = useState(false);
   const [walletConnected, setWalletConnected] = useState(false);
+  const [showChangeWalletModal, setShowChangeWalletModal] = useState(false);
+  const [loadingStakeChange, setLoadingStakeChange] = useState(false);
 
   const startDate = getStartDateForVariance();
   const { loading, data, refetch, error } = useQuery(GET_SUPPORTER_PORTFOLIO, {
@@ -289,7 +292,7 @@ const NewPortfolio = ({
 
     const walletConnected = await newOnChain.connectedAccount();
 
-    await newOnChain.loadStaking();
+    newOnChain.loadStaking();
     await newOnChain.loadStableToken();
     const balance = await newOnChain.getStableBalance(true);
 
@@ -380,6 +383,29 @@ const NewPortfolio = ({
     if (contract_id && !isCurrentUserImpersonated) {
       setActiveContract(contract_id);
       setShow(true);
+    }
+  };
+
+  const changeStakeOwnership = async (newOwner) => {
+    console.log("new owner", newOwner);
+    if (chainAPI && activeContract) {
+      // if (!(await chainAPI.recognizedChain())) {
+      //   await chainAPI.switchChain();
+      // } else {
+      setLoadingRewards(true);
+      await chainAPI.changeStakeOwnership([activeContract], newOwner);
+      // refetch();
+      // }
+    }
+    // setLoadingStakeChange(false);
+    // setShowChangeWalletModal(false);
+    // setActiveContract(null);
+  };
+
+  const onStakeChange = (contract_id) => {
+    if (contract_id && !isCurrentUserImpersonated) {
+      setShowChangeWalletModal(true);
+      setActiveContract(contract_id);
     }
   };
 
@@ -487,6 +513,12 @@ const NewPortfolio = ({
         supportedTalents={supportedTalents}
         mode={theme.mode()}
         railsContext={railsContext}
+      />
+      <ChangeStakeWalletModal
+        show={showChangeWalletModal}
+        setShow={setShowChangeWalletModal}
+        handleStakeChange={changeStakeOwnership}
+        loadingStakeChange={loadingStakeChange}
       />
       <TransakDone show={transakDone} hide={() => setTransakDone(false)} />
       <div className="d-flex flex-row justify-content-between flex-wrap w-100 portfolio-amounts-overview p-4">
@@ -614,6 +646,7 @@ const NewPortfolio = ({
           onClaim={onClaim}
           isCurrentUserImpersonated={isCurrentUserImpersonated}
           loading={loading}
+          onStakeChange={onStakeChange}
         />
       )}
       {activeTab == "Supporters" && (

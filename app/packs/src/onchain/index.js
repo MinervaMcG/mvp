@@ -546,6 +546,19 @@ class OnChain {
 
     return imageUrl;
   }
+
+  async changeStakeOwnership(talent_addresses, new_owner_address) {
+    if (!this.staking) {
+      return;
+    }
+    const tx = await this.staking
+      .connect(this.signer)
+      .transferStakes(talent_addresses, new_owner_address);
+
+    const receipt = await tx.wait();
+
+    return receipt;
+  }
 }
 
 export { OnChain };

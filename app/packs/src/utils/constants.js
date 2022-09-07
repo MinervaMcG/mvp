@@ -5,7 +5,7 @@ export const PRIVACY_HREF =
 
 export const THE_GRAPH_ENDPOINTS = {
   development:
-    "https://api.thegraph.com/subgraphs/name/talent-protocol/new-staking-non-upgradable",
+    "https://api.thegraph.com/subgraphs/name/minervamcg/talent-protcol-2",
   production: "https://api.thegraph.com/subgraphs/name/talent-protocol/prod",
   staging:
     "https://api.thegraph.com/subgraphs/name/talent-protocol/new-staking-non-upgradable",

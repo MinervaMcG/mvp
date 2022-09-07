@@ -98,6 +98,7 @@ const Supporting = ({
   talentTokensInTAL,
   loading,
   isCurrentUserImpersonated,
+  onStakeChange,
 }) => {
   const [talentProfilePictures, setTalentProfilePictures] = useState({});
   const [talentProfileUsernames, setTalentProfileUsernames] = useState({});
@@ -479,7 +480,22 @@ const Supporting = ({
                   onClick={() => onClaim(talent.contract_id)}
                   className="mr-2 button-link remove-background"
                 >
-                  <Link text="Claim rewards" bold disabled={isCurrentUserImpersonated} />
+                  <Link
+                    text="Claim rewards"
+                    bold
+                    disabled={isCurrentUserImpersonated}
+                  />
+                </button>
+
+                <button
+                  onClick={() => onStakeChange(talent.contract_id)}
+                  className="mr-2 button-link remove-background"
+                >
+                  <Link
+                    text="Change Stake Wallet"
+                    bold
+                    disabled={isCurrentUserImpersonated}
+                  />
                 </button>
               </Table.Td>
             </Table.Tr>
