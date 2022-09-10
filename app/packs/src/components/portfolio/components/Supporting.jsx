@@ -18,8 +18,8 @@ import TalentProfilePicture from "src/components/talent/TalentProfilePicture";
 import Table from "src/components/design_system/table";
 import Link from "src/components/design_system/link";
 import { OrderBy } from "src/components/icons";
-
 import { parsedVariance } from "src/utils/viewHelpers";
+import Checkbox from "src/components/design_system/checkbox";
 
 const concatenateSupportingAddresses = (supporting) =>
   `?tokens[]=${supporting.map((s) => s.contract_id).join("&tokens[]=")}`;
@@ -99,6 +99,7 @@ const Supporting = ({
   loading,
   isCurrentUserImpersonated,
   onStakeChange,
+  onTalentSelected,
 }) => {
   const [talentProfilePictures, setTalentProfilePictures] = useState({});
   const [talentProfileUsernames, setTalentProfileUsernames] = useState({});
@@ -325,11 +326,13 @@ const Supporting = ({
         <Table mode={mode} className="horizontal-scroll">
           <Table.Body>
             {sortedTalents().map((talent) => (
-              <Table.Tr
-                key={`talent-${talent.contract_id}`}
-                onClick={() => onClaim(talent.contract_id)}
-                className="px-2"
-              >
+              <Table.Tr key={`talent-${talent.contract_id}`} className="px-2">
+                <Table.Td>
+                  <Checkbox
+                    className="form-check-input mt-4"
+                    onChange={onTalentSelected}
+                  />
+                </Table.Td>
                 <Table.Td>
                   <div className="d-flex cursor-pointer pl-4 py-2">
                     <TalentProfilePicture
@@ -363,6 +366,7 @@ const Supporting = ({
     <>
       <Table mode={mode} className="px-3 horizontal-scroll mt-4">
         <Table.Head>
+          <Table.Th />
           <Table.Th>
             <Caption
               onClick={() => onOptionClick("Alphabetical Order")}
@@ -413,6 +417,13 @@ const Supporting = ({
               key={`talent-${talent.contract_id}`}
               className="reset-cursor"
             >
+              <Table.Td>
+                <Checkbox
+                  className="form-check-input mt-4"
+                  onChange={onTalentSelected}
+                  value={talent.contract_id}
+                />
+              </Table.Td>
               <Table.Td>
                 <div
                   className="d-flex cursor-pointer"

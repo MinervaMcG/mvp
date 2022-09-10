@@ -13,6 +13,7 @@ const Checkbox = ({
   className,
   htmlFor,
   children,
+  value,
 }) => (
   <label className="container-checkbox" htmlFor={htmlFor}>
     <input
@@ -22,6 +23,7 @@ const Checkbox = ({
       onChange={onChange}
       disabled={disabled}
       className={className}
+      value={value}
     />
     <span className={cx("checkmark", mode)}></span>
     {label && <P3 className="label-checkbox" text={label} mode={mode} />}
@@ -39,6 +41,7 @@ Checkbox.propTypes = {
   className: string,
   htmlFor: string,
   children: node,
+  value: string,
 };
 
 Checkbox.defaultProps = {
@@ -50,6 +53,7 @@ Checkbox.defaultProps = {
   className: null,
   htmlFor: null,
   children: null,
+  value: null,
 };
 
 export default Checkbox;

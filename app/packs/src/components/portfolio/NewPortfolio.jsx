@@ -163,6 +163,7 @@ const NewPortfolio = ({
   const [walletConnected, setWalletConnected] = useState(false);
   const [showChangeWalletModal, setShowChangeWalletModal] = useState(false);
   const [loadingStakeChange, setLoadingStakeChange] = useState(false);
+  const [talentsForStakeChange, setTalentsForStakeChange] = useState([]);
 
   const startDate = getStartDateForVariance();
   const { loading, data, refetch, error } = useQuery(GET_SUPPORTER_PORTFOLIO, {
@@ -387,25 +388,30 @@ const NewPortfolio = ({
   };
 
   const changeStakeOwnership = async (newOwner) => {
-    console.log("new owner", newOwner);
     if (chainAPI && activeContract) {
-      // if (!(await chainAPI.recognizedChain())) {
-      //   await chainAPI.switchChain();
-      // } else {
-      setLoadingRewards(true);
-      await chainAPI.changeStakeOwnership([activeContract], newOwner);
-      // refetch();
-      // }
+      if (!(await chainAPI.recognizedChain())) {
+        await chainAPI.switchChain();
+      } else {
+        setLoadingRewards(true);
+        await chainAPI.changeStakeOwnership([activeContract], newOwner);
+        refetch();
+      }
     }
-    // setLoadingStakeChange(false);
-    // setShowChangeWalletModal(false);
-    // setActiveContract(null);
+    setLoadingStakeChange(false);
+    setShowChangeWalletModal(false);
+    setActiveContract(null);
   };
 
   const onStakeChange = (contract_id) => {
     if (contract_id && !isCurrentUserImpersonated) {
       setShowChangeWalletModal(true);
       setActiveContract(contract_id);
+    }
+  };
+
+  const onMultipleStakeChange = () => {
+    if (talentsForStakeChange.length > 0 && !isCurrentUserImpersonated) {
+      setShowChangeWalletModal(true);
     }
   };
 
@@ -418,6 +424,19 @@ const NewPortfolio = ({
   const onWalletConnect = (account) => {
     setLocalAccount(account);
     setWalletConnected(!!account);
+  };
+
+  const onTalentSelected = (event) => {
+    if (event.target.checked) {
+      setTalentsForStakeChange((prev) => [...prev, event.target.value]);
+    } else {
+      setTalentsForStakeChange((prev) => {
+        console.log("prev", prev);
+        const index = prev.indexOf(event.target.value);
+        if (index > -1) prev.splice(index, 1);
+        return prev;
+      });
+    }
   };
 
   // --- Overview calculations ---
@@ -467,6 +486,12 @@ const NewPortfolio = ({
           rewards={returnValues[activeContract] || "0"}
           supportedTalents={supportedTalents}
           railsContext={railsContext}
+        />
+        <ChangeStakeWalletModal
+          show={showChangeWalletModal}
+          setShow={setShowChangeWalletModal}
+          handleStakeChange={changeStakeOwnership}
+          loadingStakeChange={loadingStakeChange}
         />
         <TransakDone show={transakDone} hide={() => setTransakDone(false)} />
         {listLoaded ? (
@@ -605,6 +630,15 @@ const NewPortfolio = ({
             >
               Withdraw
             </Button>
+            <Button
+              type="primary-default"
+              mode={theme.mode()}
+              className="mr-2 mt-2"
+              disabled={talentsForStakeChange.length == 0}
+              onClick={onMultipleStakeChange}
+            >
+              Change Stake Wallet
+            </Button>
           </div>
         </div>
       </div>
@@ -647,6 +681,7 @@ const NewPortfolio = ({
           isCurrentUserImpersonated={isCurrentUserImpersonated}
           loading={loading}
           onStakeChange={onStakeChange}
+          onTalentSelected={onTalentSelected}
         />
       )}
       {activeTab == "Supporters" && (
