@@ -388,12 +388,12 @@ const NewPortfolio = ({
   };
 
   const changeStakeOwnership = async (newOwner) => {
-    if (chainAPI && activeContract) {
+    if (chainAPI && talentsForStakeChange.length) {
       if (!(await chainAPI.recognizedChain())) {
         await chainAPI.switchChain();
       } else {
         setLoadingRewards(true);
-        await chainAPI.changeStakeOwnership([activeContract], newOwner);
+        await chainAPI.changeStakeOwnership(talentsForStakeChange, newOwner);
         refetch();
       }
     }
@@ -405,13 +405,7 @@ const NewPortfolio = ({
   const onStakeChange = (contract_id) => {
     if (contract_id && !isCurrentUserImpersonated) {
       setShowChangeWalletModal(true);
-      setActiveContract(contract_id);
-    }
-  };
-
-  const onMultipleStakeChange = () => {
-    if (talentsForStakeChange.length > 0 && !isCurrentUserImpersonated) {
-      setShowChangeWalletModal(true);
+      setTalentsForStakeChange((prev) => [...prev, contract_id]);
     }
   };
 
@@ -431,7 +425,6 @@ const NewPortfolio = ({
       setTalentsForStakeChange((prev) => [...prev, event.target.value]);
     } else {
       setTalentsForStakeChange((prev) => {
-        console.log("prev", prev);
         const index = prev.indexOf(event.target.value);
         if (index > -1) prev.splice(index, 1);
         return prev;
@@ -635,7 +628,7 @@ const NewPortfolio = ({
               mode={theme.mode()}
               className="mr-2 mt-2"
               disabled={talentsForStakeChange.length == 0}
-              onClick={onMultipleStakeChange}
+              onClick={() => setShowChangeWalletModal(true)}
             >
               Change Stake Wallet
             </Button>

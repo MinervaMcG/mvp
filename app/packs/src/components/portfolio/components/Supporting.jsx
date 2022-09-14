@@ -328,10 +328,12 @@ const Supporting = ({
             {sortedTalents().map((talent) => (
               <Table.Tr key={`talent-${talent.contract_id}`} className="px-2">
                 <Table.Td>
-                  <Checkbox
-                    className="form-check-input mt-4"
-                    onChange={onTalentSelected}
-                  />
+                  <div className="d-flex cursor-pointer pl-4 py-2">
+                    <Checkbox
+                      className="form-check-input mt-4"
+                      onChange={onTalentSelected}
+                    />
+                  </div>
                 </Table.Td>
                 <Table.Td>
                   <div className="d-flex cursor-pointer pl-4 py-2">
@@ -418,11 +420,13 @@ const Supporting = ({
               className="reset-cursor"
             >
               <Table.Td>
-                <Checkbox
-                  className="form-check-input mt-4"
-                  onChange={onTalentSelected}
-                  value={talent.contract_id}
-                />
+                <div className="d-flex">
+                  <Checkbox
+                    className="form-check-input mt-4"
+                    onChange={onTalentSelected}
+                    value={talent.contract_id}
+                  />
+                </div>
               </Table.Td>
               <Table.Td>
                 <div
