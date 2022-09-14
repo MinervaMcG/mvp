@@ -19,7 +19,8 @@ import TextInput from "src/components/design_system/fields/textinput";
 import TextArea from "src/components/design_system/fields/textarea";
 import Caption from "src/components/design_system/typography/caption";
 import Checkbox from "src/components/design_system/checkbox";
-import { ArrowRight } from "src/components/icons";
+import Tooltip from "src/components/design_system/tooltip";
+import { ArrowRight, Help } from "src/components/icons";
 import LoadingButton from "src/components/button/LoadingButton";
 import Divider from "src/components/design_system/other/Divider";
 import { getENSFromAddress } from "../../../onchain/utils";
@@ -493,7 +494,18 @@ const About = (props) => {
         </Checkbox>
       </div>
       <Divider className="my-5" />
-      <H5 className="w-100 text-left" text="Diversity & Inclusion" bold />
+      <Tooltip
+        body={
+          "Talent Protocol is committed to building a diverse community. These next questions help us stay accountable to this goal. Your responses won't be made public. Your response will only be used by Talent Protocol to gain an understanding of the aggregate diversity of our talent pool."
+        }
+        popOverAccessibilityId={"diversity_and_inclusion"}
+        placement="left"
+      >
+        <div className="w-100 mb-2 cursor-pointer d-flex align-items-center">
+          <H5 className="mr-2 mb-0" text="Diversity & Inclusion" bold />
+          <Help color="#536471" />
+        </div>
+      </Tooltip>
       <div className="d-flex flex-row w-100 justify-content-between mt-4 flex-wrap">
         <div
           className={cx("d-flex flex-column", mobile ? "w-100" : "w-50 pr-2")}
@@ -513,7 +525,9 @@ const About = (props) => {
           >
             <option value=""></option>
             {genderOptions.map((gender) => (
-              <option value={gender}>{gender}</option>
+              <option value={gender} key={gender}>
+                {gender}
+              </option>
             ))}
           </Form.Control>
           <p className="short-caption">What gender do you identify as?</p>

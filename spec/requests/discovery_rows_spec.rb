@@ -4,8 +4,8 @@ RSpec.shared_examples "a discovery row get endpoint request" do
   let!(:talent_one) { create :talent, user: create(:user) }
   let!(:talent_two) { create :talent, user: create(:user) }
 
-  let!(:token_one) { create :token, talent: talent_one }
-  let!(:token_two) { create :token, talent: talent_two }
+  let!(:token_one) { create :talent_token, talent: talent_one }
+  let!(:token_two) { create :talent_token, talent: talent_two }
 
   let(:search_talents_class) { Talents::Search }
   let(:search_talents_instance) { instance_double(Talents::Search, call: Talent.all) }

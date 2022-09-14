@@ -3,8 +3,9 @@ import { ethers } from "ethers";
 import currency from "currency.js";
 import { OnChain } from "src/onchain";
 
-import CeloImage from "images/celo.png";
 import MetamaskFox from "images/metamask-fox.svg";
+import { Polygon, Celo } from "src/components/icons";
+import { chainIdToName } from "src/onchain/utils";
 
 import { H4, P2 } from "src/components/design_system/typography";
 import { Copy } from "src/components/icons";
@@ -38,6 +39,8 @@ const SimpleTokenDetails = ({
     totalSupply: 0,
   });
 
+  const chainName = chainIdToName(token?.chain_id, railsContext.contractsEnv);
+
   useEffect(() => {
     if (loading || !data || !data.talentToken) {
       if (!loading) {
@@ -63,6 +66,12 @@ const SimpleTokenDetails = ({
 
   const addTokenToMetamask = async () => {
     const onChainAPI = new OnChain(railsContext.contractsEnv);
+
+    const chainId = await onChainAPI.getChainID();
+
+    if (chainId != token.chainId) {
+      await onChainAPI.switchChain(token.chain_id);
+    }
 
     await onChainAPI.addTokenToWallet(token.contract_id, token.ticker);
   };
@@ -99,14 +108,8 @@ const SimpleTokenDetails = ({
             <div className="card card-no-hover d-flex flex-column align-items-center justify-content-center p-3">
               <P2 className="mb-2 text-primary-04" bold text="Contract" />
               <div className="d-flex flex-row justify-content-center align-items-center">
-                <img
-                  src={CeloImage}
-                  className="mr-1"
-                  width="16"
-                  height="16"
-                  alt="celo-logo"
-                />
-                <P2 text="Celo:" className="mr-1" />
+                {chainName == "Polygon" ? <Polygon /> : <Celo />}
+                <P2 text={`${chainName}:`} className="ml-2 mr-1" />
                 <P2
                   bold
                   className="text-black"
@@ -157,7 +160,7 @@ const SimpleTokenDetails = ({
 };
 
 export default (props) => (
-  <ApolloProvider client={client(props.railsContext.contractsEnv)}>
+  <ApolloProvider client={client(props.token?.chain_id)}>
     <SimpleTokenDetails {...props} />
   </ApolloProvider>
 );

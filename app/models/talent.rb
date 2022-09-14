@@ -28,14 +28,14 @@ class Talent < ApplicationRecord
 
   belongs_to :user, optional: true
 
-  has_one :token
+  has_one :talent_token
   has_one :career_goal
   has_many :perks
   has_many :milestones
 
   scope :base, -> { where(public: true, hide_profile: false) }
-  scope :active, -> { joins(:token).where.not(tokens: {contract_id: nil}) }
-  scope :upcoming, -> { joins(:token).where(tokens: {contract_id: nil}) }
+  scope :active, -> { joins(:talent_token).where.not(talent_tokens: {contract_id: nil}) }
+  scope :upcoming, -> { joins(:talent_token).where(talent_tokens: {contract_id: nil}) }
 
   delegate :wallet_id, :username, to: :user
 
@@ -43,12 +43,16 @@ class Talent < ApplicationRecord
     2000000000000000000000
   end
 
+  def self.max_supply
+    1000000000000000000000000
+  end
+
   def display_wallet_id
     "#{wallet_id[0..10]}..."
   end
 
   def status
-    if token.contract_id.nil?
+    if talent_token.contract_id.nil?
       "Upcoming"
     else
       "Active"

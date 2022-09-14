@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe TriggerTalentSupportersRefreshJob, type: :job do
-  let!(:deployed_tokens) { create_list :token, 3, deployed: true }
-  let!(:undeployed_token) { create :token, deployed: false }
+  let!(:deployed_tokens) { create_list :talent_token, 3, deployed: true }
+  let!(:undeployed_token) { create :talent_token, deployed: false }
 
   subject(:talent_supporters_refresh) { TriggerTalentSupportersRefreshJob.perform_now }
 
@@ -14,9 +14,9 @@ RSpec.describe TriggerTalentSupportersRefreshJob, type: :job do
         undeployed_token.contract_id
       )
 
-      deployed_tokens.each do |token|
+      deployed_tokens.each do |talent_token|
         expect(TalentSupportersRefreshJob).to have_been_enqueued.with(
-          token.contract_id
+          talent_token.contract_id
         )
       end
     end

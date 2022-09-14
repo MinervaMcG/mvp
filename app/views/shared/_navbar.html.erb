@@ -18,7 +18,7 @@
     displayWalletId: current_acting_user.display_wallet_id,
     walletId: current_acting_user.wallet_id,
     username: current_acting_user.username,
-    tokenLive: current_acting_user.talent&.token&.contract_id.present?,
+    tokenLive: current_acting_user.talent&.talent_token&.contract_id.present?,
     currentTheme: current_acting_user.theme_preference,
   },
   hasUnreadMessages: is_user_impersonated? ? false : current_user&.has_unread_messages?,

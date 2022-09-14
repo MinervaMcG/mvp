@@ -2,8 +2,8 @@ class TalentBlueprint < Blueprinter::Base
   fields :id, :profile_picture_url
 
   view :normal do
-    fields :occupation, :headline, :user_id, :verified, :supporters_count
-    association :token, blueprint: TokenBlueprint, view: :normal
+    fields :occupation, :headline, :user_id, :verified, :supporters_count, :total_supply
+    association :talent_token, blueprint: TalentTokenBlueprint, view: :normal, name: :token
     association :user, blueprint: UserBlueprint, view: :normal
 
     field :is_following do |talent, options|
@@ -28,7 +28,7 @@ class TalentBlueprint < Blueprinter::Base
 
   view :short_meta do
     fields :occupation, :supporters_count, :total_supply, :created_at
-    association :token, blueprint: TokenBlueprint, view: :normal
+    association :talent_token, blueprint: TalentTokenBlueprint, view: :normal, name: :token
     field :username do |talent, options|
       talent.user.username
     end

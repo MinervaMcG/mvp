@@ -4,7 +4,7 @@ import NFTCard from "src/components/design_system/cards/NFTCard";
 
 import { LoadingPortfolio } from "../NewPortfolio";
 
-const NFTs = ({ userNFT, memberNFT, chainAPI, mode }) => {
+const NFTs = ({ userNFT, memberNFT, chainAPI, mode, chainId }) => {
   const [loading, setLoading] = useState(true);
   const [nftImages, setNFTImages] = useState({});
 
@@ -33,9 +33,9 @@ const NFTs = ({ userNFT, memberNFT, chainAPI, mode }) => {
   }, [memberNFT]);
 
   const linkToNFT = (nft) => {
-    const baseUrl = chainAPI.getEnvBlockExplorerUrls();
+    const baseUrl = chainAPI.getEnvBlockExplorerUrls(chainId);
 
-    return `${baseUrl}/token/${nft.tokenAddress}/instance/${nft.id}`;
+    return `${baseUrl}token/${nft.tokenAddress}/instance/${nft.id}`;
   };
 
   if (loading) {

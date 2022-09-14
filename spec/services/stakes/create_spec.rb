@@ -3,9 +3,9 @@ require "rails_helper"
 RSpec.describe Stakes::Create do
   include ActiveJob::TestHelper
 
-  subject(:create_stake) { described_class.new(token: token, staking_user: staking_user).call }
+  subject(:create_stake) { described_class.new(talent_token: talent_token, staking_user: staking_user).call }
 
-  let(:token) { create :token }
+  let(:talent_token) { create :talent_token }
   let(:staking_user) { create :user }
 
   let(:create_notification_class) { CreateNotification }
@@ -63,14 +63,14 @@ RSpec.describe Stakes::Create do
     end
   end
 
-  context "when the user is buying a token from another user" do
+  context "when the user is buying a talent token from another user" do
     it "initializes and calls the notification service" do
       create_stake
 
       aggregate_failures do
         expect(create_notification_class).to have_received(:new)
         expect(create_notification_instance).to have_received(:call).with(
-          recipient: token.talent.user,
+          recipient: talent_token.talent.user,
           type: TokenAcquiredNotification,
           source_id: staking_user.id,
           extra_params: {}
@@ -78,9 +78,9 @@ RSpec.describe Stakes::Create do
       end
     end
 
-    context "when the user is buying the token for a second time" do
+    context "when the user is buying the talent token for a second time" do
       before do
-        create :talent_supporter, talent_contract_id: token.contract_id, supporter_wallet_id: staking_user.wallet_id
+        create :talent_supporter, talent_contract_id: talent_token.contract_id, supporter_wallet_id: staking_user.wallet_id
       end
 
       it "initializes and calls the notification service with extra params" do
@@ -89,7 +89,7 @@ RSpec.describe Stakes::Create do
         aggregate_failures do
           expect(create_notification_class).to have_received(:new)
           expect(create_notification_instance).to have_received(:call).with(
-            recipient: token.talent.user,
+            recipient: talent_token.talent.user,
             type: TokenAcquiredNotification,
             source_id: staking_user.id,
             extra_params: {reinvestment: true}
@@ -100,7 +100,7 @@ RSpec.describe Stakes::Create do
   end
 
   context "when the user is buying his own token" do
-    let(:token) { create :token, talent: talent }
+    let(:talent_token) { create :talent_token, talent: talent }
     let(:talent) { create :talent, user: staking_user }
     let(:staking_user) { create :user }
 
@@ -118,7 +118,7 @@ RSpec.describe Stakes::Create do
 
         aggregate_failures do
           expect(job["job_class"]).to eq("TalentSupportersRefreshJob")
-          expect(job["arguments"][0]).to eq(token.contract_id)
+          expect(job["arguments"][0]).to eq(talent_token.contract_id)
         end
       end
     end
@@ -138,6 +138,4 @@ RSpec.describe Stakes::Create do
       end
     end
   end
-
-  context "when the user is buying"
 end

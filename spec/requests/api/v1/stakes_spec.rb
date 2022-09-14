@@ -5,8 +5,8 @@ RSpec.describe "Stakes", type: :request do
 
   describe "#create" do
     let(:talent) { create :talent }
-    let!(:token) { create :token, talent: talent }
-    let(:token_id) { token.id }
+    let!(:talent_token) { create :talent_token, talent: talent }
+    let(:talent_token_id) { talent_token.id }
 
     let(:stakes_create_class) { Stakes::Create }
     let(:stakes_create) { instance_double(stakes_create_class, call: true) }
@@ -16,7 +16,7 @@ RSpec.describe "Stakes", type: :request do
     let(:params) do
       {
         stake: {
-          token_id: token_id
+          token_id: talent_token_id
         }
       }
     end
@@ -46,7 +46,7 @@ RSpec.describe "Stakes", type: :request do
 
       aggregate_failures do
         expect(stakes_create_class).to have_received(:new).with(
-          token: token,
+          talent_token: talent_token,
           staking_user: current_user
         )
         expect(stakes_create).to have_received(:call)
@@ -54,7 +54,7 @@ RSpec.describe "Stakes", type: :request do
     end
 
     context "when the token passed does not exist" do
-      let(:token_id) { -1 }
+      let(:talent_token_id) { -1 }
 
       it "returns a not found response" do
         create_stake_request

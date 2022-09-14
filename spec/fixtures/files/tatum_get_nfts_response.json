@@ -1,0 +1,89 @@
+[
+  {
+    "contractAddress": "0x1ecd77075f7504ba849d47dce4cdc9695f1fe942",
+    "balances": ["627", "628", "629"],
+    "metadata": [
+      {
+        "url": "https://ipfs.io/ipfs/bafybeih6g4g7ul4s3l2b6axygpf7s6fkpwhd6e5elgl2t7gmdwlc6lsmjq/metadata/627.json",
+        "metadata": {
+          "dna": "030000070000001200000000",
+          "edition": 627,
+          "attributes": [
+            {
+              "trait_type": "Species",
+              "value": "Blue Citizen Ape"
+            },
+            {
+              "trait_type": "Background",
+              "value": "Light Purple"
+            },
+            {
+              "trait_type": "Head",
+              "value": "Bunny Ear"
+            }
+          ],
+          "name": "CeloApesKingdom #627",
+          "date": 1635923686814,
+          "description": "Celo Apes are native Apes NFT on the Celo Blockchain. All the NFT holders will be part of the Ape Kingdom. Only 10000 Apes will be minted with new and unique traits!",
+          "image": "ipfs://bafybeiasnbk7bztvmytiqf2a5aw5jmivvnxhrdwtp72ihbpjrlh33g32ee/apes/627.png"
+        },
+        "tokenId": "627"
+      },
+      {
+        "url": "https://ipfs.io/ipfs/bafybeih6g4g7ul4s3l2b6axygpf7s6fkpwhd6e5elgl2t7gmdwlc6lsmjq/metadata/628.json",
+        "metadata": {
+          "dna": "120001080003030010000002",
+          "edition": 628,
+          "attributes": [
+            {
+              "trait_type": "Species",
+              "value": "Pink Ape"
+            },
+            {
+              "trait_type": "Eyes",
+              "value": "BloodShot"
+            },
+            {
+              "trait_type": "Background",
+              "value": "Purple"
+            },
+            {
+              "trait_type": "Glasses",
+              "value": "Modern Glasses"
+            },
+            {
+              "trait_type": "Clothes",
+              "value": "Dark Half Sleve"
+            },
+            {
+              "trait_type": "Beams",
+              "value": "Straight Yellow"
+            },
+            {
+              "trait_type": "Mouth Props",
+              "value": "Cigarette"
+            }
+          ],
+          "name": "CeloApesKingdom #628",
+          "date": 1635923686814,
+          "description": "Celo Apes are native Apes NFT on the Celo Blockchain. All the NFT holders will be part of the Ape Kingdom. Only 10000 Apes will be minted with new and unique traits!",
+          "image": "ipfs://bafybeiasnbk7bztvmytiqf2a5aw5jmivvnxhrdwtp72ihbpjrlh33g32ee/apes/628.png"
+        },
+        "tokenId": "628"
+      }
+    ]
+  },
+  {
+    "contractAddress": "0xdf204de57532242700d988422996e9ced7aba4cb",
+    "balances": [
+      "80933583340990441618616735003812808159743996514813210066433383033497073517002"
+    ],
+    "metadata": [
+      {
+        "url": "",
+        "metadata": null,
+        "tokenId": "80933583340990441618616735003812808159743996514813210066433383033497073517002"
+      }
+    ]
+  }
+]

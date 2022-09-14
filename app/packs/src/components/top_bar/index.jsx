@@ -6,7 +6,7 @@ import Web3ModalConnect from "../login/Web3ModalConnect";
 import { destroy } from "../../utils/requests";
 
 import { OnChain } from "src/onchain";
-import { parseAndCommify } from "src/onchain/utils";
+import { parseAndCommify, chainIdToName } from "src/onchain/utils";
 
 import { useWindowDimensionsHook } from "src/utils/window";
 
@@ -65,8 +65,8 @@ const newTransak = (width, height, env, apiKey) => {
     hostURL: window.location.origin,
     widgetHeight: `${height}px`,
     widgetWidth: `${width}px`,
-    network: "CELO",
-    cryptoCurrencyList: "CUSD",
+    networks: "celo,polygon",
+    cryptoCurrencyList: "CUSD,USDC",
   });
 };
 
@@ -87,6 +87,7 @@ export const TopBar = ({
   const { height, width } = useWindowDimensionsHook();
   const [transakDone, setTransakDone] = useState(false);
   const [activeTab, setActiveTab] = useState(url.pathname);
+  const [chainName, setChainName] = useState("Celo");
   const theme = useContext(ThemeContext);
 
   const copyAddressToClipboard = () => {
@@ -131,26 +132,33 @@ export const TopBar = ({
     });
   };
 
-  const setupChain = useCallback(async () => {
-    const onChain = new OnChain(railsContext.contractsEnv);
+  const setupChain = useCallback(
+    async (forceConnect = false) => {
+      const onChain = new OnChain(railsContext.contractsEnv);
 
-    const account = await onChain.connectedAccount();
+      const account = await onChain.connectedAccount(forceConnect);
 
-    if (account) {
-      setAccount(account.toLowerCase());
-      setWalletConnected(true);
+      if (account) {
+        setAccount(account.toLowerCase());
+        setWalletConnected(true);
 
-      await onChain.loadStableToken();
-      const balance = await onChain.getStableBalance(true);
+        await onChain.loadStableToken();
+        const balance = await onChain.getStableBalance(true);
 
-      if (balance) {
-        setStableBalance(balance);
+        if (balance) {
+          setStableBalance(balance);
+        }
+
+        const chainId = await onChain.getChainID();
+        const chainName = chainIdToName(chainId, railsContext.contractsEnv);
+        setChainName(chainName);
       }
-    }
-  }, [walletConnected]);
+    },
+    [walletConnected]
+  );
 
   const onWalletConnect = async (account) => {
-    await setupChain();
+    await setupChain(true);
 
     if (account) {
       setAccount(account.toLowerCase());
@@ -190,6 +198,14 @@ export const TopBar = ({
     theme.toggleTheme();
   };
 
+  const stableCoinName = () => {
+    if (chainName == "Celo") {
+      return "cUSD";
+    } else {
+      return "USDC";
+    }
+  };
+
   const connectedButton = (extraClasses = "") => (
     <Button
       onClick={copyAddressToClipboard}
@@ -198,7 +214,7 @@ export const TopBar = ({
       className={extraClasses}
     >
       <strong>
-        {parseAndCommify(stableBalance)} cUSD{" "}
+        {parseAndCommify(stableBalance)} {stableCoinName()}{" "}
         <span className="text-primary-03">{user.displayWalletId}</span>
         <Copy color="currentColor" className="ml-2" />
       </strong>

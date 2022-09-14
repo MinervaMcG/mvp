@@ -127,13 +127,13 @@ class Notion::SyncTalent
           checkbox: engaged?(talent)
         },
         "Token Launch Date": {
-          date: token_launch_date(talent)
+          date: talent_token_launch_date(talent)
         },
         Ticker: {
           rich_text: [
             {
               text: {
-                content: talent&.token&.ticker || ""
+                content: talent&.talent_token&.ticker || ""
               }
             }
           ]
@@ -166,13 +166,13 @@ class Notion::SyncTalent
   def engaged?(talent)
     monthago = 1.month.ago.beginning_of_day
     engaged = talent.updated_at > monthago ||
-      talent.token.updated_at > monthago ||
+      talent.talent_token.updated_at > monthago ||
       talent.career_goal.updated_at > monthago ||
       talent.perks.where("created_at > ? or updated_at > ?", monthago, monthago).exists? ||
       talent.milestones.where("created_at > ? or updated_at > ?", monthago, monthago).exists? ||
       talent.career_goal.goals.where("created_at > ? or updated_at > ?", monthago, monthago).exists?
 
-    engaged && TalentSupporter.where(talent_contract_id: talent.token.contract_id).where("created_at > ?", monthago).exists?
+    engaged && TalentSupporter.where(talent_contract_id: talent.talent_token.contract_id).where("created_at > ?", monthago).exists?
   end
 
   def total_tal_invested(talent)
@@ -192,15 +192,15 @@ class Notion::SyncTalent
 
     return "Profile Disabled" if talent.hide_profile || user.disabled
 
-    if user.profile_type == "talent" && talent&.token&.contract_id.present?
+    if user.profile_type == "talent" && talent&.talent_token&.contract_id.present?
       return talent.public? ? "Token Public" : "Token Private"
     end
 
     user.profile_type.humanize
   end
 
-  def token_launch_date(talent)
-    return {start: talent&.token&.deployed_at&.iso8601} if talent.token&.deployed_at
+  def talent_token_launch_date(talent)
+    return {start: talent&.talent_token&.deployed_at&.iso8601} if talent.talent_token&.deployed_at
 
     nil
   end

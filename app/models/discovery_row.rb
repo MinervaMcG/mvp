@@ -22,7 +22,7 @@ class DiscoveryRow < ApplicationRecord
 
   def public_talent_profiles
     Talent.base
-      .joins(:token)
+      .joins(:talent_token)
       .joins(user: {tags: :discovery_row})
       .where(discovery_rows: {id: id})
       .distinct

@@ -19,8 +19,10 @@ import {
   PAGE_SIZE,
 } from "src/utils/thegraph";
 import { OnChain } from "src/onchain";
+import { chainIdToName, getAllChainOptions } from "src/onchain/utils";
 import { useWindowDimensionsHook } from "src/utils/window";
 import ThemeContainer, { ThemeContext } from "src/contexts/ThemeContext";
+import { post } from "src/utils/requests";
 
 import RewardsModal from "./components/RewardsModal";
 import Supporting from "./components/Supporting";
@@ -34,7 +36,7 @@ import P2 from "src/components/design_system/typography/p2";
 import H4 from "src/components/design_system/typography/h4";
 import H5 from "src/components/design_system/typography/h5";
 import Button from "src/components/design_system/button";
-import { Spinner } from "src/components/icons";
+import { Spinner, Polygon, Celo } from "src/components/icons";
 
 import {
   getStartDateForVariance,
@@ -67,23 +69,15 @@ export const LoadingPortfolio = ({ mode }) => {
   );
 };
 
-const ChangeNetwork = ({ mode, networkChange }) => {
+const ChangeNetwork = ({ mode, networkChange, railsContext }) => {
   return (
-    <div className="w-100 h-100 d-flex flex-column justify-content-center align-items-center p-4 p-lg-0">
+    <div className="w-100 h-100 d-flex flex-column justify-content-center align-items-center p-4 p-lg-0 mt-3">
       <H5 mode={mode} text="Please switch your network" bold />
       <P2
         mode={mode}
-        text="To see your portfolio you need to switch your network to CELO."
+        text="To see your portfolio you need to switch to one of our supported networks."
         bold
       />
-      <Button
-        onClick={networkChange}
-        type="primary-default"
-        mode={mode}
-        className="mt-3"
-      >
-        Switch Network
-      </Button>
     </div>
   );
 };
@@ -132,8 +126,8 @@ const newTransak = (width, height, env, apiKey) => {
     hostURL: window.location.origin,
     widgetHeight: `${height}px`,
     widgetWidth: `${width}px`,
-    network: "CELO",
-    cryptoCurrencyList: "CUSD",
+    networks: "celo,polygon",
+    cryptoCurrencyList: "CUSD,USDC",
   });
 };
 
@@ -146,19 +140,25 @@ const NewPortfolio = ({
   memberNFT,
   railsContext,
   isCurrentUserImpersonated,
+  chainAPI,
+  stableBalance,
+  wrongChain,
+  localLoading,
+  setLocalLoading,
+  walletConnected,
+  setWalletConnected,
+  localAccount,
+  currentChain,
+  setLocalAccount,
+  chainId,
 }) => {
   // --- On chain variables ---
-  const [localAccount, setLocalAccount] = useState("");
 
-  const [chainAPI, setChainAPI] = useState(null);
-  const [stableBalance, setStableBalance] = useState(0);
   const [returnValues, setReturnValues] = useState({});
   const [activeContract, setActiveContract] = useState(null);
   const [loadingRewards, setLoadingRewards] = useState(false);
-  const [wrongChain, setWrongChain] = useState(false);
   const [page, setPage] = useState(0);
   const [supportedTalents, setSupportedTalents] = useState([]);
-  const [localLoading, setLocalLoading] = useState(true);
   const [listLoaded, setListLoaded] = useState(false);
   const [walletConnected, setWalletConnected] = useState(false);
   const [showChangeWalletModal, setShowChangeWalletModal] = useState(false);
@@ -320,6 +320,7 @@ const NewPortfolio = ({
     }
   });
 
+
   const updateAll = async () => {
     supportedTalents.forEach((element) => {
       loadReturns(element.contract_id).then((returns) => {
@@ -343,10 +344,6 @@ const NewPortfolio = ({
   useEffect(() => {
     updateAll();
   }, [supportedTalents, chainAPI]);
-
-  useEffect(() => {
-    setupChain();
-  }, []);
 
   const loadReturns = async (contractAddress) => {
     if (chainAPI && contractAddress) {
@@ -372,6 +369,9 @@ const NewPortfolio = ({
       } else {
         setLoadingRewards(true);
         await chainAPI.claimRewards(activeContract).catch(() => null);
+        await post(`/api/v1/reward_claiming`, {
+          stake: { token_id: activeContract },
+        }).catch((e) => console.log(e));
         refetch();
       }
     }
@@ -409,9 +409,10 @@ const NewPortfolio = ({
     }
   };
 
-  const networkChange = async () => {
+
+  const networkChange = async (chainId) => {
     if (chainAPI) {
-      await chainAPI.switchChain();
+      await chainAPI.switchChain(chainId);
     }
   };
 
@@ -462,7 +463,13 @@ const NewPortfolio = ({
   }
 
   if (wrongChain) {
-    return <ChangeNetwork mode={theme.mode()} networkChange={networkChange} />;
+    return (
+      <ChangeNetwork
+        mode={theme.mode()}
+        networkChange={networkChange}
+        railsContext={railsContext}
+      />
+    );
   }
 
   if (mobile) {
@@ -510,6 +517,7 @@ const NewPortfolio = ({
             currentUserId={currentUserId}
             userNFT={userNFT}
             memberNFT={memberNFT}
+            chainId={chainId}
           />
         ) : (
           <LoadingPortfolio />
@@ -654,7 +662,7 @@ const NewPortfolio = ({
             Supporters
           </div>
         )}
-        {!!userNFT.id && (
+        {!!userNFT.id && currentChain == "Celo" && (
           <div
             onClick={() => setActiveTab("NFTs")}
             className={`talent-table-tab${
@@ -694,18 +702,115 @@ const NewPortfolio = ({
           memberNFT={memberNFT}
           chainAPI={chainAPI}
           mode={theme.mode()}
+          chainId={chainId}
         />
       )}
     </div>
   );
 };
 
-export default (props, railsContext) => {
-  return () => (
-    <ThemeContainer>
-      <ApolloProvider client={client(railsContext.contractsEnv)}>
-        <NewPortfolio {...props} railsContext={railsContext} />
-      </ApolloProvider>
-    </ThemeContainer>
+const NewPortfolioWrapped = (props) => (
+  <ThemeContainer>
+    <ApolloProvider client={client(props.chainId)}>
+      <NewPortfolio {...props} />
+    </ApolloProvider>
+  </ThemeContainer>
+);
+
+const PortfolioWrapper = (props) => {
+  const [currentChain, setCurrentChain] = useState("Polygon");
+  const [chainId, setChainId] = useState(null);
+  const [chainAPI, setChainAPI] = useState(null);
+  const [stableBalance, setStableBalance] = useState(0);
+  const [wrongChain, setWrongChain] = useState(false);
+  const [localLoading, setLocalLoading] = useState(true);
+  const [walletConnected, setWalletConnected] = useState(false);
+  const [localAccount, setLocalAccount] = useState("");
+
+  const setupChain = useCallback(async () => {
+    const newOnChain = new OnChain(props.railsContext.contractsEnv);
+
+    const walletConnected = await newOnChain.connectedAccount();
+
+    await newOnChain.loadStaking();
+    await newOnChain.loadStableToken();
+    const balance = await newOnChain.getStableBalance(true);
+
+    if (balance) {
+      setStableBalance(balance);
+    }
+
+    if (newOnChain.account) {
+      setLocalAccount(newOnChain.account);
+    } else {
+      setLocalLoading(false);
+    }
+
+    if (newOnChain) {
+      const chainAvailable = await newOnChain.recognizedChain();
+      const chainId = await newOnChain.getChainID();
+
+      setWrongChain(!chainAvailable);
+      setWalletConnected(!!walletConnected);
+      setChainAPI(newOnChain);
+      setCurrentChain(chainIdToName(chainId, props.railsContext.contractsEnv));
+      setChainId(chainId);
+
+      if (!chainAvailable) {
+        setLocalLoading(false);
+      }
+    }
+  });
+
+  useEffect(() => {
+    setupChain();
+  }, []);
+
+  const networkChange = async (chainId) => {
+    if (chainAPI) {
+      await chainAPI.switchChain(chainId);
+    }
+  };
+
+  return (
+    <>
+      <div className="d-flex flex-row mb-3 mt-3 mt-lg-0 ml-3 ml-lg-0">
+        {getAllChainOptions(props.railsContext.contractsEnv).map((option) => (
+          <Button
+            key={option.id}
+            type={
+              currentChain == option.name ? "primary-default" : "white-subtle"
+            }
+            onClick={() => networkChange(option.id)}
+            className="mr-2"
+          >
+            {option.name == "Polygon" ? (
+              <Polygon className="mr-2" />
+            ) : (
+              <Celo className="mr-2" />
+            )}{" "}
+            {option.name}
+          </Button>
+        ))}
+      </div>
+      <NewPortfolioWrapped
+        {...props}
+        networkChange={networkChange}
+        chainAPI={chainAPI}
+        localLoading={localLoading}
+        setLocalLoading={setLocalLoading}
+        walletConnected={walletConnected}
+        setWalletConnected={setWalletConnected}
+        wrongChain={wrongChain}
+        stableBalance={stableBalance}
+        chainId={chainId}
+        localAccount={localAccount}
+        setLocalAccount={setLocalAccount}
+        currentChain={currentChain}
+      />
+    </>
   );
 };
+
+export default (props, railsContext) => () =>
+  <PortfolioWrapper {...props} railsContext={railsContext} />;

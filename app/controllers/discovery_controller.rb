@@ -19,7 +19,7 @@ class DiscoveryController < ApplicationController
         badge: row.badge,
         badge_link: row.badge_link,
         talents: Talent
-          .includes(:token, user: :investor)
+          .includes(:talent_token, user: :investor)
           .where(id: ids)
           .select("setseed(0.#{Date.today.jd}), talent.*")
           .order("random()")
@@ -43,7 +43,7 @@ class DiscoveryController < ApplicationController
     talents = service.call
 
     @discovery_row = DiscoveryRowBlueprint.render_as_json(discovery_row, view: :normal)
-    @talents = TalentBlueprint.render_as_json(talents.includes(:user, :token), view: :normal, current_user_watchlist: current_user_watchlist)
+    @talents = TalentBlueprint.render_as_json(talents.includes(:user, :talent_token), view: :normal, current_user_watchlist: current_user_watchlist)
 
     respond_to do |format|
       format.html

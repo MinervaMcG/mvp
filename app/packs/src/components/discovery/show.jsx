@@ -11,12 +11,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useWindowDimensionsHook } from "src/utils/window";
 
 import {
-  ApolloProvider,
-  useQuery,
-  GET_TALENT_PORTFOLIO,
-  client,
-} from "src/utils/thegraph";
-import {
   getSupporterCount,
   getMarketCap,
   getProgress,
@@ -41,20 +35,12 @@ import TalentOptions from "src/components/talent/TalentOptions";
 
 import cx from "classnames";
 
-const DiscoveryShow = ({ discoveryRow, talents }) => {
+const DiscoveryShow = ({ discoveryRow, talents, env }) => {
   const theme = useContext(ThemeContext);
   const { mobile } = useWindowDimensionsHook();
   const [localTalents, setLocalTalents] = useState(talents);
 
   const startDate = getStartDateForVariance();
-  const { loading, data } = useQuery(GET_TALENT_PORTFOLIO, {
-    variables: {
-      ids: localTalents
-        .map((talent) => talent.token.contractId)
-        .filter((id) => id),
-      startDate,
-    },
-  });
   const [listModeOnly, setListModeOnly] = useState(false);
   const [selectedSort, setSelectedSort] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
@@ -125,82 +111,7 @@ const DiscoveryShow = ({ discoveryRow, talents }) => {
     }
 
     return desiredTalent;
-  }, [localTalents, selectedSort, sortDirection, data]);
-
-  useEffect(() => {
-    if (loading || !data?.talentTokens) {
-      return;
-    }
-
-    const newTalents = data.talentTokens.map(
-      ({
-        id,
-        totalSupply,
-        maxSupply,
-        supporterCounter,
-        tokenDayData,
-        createdAtTimestamp,
-        ...rest
-      }) => {
-        let deployDateUTC;
-        if (!!createdAtTimestamp) {
-          const msDividend = 1000;
-          deployDateUTC = getUTCDate(parseInt(createdAtTimestamp) * msDividend);
-        } else {
-          const localTalent = localTalents.find(
-            (talent) => talent.token.contractId == talent.id
-          );
-          deployDateUTC =
-            localTalent && getUTCDate(localTalent.token.deployedAt);
-        }
-
-        return {
-          ...rest,
-          token: { contractId: id },
-          progress: getProgress(totalSupply, maxSupply),
-          marketCap: getMarketCap(totalSupply),
-          supporterCounter: getSupporterCount(supporterCounter),
-          marketCapVariance: getMarketCapVariance(
-            tokenDayData || [],
-            deployDateUTC || 0,
-            startDate,
-            totalSupply
-          ),
-        };
-      }
-    );
-
-    setLocalTalents((prev) =>
-      Object.values(
-        [...prev, ...newTalents].reduce(
-          (
-            result,
-            {
-              id,
-              token,
-              marketCap,
-              supporterCounter,
-              marketCapVariance,
-              ...rest
-            }
-          ) => {
-            result[token.contractId || id] = {
-              ...(result[token.contractId || id] || {}),
-              id: result[token.contractId || id]?.id || id,
-              token: { ...result[token.contractId]?.token, ...token },
-              marketCap: marketCap || "-1",
-              supporterCounter: supporterCounter || "-1",
-              marketCapVariance: marketCapVariance || "0%",
-              ...rest,
-            };
-
-            return result;
-          },
-          {}
-        )
-      )
-    );
-  }, [data, loading]);
+  }, [localTalents, selectedSort, sortDirection]);
 
   return (
     <div className={cx(mobile && "p-4")}>
@@ -322,6 +233,7 @@ const DiscoveryShow = ({ discoveryRow, talents }) => {
         <TalentTableCardMode
           talents={filteredTalents}
           updateFollow={updateFollow}
+          env={env}
         />
       )}
     </div>
@@ -331,9 +243,7 @@ const DiscoveryShow = ({ discoveryRow, talents }) => {
 export default (props, railsContext) => {
   return () => (
     <ThemeContainer {...props}>
-      <ApolloProvider client={client(railsContext.contractsEnv)}>
-        <DiscoveryShow {...props} />
-      </ApolloProvider>
+      <DiscoveryShow {...props} env={railsContext.contractsEnv} />
     </ThemeContainer>
   );
 };

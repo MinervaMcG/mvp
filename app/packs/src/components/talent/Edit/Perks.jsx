@@ -109,6 +109,7 @@ const Perks = (props) => {
   const {
     perks,
     token,
+    user,
     mode,
     mobile,
     changeTab,
@@ -118,6 +119,11 @@ const Perks = (props) => {
     disablePublicButton,
     buttonText,
   } = props;
+  if (user.profile_type !== "approved" && user.profile_type !== "talent") {
+    window.location.href = "edit_profile";
+    return;
+  }
+
   const [allPerks, setAllPerks] = useState({
     new: emptyPerk("new"),
     ...arrayToObject(perks),

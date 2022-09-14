@@ -96,7 +96,6 @@ RSpec.describe "Users", type: :request do
       {
         user: {
           username: "johndoe",
-          email: "john.doe@talent.com",
           messaging_disabled: true
         }
       }
@@ -123,6 +122,56 @@ RSpec.describe "Users", type: :request do
     end
 
     context "when the params are all valid" do
+      it "returns a successful response" do
+        update_user_request
+
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "updates the user" do
+        update_user_request
+
+        current_user.reload
+
+        aggregate_failures do
+          expect(current_user.username).to eq "johndoe"
+          expect(current_user.messaging_disabled).to eq true
+        end
+      end
+    end
+
+    context "when the password is incorrect" do
+      let(:params) do
+        {
+          user: {
+            username: "johndoe",
+            email: "john.doe@talent.com",
+            messaging_disabled: true
+          }
+        }
+      end
+
+      it "returns a conflict error" do
+        update_user_request
+
+        expect(response).to have_http_status(:conflict)
+      end
+    end
+
+    context "when the password is correct" do
+      let(:current_user) { create :user, password: "Password1" }
+
+      let(:params) do
+        {
+          user: {
+            username: "johndoe",
+            email: "john.doe@talent.com",
+            messaging_disabled: true,
+            current_password: "Password1"
+          }
+        }
+      end
+
       it "returns a successful response" do
         update_user_request
 

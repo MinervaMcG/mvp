@@ -1,0 +1,48 @@
+<% if @profile.present? %>
+  <% content_for :meta_title, "#{@profile["user"]["username"]} | #{DEFAULT_META["meta_product_name"]}" %>
+  <% if @profile["headline"].present? %>
+    <% content_for :meta_description, @profile["headline"] %>
+  <% end %>
+  <% if @profile["profile_picture_url"].present? %>
+    <% content_for :meta_image, @profile["profile_picture_url"] %>
+    <% content_for :meta_card_type, "summary" %>
+  <% end %>
+<% end %>
+
+<main class="main-content">
+  <div class="container-grid">
+    <% if current_user.nil? %>
+      <%= react_component("LoggedOutTopBar", props:
+        {
+        }, prerender: false)
+      %>
+    <% end %>
+    <% if @profile.present? %>
+      <%= react_component("ProfileShow", props:
+        {
+          profile: @profile,
+          profilePictureUrl: @profile["profile_picture_url"],
+          bannerUrl: @profile["banner_url"],
+          tags: @profile["tags"],
+          talentToken: @profile["talent_token"],
+          perks: @profile["perks"],
+          milestones: @profile["milestones"],
+          currentUserId: current_user&.id,
+          isFollowing: @profile["is_following"],
+          followersCount: @profile["followers_count"],
+          supportersCount: @profile["supporters_count"],
+          admin: current_user ? current_user.admin? : false,
+          isCurrentUserImpersonated: is_user_impersonated?,
+          user: {
+            id: @profile["user_id"],
+            email: @profile["user"]["email"],
+            username: @profile["user"]["username"],
+            display_name: @profile["user"]["display_name"],
+            wallet_id: @profile["user"]["wallet_id"],
+            profile_type: @profile["user"]["profile_type"],
+          },
+        }, prerender: false)
+      %>
+    <% end %>
+  </div>
+</main>

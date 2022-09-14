@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe SendMessageToAllSupportersJob, type: :job do
   let(:sender) { create :user, talent: talent }
   let(:talent) { create :talent }
-  let(:token) { create :token, talent: talent, deployed: true }
+  let(:talent_token) { create :talent_token, talent: talent, deployed: true }
 
   let(:message) { "Thanks for your support!" }
 
@@ -17,8 +17,8 @@ RSpec.describe SendMessageToAllSupportersJob, type: :job do
   let(:investor_user_two) { create :user }
 
   before do
-    create :talent_supporter, supporter_wallet_id: investor_user_one.wallet_id, talent_contract_id: token.contract_id
-    create :talent_supporter, supporter_wallet_id: investor_user_two.wallet_id, talent_contract_id: token.contract_id
+    create :talent_supporter, supporter_wallet_id: investor_user_one.wallet_id, talent_contract_id: talent_token.contract_id
+    create :talent_supporter, supporter_wallet_id: investor_user_two.wallet_id, talent_contract_id: talent_token.contract_id
 
     allow(send_message_class).to receive(:new).and_return(send_message_instance)
   end
@@ -55,7 +55,7 @@ RSpec.describe SendMessageToAllSupportersJob, type: :job do
     let(:sender) { create :user, :with_investor, talent: talent }
 
     before do
-      create :talent_supporter, supporter_wallet_id: sender.wallet_id, talent_contract_id: token.contract_id
+      create :talent_supporter, supporter_wallet_id: sender.wallet_id, talent_contract_id: talent_token.contract_id
     end
 
     it "does not send a message to himself" do

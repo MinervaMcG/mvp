@@ -1,5 +1,7 @@
-require "web3/moralis/client"
 require "web3/celo_explorer/client"
+require "web3/gnosis_chain_explorer/client"
+require "web3/moralis/client"
+require "web3/tatum/client"
 
 module Web3
   class ApiProxy
@@ -9,39 +11,57 @@ module Web3
 
     class ApiClientRequestError < Error; end
 
-    SUPPORTED_CHAINS = %w[eth polygon celo]
+    SUPPORTED_CHAIN_IDS = %w[0x1 0xa4ec 0x89]
+    SUPPORTED_CHAIN_NAMES = %w[celo eth polygon]
 
-    def initialize(wallet_address:, chain:)
-      raise UnsupportedChainError.new("Invalid chain: #{chain}") unless SUPPORTED_CHAINS.include?(chain)
+    CELO_CHAIN = %w[celo 0xa4ec 44787]
+    ETH_CHAIN = %w[eth 0x1 1]
+    POLYGON_CHAIN = %w[polygon 0x89 89]
+    GNOSIS_CHAIN_ID = 100
 
-      @wallet_address = wallet_address
-      @chain = chain
+    SUPPORTED_CHAINS = SUPPORTED_CHAIN_IDS + SUPPORTED_CHAIN_NAMES
+
+    def retrieve_tokens(wallet_address:, chain: nil)
+      validate_chain!(chain)
+
+      return celo_explorer_tokens(wallet_address) if celo?(chain)
+
+      moralis_tokens(wallet_address, chain)
     end
 
-    def retrieve_tokens
-      return celo_explorer_tokens if celo_chain?
+    def retrieve_nfts(wallet_address:, chain: nil)
+      validate_chain!(chain)
 
-      moralis_tokens
+      return tatum_nfts(wallet_address, "CELO") if celo?(chain)
+
+      moralis_nfts(wallet_address, chain)
     end
 
-    def retrieve_nfts
-      return celo_explorer_nfts if celo_chain?
-
-      moralis_nfts
+    def retrieve_poaps(wallet_address:)
+      gnosis_poaps(wallet_address)
     end
 
     private
 
-    attr_reader :wallet_address, :chain
+    def validate_chain!(chain)
+      formatted_chain = formatted_chain(chain)
 
-    def celo_chain?
-      chain == "celo"
+      raise UnsupportedChainError.new("Invalid chain: #{chain}/#{formatted_chain}, valid chains: #{SUPPORTED_CHAINS.join(", ")}") unless SUPPORTED_CHAINS.include?(formatted_chain)
     end
 
-    def celo_explorer_tokens
-      validate_response!(celo_explorer_tokens_response)
+    def celo?(chain)
+      CELO_CHAIN.include?(formatted_chain(chain))
+    end
 
-      response_body = JSON.parse(celo_explorer_tokens_response.body)
+    def formatted_chain(chain)
+      chain.is_a?(Integer) ? "0x#{chain.to_s(16).downcase}" : chain.downcase
+    end
+
+    def celo_explorer_tokens(wallet_address)
+      response = celo_explorer_tokens_response(wallet_address)
+      validate_response!(response)
+
+      response_body = JSON.parse(response.body)
 
       tokens = response_body["result"].map do |item|
         if item["type"] == "ERC-20"
@@ -60,10 +80,11 @@ module Web3
       tokens.compact
     end
 
-    def moralis_tokens
-      validate_response!(moralis_tokens_response)
+    def moralis_tokens(wallet_address, chain)
+      response = moralis_tokens_response(wallet_address, chain)
+      validate_response!(response)
 
-      response_body = JSON.parse(moralis_tokens_response.body)
+      response_body = JSON.parse(response.body)
 
       response_body.map do |item|
         {
@@ -78,10 +99,11 @@ module Web3
       end
     end
 
-    def celo_explorer_nfts
-      validate_response!(celo_explorer_tokens_response)
+    def celo_explorer_nfts(wallet_address)
+      response = celo_explorer_tokens_response(wallet_address)
+      validate_response!(response)
 
-      response_body = JSON.parse(celo_explorer_tokens_response.body)
+      response_body = JSON.parse(response.body)
 
       tokens = response_body["result"].map do |item|
         if item["type"] == "ERC-721"
@@ -100,10 +122,11 @@ module Web3
       tokens.compact
     end
 
-    def moralis_nfts
-      validate_response!(moralis_nfts_response)
+    def moralis_nfts(wallet_address, chain)
+      response = moralis_nfts_response(wallet_address, chain)
+      validate_response!(response)
 
-      response_body = JSON.parse(moralis_nfts_response.body)
+      response_body = JSON.parse(response.body)
 
       tokens = response_body["result"].map do |item|
         {
@@ -120,16 +143,58 @@ module Web3
       tokens.compact
     end
 
-    def celo_explorer_tokens_response
-      @celo_explorer_tokens_response ||= celo_explorer_api_client.retrieve_tokens(wallet_address: wallet_address)
+    def tatum_nfts(wallet_address, chain)
+      response = tatum_nfts_response(wallet_address, chain)
+      validate_response!(response)
+
+      response_body = JSON.parse(response.body)
+
+      tokens = response_body.map do |item|
+        item["metadata"].map do |token_metadata|
+          {
+            address: item["contractAddress"],
+            token_id: token_metadata["tokenId"],
+            amount: 1,
+            name: token_metadata["metadata"].present? ? token_metadata["metadata"]["name"] : nil,
+            symbol: token_metadata["metadata"].present? ? token_metadata["metadata"]["name"] : nil,
+            token_uri: token_metadata["url"].start_with?("http") ? token_metadata["url"] : nil,
+            metadata: token_metadata["metadata"].present? ? token_metadata["metadata"] : nil
+          }
+        end
+      end
+
+      tokens.flatten.compact
     end
 
-    def moralis_tokens_response
-      @moralis_tokens_response ||= moralis_api_client.retrieve_tokens(wallet_address: wallet_address, chain: chain)
+    def gnosis_poaps(wallet_address)
+      response = gnosis_chain_explorer_client.retrieve_tokens(wallet_address: wallet_address)
+      validate_response!(response)
+
+      response_body = JSON.parse(response.body)
+
+      token_ids_and_contract_address = response_body["result"].map do |result|
+        next if result["tokenName"] != "POAP"
+
+        {token_id: result["tokenID"], address: result["contractAddress"]}
+      end
+
+      token_ids_and_contract_address.compact
     end
 
-    def moralis_nfts_response
-      @moralis_nfts_response ||= moralis_api_client.retrieve_nfts(wallet_address: wallet_address, chain: chain)
+    def celo_explorer_tokens_response(wallet_address)
+      celo_explorer_api_client.retrieve_tokens(wallet_address: wallet_address)
+    end
+
+    def moralis_tokens_response(wallet_address, chain)
+      moralis_api_client.retrieve_tokens(wallet_address: wallet_address, chain: chain)
+    end
+
+    def moralis_nfts_response(wallet_address, chain)
+      moralis_api_client.retrieve_nfts(wallet_address: wallet_address, chain: chain)
+    end
+
+    def tatum_nfts_response(wallet_address, chain)
+      @tatum_nfts_response ||= tatum_api_client.retrieve_nfts(wallet_address: wallet_address, chain: chain)
     end
 
     def validate_response!(response)
@@ -142,6 +207,14 @@ module Web3
 
     def celo_explorer_api_client
       @celo_explorer_api_client ||= CeloExplorer::Client.new
+    end
+
+    def tatum_api_client
+      @tatum_api_client ||= Tatum::Client.new
+    end
+
+    def gnosis_chain_explorer_client
+      @gnosis_chain_explorer_client ||= GnosisChainExplorer::Client.new
     end
   end
 end

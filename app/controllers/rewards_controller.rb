@@ -1,4 +1,6 @@
 class RewardsController < ApplicationController
+  PER_PAGE = 10
+
   def index
     @invites = current_acting_user.invites.common
 
@@ -10,12 +12,21 @@ class RewardsController < ApplicationController
 
     race_registered_users = User.where.not(race_id: nil)
     @race_registered_users_count = race_registered_users.count
-    @users_that_invited_others_count = race_registered_users.includes(:invites).where(invites: {talent_invite: false}).where("users.username = invites.code").count
-    race_rewards = Reward.race.order(amount: :desc).includes(:user)
+    @users_that_invited_others_count =
+      race_registered_users
+        .includes(:invites)
+        .where(invites: {talent_invite: false})
+        .where("users.username = invites.code")
+        .count
+    race_rewards = Reward.race.order(amount: :desc).includes([user: :investor], [user: :talent])
     @race_rewards = RewardBlueprint.render_as_json(race_rewards, view: :normal)
 
-    invited_users = User.where(invited: @invites)
-    @invited_users = UserBlueprint.render_as_json(invited_users.order(created_at: :desc), view: :rewards)
+    @pagy, invited_users = pagy(User.where(invited: @invites), items: per_page)
+    @invited_users =
+      UserBlueprint.render_as_json(
+        invited_users.includes([:investor], [talent: :talent_token]).order(created_at: :desc),
+        view: :rewards
+      )
 
     service = Races::PrepareRaceResults.new(race: @current_race, user: current_acting_user)
     @race_leaderboard_results = service.call
@@ -31,5 +42,27 @@ class RewardsController < ApplicationController
 
     quests = Quest.where(user: current_acting_user).order(:id)
     @quests = QuestBlueprint.render_as_json(quests.includes(:user, :tasks), view: :normal)
+
+    respond_to do |format|
+      format.html
+      format.json {
+        render(
+          json: {
+            invitedUsers: @invited_users,
+            pagination: {
+              currentPage: @pagy.page,
+              lastPage: @pagy.last
+            }
+          },
+          status: :ok
+        )
+      }
+    end
+  end
+
+  private
+
+  def per_page
+    params[:per_page] || PER_PAGE
   end
 end

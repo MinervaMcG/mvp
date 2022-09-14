@@ -44,7 +44,6 @@
           <%= yield %>
         </div>
         <%= render "shared/footer" %>
-        <%= react_component('FlashMessages', props: {messages: flash_messages, mode: current_user&.active_theme || "light"}) %>
       </div>
     </body>
   <% else %>
@@ -52,6 +51,7 @@
       <%= yield %>
     </body>
   <% end %>
+  <%= react_component('FlashMessages', props: {messages: flash_messages, mode: current_user&.active_theme || "light"}) %>
   <% unless Rails.env.development? || Rails.env.test? %>
     <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
     <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript>

@@ -263,8 +263,9 @@ const RaceDropdown = ({ allRaces, race, setRace }) => {
     const raceStart = dayjs(race.started_at).utc();
     const raceEnd = dayjs(race.ends_at).utc();
     const currentTime = dayjs().utc();
+
     if (
-      (raceStart <= currentTime && raceEnd < currentTime) ||
+      (raceStart <= currentTime && raceEnd > currentTime) ||
       allRaces.length == 1
     ) {
       return "Current Race";
@@ -479,7 +480,11 @@ const RaceTable = ({ leaderboardResults, allRaces, currentRace }) => {
   );
 };
 
-const UserInvitesTable = ({ invitedUsers }) => {
+const UserInvitesTable = ({
+  invitedUsers,
+  loadMoreInvitedUsers,
+  showLoadMoreInvitedUsers,
+}) => {
   return (
     <>
       <div className="d-flex flex-row justify-content-between align-items-center px-4 px-lg-0 mt-6 mt-lg-7">
@@ -556,6 +561,15 @@ const UserInvitesTable = ({ invitedUsers }) => {
           ))}
         </Table.Body>
       </Table>
+      {showLoadMoreInvitedUsers && (
+        <Button
+          onClick={() => loadMoreInvitedUsers()}
+          type="white-subtle"
+          className="mt-4 mx-auto"
+        >
+          Load more
+        </Button>
+      )}
     </>
   );
 };
@@ -567,6 +581,8 @@ const ReferralRace = ({
   isEligible,
   leaderboardResults,
   invitedUsers,
+  loadMoreInvitedUsers,
+  showLoadMoreInvitedUsers,
   raceInvitesCount,
 }) => {
   return (
@@ -584,7 +600,11 @@ const ReferralRace = ({
           currentRace={race}
         />
       )}
-      <UserInvitesTable invitedUsers={invitedUsers} />
+      <UserInvitesTable
+        invitedUsers={invitedUsers}
+        loadMoreInvitedUsers={loadMoreInvitedUsers}
+        showLoadMoreInvitedUsers={showLoadMoreInvitedUsers}
+      />
     </div>
   );
 };

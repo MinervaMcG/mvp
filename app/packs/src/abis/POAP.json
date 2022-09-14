@@ -1,0 +1,545 @@
+[
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "bool", "name": "" }],
+    "name": "supportsInterface",
+    "inputs": [{ "type": "bytes4", "name": "interfaceId" }],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "renounceEventMinter",
+    "inputs": [{ "type": "uint256", "name": "eventId" }],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "string", "name": "" }],
+    "name": "name",
+    "inputs": [],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "address", "name": "" }],
+    "name": "getApproved",
+    "inputs": [{ "type": "uint256", "name": "tokenId" }],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "approve",
+    "inputs": [
+      { "type": "address", "name": "to" },
+      { "type": "uint256", "name": "tokenId" }
+    ],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "name": "tokenEvent",
+    "inputs": [{ "type": "uint256", "name": "tokenId" }],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "removeEventMinter",
+    "inputs": [
+      { "type": "uint256", "name": "eventId" },
+      { "type": "address", "name": "account" }
+    ],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "name": "totalSupply",
+    "inputs": [],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "setLastId",
+    "inputs": [{ "type": "uint256", "name": "newLastId" }],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "transferFrom",
+    "inputs": [
+      { "type": "address", "name": "from" },
+      { "type": "address", "name": "to" },
+      { "type": "uint256", "name": "tokenId" }
+    ],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "bool", "name": "" }],
+    "name": "isAdmin",
+    "inputs": [{ "type": "address", "name": "account" }],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [{ "type": "bool", "name": "" }],
+    "name": "mintEventToManyUsers",
+    "inputs": [
+      { "type": "uint256", "name": "eventId" },
+      { "type": "address[]", "name": "to" }
+    ],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "bool", "name": "" }],
+    "name": "isEventMinter",
+    "inputs": [
+      { "type": "uint256", "name": "eventId" },
+      { "type": "address", "name": "account" }
+    ],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "name": "tokenOfOwnerByIndex",
+    "inputs": [
+      { "type": "address", "name": "owner" },
+      { "type": "uint256", "name": "index" }
+    ],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "unpause",
+    "inputs": [],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "safeTransferFrom",
+    "inputs": [
+      { "type": "address", "name": "from" },
+      { "type": "address", "name": "to" },
+      { "type": "uint256", "name": "tokenId" }
+    ],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "burn",
+    "inputs": [{ "type": "uint256", "name": "tokenId" }],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "name": "freezeDuration",
+    "inputs": [],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "name": "tokenByIndex",
+    "inputs": [{ "type": "uint256", "name": "index" }],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "setBaseURI",
+    "inputs": [{ "type": "string", "name": "baseURI" }],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "bool", "name": "" }],
+    "name": "paused",
+    "inputs": [],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "address", "name": "" }],
+    "name": "ownerOf",
+    "inputs": [{ "type": "uint256", "name": "tokenId" }],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "unfreeze",
+    "inputs": [{ "type": "uint256", "name": "tokenId" }],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [
+      { "type": "uint256", "name": "tokenId" },
+      { "type": "uint256", "name": "eventId" }
+    ],
+    "name": "tokenDetailsOfOwnerByIndex",
+    "inputs": [
+      { "type": "address", "name": "owner" },
+      { "type": "uint256", "name": "index" }
+    ],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "setFreezeDuration",
+    "inputs": [{ "type": "uint256", "name": "time" }],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "addAdmin",
+    "inputs": [{ "type": "address", "name": "account" }],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "name": "balanceOf",
+    "inputs": [{ "type": "address", "name": "owner" }],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "initialize",
+    "inputs": [],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "pause",
+    "inputs": [],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "renounceAdmin",
+    "inputs": [],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "initialize",
+    "inputs": [
+      { "type": "string", "name": "__name" },
+      { "type": "string", "name": "__symbol" },
+      { "type": "string", "name": "__baseURI" },
+      { "type": "address[]", "name": "admins" }
+    ],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "name": "getFreezeTime",
+    "inputs": [{ "type": "uint256", "name": "tokenId" }],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "string", "name": "" }],
+    "name": "symbol",
+    "inputs": [],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "addEventMinter",
+    "inputs": [
+      { "type": "uint256", "name": "eventId" },
+      { "type": "address", "name": "account" }
+    ],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "bool", "name": "" }],
+    "name": "isFrozen",
+    "inputs": [{ "type": "uint256", "name": "tokenId" }],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [{ "type": "bool", "name": "" }],
+    "name": "mintToken",
+    "inputs": [
+      { "type": "uint256", "name": "eventId" },
+      { "type": "address", "name": "to" }
+    ],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "setApprovalForAll",
+    "inputs": [
+      { "type": "address", "name": "to" },
+      { "type": "bool", "name": "approved" }
+    ],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "safeTransferFrom",
+    "inputs": [
+      { "type": "address", "name": "from" },
+      { "type": "address", "name": "to" },
+      { "type": "uint256", "name": "tokenId" },
+      { "type": "bytes", "name": "_data" }
+    ],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "uint256", "name": "" }],
+    "name": "lastId",
+    "inputs": [],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "initialize",
+    "inputs": [{ "type": "address", "name": "sender" }],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "string", "name": "" }],
+    "name": "tokenURI",
+    "inputs": [{ "type": "uint256", "name": "tokenId" }],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [],
+    "name": "freeze",
+    "inputs": [{ "type": "uint256", "name": "tokenId" }],
+    "constant": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "payable": false,
+    "outputs": [{ "type": "bool", "name": "" }],
+    "name": "isApprovedForAll",
+    "inputs": [
+      { "type": "address", "name": "owner" },
+      { "type": "address", "name": "operator" }
+    ],
+    "constant": true
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "payable": false,
+    "outputs": [{ "type": "bool", "name": "" }],
+    "name": "mintUserToManyEvents",
+    "inputs": [
+      { "type": "uint256[]", "name": "eventIds" },
+      { "type": "address", "name": "to" }
+    ],
+    "constant": false
+  },
+  {
+    "type": "event",
+    "name": "EventToken",
+    "inputs": [
+      { "type": "uint256", "name": "eventId", "indexed": true },
+      { "type": "uint256", "name": "tokenId", "indexed": false }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Frozen",
+    "inputs": [{ "type": "uint256", "name": "id", "indexed": false }],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Unfrozen",
+    "inputs": [{ "type": "uint256", "name": "id", "indexed": false }],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Paused",
+    "inputs": [{ "type": "address", "name": "account", "indexed": false }],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Unpaused",
+    "inputs": [{ "type": "address", "name": "account", "indexed": false }],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "AdminAdded",
+    "inputs": [{ "type": "address", "name": "account", "indexed": true }],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "AdminRemoved",
+    "inputs": [{ "type": "address", "name": "account", "indexed": true }],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "EventMinterAdded",
+    "inputs": [
+      { "type": "uint256", "name": "eventId", "indexed": true },
+      { "type": "address", "name": "account", "indexed": true }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "EventMinterRemoved",
+    "inputs": [
+      { "type": "uint256", "name": "eventId", "indexed": true },
+      { "type": "address", "name": "account", "indexed": true }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Transfer",
+    "inputs": [
+      { "type": "address", "name": "from", "indexed": true },
+      { "type": "address", "name": "to", "indexed": true },
+      { "type": "uint256", "name": "tokenId", "indexed": true }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Approval",
+    "inputs": [
+      { "type": "address", "name": "owner", "indexed": true },
+      { "type": "address", "name": "approved", "indexed": true },
+      { "type": "uint256", "name": "tokenId", "indexed": true }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ApprovalForAll",
+    "inputs": [
+      { "type": "address", "name": "owner", "indexed": true },
+      { "type": "address", "name": "operator", "indexed": true },
+      { "type": "bool", "name": "approved", "indexed": false }
+    ],
+    "anonymous": false
+  }
+]

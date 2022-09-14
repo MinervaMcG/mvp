@@ -7,7 +7,6 @@ import Button from "src/components/design_system/button";
 import { H3, P1 } from "src/components/design_system/typography";
 import { ArrowLeft } from "src/components/icons";
 import { useWindowDimensionsHook } from "src/utils/window";
-import { ApolloProvider, client } from "src/utils/thegraph";
 import { questDescription } from "src/utils/questsHelpers";
 
 import cx from "classnames";
@@ -67,9 +66,5 @@ const QuestShow = ({ quest, user, railsContext }) => {
 };
 
 export default (props, railsContext) => {
-  return () => (
-    <ApolloProvider client={client(railsContext.contractsEnv)}>
-      <QuestShow {...props} railsContext={railsContext} />
-    </ApolloProvider>
-  );
+  return () => <QuestShow {...props} railsContext={railsContext} />;
 };

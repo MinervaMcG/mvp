@@ -14,7 +14,7 @@ RSpec.describe EmailReminders::SendTokenLaunchReminderJob, type: :job do
     let(:talent) { create :talent, created_at: 11.days.ago, user: user }
 
     it "should email talent who did not launch token" do
-      create :token, talent: talent, deployed: false
+      create :talent_token, talent: talent, deployed: false
 
       Sidekiq::Testing.inline! do
         token_launch_reminder
@@ -24,7 +24,7 @@ RSpec.describe EmailReminders::SendTokenLaunchReminderJob, type: :job do
     end
 
     it "should not email talents who have launched their token" do
-      create :token, talent: talent, deployed: true
+      create :talent_token, talent: talent, deployed: true
 
       Sidekiq::Testing.inline! do
         token_launch_reminder
@@ -36,7 +36,7 @@ RSpec.describe EmailReminders::SendTokenLaunchReminderJob, type: :job do
 
   it "should not email talents created before 10 days" do
     talent = create :talent, user: user
-    create :token, talent: talent, deployed: false
+    create :talent_token, talent: talent, deployed: false
 
     Sidekiq::Testing.inline! do
       token_launch_reminder

@@ -19,13 +19,13 @@ class MessagesController < ApplicationController
     chats = chats.includes(
       sender: [
         {
-          talent: :token
+          talent: :talent_token
         },
         :investor
       ],
       receiver: [
         {
-          talent: :token
+          talent: :talent_token
         },
         :investor
       ]

@@ -17,7 +17,11 @@
           raceRewards: @race_rewards,
           invitedUsers: @invited_users,
           raceInvitesCount: @race_invites_count,
-          quests: @quests
+          quests: @quests,
+          pagination: {
+            currentPage: @pagy.page,
+            lastPage: @pagy.last
+          },
         },
         prerender: false) %>
     </div>

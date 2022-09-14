@@ -18,7 +18,7 @@ RSpec.describe Users::UpdateProfileType do
   let(:user_id) { user.id }
   let(:who_dunnit_id) { nil }
   let(:note) { nil }
-  let(:new_profile_type) { "talent" }
+  let(:new_profile_type) { "waiting_for_approval" }
 
   context "when a valid profile_type is provided" do
     it "it updates the profile_type" do
@@ -33,8 +33,43 @@ RSpec.describe Users::UpdateProfileType do
   context "when an invalid profile_type is provided" do
     let(:new_profile_type) { "gibberish" }
 
+    before do
+      allow(Rollbar).to receive(:error)
+    end
+
     it "it fails to update the profile_type" do
-      expect { update_profile_type }.to raise_error(ArgumentError)
+      update_profile_type
+
+      expect(Rollbar).to have_received(:error)
+    end
+  end
+
+  context "when the user tries to update their profile_type to approved" do
+    let(:new_profile_type) { "approved" }
+
+    before do
+      allow(Rollbar).to receive(:error)
+    end
+
+    it "it fails to update the profile_type" do
+      update_profile_type
+
+      expect(Rollbar).to have_received(:error)
+    end
+  end
+
+  context "when the user tries to update their profile_type to talent from other than approved" do
+    let(:user) { create :user, profile_type: "waiting_for_approval" }
+    let(:new_profile_type) { "approved" }
+
+    before do
+      allow(Rollbar).to receive(:error)
+    end
+
+    it "it fails to update the profile_type" do
+      update_profile_type
+
+      expect(Rollbar).to have_received(:error)
     end
   end
 

@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import SendMessageModal from "./SendMessageModal";
 
 import { OnChain } from "src/onchain";
-import { parseAndCommify } from "src/onchain/utils";
+import { parseAndCommify, chainIdToName } from "src/onchain/utils";
 
 import { post, patch } from "src/utils/requests";
 
@@ -26,6 +26,7 @@ const StakeModal = ({
   talentUserId,
   talentName,
   mode,
+  tokenChainId,
   talentIsFromCurrentUser,
   railsContext,
 }) => {
@@ -45,6 +46,7 @@ const StakeModal = ({
   const [validChain, setValidChain] = useState(true);
   const [valueError, setValueError] = useState(false);
   const [showNewMessageModal, setShowNewMessageModal] = useState(false);
+  const [chainName, setChainName] = useState("celo");
 
   const setupOnChain = useCallback(async () => {
     const newOnChain = new OnChain(railsContext.contractsEnv);
@@ -53,7 +55,8 @@ const StakeModal = ({
     result = await newOnChain.connectedAccount();
 
     const validChain = await newOnChain.recognizedChain();
-    setValidChain(validChain);
+    const chainId = await newOnChain.getChainID();
+    setValidChain(validChain && chainId == tokenChainId);
 
     if (!result) {
       setChainData(newOnChain);
@@ -82,6 +85,9 @@ const StakeModal = ({
     setAvailableAmount(_availableAmount);
 
     newOnChain.loadStaking();
+
+    const chainName = chainIdToName(tokenChainId, railsContext.contractsEnv);
+    setChainName(chainName);
 
     if (_token) {
       const _tokenAvailability = await newOnChain.getTokenAvailability(
@@ -167,6 +173,7 @@ const StakeModal = ({
   const approve = async (e) => {
     e.preventDefault();
     setApproving(true);
+
     const allowedValue = await chainData.getStableAllowance(true);
 
     if (parseFloat(amount) > parseFloat(allowedValue)) {
@@ -196,7 +203,7 @@ const StakeModal = ({
   };
 
   const changeNetwork = async () => {
-    await chainData.switchChain();
+    await chainData.switchChain(tokenChainId);
     window.location.reload();
   };
 
@@ -226,6 +233,22 @@ const StakeModal = ({
     }
 
     setAmount(value);
+  };
+
+  const stableDescription = () => {
+    if (chainName == "Celo") {
+      return "Please insert the amount of cUSD (Celo's stablecoin) you wish to use to buy Talent Tokens.";
+    } else {
+      return "Please insert the amount of USDC you wish to use to buy Talent Tokens.";
+    }
+  };
+
+  const stableSymbol = () => {
+    if (chainName == "Celo") {
+      return "cUSD";
+    } else {
+      return "USDC";
+    }
   };
 
   return (
@@ -276,10 +299,7 @@ const StakeModal = ({
                   />
                 ) : (
                   <>
-                    <P2>
-                      Please insert the amount of cUSD (Celo's stablecoin) you
-                      wish to use to buy Talent Tokens.
-                    </P2>
+                    <P2>{stableDescription()}</P2>
                     <P2 className="my-2">
                       Check the{" "}
                       <a
@@ -303,7 +323,7 @@ const StakeModal = ({
                         currentAccount
                           ? `Available amount: ${parseAndCommify(
                               availableAmount
-                            )} cUSD`
+                            )} ${stableSymbol()}`
                           : ""
                       }
                       placeholder={"0.0"}

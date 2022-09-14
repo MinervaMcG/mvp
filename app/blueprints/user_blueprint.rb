@@ -32,11 +32,11 @@ class UserBlueprint < Blueprinter::Base
     fields :created_at
 
     field :ticker do |user, _options|
-      user.talent&.token&.ticker
+      user.talent&.talent_token&.ticker
     end
 
     field :status do |user, _options|
-      if user&.talent&.token&.deployed?
+      if user&.talent&.talent_token&.deployed?
         "Token Launched"
       elsif user.beginner_quest_completed?
         "Profile Complete"

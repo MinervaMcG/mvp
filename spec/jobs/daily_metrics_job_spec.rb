@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe DailyMetricsJob, type: :job do
   let!(:user_1) { create :user, last_access_at: 5.days.ago }
   let!(:talent) { create :talent, user: user_1, updated_at: Date.today }
-  let!(:token) { create :token, talent: talent, deployed: true }
+  let!(:talent_token) { create :talent_token, talent: talent, deployed: true }
   let!(:user_2) { create :user, last_access_at: Date.yesterday, investor: investor }
   let!(:investor) { create :investor, updated_at: Date.yesterday }
 
@@ -14,7 +14,7 @@ RSpec.describe DailyMetricsJob, type: :job do
   let!(:follow) { create :follow, follower: user_4, user: user_1, created_at: 26.days.ago }
 
   let!(:user_5) { create :user }
-  let!(:talent_supporter) { create :talent_supporter, supporter_wallet_id: user_5.wallet_id, talent_contract_id: token.contract_id, last_time_bought_at: 15.days.ago }
+  let!(:talent_supporter) { create :talent_supporter, supporter_wallet_id: user_5.wallet_id, talent_contract_id: talent_token.contract_id, last_time_bought_at: 15.days.ago }
 
   let!(:user_6) { create :user }
 

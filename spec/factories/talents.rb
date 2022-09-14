@@ -3,7 +3,7 @@ FactoryBot.define do
     public { true }
 
     trait :with_token do
-      association :token
+      association :talent_token
     end
 
     trait :with_career_goal do
@@ -11,7 +11,7 @@ FactoryBot.define do
     end
 
     trait :full_profile do
-      association :token
+      association :talent_token
       association :career_goal
     end
   end

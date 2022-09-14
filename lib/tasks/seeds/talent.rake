@@ -31,7 +31,7 @@ if Rails.env.development?
           public: true
         )
 
-        Token.create!(
+        TalentToken.create!(
           ticker: username.upcase[0, 5],
           talent: talent
         )

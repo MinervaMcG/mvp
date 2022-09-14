@@ -1,13 +1,13 @@
 require "rails_helper"
 
 RSpec.describe Talents::RefreshSupporters do
-  let(:token) { create :token, talent: talent }
+  let(:talent_token) { create :talent_token, talent: talent, chain_id: 42220 }
   let(:talent) { create :talent }
-  let(:talent_contract_id) { token.contract_id }
+  let(:talent_contract_id) { talent_token.contract_id }
 
-  subject(:refresh_supporters) { described_class.new(token: token).call }
+  subject(:refresh_supporters) { described_class.new(talent_token: talent_token).call }
 
-  let(:the_graph_client_class) { TheGraph::Client }
+  let(:the_graph_client_class) { TheGraph::Celo::Client }
   let(:the_graph_client_instance) { instance_double(the_graph_client_class) }
 
   let(:talent_supporters_data) do

@@ -131,7 +131,7 @@ RSpec.describe User, type: :model do
   describe "#supporters" do
     let(:user) { create :user, talent: talent }
     let(:talent) { create :talent }
-    let(:token) { create :token, talent: talent, deployed: true }
+    let(:talent_token) { create :talent_token, talent: talent, deployed: true }
 
     context "when the user does not have any supporter" do
       it "returns an empty array" do
@@ -145,10 +145,10 @@ RSpec.describe User, type: :model do
       let(:supporter_three) { create :user }
 
       before do
-        create :talent_supporter, supporter_wallet_id: supporter_one.wallet_id, talent_contract_id: token.contract_id, last_time_bought_at: Date.today - 10.days
-        create :talent_supporter, supporter_wallet_id: supporter_two.wallet_id, talent_contract_id: token.contract_id, last_time_bought_at: Date.today - 5.days
+        create :talent_supporter, supporter_wallet_id: supporter_one.wallet_id, talent_contract_id: talent_token.contract_id, last_time_bought_at: Date.today - 10.days
+        create :talent_supporter, supporter_wallet_id: supporter_two.wallet_id, talent_contract_id: talent_token.contract_id, last_time_bought_at: Date.today - 5.days
         create :talent_supporter, supporter_wallet_id: supporter_three.wallet_id, talent_contract_id: SecureRandom.hex, last_time_bought_at: Date.today - 2.days
-        create :talent_supporter, supporter_wallet_id: user.wallet_id, talent_contract_id: token.contract_id, last_time_bought_at: Date.today
+        create :talent_supporter, supporter_wallet_id: user.wallet_id, talent_contract_id: talent_token.contract_id, last_time_bought_at: Date.today
       end
 
       it "returns the users that support him" do
@@ -174,7 +174,7 @@ RSpec.describe User, type: :model do
   describe "#portfolio" do
     let(:user) { create :user, wallet_id: wallet_id }
     let(:talent) { create :talent, user: user }
-    let!(:token) { create :token, talent: talent }
+    let!(:talent_token) { create :talent_token, talent: talent }
     let(:wallet_id) { SecureRandom.hex }
 
     context "when the user does not have any investor" do
@@ -194,21 +194,21 @@ RSpec.describe User, type: :model do
     context "when the user has some investments" do
       let(:talent_user_one) { create :user }
       let(:talent_one) { create :talent, user: talent_user_one }
-      let!(:token_one) { create :token, talent: talent_one }
+      let!(:talent_token_one) { create :talent_token, talent: talent_one }
 
       let(:talent_user_two) { create :user }
       let!(:talent_two) { create :talent, user: talent_user_two }
-      let!(:token_two) { create :token, talent: talent_two }
+      let!(:talent_token_two) { create :talent_token, talent: talent_two }
 
       let(:talent_user_three) { create :user }
       let!(:talent_three) { create :talent, user: talent_user_three }
-      let!(:token_three) { create :token, talent: talent_three }
+      let!(:talent_token_three) { create :talent_token, talent: talent_three }
 
       before do
-        create :talent_supporter, supporter_wallet_id: wallet_id, talent_contract_id: token_one.contract_id, last_time_bought_at: Date.today - 10.days
-        create :talent_supporter, supporter_wallet_id: wallet_id, talent_contract_id: token_two.contract_id, last_time_bought_at: Date.today - 5.days
-        create :talent_supporter, supporter_wallet_id: SecureRandom.hex, talent_contract_id: token_three, last_time_bought_at: Date.today - 2.days
-        create :talent_supporter, supporter_wallet_id: wallet_id, talent_contract_id: token.contract_id, last_time_bought_at: Date.today
+        create :talent_supporter, supporter_wallet_id: wallet_id, talent_contract_id: talent_token_one.contract_id, last_time_bought_at: Date.today - 10.days
+        create :talent_supporter, supporter_wallet_id: wallet_id, talent_contract_id: talent_token_two.contract_id, last_time_bought_at: Date.today - 5.days
+        create :talent_supporter, supporter_wallet_id: SecureRandom.hex, talent_contract_id: talent_token_three, last_time_bought_at: Date.today - 2.days
+        create :talent_supporter, supporter_wallet_id: wallet_id, talent_contract_id: talent_token.contract_id, last_time_bought_at: Date.today
       end
 
       it "returns the users in which the user invested" do
@@ -227,6 +227,39 @@ RSpec.describe User, type: :model do
         it "returns the portfolio that invested in the talent after that date" do
           expect(user.portfolio(invested_after: date)).to match_array([talent_user_two, user])
         end
+      end
+    end
+  end
+
+  describe "#valid_delete_account_token?" do
+    let(:user) { create :user, delete_account_token: token, delete_account_token_expires_at: expires_at }
+    let(:expires_at) { Time.now + 1.hour }
+    let(:token) { "token" }
+
+    it "returns true" do
+      expect(user.valid_delete_account_token?("token"))
+    end
+
+    context "when the tokens do not match" do
+      it "returns false" do
+        expect(user.valid_delete_account_token?("invalid-token"))
+      end
+    end
+
+    context "when the token has expired" do
+      let(:expires_at) { Time.now - 1.hour }
+
+      it "returns false" do
+        expect(user.valid_delete_account_token?("token"))
+      end
+    end
+
+    context "when the user does not have a delete account token and expiry" do
+      let(:expires_at) { nil }
+      let(:token) { nil }
+
+      it "returns false" do
+        expect(user.valid_delete_account_token?("token"))
       end
     end
   end

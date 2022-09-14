@@ -6,24 +6,24 @@ class API::V1::Talent::TokensController < ApplicationController
       return render json: {error: "You don't have access to perform that action"}, status: :unauthorized
     end
 
-    was_deployed = token.deployed
+    was_deployed = talent_token.deployed
 
-    if token.update(token_params)
-      if token.deployed? && !was_deployed
-        token.update!(deployed_at: Time.current)
+    if talent_token.update(token_params)
+      if talent_token.deployed? && !was_deployed
+        talent_token.update!(deployed_at: Time.current)
         talent.update!(public: true, supporters_count: 0, total_supply: Talent.base_supply)
         Users::UpdateProfileType.new.call(user: current_user, new_profile_type: "talent")
-        AddRewardToInviterJob.perform_later(token.id)
+        AddRewardToInviterJob.perform_later(talent_token.id)
         AddUsersToMailerliteJob.perform_later(current_user.id)
         SendMemberNFTToUserJob.perform_later(user_id: current_user.id)
         UpdateTasksJob.perform_later(type: "Tasks::LaunchToken", user_id: current_user.id)
-        SendTokenNotificationToDiscordJob.perform_later(token.id)
+        SendTokenNotificationToDiscordJob.perform_later(talent_token.id)
         UserMailer.with(user: current_user).send_token_launched_email.deliver_later(wait: 5.seconds)
       end
       CreateNotificationTalentChangedJob.perform_later(talent.user.followers.pluck(:follower_id), talent.user_id)
-      render json: token.as_json, status: :ok
+      render json: talent_token.as_json, status: :ok
     else
-      render json: {error: "Unable to update Token"}, status: :unprocessable_entity
+      render json: {error: token.errors.full_messages.join(", ")}, status: :unprocessable_entity
     end
   end
 
@@ -42,15 +42,16 @@ class API::V1::Talent::TokensController < ApplicationController
       end
   end
 
-  def token
-    @token ||= Token.find(params[:id])
+  def talent_token
+    @talent_token ||= TalentToken.find(params[:id])
   end
 
   def token_params
     params.require(:token).permit(
       :ticker,
       :contract_id,
-      :deployed
+      :deployed,
+      :chain_id
     )
   end
 

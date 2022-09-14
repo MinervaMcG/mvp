@@ -20,6 +20,7 @@ const Perks = ({
   hideAction,
   railsContext,
   mode,
+  token,
 }) => {
   const [start, setStart] = useState(0);
   const [availableBalance, setAvailableBalance] = useState(0);
@@ -68,7 +69,9 @@ const Perks = ({
 
     if (contract) {
       const _token = await newOnChain.getToken(contract);
-      if (_token) {
+      const chainId = await newOnChain.getChainID();
+
+      if (_token && chainId === token.chain_id) {
         const balance = await _token.balanceOf(newOnChain.account);
         setAvailableBalance(balance);
       }

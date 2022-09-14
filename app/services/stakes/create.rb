@@ -1,7 +1,7 @@
 module Stakes
   class Create
-    def initialize(token:, staking_user:)
-      @token = token
+    def initialize(talent_token:, staking_user:)
+      @talent_token = talent_token
       @staking_user = staking_user
     end
 
@@ -15,22 +15,22 @@ module Stakes
 
       if !staking_own_token?
         CreateNotification.new.call(
-          recipient: token.talent.user,
+          recipient: talent_token.talent.user,
           type: TokenAcquiredNotification,
           source_id: staking_user.id,
           extra_params: extra_params
         )
       end
 
-      TalentSupportersRefreshJob.perform_later(token.contract_id)
+      TalentSupportersRefreshJob.perform_later(talent_token.contract_id)
     end
 
     private
 
-    attr_reader :token, :staking_user
+    attr_reader :talent_token, :staking_user
 
     def staking_own_token?
-      token.talent.user_id == staking_user.id
+      talent_token.talent.user_id == staking_user.id
     end
 
     def extra_params
@@ -40,7 +40,7 @@ module Stakes
     end
 
     def reinvestment?
-      TalentSupporter.where(supporter_wallet_id: staking_user.wallet_id, talent_contract_id: token.contract_id).exists?
+      TalentSupporter.where(supporter_wallet_id: staking_user.wallet_id, talent_contract_id: talent_token.contract_id).exists?
     end
   end
 end

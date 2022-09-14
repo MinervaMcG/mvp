@@ -8,7 +8,7 @@ class DestroyUser
   def call
     user = User.find(@user_id)
 
-    if user.talent? && user.talent.token.contract_id.present?
+    if user.talent? && user.talent.talent_token.contract_id.present?
       return false
     end
 
@@ -24,7 +24,7 @@ class DestroyUser
       user.following.destroy_all
 
       if user.talent?
-        user.talent.token.destroy!
+        user.talent.talent_token.destroy!
 
         if user.talent.career_goal.goals.exists?
           user.talent.career_goal.goals.destroy_all
@@ -46,6 +46,8 @@ class DestroyUser
       Transfer.where(user: user).update_all(user_id: nil)
       Message.where(sender_id: user.id).destroy_all
       Message.where(receiver_id: user.id).destroy_all
+      Chat.where(sender_id: user.id).destroy_all
+      Chat.where(receiver_id: user.id).destroy_all
       Quest.where(user: user).destroy_all
       UserTag.where(user: user).destroy_all
       UserProfileTypeChange.where(user: user).destroy_all

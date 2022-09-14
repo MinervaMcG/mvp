@@ -21,7 +21,7 @@ class ChatBlueprint < Blueprinter::Base
     end
 
     field :receiver_ticker do |chat, options|
-      chat.receiver_of(options[:current_user]).talent&.token&.ticker
+      chat.receiver_of(options[:current_user]).talent&.talent_token&.ticker
     end
 
     field :receiver_with_talent do |chat, options|

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit_profile]
+  before_action :set_user, only: %i[destroy edit_profile show]
 
   def index
     if user_params[:email].present?
@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    if @user.talent&.hide_profile && current_user.role != "admin" && current_user.id != @user.id
+    if @user.talent&.hide_profile && current_user&.role != "admin" && current_user&.id != @user.id
       redirect_to root_url
     end
 
@@ -81,9 +81,24 @@ class UsersController < ApplicationController
   end
 
   def send_confirmation_email
+    User.find_by!(id: params[:user_id]).update(email_confirmation_token: Clearance::Token.new)
+
     UserMailer.with(user_id: params[:user_id]).send_sign_up_email.deliver_later
 
     render json: {id: params[:user_id]}, status: :ok
+  end
+
+  def destroy
+    return redirect_to root_url unless @user == current_acting_user
+
+    if @user.valid_delete_account_token?(params[:token])
+      result = DestroyUser.new(user_id: @user.id).call
+      return redirect_to root_url, flash: {success: "Account deleted"} if result
+
+      redirect_to edit_profile_path(tab: "Settings", username: @user.username), flash: {error: "Unable to delete account"}
+    else
+      redirect_to edit_profile_path(tab: "Settings", username: @user.username), flash: {error: "Invalid token"}
+    end
   end
 
   private

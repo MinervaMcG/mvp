@@ -163,13 +163,6 @@ export const questRewards = (type, disabled) => {
           disabled={disabled}
         />,
       ];
-    case "Quests::TalentToken":
-      return [
-        <P2
-          className={cx(disabled ? "text-primary-04" : "text-black")}
-          text="1 Talent Invite (and get extra invites once every time your friends launch a token)"
-        />,
-      ];
     case "Quests::VerifiedProfile":
       return [
         <P2

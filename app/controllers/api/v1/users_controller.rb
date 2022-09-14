@@ -1,16 +1,16 @@
 class API::V1::UsersController < ApplicationController
-  before_action :set_user, only: [:update, :destroy]
+  before_action :set_user, only: :update
 
   def index
     @users = search_params[:name].present? ? filtered_users : filtered_users.limit(20)
 
     render json: {
-      users: @users.includes(:investor, talent: :token).map { |u|
+      users: @users.includes(:investor, talent: :talent_token).map { |u|
         {
           id: u.id,
           profilePictureUrl: u&.talent&.profile_picture_url || u.investor&.profile_picture_url,
           username: u.username,
-          ticker: u.talent&.token&.display_ticker
+          ticker: u.talent&.talent_token&.display_ticker
         }
       }
     }, status: :ok
@@ -51,6 +51,13 @@ class API::V1::UsersController < ApplicationController
         current_user.update!(welcome_pop_up: true)
       elsif params[:first_quest_popup]
         current_user.update!(first_quest_popup: true)
+      elsif user_params[:email]
+        if current_user.authenticated?(password_params[:current_password])
+          current_user.update!(user_params)
+          current_user.update!(confirmation_token: Clearance::Token.new)
+        else
+          return render json: {errors: {currentPassword: "Current password is incorrect"}}, status: :conflict
+        end
       else
         if password_params[:new_password]&.length&.positive?
           if current_user.authenticated?(password_params[:current_password])
@@ -89,25 +96,6 @@ class API::V1::UsersController < ApplicationController
       render json: {errors: {email: "Email is taken"}}, status: :conflict
     else
       render json: {errors: "Wallet already exists in the system"}, status: :conflict
-    end
-  end
-
-  def destroy
-    if @user.id != current_user.id
-      return render json: {error: "You don't have access to perform that action"}, status: :unauthorized
-    end
-
-    if current_user.authenticated?(password_params[:current_password])
-      service = DestroyUser.new(user_id: current_user.id)
-      result = service.call
-
-      if result
-        render json: {success: "User destroyed."}, status: :ok
-      else
-        render json: {errors: "Unabled to destroy user"}, status: :conflict
-      end
-    else
-      render json: {errors: "Unabled to destroy user"}, status: :conflict
     end
   end
 

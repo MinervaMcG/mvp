@@ -34,6 +34,7 @@ const MobilePortfolio = ({
   currentUserId,
   userNFT,
   memberNFT,
+  chainId,
 }) => {
   return (
     <div className={`d-flex flex-column`}>
@@ -207,6 +208,7 @@ const MobilePortfolio = ({
           memberNFT={memberNFT}
           chainAPI={chainAPI}
           mode={mode}
+          chainId={chainId}
         />
       )}
     </div>

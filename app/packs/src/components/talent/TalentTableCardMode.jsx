@@ -8,6 +8,7 @@ const TalentTableCardMode = ({
   updateFollow,
   talents,
   publicPageViewer = false,
+  env,
 }) => {
   const { mobile } = useWindowDimensionsHook();
 
@@ -35,6 +36,8 @@ const TalentTableCardMode = ({
             publicPageViewer={publicPageViewer}
             isVerified={talent.isVerified}
             profileType={talent.user.profileType}
+            chainId={talent.token.chainId}
+            env={env}
           />
         </div>
       ))}

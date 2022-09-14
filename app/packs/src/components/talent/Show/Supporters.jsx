@@ -444,7 +444,7 @@ const Supporters = ({ mobile, mode, sharedState }) => {
 };
 
 export default (props) => (
-  <ApolloProvider client={client(props.railsContext.contractsEnv)}>
+  <ApolloProvider client={client(props.token.chain_id)}>
     <Supporters {...props} />
   </ApolloProvider>
 );

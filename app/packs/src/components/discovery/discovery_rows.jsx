@@ -6,10 +6,11 @@ import { Caret } from "src/components/icons";
 import NewTalentCard from "src/components/design_system/cards/NewTalentCard";
 import Button from "src/components/design_system/button";
 import Tag from "src/components/design_system/tag";
+import { getMarketCap, getProgress } from "src/utils/viewHelpers";
 
 import cx from "classnames";
 
-const DiscoveryRows = ({ discoveryRows, updateFollow }) => {
+const DiscoveryRows = ({ discoveryRows, updateFollow, env }) => {
   const [start, setStart] = useState(
     discoveryRows
       .map((row) => row.title)
@@ -161,9 +162,11 @@ const DiscoveryRows = ({ discoveryRows, updateFollow }) => {
                       isVerified={talent.isVerified}
                       updateFollow={() => updateFollow(talent)}
                       talentLink={`/u/${talent.username}`}
-                      marketCap={talent.marketCap}
-                      supporterCount={talent.supportersCount}
                       profileType={talent.profileType}
+                      marketCap={getMarketCap(talent.totalSupply)}
+                      supporterCount={talent.supporterCounter.toString()}
+                      chainId={talent.chainId}
+                      env={env}
                     />
                   </div>
                 ))}

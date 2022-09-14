@@ -21,6 +21,9 @@
             userId: talent["user_id"],
             supportersCount: talent["supporters_count"],
             profileType: talent["user"]["profile_type"],
+            supporterCounter: talent["supporters_count"],
+            totalSupply: talent["total_supply"],
+            chainId: talent["token"]["chain_id"],
           }}
         }},
         marketingArticles: @marketing_articles.map { |article| {
@@ -39,7 +42,7 @@
           walletId: current_user.wallet_id,
           profileType: current_user.profile_type,
           talent: current_user.talent.present?,
-          tokenLaunched: current_user.talent&.token&.deployed,
+          tokenLaunched: current_user.talent&.talent_token&.deployed,
           activeSupporter: current_user.active_supporter?
         }
       },

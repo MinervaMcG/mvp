@@ -1,5 +1,7 @@
 require "web3/moralis/client"
 require "web3/celo_explorer/client"
+require "web3/gnosis_chain_explorer/client"
+require "web3/tatum/client"
 require "web3/api_proxy"
 require "rails_helper"
 
@@ -21,7 +23,7 @@ RSpec.shared_examples "a moralis client get tokens request" do
   let(:response_success) { true }
 
   it "initializes and calls the moralis client with the correct arguments" do
-    api_proxy.retrieve_tokens
+    request
 
     expect(client_class).to have_received(:new)
     expect(client).to have_received(:retrieve_tokens).with(
@@ -31,7 +33,7 @@ RSpec.shared_examples "a moralis client get tokens request" do
   end
 
   it "returns a json array with the tokens" do
-    expect(api_proxy.retrieve_tokens).to eq(
+    expect(request).to eq(
       [
         {
           address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
@@ -68,7 +70,7 @@ RSpec.shared_examples "a moralis client get tokens request" do
     let(:response_success) { false }
 
     it "raises an api client error" do
-      expect { api_proxy.retrieve_tokens }.to raise_error(described_class::ApiClientRequestError)
+      expect { request }.to raise_error(described_class::ApiClientRequestError)
     end
   end
 end
@@ -91,7 +93,7 @@ RSpec.shared_examples "a celo explorer client get tokens request" do
   let(:response_success) { true }
 
   it "initializes and calls the moralis client with the correct arguments" do
-    api_proxy.retrieve_tokens
+    request
 
     expect(client_class).to have_received(:new)
     expect(client).to have_received(:retrieve_tokens).with(
@@ -100,7 +102,7 @@ RSpec.shared_examples "a celo explorer client get tokens request" do
   end
 
   it "returns a json array with the tokens" do
-    expect(api_proxy.retrieve_tokens).to eq(
+    expect(request).to eq(
       [
         {
           balance: "200000000000000000000",
@@ -137,7 +139,7 @@ RSpec.shared_examples "a celo explorer client get tokens request" do
     let(:response_success) { false }
 
     it "raises an api client error" do
-      expect { api_proxy.retrieve_tokens }.to raise_error(described_class::ApiClientRequestError)
+      expect { request }.to raise_error(described_class::ApiClientRequestError)
     end
   end
 end
@@ -160,7 +162,7 @@ RSpec.shared_examples "a moralis client get nfts request" do
   let(:response_success) { true }
 
   it "initializes and calls the moralis client with the correct arguments" do
-    api_proxy.retrieve_nfts
+    request
 
     expect(client_class).to have_received(:new)
     expect(client).to have_received(:retrieve_nfts).with(
@@ -170,7 +172,7 @@ RSpec.shared_examples "a moralis client get nfts request" do
   end
 
   it "returns a json array with the nfts" do
-    expect(api_proxy.retrieve_nfts).to eq(
+    expect(request).to eq(
       [
         {
           address: "0x951416cb5a9c5379ae696acb07cb8e25aefad370",
@@ -229,7 +231,135 @@ RSpec.shared_examples "a moralis client get nfts request" do
     let(:response_success) { false }
 
     it "raises an api client error" do
-      expect { api_proxy.retrieve_nfts }.to raise_error(described_class::ApiClientRequestError)
+      expect { request }.to raise_error(described_class::ApiClientRequestError)
+    end
+  end
+end
+
+RSpec.shared_examples "a tatum client get nfts request" do |expected_chain|
+  let(:client_class) { Web3::Tatum::Client }
+  let(:client) { instance_double(client_class) }
+
+  before do
+    allow(client_class).to receive(:new).and_return(client)
+    allow(client).to receive(:retrieve_nfts).and_return(response)
+  end
+
+  let(:response) do
+    OpenStruct.new(
+      success?: response_success,
+      body: file_fixture("tatum_get_nfts_response.json").read
+    )
+  end
+  let(:response_success) { true }
+
+  it "initializes and calls the moralis client with the correct arguments" do
+    request
+
+    expect(client_class).to have_received(:new)
+    expect(client).to have_received(:retrieve_nfts).with(
+      wallet_address: wallet_address,
+      chain: expected_chain
+    )
+  end
+
+  it "returns a json array with the nfts" do
+    expect(request).to eq(
+      [
+        {
+          address: "0x1ecd77075f7504ba849d47dce4cdc9695f1fe942",
+          token_id: "627",
+          amount: 1,
+          name: "CeloApesKingdom #627",
+          symbol: "CeloApesKingdom #627",
+          token_uri: "https://ipfs.io/ipfs/bafybeih6g4g7ul4s3l2b6axygpf7s6fkpwhd6e5elgl2t7gmdwlc6lsmjq/metadata/627.json",
+          metadata: {
+            "dna" => "030000070000001200000000",
+            "edition" => 627,
+            "attributes" => [
+              {
+                "trait_type" => "Species",
+                "value" => "Blue Citizen Ape"
+              },
+              {
+                "trait_type" => "Background",
+                "value" => "Light Purple"
+              },
+              {
+                "trait_type" => "Head",
+                "value" => "Bunny Ear"
+              }
+            ],
+            "name" => "CeloApesKingdom #627",
+            "date" => 1635923686814,
+            "description" => "Celo Apes are native Apes NFT on the Celo Blockchain. All the NFT holders will be part of the Ape Kingdom. Only 10000 Apes will be minted with new and unique traits!",
+            "image" => "ipfs://bafybeiasnbk7bztvmytiqf2a5aw5jmivvnxhrdwtp72ihbpjrlh33g32ee/apes/627.png"
+          }
+        },
+        {
+          address: "0x1ecd77075f7504ba849d47dce4cdc9695f1fe942",
+          token_id: "628",
+          amount: 1,
+          name: "CeloApesKingdom #628",
+          symbol: "CeloApesKingdom #628",
+          token_uri: "https://ipfs.io/ipfs/bafybeih6g4g7ul4s3l2b6axygpf7s6fkpwhd6e5elgl2t7gmdwlc6lsmjq/metadata/628.json",
+          metadata: {
+            "dna" => "120001080003030010000002",
+            "edition" => 628,
+            "attributes" => [
+              {
+                "trait_type" => "Species",
+                "value" => "Pink Ape"
+              },
+              {
+                "trait_type" => "Eyes",
+                "value" => "BloodShot"
+              },
+              {
+                "trait_type" => "Background",
+                "value" => "Purple"
+              },
+              {
+                "trait_type" => "Glasses",
+                "value" => "Modern Glasses"
+              },
+              {
+                "trait_type" => "Clothes",
+                "value" => "Dark Half Sleve"
+              },
+              {
+                "trait_type" => "Beams",
+                "value" => "Straight Yellow"
+              },
+              {
+                "trait_type" => "Mouth Props",
+                "value" => "Cigarette"
+              }
+            ],
+            "name" => "CeloApesKingdom #628",
+            "date" => 1635923686814,
+            "description" => "Celo Apes are native Apes NFT on the Celo Blockchain. All the NFT holders will be part of the Ape Kingdom. Only 10000 Apes will be minted with new and unique traits!",
+            "image" => "ipfs://bafybeiasnbk7bztvmytiqf2a5aw5jmivvnxhrdwtp72ihbpjrlh33g32ee/apes/628.png"
+          }
+        },
+        {
+          address: "0xdf204de57532242700d988422996e9ced7aba4cb",
+          token_id: "80933583340990441618616735003812808159743996514813210066433383033497073517002",
+          amount: 1,
+          name: nil,
+          symbol: nil,
+          token_uri: nil,
+          metadata: nil
+        }
+      ]
+    )
+  end
+
+  context "when the request is not successful" do
+    let(:response_success) { false }
+
+    it "raises an api client error" do
+      expect { request }.to raise_error(described_class::ApiClientRequestError)
     end
   end
 end
@@ -252,7 +382,7 @@ RSpec.shared_examples "a celo explorer client get nfts request" do
   let(:response_success) { true }
 
   it "initializes and calls the moralis client with the correct arguments" do
-    api_proxy.retrieve_nfts
+    request
 
     expect(client_class).to have_received(:new)
     expect(client).to have_received(:retrieve_tokens).with(
@@ -261,7 +391,7 @@ RSpec.shared_examples "a celo explorer client get nfts request" do
   end
 
   it "returns a json array with the nfts" do
-    expect(api_proxy.retrieve_nfts).to eq(
+    expect(request).to eq(
       [
         {
           amount: "1",
@@ -289,22 +419,78 @@ RSpec.shared_examples "a celo explorer client get nfts request" do
     let(:response_success) { false }
 
     it "raises an api client error" do
-      expect { api_proxy.retrieve_nfts }.to raise_error(described_class::ApiClientRequestError)
+      expect { request }.to raise_error(described_class::ApiClientRequestError)
+    end
+  end
+end
+
+RSpec.shared_examples "a gnosis chain explorer client get tokens request" do
+  let(:client_class) { Web3::GnosisChainExplorer::Client }
+  let(:client) { instance_double(client_class) }
+
+  before do
+    allow(client_class).to receive(:new).and_return(client)
+    allow(client).to receive(:retrieve_tokens).and_return(response)
+  end
+
+  let(:response) do
+    OpenStruct.new(
+      success?: response_success,
+      body: body
+    )
+  end
+  let(:response_success) { true }
+  let(:body) { file_fixture("gnosis_chain_get_poaps_response.json").read }
+
+  it "initializes and calls the moralis client with the correct arguments" do
+    request
+
+    expect(client_class).to have_received(:new)
+    expect(client).to have_received(:retrieve_tokens).with(
+      wallet_address: wallet_address
+    )
+  end
+
+  it "returns a json array with the nfts" do
+    expect(request).to match_array(
+      [
+        {
+          address: "0x22c1f6050e56d2876009903609a2cc3fef83b415",
+          token_id: "5096568"
+        },
+        {
+          address: "0x22c1f6050e56d2876009903609a2cc3fef83b415",
+          token_id: "4826386"
+        },
+        {
+          address: "0x22c1f6050e56d2876009903609a2cc3fef83b415",
+          token_id: "4618978"
+        }
+      ]
+    )
+  end
+
+  context "when the request is not successful" do
+    let(:response_success) { false }
+
+    it "raises an api client error" do
+      expect { request }.to raise_error(described_class::ApiClientRequestError)
     end
   end
 end
 
 RSpec.shared_examples "an unsupported chain request" do
   it "raises an unsupported chain error" do
-    expect { described_class.new(wallet_address: wallet_address, chain: chain) }.to raise_error(described_class::UnsupportedChainError)
+    expect { request }.to raise_error(described_class::UnsupportedChainError)
   end
 end
 
 RSpec.describe Web3::ApiProxy do
   let(:wallet_address) { SecureRandom.hex }
+  let(:api_proxy) { described_class.new }
 
   describe "#retrieve_tokens" do
-    subject(:api_proxy) { described_class.new(wallet_address: wallet_address, chain: chain) }
+    subject(:request) { api_proxy.retrieve_tokens(wallet_address: wallet_address, chain: chain) }
 
     context "when the chain is eth" do
       let(:chain) { "eth" }
@@ -323,33 +509,91 @@ RSpec.describe Web3::ApiProxy do
 
       it_behaves_like "a celo explorer client get tokens request"
     end
+
+    context "when the chain is not yet supported" do
+      let(:chain) { "bsc" }
+
+      it_behaves_like "an unsupported chain request"
+    end
   end
 
   describe "#retrieve_nfts" do
-    subject(:api_proxy) { described_class.new(wallet_address: wallet_address, chain: chain) }
+    subject(:request) { api_proxy.retrieve_nfts(wallet_address: wallet_address, chain: chain) }
 
-    context "when the chain is eth" do
-      let(:chain) { "eth" }
+    context "when the chain matches ethereum network" do
+      context "when the chain is eth" do
+        let(:chain) { "eth" }
 
-      it_behaves_like "a moralis client get nfts request"
+        it_behaves_like "a moralis client get nfts request"
+      end
+
+      context "when the chain is 1" do
+        let(:chain) { 1 }
+
+        it_behaves_like "a moralis client get nfts request"
+      end
+
+      context "when the chain is 0x1" do
+        let(:chain) { "0x1" }
+
+        it_behaves_like "a moralis client get nfts request"
+      end
     end
 
-    context "when the chain is polygon" do
+    context "when the chain matches the polygon network" do
       let(:chain) { "polygon" }
 
-      it_behaves_like "a moralis client get nfts request"
+      context "when the chain is polygon" do
+        let(:chain) { "polygon" }
+
+        it_behaves_like "a moralis client get nfts request"
+      end
+
+      context "when the chain is 0x89" do
+        let(:chain) { "0x89" }
+
+        it_behaves_like "a moralis client get nfts request"
+      end
+
+      context "when the chain is 137" do
+        let(:chain) { 137 }
+
+        it_behaves_like "a moralis client get nfts request"
+      end
     end
 
-    context "when the chain is celo" do
+    context "when the chain matches the celo network" do
       let(:chain) { "celo" }
 
-      it_behaves_like "a celo explorer client get nfts request"
+      context "when the chain is celo" do
+        let(:chain) { "celo" }
+
+        it_behaves_like "a tatum client get nfts request", "CELO"
+      end
+
+      context "when the chain is 0xa4ec" do
+        let(:chain) { "0xa4ec" }
+
+        it_behaves_like "a tatum client get nfts request", "CELO"
+      end
+
+      context "when the chain is 42220" do
+        let(:chain) { 42220 }
+
+        it_behaves_like "a tatum client get nfts request", "CELO"
+      end
+    end
+
+    context "when the chain is not yet supported" do
+      let(:chain) { "bsc" }
+
+      it_behaves_like "an unsupported chain request", :retrieve_nfts
     end
   end
 
-  context "when the chain is not yet supported" do
-    let(:chain) { "bsc" }
+  describe "#retrieve_poaps" do
+    subject(:request) { api_proxy.retrieve_poaps(wallet_address: wallet_address) }
 
-    it_behaves_like "an unsupported chain request"
+    it_behaves_like "a gnosis chain explorer client get tokens request"
   end
 end

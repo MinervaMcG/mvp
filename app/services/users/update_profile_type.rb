@@ -31,6 +31,15 @@ module Users
         new_profile_type: new_profile_type,
         note: note
       )
+    rescue => e
+      Rollbar.error(
+        e,
+        user_id: user.id,
+        who_dunnit_id: who_dunnit_id || user.id,
+        previous_profile_type: previous_profile_type,
+        new_profile_type: new_profile_type,
+        note: note
+      )
     end
   end
 end

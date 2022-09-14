@@ -71,4 +71,31 @@ class UserMailerPreview < ActionMailer::Preview
       .with(recipient: recipient, record: notification, source_id: source_id)
       .send_invite_used_email
   end
+
+  def send_confirm_account_deletion_email
+    user = User.first
+    user.update(profile_type: "talent")
+
+    UserMailer.with(token: "token", user: user).send_confirm_account_deletion_email
+  end
+
+  def send_goal_deadline_reminder_email
+    user = User.first
+
+    UserMailer.with(goal: goal(user), user: user).send_goal_deadline_reminder_email
+  end
+
+  def send_goal_halfway_reminder_email
+    user = User.first
+
+    UserMailer.with(goal: goal(user), user: user).send_goal_halfway_reminder_email
+  end
+
+  private
+
+  def goal(user)
+    talent = user.talent || user.create_talent!
+    career_goal = talent.career_goal || talent.create_career_goal!
+    career_goal.goals.first || career_goal.goals.create!(due_date: Date.current, title: "New Goal")
+  end
 end

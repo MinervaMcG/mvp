@@ -24,8 +24,8 @@ RSpec.describe EmailReminders::SendTokenPurchaseReminderJob, type: :job do
     end
 
     it "should not send email if token is purchased" do
-      token = create :token
-      create :talent_supporter, supporter_wallet_id: @investor.wallet_id, talent_contract_id: token.contract_id
+      talent_token = create :talent_token
+      create :talent_supporter, supporter_wallet_id: @investor.wallet_id, talent_contract_id: talent_token.contract_id
 
       Sidekiq::Testing.inline! do
         token_purchase_reminder

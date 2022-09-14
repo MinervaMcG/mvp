@@ -1,0 +1,32 @@
+<h3 class="mb-6 main-title">
+  Seeing a talented one leaving makes us sad.
+</h3>
+<p class="w-full primary-3 paragraph">
+  If you requested to close your Talent Protocol account,
+  please confirm your decision by clicking the link below.
+</p>
+<% if @user.profile_type == "talent" %>
+  <p class="w-full mt-6 primary-3 paragraph">
+    <strong>
+      Remember that if you launched your token, it will live forever in the blockchain -
+      you'll just be unable to update your profile and contact your supporters through Talent Protocol.
+    </strong>
+  </p>
+<% end %>
+<%= link_to "Close my Talent Protocol account",
+  delete_account_url(token: @token, username: @user.username),
+  class: "danger-button btn fw-800 text-danger text-5xl py-4 mb-5 mt-10 w-full",
+  style: "width: 90%"
+%>
+<p class="mb-1 paragraph primary-3 text-center w-full">
+  <a href="https://yqc4053az91.typeform.com/to/Apgomk72">
+    <u>
+      Can you tell us why you're closing our account?
+    </u>
+  </a>
+</p>
+<p class="paragraph primary-3 text-center w-full">
+  <i>
+    If you didn't request to close your account, please ignore this email.
+  </i>
+</p>

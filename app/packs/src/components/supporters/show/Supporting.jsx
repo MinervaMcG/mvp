@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useState, useContext } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  useContext,
+  useCallback,
+} from "react";
 import { ethers } from "ethers";
 import dayjs from "dayjs";
 
@@ -17,6 +23,7 @@ import {
   getStartDateForVariance,
   getUTCDate,
 } from "src/utils/viewHelpers";
+import { chainNameToId, getAllChainOptions } from "src/onchain/utils";
 
 import {
   compareName,
@@ -30,20 +37,58 @@ import { get, post, destroy } from "src/utils/requests";
 import { camelCaseObject } from "src/utils/transformObjects";
 import ThemeContainer, { ThemeContext } from "src/contexts/ThemeContext";
 import { H5, P2 } from "src/components/design_system/typography";
-import { Spinner } from "src/components/icons";
+import { Spinner, Polygon, Celo } from "src/components/icons";
 import TalentTableListMode from "src/components/talent/TalentTableListMode";
 import TalentTableCardMode from "src/components/talent/TalentTableCardMode";
 import SupportingOptions from "./SupportingOptions";
+import Button from "src/components/design_system/button";
 
 const concatenateTokenAddresses = (tokens) =>
   `?tokens[]=${tokens.map((t) => t.talent.id).join("&tokens[]=")}`;
 
-const Supporting = ({
+const SupportingChoice = (props) => {
+  const [chainName, setChainName] = useState("Polygon");
+  const [chainId, setChainId] = useState(
+    chainNameToId(chainName, props.railsContext.contractsEnv)
+  );
+
+  const switchChain = (networkName, networkId) => {
+    setChainName(networkName);
+    setChainId(networkId);
+  };
+
+  return (
+    <>
+      <div className="d-flex flex-row justify-content-center mb-3">
+        {getAllChainOptions(props.railsContext.contractsEnv).map((option) => (
+          <Button
+            key={option.id}
+            type={chainName == option.name ? "primary-default" : "white-subtle"}
+            onClick={() => switchChain(option.name, option.id)}
+            className="mr-2"
+          >
+            {option.name == "Polygon" ? (
+              <Polygon className="mr-2" />
+            ) : (
+              <Celo className="mr-2" />
+            )}{" "}
+            {option.name}
+          </Button>
+        ))}
+      </div>
+      <Supporting {...props} chainId={chainId} />
+    </>
+  );
+};
+
+const LocalSupporting = ({
   wallet,
   setSupportingCount,
   publicPageViewer,
+  railsContext,
   withOptions = true,
   listMode = false,
+  chainId,
 }) => {
   const urlParams = new URLSearchParams(document.location.search);
   const theme = useContext(ThemeContext);
@@ -189,7 +234,13 @@ const Supporting = ({
     const talentsWithNoInfo = localTalents.filter((item) => !item.loaded);
 
     populateTalent(talentsWithNoInfo);
-  }, [localTalents]);
+  }, [localTalents, chainId]);
+
+  useEffect(() => {
+    setLocalLoading(true);
+    setListLoaded(false);
+    setLocalTalents([]);
+  }, [chainId]);
 
   const loadMore = () => {
     const nextPage = page + 1;
@@ -289,6 +340,7 @@ const Supporting = ({
               talents={filteredTalents}
               updateFollow={updateFollow}
               publicPageViewer={publicPageViewer}
+              env={railsContext.contractsEnv}
             />
           )}
         </>
@@ -316,10 +368,12 @@ const Supporting = ({
   );
 };
 
-export default (props) => (
+const Supporting = (props) => (
   <ThemeContainer {...props}>
-    <ApolloProvider client={client(props.railsContext.contractsEnv)}>
-      <Supporting {...props} />
+    <ApolloProvider client={client(props.chainId)}>
+      <LocalSupporting {...props} />
     </ApolloProvider>
   </ThemeContainer>
 );
+
+export default SupportingChoice;

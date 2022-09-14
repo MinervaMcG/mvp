@@ -8,8 +8,8 @@ import {
 
 import { THE_GRAPH_ENDPOINTS } from "./constants";
 
-const client = (env) => {
-  const uri = THE_GRAPH_ENDPOINTS[env || "staging"];
+const client = (chain = 44787) => {
+  const uri = THE_GRAPH_ENDPOINTS[chain];
 
   return new ApolloClient({
     uri,

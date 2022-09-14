@@ -8,7 +8,7 @@ module Talents
     end
 
     def call
-      talents = admin ? Talent.joins(:user, :token) : Talent.base.joins(:user, :token)
+      talents = admin ? Talent.joins(:user, :talent_token) : Talent.base.joins(:user, :talent_token)
 
       talents = filter_by_discovery_row(talents) if discovery_row
       talents = filter_by_keyword(talents) if keyword
@@ -33,12 +33,12 @@ module Talents
     end
 
     def filter_by_keyword(talents)
-      users = User.joins(talent: :token).left_joins(:tags)
+      users = User.joins(talent: :talent_token).left_joins(:tags)
 
       users = users.where(
         "users.username ilike :keyword " \
         "OR users.display_name ilike :keyword " \
-        "OR tokens.ticker ilike :keyword " \
+        "OR talent_tokens.ticker ilike :keyword " \
         "OR tags.description ilike :keyword ",
         keyword: "%#{keyword}%"
       )
@@ -56,8 +56,8 @@ module Talents
       elsif filter_params[:status] == "Latest added" || filter_params[:status] == "Trending"
         talents
           .active
-          .where("tokens.deployed_at > ?", 1.month.ago)
-          .order("tokens.deployed_at ASC")
+          .where("talent_tokens.deployed_at > ?", 1.month.ago)
+          .order("talent_tokens.deployed_at ASC")
       elsif filter_params[:status] == "Pending approval" && admin
         talents.where(user: {profile_type: "waiting_for_approval"})
       elsif filter_params[:status] == "Verified"
@@ -72,7 +72,7 @@ module Talents
     def sort(talents)
       if sort_params[:sort].present?
         if sort_params[:sort] == "market_cap"
-          talents.joins(:token).order(market_cap: :desc)
+          talents.joins(:talent_token).order(market_cap: :desc)
         elsif sort_params[:sort] == "activity"
           talents.order(activity_count: :desc)
         else

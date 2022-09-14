@@ -1,0 +1,23 @@
+<h3 class="mb-6 main-title">
+  Gm <%= @user.display_name || @user.username %>,
+</h3>
+<p class="w-full primary-3 paragraph">
+  Hopefully "<%= @goal.title %>" goal is now done! Probably this is a good time to:
+</p>
+<ul class="mb-2 paragraph primary-3">
+  <li class="mb-2">
+    <%= link_to "Update your profile and roadmap", edit_profile_url(username: @user.username) %> 📝
+  </li>
+  <li>
+    Send an <%= link_to "accountability update to your token holders", messages_url %> on your progress, and request their support.
+    This is precisely why we built Talent Protocol in the first place 🤲
+  </li>
+</ul>
+<p class="mb-6 w-full primary-3 paragraph">
+  (for unverified folks only) Last but not least, consider <a href="https://talentprotocol.typeform.com/onboarding-call?typeform-source=github.com">booking an onboarding</a> call to get the verified checkmark on your profile ✅
+</p>
+<p class="w-full primary-3 paragraph">
+  Let's do this,
+  <br/>
+  Talent Protocol team
+</p>

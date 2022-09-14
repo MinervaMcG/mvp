@@ -290,6 +290,7 @@ const TalentShow = ({
           tokenId={sharedState.token.id}
           userId={currentUserId}
           talentUserId={talent.user_id}
+          tokenChainId={token.chain_id}
           talentName={displayName({ withLink: false })}
           ticker={ticker()}
           mode={theme.mode()}
@@ -361,6 +362,16 @@ const TalentShow = ({
             Share
           </Button>
         </Tooltip>
+      )}
+      {sharedState.admin && (
+        <Button
+          onClick={() => (window.location.href = `/profiles/${user.username}`)}
+          type="white-subtle"
+          className="ml-2"
+          mode={theme.mode()}
+        >
+          New profile
+        </Button>
       )}
     </div>
   );
@@ -627,6 +638,7 @@ const TalentShow = ({
               mobile={mobile}
               mode={theme.mode()}
               railsContext={railsContext}
+              token={token}
             />
           )}
           {pageInDisplay == "supporting" && (
@@ -667,6 +679,7 @@ const TalentShow = ({
             width={width}
             contract={token.contract_id}
             railsContext={railsContext}
+            token={token}
             talentUserId={talent.user_id}
             hideAction={talentIsFromCurrentUser}
             mode={theme.mode()}

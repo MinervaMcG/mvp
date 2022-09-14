@@ -2,8 +2,8 @@
   <div class="container-grid">
     <div class="secondary-content">
       <%= react_component("NewPortfolio", props: {
-        tokenAddress: current_acting_user.talent&.token&.contract_id,
-        ticker: current_acting_user.talent&.token&.ticker,
+        tokenAddress: current_acting_user.talent&.talent_token&.contract_id,
+        ticker: current_acting_user.talent&.talent_token&.ticker,
         currentUserId: current_user.id,
         isCurrentUserImpersonated: is_user_impersonated?,
         messagingDisabled: current_acting_user.messaging_disabled,

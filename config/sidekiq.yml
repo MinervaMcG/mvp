@@ -9,6 +9,12 @@
 :limits:
   low: 1
 :schedule:
+  send_goal_deadline_reminder:
+    cron: "0 12 L * *" # Runs on the last day of the month at 12:00
+    class: EmailReminders::SendGoalDeadlineReminderJob
+  send_goal_halfway_reminder:
+    cron: "0 12 * * *" # Runs once every day at 12:00
+    class: EmailReminders::SendGoalHalfwayReminderJob
   send_notification_digests:
     cron: "0 10 * * *" # runs once every day at 10am
     class: SendNotificationDigestsJob
@@ -38,3 +44,6 @@
   daily_metrics:
     cron: "1 0 * * *" # runs once every day at 8am
     class: DailyMetricsJob
+  setup_next_race:
+    cron: "1 0 * * 3" # Runs every Wednesday at 00:01
+    class: SetupNextRaceJob

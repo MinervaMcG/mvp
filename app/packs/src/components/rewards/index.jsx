@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { urlStore } from "src/contexts/state";
+import { get } from "src/utils/requests";
 
 import ReferralRace from "./ReferralRace";
 import RewardsHeader from "./RewardsHeader";
@@ -39,6 +40,7 @@ const Rewards = ({
   invitedUsers,
   leaderboardResults,
   raceInvitesCount,
+  pagination,
 }) => {
   const changeURL = urlStore((state) => state.changeURL);
 
@@ -47,6 +49,8 @@ const Rewards = ({
   const searchParams = new URLSearchParams(url.search);
   const [activeTab, setTab] = useState("quests");
   const [questId, setQuestId] = useState(null);
+  const [localInvitedUsers, setLocalInvitedUsers] = useState(invitedUsers);
+  const [localPagination, setLocalPagination] = useState(pagination);
 
   const changeTab = (tab) => {
     window.history.pushState({}, document.title, `${url.pathname}?tab=${tab}`);
@@ -54,6 +58,19 @@ const Rewards = ({
     setTab(tab);
     setQuestId(null);
   };
+
+  const loadMoreInvitedUsers = () => {
+    const nextPage = localPagination.currentPage + 1;
+
+    get(`earn?page=${nextPage}`).then((response) => {
+      const newInvitedUsers = [...localInvitedUsers, ...response.invitedUsers];
+      setLocalInvitedUsers(newInvitedUsers);
+      setLocalPagination(response.pagination);
+    });
+  };
+
+  const showLoadMoreInvitedUsers =
+    localPagination.currentPage < localPagination.lastPage;
 
   useEffect(() => {
     if (searchParams.get("tab")) {
@@ -86,7 +103,9 @@ const Rewards = ({
           race={race}
           user={user}
           leaderboardResults={leaderboardResults}
-          invitedUsers={invitedUsers}
+          invitedUsers={localInvitedUsers}
+          loadMoreInvitedUsers={loadMoreInvitedUsers}
+          showLoadMoreInvitedUsers={showLoadMoreInvitedUsers}
           raceInvitesCount={raceInvitesCount}
         />
       )}

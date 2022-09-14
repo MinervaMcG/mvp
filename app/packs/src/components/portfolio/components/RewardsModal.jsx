@@ -117,14 +117,6 @@ const RewardsModal = ({
             />
           </div>
           <Divider mode={mode} className="mt-3 mb-3" />
-          <P3
-            className="text-gray-300 mb-6"
-            text={`$${activeTalent.symbol} tokens still available: ${currency(
-              loadAvailableSupply
-            )
-              .format()
-              .substring(1)}`}
-          />
           <Button
             className="w-100"
             type="primary-default"

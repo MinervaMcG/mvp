@@ -4,12 +4,6 @@ import { post, destroy } from "src/utils/requests";
 import { useWindowDimensionsHook } from "src/utils/window";
 import { ethers } from "ethers";
 import { parseAndCommify } from "src/onchain/utils";
-import {
-  ApolloProvider,
-  useQuery,
-  GET_DISCOVERY_TALENTS,
-  client,
-} from "src/utils/thegraph";
 
 import { Spinner } from "src/components/icons";
 import HighlightsCard from "src/components/design_system/highlights_card";
@@ -20,7 +14,12 @@ import DiscoveryMarketingArticles from "./discovery_marketing_articles";
 
 import cx from "classnames";
 
-const Discovery = ({ discoveryRows, marketingArticles, user }) => {
+const Discovery = ({
+  discoveryRows,
+  marketingArticles,
+  user,
+  railsContext,
+}) => {
   const { mobile } = useWindowDimensionsHook();
   const [localDiscoveryRows, setLocalDiscoveryRows] = useState(discoveryRows);
   const [loading, setLoading] = useState(true);
@@ -35,52 +34,6 @@ const Discovery = ({ discoveryRows, marketingArticles, user }) => {
       }, {}),
     [discoveryRows]
   );
-
-  const addTokenDetails = useCallback((talents, talentsFromChain) => {
-    const newArray = talents.map((talent) => {
-      const talentFromChain = talentsFromChain.find(
-        (t) => t.id === talent.contractId
-      );
-      if (talentFromChain) {
-        const totalSupply = ethers.utils.formatUnits(
-          talentFromChain.totalSupply || 0
-        );
-
-        return {
-          ...talent,
-          marketCap: parseAndCommify(totalSupply * 0.1),
-        };
-      } else {
-        return { ...talent };
-      }
-    });
-
-    return newArray;
-  }, []);
-
-  const setLocalData = (data) => {
-    if (data.talents) {
-      setLocalDiscoveryRows((prev) => {
-        const newArray = prev.map((row) => ({
-          ...row,
-          talents: addTokenDetails(row.talents, data.talents),
-        }));
-
-        return newArray;
-      });
-    }
-  };
-
-  useQuery(GET_DISCOVERY_TALENTS, {
-    variables: {
-      talentIds: localDiscoveryRows
-        .map((row) => row.talents)
-        .flat()
-        .map((talent) => talent.contractId)
-        .filter((id) => id),
-    },
-    onCompleted: setLocalData,
-  });
 
   const updateFollow = async (talent) => {
     const newDiscoveryRows = localDiscoveryRows.map((currRow) => {
@@ -182,6 +135,7 @@ const Discovery = ({ discoveryRows, marketingArticles, user }) => {
         <DiscoveryRows
           discoveryRows={localDiscoveryRows}
           updateFollow={updateFollow}
+          env={railsContext.contractsEnv}
         />
       )}
       {marketingArticles.length > 0 && (
@@ -194,9 +148,5 @@ const Discovery = ({ discoveryRows, marketingArticles, user }) => {
 };
 
 export default (props, railsContext) => {
-  return () => (
-    <ApolloProvider client={client(railsContext.contractsEnv)}>
-      <Discovery {...props} railsContext={railsContext} />
-    </ApolloProvider>
-  );
+  return () => <Discovery {...props} railsContext={railsContext} />;
 };

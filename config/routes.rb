@@ -50,6 +50,8 @@ Rails.application.routes.draw do
       resources :comments, only: [:index, :create, :destroy], module: "posts"
     end
 
+    resources :profiles, only: [:show], param: :username
+
     # Edit profile
     get "/u/:username/edit_profile", to: "users#edit_profile", as: "edit_profile"
 
@@ -59,7 +61,24 @@ Rails.application.routes.draw do
     namespace :api, defaults: {format: :json} do
       namespace :v1 do
         resources :tokens, only: [:show]
-        resources :users, only: [:index, :update, :destroy]
+
+        resources :users, only: [:index, :update] do
+          resources :delete_account_tokens, module: "users", only: [:create]
+
+          namespace :profile do
+            resources :web3, param: :token_id, controller: :web3, only: [:update]
+
+            scope :web3 do
+              get :tokens, to: "web3#tokens"
+              post :refresh_tokens, to: "web3#refresh_tokens"
+              get :nfts, to: "web3#nfts"
+              post :refresh_nfts, to: "web3#refresh_nfts"
+              get :poaps, to: "web3#poaps"
+              post :refresh_poaps, to: "web3#refresh_poaps"
+            end
+          end
+        end
+
         resources :follows, only: [:index, :create]
         delete "follows", to: "follows#destroy"
         resources :notifications, only: [] do
@@ -77,6 +96,7 @@ Rails.application.routes.draw do
           resources :career_goals, only: [:update, :create], module: "talent"
         end
         resources :stakes, only: [:create]
+        post "reward_claiming", to: "stakes#reward_claiming"
         resources :investor, only: [:update]
         resources :perks, only: [:show]
         resources :races, only: [:show]
@@ -120,6 +140,7 @@ Rails.application.routes.draw do
 
   resources :wait_list, only: [:create, :index]
 
+  get "/u/:username/delete_account" => "users#destroy", :as => "delete_account", :constraints => {username: /[^\/]+/}
   get "/u/:username" => "users#show", :as => "user", :constraints => {username: /[^\/]+/}
   # redirect /talent to /u so we have the old route still working
   get "/talent/:username", to: redirect("/u/%{username}"), as: "talent_profile"

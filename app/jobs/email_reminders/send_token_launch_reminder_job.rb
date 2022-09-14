@@ -4,9 +4,9 @@ module EmailReminders
 
     def perform
       users = User
-        .joins(talent: :token)
+        .joins(talent: :talent_token)
         .where(token_launch_reminder_sent_at: nil)
-        .where(token: {deployed: false})
+        .where(talent_token: {deployed: false})
         .where("talent.created_at < ?", ENV["EMAIL_REMINDER_DAYS"].to_i.days.ago)
 
       users.find_each do |user|

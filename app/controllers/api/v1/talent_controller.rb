@@ -3,14 +3,14 @@ class API::V1::TalentController < ApplicationController
     service = Talents::Search.new(filter_params: filter_params.to_h, admin: current_user.admin?)
     talents = service.call
 
-    render json: TalentBlueprint.render(talents.includes(:token, user: :investor), view: :normal, current_user_watchlist: current_user_watchlist), status: :ok
+    render json: TalentBlueprint.render(talents.includes(:talent_token, user: :investor), view: :normal, current_user_watchlist: current_user_watchlist), status: :ok
   end
 
   # public /
   def public_index
     talents =
       if token_id_params.present?
-        Talent.includes(:token, :user).where(tokens: {contract_id: token_id_params})
+        Talent.includes(:talent_token, :user).where(talent_tokens: {contract_id: token_id_params})
       else
         []
       end
@@ -20,7 +20,7 @@ class API::V1::TalentController < ApplicationController
 
   # Public endpoint
   def show
-    talent = Talent.joins(:token).find_by(token: {contract_id: params[:id]})
+    talent = Talent.joins(:talent_token).find_by(talent_tokens: {contract_id: params[:id]})
 
     if talent
       render json: TalentBlueprint.render(talent, view: :normal, current_user_watchlist: current_user_watchlist), status: :ok

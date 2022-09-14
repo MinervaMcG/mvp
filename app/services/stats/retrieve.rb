@@ -14,8 +14,8 @@ class Stats::Retrieve
       users = User.where("created_at < ?", start_date)
       talent = Talent.where("created_at < ?", start_date)
       supporters = users.count - talent.count
-      tokens = Token.where.not(contract_id: nil).where("updated_at < ?", start_date)
-      live_talent = Talent.joins(:token).where(public: true).where("token.updated_at < ?", start_date).where.not(token: {contract_id: nil})
+      tokens = TalentToken.where.not(contract_id: nil).where("updated_at < ?", start_date)
+      live_talent = Talent.joins(:talent_token).where(public: true).where("talent_tokens.updated_at < ?", start_date).where.not(talent_token: {contract_id: nil})
 
       puts "WEEK #{i} - #{start_date}"
       puts "Supporters: #{supporters - prev_supporters}"

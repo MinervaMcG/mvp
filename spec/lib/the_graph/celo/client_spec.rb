@@ -1,10 +1,10 @@
 require "rails_helper"
-require "the_graph/client"
+require "the_graph/celo/client"
 
-RSpec.describe TheGraph::Client do
+RSpec.describe TheGraph::Celo::Client do
   let(:the_graph_client) { described_class.new }
 
-  let(:api_client) { TheGraphAPI::Client }
+  let(:api_client) { TheGraphAPI::Celo::Client }
 
   describe "#talent_supporters" do
     let(:talent_address) { SecureRandom.hex }
@@ -31,7 +31,7 @@ RSpec.describe TheGraph::Client do
       get_talent_supporters
 
       expect(api_client).to have_received(:query).with(
-        TheGraph::TALENT_SUPPORTERS_QUERY,
+        TheGraph::Celo::TALENT_SUPPORTERS_QUERY,
         variables: {
           id: talent_address,
           skip: 0,
@@ -56,7 +56,7 @@ RSpec.describe TheGraph::Client do
         get_talent_supporters
 
         expect(api_client).to have_received(:query).with(
-          TheGraph::TALENT_SUPPORTERS_QUERY,
+          TheGraph::Celo::TALENT_SUPPORTERS_QUERY,
           variables: {
             id: talent_address,
             skip: 100,

@@ -14,7 +14,10 @@ class ApplicationController < ActionController::Base
   helper_method :is_user_impersonated?, :current_acting_user, :current_impersonated_user
 
   def render_404
-    render "errors/404", status: :not_found
+    respond_to do |format|
+      format.html { render "errors/404", status: :not_found }
+      format.json { render json: {error: "Not found"}, status: :not_found }
+    end
   end
 
   def route_not_found
