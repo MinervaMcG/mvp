@@ -2,6 +2,10 @@ import React, { useContext } from "react";
 
 import ThemeContainer, { ThemeContext } from "src/contexts/ThemeContext";
 
+import Poaps from "./web3/poaps";
+import Nfts from "./web3/nfts";
+import Tokens from "./web3/tokens";
+
 const Show = ({
   admin,
   talent,
@@ -27,7 +31,13 @@ const Show = ({
 
   const theme = useContext(ThemeContext);
 
-  return <div className="d-flex flex-column lg-h-100 p-0"></div>;
+  return (
+    <div className="d-flex flex-column lg-h-100 p-0">
+      <Poaps userId={user.id} />
+      <Nfts userId={user.id} />
+      <Tokens userId={user.id} />
+    </div>
+  );
 };
 
 export default (props, railsContext) => {

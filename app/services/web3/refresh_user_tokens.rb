@@ -58,9 +58,12 @@ module Web3
 
     def upsert_erc20_token(token_data, chain_id)
       token = Erc20Token.find_or_create_by!(address: token_data[:address], user: user, chain_id: chain_id)
+
       token.update!(
         name: token_data[:name],
         symbol: token_data[:symbol],
+        logo: token_data[:logo],
+        thumbnail: token_data[:thumbnail],
         decimals: token_data[:decimals],
         balance: token_data[:balance],
         last_sync_at: current_time

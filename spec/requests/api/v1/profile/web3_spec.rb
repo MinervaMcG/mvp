@@ -142,6 +142,7 @@ RSpec.describe "Web3", type: :request do
             symbol: token_1.symbol,
             chain_id: token_1.chain_id,
             url: token_1.url,
+            image_url: nil,
             token_id: token_1.token_id,
             amount: token_1.amount,
             show: token_1.show
@@ -164,6 +165,7 @@ RSpec.describe "Web3", type: :request do
             symbol: token_1.symbol,
             chain_id: token_1.chain_id,
             url: token_1.url,
+            image_url: nil,
             token_id: token_1.token_id,
             amount: token_1.amount,
             show: token_1.show
@@ -175,6 +177,7 @@ RSpec.describe "Web3", type: :request do
             symbol: token_3.symbol,
             chain_id: token_3.chain_id,
             url: token_3.url,
+            image_url: nil,
             token_id: token_3.token_id,
             amount: token_3.amount,
             show: token_3.show
@@ -211,6 +214,7 @@ RSpec.describe "Web3", type: :request do
             name: token_1.name,
             symbol: token_1.symbol,
             chain_id: token_1.chain_id,
+            image_url: nil,
             url: token_1.url,
             token_id: token_1.token_id,
             amount: token_1.amount,
@@ -234,6 +238,7 @@ RSpec.describe "Web3", type: :request do
             symbol: token_1.symbol,
             chain_id: token_1.chain_id,
             url: token_1.url,
+            image_url: nil,
             token_id: token_1.token_id,
             amount: token_1.amount,
             show: token_1.show
@@ -245,6 +250,7 @@ RSpec.describe "Web3", type: :request do
             symbol: token_3.symbol,
             chain_id: token_3.chain_id,
             url: token_3.url,
+            image_url: nil,
             token_id: token_3.token_id,
             amount: token_3.amount,
             show: token_3.show
@@ -340,6 +346,7 @@ RSpec.describe "Web3", type: :request do
           symbol: token_1.symbol,
           chain_id: token_1.chain_id,
           url: token_1.url,
+          image_url: nil,
           token_id: token_1.token_id,
           amount: token_1.amount,
           show: token_1.show
@@ -386,6 +393,7 @@ RSpec.describe "Web3", type: :request do
           symbol: token_1.symbol,
           chain_id: token_1.chain_id,
           url: token_1.url,
+          image_url: nil,
           token_id: token_1.token_id,
           amount: token_1.amount,
           show: token_1.show
