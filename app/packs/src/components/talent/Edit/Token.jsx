@@ -387,6 +387,7 @@ const Token = (props) => {
     ).catch(() => {
       console.log("error updating ticker");
       setShow(false);
+      return;
     });
 
     if (response) {
@@ -417,13 +418,13 @@ const Token = (props) => {
       return;
     }
 
-    const result = saveTicker();
+    const result = await saveTicker();
 
     if (result) {
       const deployed = await createToken();
 
       if (!deployed) {
-        setError((prev) => ({ ...prev, deploy: true }));
+        setError((prev) => ({ ...prev, deploy: true, ticker: false }));
       }
     } else {
       setError((prev) => ({ ...prev, ticker: true }));
@@ -589,6 +590,12 @@ const Token = (props) => {
         className="w-100 mt-3"
         maxLength={8}
       />
+      {error["ticker"] && (
+        <P2 className="text-danger">
+          The ticker you've chosen is already taken. We currently only allow one
+          user to have a given ticker across the blockchains that we support.
+        </P2>
+      )}
       {mobile && (
         <div className="d-flex flex-row justify-content-between w-100 my-3">
           <div className="d-flex flex-column">

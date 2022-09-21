@@ -8,7 +8,7 @@ class Supporter::UpgradeToTalent
 
     user.create_talent!
     user.talent.create_career_goal!
-    user.talent.create_token!
+    user.talent.create_talent_token!
     update_profile_type(user, applying)
 
     create_invite(user)

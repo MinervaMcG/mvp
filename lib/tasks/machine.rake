@@ -14,9 +14,7 @@ namespace :machine do
     user.create_talent!
     user.create_feed!
 
-    user.talent.create_token!(
-      ticker: "TAL"
-    )
+    user.talent.create_talent_token!(ticker: "TAL")
     post = Post.create!(text: "Hello world!", user: user)
     user.feed.posts << post
 
