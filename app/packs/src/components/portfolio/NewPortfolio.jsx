@@ -160,7 +160,6 @@ const NewPortfolio = ({
   const [page, setPage] = useState(0);
   const [supportedTalents, setSupportedTalents] = useState([]);
   const [listLoaded, setListLoaded] = useState(false);
-  const [walletConnected, setWalletConnected] = useState(false);
   const [showChangeWalletModal, setShowChangeWalletModal] = useState(false);
   const [loadingStakeChange, setLoadingStakeChange] = useState(false);
   const [talentsForStakeChange, setTalentsForStakeChange] = useState([]);
@@ -320,7 +319,6 @@ const NewPortfolio = ({
     }
   });
 
-
   const updateAll = async () => {
     supportedTalents.forEach((element) => {
       loadReturns(element.contract_id).then((returns) => {
@@ -408,7 +406,6 @@ const NewPortfolio = ({
       setTalentsForStakeChange((prev) => [...prev, contract_id]);
     }
   };
-
 
   const networkChange = async (chainId) => {
     if (chainAPI) {
