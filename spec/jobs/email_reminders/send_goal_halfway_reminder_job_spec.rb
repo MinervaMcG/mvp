@@ -16,7 +16,7 @@ RSpec.describe EmailReminders::SendGoalHalfwayReminderJob, type: :job do
     subject(:send_goal_halfway_reminder_email) { described_class.perform_now }
 
     it "sends a reminder email to users with goals that are half-way" do
-      travel_to("2022-01-05") do
+      travel_to("2022-01-06") do
         Sidekiq::Testing.inline! do
           send_goal_halfway_reminder_email
 
