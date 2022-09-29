@@ -13,11 +13,21 @@ const TalentFilters = ({ status, setStatus, filter, isAdmin = false }) => {
         "Latest added",
         "Launching soon",
         "Pending approval",
-        "Verified"
+        "Verified",
+        "By Celo Network",
+        "By Polygon Network",
       ];
     }
 
-    return ["All", "Trending", "Latest added", "Launching soon", "Verified"];
+    return [
+      "All",
+      "Trending",
+      "Latest added",
+      "Launching soon",
+      "Verified",
+      "By Celo Network",
+      "By Polygon Network",
+    ];
   }, []);
 
   const selectedClass = (option) =>

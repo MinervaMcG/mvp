@@ -126,6 +126,16 @@ const Discovery = ({
           title="Launching Soon"
           link="/talent?status=Launching+soon"
         />
+        <HighlightsCard
+          className="mt-2"
+          title="By Celo Network"
+          link="/talent?status=celo"
+        />
+        <HighlightsCard
+          className="mt-2"
+          title="By Polygon Network"
+          link="/talent?status=polygon"
+        />
       </div>
       {loading ? (
         <div className="w-100 d-flex flex-row my-2 justify-content-center">
