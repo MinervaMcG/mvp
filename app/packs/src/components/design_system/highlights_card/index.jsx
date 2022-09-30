@@ -6,6 +6,7 @@ import { P1, P2, P3 } from "src/components/design_system/typography";
 import { ArrowForward, Spinner } from "src/components/icons";
 
 import cx from "classnames";
+import { Celo, Polygon } from "../../icons";
 
 const HighlightsCard = ({ title, link, className }) => {
   const icon = () => {
@@ -16,6 +17,10 @@ const HighlightsCard = ({ title, link, className }) => {
         return "🚀";
       case "Launching Soon":
         return "💎";
+      case "By Celo Network":
+        return <Celo />;
+      case "By Polygon Network":
+        return <Polygon />;
       default:
         return "";
     }

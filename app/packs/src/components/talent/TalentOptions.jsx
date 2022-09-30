@@ -35,7 +35,10 @@ const TalentOptions = ({
     params.set(filterType, option);
 
     get(`${searchUrl}?${params.toString()}`).then((response) => {
-      const talents = response.map((talent) => camelCaseObject(talent));
+      const talents = response.map((talent) => ({
+        ...camelCaseObject(talent),
+        marketCap: getMarketCap(talent.totalSupply),
+      }));
 
       if (option === "Trending") {
         setSelectedSort("Market Cap");
