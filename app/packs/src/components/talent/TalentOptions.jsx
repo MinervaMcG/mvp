@@ -21,6 +21,7 @@ const TalentOptions = ({
   setLocalTalents,
   setSelectedSort,
   setSortDirection,
+  addNetworkData,
   isAdmin,
 }) => {
   const { mobile } = useWindowDimensionsHook();
@@ -35,10 +36,11 @@ const TalentOptions = ({
     params.set(filterType, option);
 
     get(`${searchUrl}?${params.toString()}`).then((response) => {
-      const talents = response.map((talent) => ({
+      let talents = response.map((talent) => ({
         ...camelCaseObject(talent),
-        marketCap: getMarketCap(talent.totalSupply),
       }));
+
+      talents = addNetworkData(talents);
 
       if (option === "Trending") {
         setSelectedSort("Market Cap");
