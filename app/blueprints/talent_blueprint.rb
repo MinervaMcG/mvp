@@ -9,6 +9,10 @@ class TalentBlueprint < Blueprinter::Base
     field :is_following do |talent, options|
       options[:current_user_watchlist]&.include?(talent.user_id) || false
     end
+
+    field :max_supply do
+      Talent.max_supply.to_s
+    end
   end
 
   view :extended do
