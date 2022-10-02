@@ -47,7 +47,11 @@ const TalentFilters = ({ status, setStatus, filter, isAdmin = false }) => {
         as="div"
         style={{ height: 34, width: 150 }}
       >
-        <P2 bold text={status} className="mr-2 align-middle text-black" />
+        <P2
+          bold
+          text={status}
+          className="mr-2 align-middle text-black text-ellipsis"
+        />
         <OrderBy black />
       </Dropdown.Toggle>
 

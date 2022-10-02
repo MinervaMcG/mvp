@@ -197,6 +197,11 @@
   color: $dark-text-primary-01 !important;
 }
 
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .hover-black {
   &:hover {
     color: $black !important;
