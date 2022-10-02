@@ -5,6 +5,8 @@ import TabButton from "src/components/design_system/tab/TabButton.jsx";
 import TalentKeywordSearch from "src/components/talent/TalentKeywordSearch";
 import { Grid, List } from "src/components/icons";
 import { useWindowDimensionsHook } from "src/utils/window";
+import { useTheme } from "src/contexts/ThemeContext";
+import { lightPrimary, darkPrimary } from "src/utils/colors";
 
 import cx from "classnames";
 
@@ -16,6 +18,7 @@ const SupportingOptions = ({
   publicPageViewer,
 }) => {
   const { mobile } = useWindowDimensionsHook();
+  const { mode } = useTheme();
   const url = new URL(document.location);
   const [name, setName] = useState(url.searchParams.get("name") || "");
 
@@ -59,7 +62,13 @@ const SupportingOptions = ({
           onClick={() => setListModeOnly(false)}
         >
           <Grid
-            fill={listModeOnly ? "currentColor" : "#7a55ff"}
+            fill={
+              listModeOnly
+                ? "currentColor"
+                : mode() == "dark"
+                ? darkPrimary
+                : lightPrimary
+            }
             color="inherit"
           />
         </Button>
@@ -70,7 +79,13 @@ const SupportingOptions = ({
           onClick={() => setListModeOnly(true)}
         >
           <List
-            fill={!listModeOnly ? "currentColor" : "#7a55ff"}
+            fill={
+              !listModeOnly
+                ? "currentColor"
+                : mode() == "dark"
+                ? darkPrimary
+                : lightPrimary
+            }
             color="inherit"
           />
         </Button>

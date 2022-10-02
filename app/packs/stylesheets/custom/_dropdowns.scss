@@ -1,16 +1,16 @@
 .dropdown-menu {
-  background-color: $white !important;
+  background-color: $dark-text-primary-01 !important;
   color: $black !important;
   min-width: 230px;
   padding: 8px 8px;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+  border-radius: 24px;
   border: none;
 }
 
 .dark-body .dropdown-menu {
-  color: $white !important;
-  background-color: $gray-800 !important;
+  color: $dark-text-primary-01 !important;
+  background-color: $dark-surface-disable !important;
   box-shadow: none;
 }
 
@@ -24,122 +24,122 @@
 
 .dropdown-item {
   padding: 8px 32px 8px 8px;
-  border-radius: 4px;
+  border-radius: 24px;
 
   &:hover {
-    background-color: $surface-hover !important;
+    background-color: $light-surface-disable !important;
   }
 }
 
 .dark-body .dropdown-item {
   &:hover {
-    background-color: $surface-hover-02 !important;
+    background-color: $dark-surface-hover-02 !important;
   }
 }
 
 .menu-divider {
-  border-top: 1px solid $surface-hover;
+  border-top: 1px solid $light-surface-disable;
 }
 
 .dark-body .menu-divider {
-  border-top: 1px solid $surface-hover-02;
+  border-top: 1px solid $dark-surface-hover-02;
 }
 
 .modal-content,
 .modal-dialog {
-  background-color: $white;
+  background-color: $dark-text-primary-01;
 }
 
 .dark-body .modal-dialog {
-  background-color: $gray-900;
+  background-color: $dark-surface-01;
 }
 
 .dark-body .modal-content {
-  background-color: $gray-900;
+  background-color: $dark-surface-01;
 }
 
 .user-menu-dropdown {
-  background-color: $white !important;
+  background-color: $dark-text-primary-01 !important;
   color: $black !important;
   min-width: 240px;
   padding: 8px 8px 8px 8px;
 }
 
 .dark-body .user-menu-dropdown {
-  color: $white !important;
-  background-color: $gray-800 !important;
+  color: $dark-text-primary-01 !important;
+  background-color: $dark-surface-disable !important;
 }
 
 .user-menu-dropdown-item {
   padding: 8px 8px;
   margin: 0 0;
   &:hover {
-    background-color: $surface-hover !important;
+    background-color: $light-surface-disable !important;
   }
 }
 
 .dark-body .user-menu-dropdown-item {
   &:hover {
-    background-color: $surface-hover-02 !important;
+    background-color: $dark-surface-hover-02 !important;
   }
 }
 
 .claim-rewards-dropdown-btn {
-  background-color: $surface-hover !important;
+  background-color: $light-surface-disable !important;
   color: $black !important;
   border: 1px solid rgba(0, 0, 0, 0) !important;
   box-shadow: none !important;
 
   &:hover {
-    border: 1px solid $primary !important;
-    box-shadow: 0px 0px 0px 3px $primary-disabled !important;
+    border: 1px solid $light-primary !important;
+    box-shadow: 0px 0px 0px 3px $light-surface-disable !important;
   }
 
   &:active {
-    border: 0px solid $primary;
+    border: 0px solid $light-primary;
   }
 
   &[aria-expanded="true"] {
-    border: 1px solid $primary !important;
-    box-shadow: 0px 0px 0px 3px $primary-disabled !important;
+    border: 1px solid $light-primary !important;
+    box-shadow: 0px 0px 0px 3px $light-surface-disable !important;
   }
 }
 
 .dark-body .claim-rewards-dropdown-btn {
-  color: $white !important;
-  background-color: $gray-800 !important;
+  color: $dark-text-primary-01 !important;
+  background-color: $dark-surface-disable !important;
 
   &:hover {
-    background-color: $surface-hover-02 !important;
-    box-shadow: 0px 0px 0px 3px $primary-800 !important;
+    background-color: $dark-surface-hover-02 !important;
+    box-shadow: 0px 0px 0px 3px $dark-text-primary-disable !important;
   }
 
   &[aria-expanded="true"] {
-    background-color: $surface-hover-02 !important;
-    box-shadow: 0px 0px 0px 3px $primary-800 !important;
+    background-color: $dark-surface-hover-02 !important;
+    box-shadow: 0px 0px 0px 3px $dark-text-primary-disable !important;
   }
 }
 
 .dropdown-item {
   .icon-dropdown-item {
-    color: $gray-400;
+    color: $dark-text-primary-04;
   }
 
   &:hover {
     .icon-dropdown-item {
-      color: $primary;
+      color: $light-primary;
     }
   }
 }
 
 .dark-body .dropdown-item {
   .icon-dropdown-item {
-    color: $gray-300;
+    color: $dark-text-primary-03;
   }
 
   &:hover {
     .icon-dropdown-item {
-      color: $primary;
+      color: $dark-primary;
     }
   }
 }

@@ -5,10 +5,10 @@
   border: 1px solid #ededef;
   box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.06);
   border-radius: 4px;
-  background-color: $white;
+  background-color: $dark-text-primary-01;
 
   &.dark {
-    background: $gray-600;
+    background: $dark-surface-disable;
   }
 }
 
@@ -39,27 +39,31 @@
 }
 
 .light-body .notifications-menu {
-  background-color: $white !important;
-  color: $gray-800 !important;
+  background-color: $dark-text-primary-01 !important;
+  color: $light-text-primary-01 !important;
 }
 
 .dark-body .notifications-menu {
-  background-color: $gray-800 !important;
-  color: $white !important;
+  background-color: $dark-surface-disable !important;
+  color: $dark-text-primary-01 !important;
 }
 
 .notifications-unread-icon {
   position: relative;
   top: -11px;
   right: -2px;
-  border: 4px solid $primary;
+  border: 4px solid $light-primary;
   border-radius: 50%;
   font-size: 0px;
 }
 
+.dark-body .notifications-unread-icon {
+  border: 4px solid $dark-primary;
+}
+
 .notification-unread-icon {
   position: relative;
-  border: 4px solid $primary;
+  border: 4px solid $light-primary;
   border-radius: 50%;
   font-size: 0px;
 }
@@ -69,15 +73,15 @@
 }
 
 .dark-body .no-notifications-item {
-  color: $white !important;
+  color: $dark-text-primary-01 !important;
 }
 
 .notifications-menu-dropdown-item {
-  color: $gray-800 !important;
+  color: $light-text-primary-01 !important;
 }
 
 .dark-body .notifications-menu-dropdown-item {
-  color: $white !important;
+  color: $dark-text-primary-01 !important;
 }
 
 @media (max-width: 992px) {

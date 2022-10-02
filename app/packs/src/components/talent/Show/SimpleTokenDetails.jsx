@@ -80,14 +80,14 @@ const SimpleTokenDetails = ({
     <>
       {ticker ? (
         <>
-          <div className="card disabled d-flex flex-column align-items-center justify-content-center mb-4 p-3">
+          <div className="portfolio-amounts-overview d-flex flex-column align-items-center justify-content-center mb-4 p-3">
             <P2 className="mb-2 text-primary-04" bold text="Market Value" />
             <H4
               bold
               text={formatNumberWithSymbol(tokenData.totalSupply * 0.1)}
             />
           </div>
-          <div className="card disabled d-flex flex-column align-items-center justify-content-center mb-4 p-3">
+          <div className="portfolio-amounts-overview d-flex flex-column align-items-center justify-content-center mb-4 p-3">
             <P2
               className="mb-2 text-primary-04"
               bold
@@ -100,7 +100,7 @@ const SimpleTokenDetails = ({
               )} ${ticker}`}
             />
           </div>
-          <div className="card disabled d-flex flex-column align-items-center justify-content-center mb-4 p-3">
+          <div className="portfolio-amounts-overview d-flex flex-column align-items-center justify-content-center mb-4 p-3">
             <P2 className="mb-2 text-primary-04" bold text="Supporters" />
             <H4 bold text={`${supportersCount}`} />
           </div>
@@ -123,6 +123,7 @@ const SimpleTokenDetails = ({
                 >
                   <Button
                     type="white-subtle"
+                    size="icon"
                     mode={mode}
                     className="ml-2"
                     onClick={copyTokenAdddres}
@@ -132,6 +133,7 @@ const SimpleTokenDetails = ({
                 </Tooltip>
                 <Button
                   type="white-subtle"
+                  size="icon"
                   mode={mode}
                   className="ml-2"
                   onClick={addTokenToMetamask}
@@ -149,7 +151,7 @@ const SimpleTokenDetails = ({
         </>
       ) : (
         <>
-          <div className="card disabled d-flex flex-column align-items-center justify-content-center mb-4 p-3">
+          <div className="portfolio-amounts-overview d-flex flex-column align-items-center justify-content-center mb-4 p-3">
             <P2 className="mb-2 text-primary-04" bold text="Supporting" />
             <H4 bold text={`${supportingCount || 0}`} />
           </div>

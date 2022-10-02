@@ -34,7 +34,7 @@
   height: 100%;
 
   .navbar-bottom-menu-option {
-    color: $gray-400;
+    color: $dark-text-primary-04;
 
     a {
       text-decoration: none;
@@ -50,7 +50,7 @@
     }
 
     .mobile-menu-icon {
-      color: $gray-400;
+      color: $dark-text-primary-04;
 
       &:hover:not(.active) {
         color: $black;
@@ -61,17 +61,17 @@
 
 .dark-body .navbar-bottom-menu {
   .navbar-bottom-menu-option {
-    color: $gray-300;
+    color: $dark-text-primary-03;
 
     a:hover:not(.active) {
-      color: $white;
+      color: $dark-text-primary-01;
     }
 
     .mobile-menu-icon {
-      color: $gray-300;
+      color: $dark-text-primary-03;
 
       &:hover:not(.active) {
-        color: $white;
+        color: $dark-text-primary-01;
       }
     }
   }

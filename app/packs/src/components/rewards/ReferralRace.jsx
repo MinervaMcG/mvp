@@ -13,6 +13,7 @@ import Button from "src/components/design_system/button";
 import Table from "src/components/design_system/table";
 import Tooltip from "src/components/design_system/tooltip";
 import TalentProfilePicture from "src/components/talent/TalentProfilePicture";
+import { lightTextPrimary03 } from "src/utils/colors";
 
 const sumRewardAmounts = (total, reward) => total + reward.amount;
 
@@ -187,7 +188,7 @@ const Overview = ({ totalInvitesCount, raceInvitesCount, username }) => {
       <H4 className="mb-4 d-flex flex-row align-items-center" bold>
         Overview
       </H4>
-      <div className="mx-0 py-6 d-flex flex-column flex-lg-row overview-section rounded-sm">
+      <div className="mx-0 py-6 d-flex flex-column flex-lg-row overview-section">
         <div
           className="d-flex flex-column mx-4 mb-4 mb-lg-0"
           style={{ flex: 1 }}
@@ -202,6 +203,7 @@ const Overview = ({ totalInvitesCount, raceInvitesCount, username }) => {
             >
               <Button
                 type="white-ghost"
+                size="icon"
                 className="text-primary"
                 onClick={copyLink}
               >
@@ -223,7 +225,7 @@ const Overview = ({ totalInvitesCount, raceInvitesCount, username }) => {
           >
             <div className="mb-2 cursor-pointer d-flex align-items-center">
               <P3 className="mr-2">Total Invites</P3>
-              <Help color="#536471" />
+              <Help color={lightTextPrimary03} />
             </div>
           </Tooltip>
           <div className="d-flex flex-row align-items-center justify-content-between">
@@ -243,7 +245,7 @@ const Overview = ({ totalInvitesCount, raceInvitesCount, username }) => {
           >
             <div className="mb-2 cursor-pointer d-flex align-items-center">
               <P3 className="mr-2">Invites this race</P3>
-              <Help color="#536471" />
+              <Help color={lightTextPrimary03} />
             </div>
           </Tooltip>
           <div className="d-flex flex-row align-items-center justify-content-between">
@@ -513,7 +515,7 @@ const UserInvitesTable = ({
             >
               <div className="mb-2 cursor-pointer d-flex align-items-center">
                 <Caption bold text={"EARNED"} className="mr-2" />
-                <Help color="#536471" />
+                <Help color={lightTextPrimary03} />
               </div>
             </Tooltip>
           </Table.Th>

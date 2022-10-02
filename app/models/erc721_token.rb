@@ -5,4 +5,8 @@ class Erc721Token < ApplicationRecord
     poap: "poap",
     nft: "nft"
   }
+
+  def erc_20?
+    false
+  end
 end

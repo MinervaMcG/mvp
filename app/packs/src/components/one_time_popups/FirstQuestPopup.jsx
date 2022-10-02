@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "src/components/design_system/button";
 import { patch } from "src/utils/requests";
 import { useWindowDimensionsHook } from "src/utils/window";
-import { H5, P2 } from "src/components/design_system/typography";
+import { P1, P2 } from "src/components/design_system/typography";
 
 import cx from "classnames";
 
@@ -36,17 +36,14 @@ const FirstQuestPopup = ({ userId }) => {
       contentClassName={mobile ? "h-100" : ""}
       fullscreen="true"
     >
-      <Modal.Header closeButton></Modal.Header>
-      <Modal.Body className="d-flex flex-column align-items-center justify-content-between pt-0 px-4 pb-4">
+      <Modal.Header closeButton className="mt-2 mx-2 mb-0 pb-0">
+        <P1 className="text-black mb-2 text-center" bold text="Earn rewards" />
+      </Modal.Header>
+      <Modal.Body className="d-flex flex-column justify-content-between mx-2 mb-2">
         {mobile && <div></div>}
         <div>
-          <H5
-            className="text-black mb-2 text-center"
-            bold
-            text="Earn rewards"
-          />
           <P2
-            className="text-primary-03 text-center"
+            className="text-primary-03"
             text="Now that you're set, it's time for your first quest. Complete the 'About' section
                   on your profile and connect your wallet to earn your first reward."
           />

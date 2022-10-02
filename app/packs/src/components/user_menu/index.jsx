@@ -98,7 +98,7 @@ const UserMenu = ({ user, toggleTheme, mode, onClickTransak, signOut }) => {
           <SignOut pathClassName="icon-dropdown-item" />
           <P2 bold text="Sign out" className="text-black ml-3" />
         </Dropdown.Item>
-        <Dropdown.Divider className="menu-divider mx-2 my-2" />
+        <Dropdown.Divider className="menu-divider mx-2 mt-2 mb-3" />
         {user.isTalent ? (
           <Button
             onClick={onClickInvites}
@@ -106,7 +106,7 @@ const UserMenu = ({ user, toggleTheme, mode, onClickTransak, signOut }) => {
             size="big"
             className="w-100 mb-2"
           >
-            <P2 bold text="Invites" className="permanent-text-white" />
+            <P2 bold text="Invites" className="bg-01" />
           </Button>
         ) : (
           <Button
@@ -115,11 +115,7 @@ const UserMenu = ({ user, toggleTheme, mode, onClickTransak, signOut }) => {
             size="big"
             className="w-100 mb-2"
           >
-            <P2
-              bold
-              text="Apply to Launch Token"
-              className="permanent-text-white"
-            />
+            <P2 bold text="Apply to Launch Token" className="bg-01" />
           </Button>
         )}
         <Button

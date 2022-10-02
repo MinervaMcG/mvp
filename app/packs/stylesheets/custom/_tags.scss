@@ -5,24 +5,25 @@
   align-items: center;
   justify-content: center;
   width: fit-content;
-  padding: 2px 8px;
-  border-radius: 4px;
-  background-color: $surface-hover;
+  padding: 6px 10px;
+  border-radius: 48px;
+  background-color: $light-surface-disable;
 
   &.primary {
-    background-color: $primary-200;
+    background-color: transparent;
   }
 
   &.secondary {
-    background-color: $primary-disabled;
+    background-color: $light-surface-disable;
   }
 }
 
 .dark-body .tag-container {
-  background-color: $gray-800;
+  background-color: $dark-surface-disable;
+  color: $dark-primary-text;
 
   &.secondary {
-    background-color: $primary-shade-01;
+    background-color: $dark-primary-shade-02;
   }
 }
 
@@ -32,12 +33,12 @@
   white-space: nowrap;
   align-items: center;
   width: fit-content;
-  padding: 0px 8px;
-  border-radius: 4px;
-  background-color: $gray;
+  padding: 6px 10px;
+  border-radius: 48px;
+  background-color: $light-text-primary-disable;
 
   &:hover {
-    background-color: $light-gray-200;
+    background-color: $light-surface-hover-02;
   }
 
   .close-tag {
@@ -46,47 +47,47 @@
     cursor: pointer;
 
     &:hover::after {
-      color: $gray-800;
+      color: $light-text-primary-01;
     }
 
     &:active::after {
-      color: $gray-primary;
+      color: $light-text-primary-disable;
     }
 
     &:after {
       content: "\00d7";
-      color: $gray-primary;
+      color: $light-text-primary-disable;
     }
   }
 }
 
 .dark-body .optional-tag-container {
-  background-color: $gray-400;
+  background-color: $dark-text-primary-04;
 
   &:hover {
-    background-color: $gray-300;
+    background-color: $dark-text-primary-03;
   }
 
   .close-tag {
     &:hover::after {
-      color: $white;
+      color: $dark-text-primary-01;
     }
 
     &:active::after {
-      color: $gray-200;
+      color: $dark-text-primary-02;
     }
 
     &:after {
       content: "\00d7";
-      color: $gray-200;
+      color: $dark-text-primary-02;
     }
   }
 }
 
 .tag-inside-dropdown {
-  background-color: $gray-surface-2 !important;
+  background-color: $light-surface-disable !important;
 }
 
 .dark-body .tag-inside-dropdown {
-  background-color: $surface-hover-02 !important;
+  background-color: $dark-surface-hover-02 !important;
 }

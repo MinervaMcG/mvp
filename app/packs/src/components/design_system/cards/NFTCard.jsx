@@ -26,7 +26,12 @@ const NFTCard = ({ imageUrl, address, tokenId, href, mode }) => {
               mode={mode}
               placement="top"
             >
-              <Button type="white-ghost" className="ml-2" onClick={copyAddress}>
+              <Button
+                type="white-ghost"
+                size="icon"
+                className="ml-2"
+                onClick={copyAddress}
+              >
                 <Copy color="currentColor" />
               </Button>
             </Tooltip>

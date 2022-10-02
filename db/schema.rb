@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_30_134506) do
+ActiveRecord::Schema.define(version: 2022_09_28_191125) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "blazer_audits", force: :cascade do |t|
@@ -81,7 +80,16 @@ ActiveRecord::Schema.define(version: 2022_08_30_134506) do
     t.string "bio"
     t.string "pitch"
     t.string "challenges"
+    t.text "image_data"
     t.index ["talent_id"], name: "index_career_goals_on_talent_id"
+  end
+
+  create_table "career_needs", force: :cascade do |t|
+    t.string "title", null: false
+    t.bigint "career_goal_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["career_goal_id"], name: "index_career_needs_on_career_goal_id"
   end
 
   create_table "chats", force: :cascade do |t|
@@ -157,6 +165,7 @@ ActiveRecord::Schema.define(version: 2022_08_30_134506) do
     t.datetime "last_sync_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "token_image_data"
     t.index ["user_id"], name: "index_erc20_tokens_on_user_id"
   end
 
@@ -175,6 +184,8 @@ ActiveRecord::Schema.define(version: 2022_08_30_134506) do
     t.datetime "last_sync_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "token_image_data"
+    t.text "description"
     t.index ["user_id"], name: "index_erc721_tokens_on_user_id"
   end
 
@@ -551,6 +562,7 @@ ActiveRecord::Schema.define(version: 2022_08_30_134506) do
   end
 
   add_foreign_key "career_goals", "talent"
+  add_foreign_key "career_needs", "career_goals"
   add_foreign_key "chats", "users", column: "receiver_id"
   add_foreign_key "chats", "users", column: "sender_id"
   add_foreign_key "comments", "posts"

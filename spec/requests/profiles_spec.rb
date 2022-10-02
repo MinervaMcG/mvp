@@ -23,7 +23,7 @@ RSpec.describe "Profiles", type: :request do
       it "assigns the correct profile to be passed to the view" do
         get_profile
 
-        expect(assigns(:profile)).to eq(ProfileBlueprint.render_as_json(talent, view: :normal))
+        expect(assigns(:talent)).to eq(TalentBlueprint.render_as_json(talent, view: :extended))
       end
     end
 

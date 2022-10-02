@@ -101,18 +101,17 @@ module Web3
       formatted_chain = chain.to_s.downcase
 
       return 1 if Web3::ApiProxy::ETH_CHAIN.include?(formatted_chain)
-      return 89 if Web3::ApiProxy::POLYGON_CHAIN.include?(formatted_chain)
-      return 44787 if Web3::ApiProxy::CELO_CHAIN.include?(formatted_chain)
+      return 137 if Web3::ApiProxy::POLYGON_CHAIN.include?(formatted_chain)
+      return 42220 if Web3::ApiProxy::CELO_CHAIN.include?(formatted_chain)
 
       raise UNknownChainIdError.new
     end
 
     def upsert_erc721_token(token_data, chain_id, type)
-      token = Erc721Token.find_or_create_by!(address: token_data[:address], user: user, nft_type: type, chain_id: chain_id)
+      token = Erc721Token.find_or_create_by!(address: token_data[:address], token_id: token_data[:token_id], user: user, nft_type: type, chain_id: chain_id)
       token.update!(
         name: token_data[:name],
         symbol: token_data[:symbol],
-        token_id: token_data[:token_id],
         url: token_data[:token_uri],
         metadata: token_data[:metadata],
         last_sync_at: current_time

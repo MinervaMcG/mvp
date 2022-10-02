@@ -1,13 +1,14 @@
 @import "../bootstrap/overrides";
 
 .portfolio-amounts-overview {
-  border-radius: 4px;
+  border-radius: 24px;
 }
 
 .dark-body .portfolio-amounts-overview {
-  background-color: $gray-900;
+  background-color: $dark-surface-01;
 }
 
 .light-body .portfolio-amounts-overview {
-  background-color: $bg-01;
+  background-color: $dark-text-primary-01;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.04);
 }

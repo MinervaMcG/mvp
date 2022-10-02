@@ -9,6 +9,7 @@ import { Check } from "../icons";
 import { H5, P2, P3 } from "../design_system/typography";
 import { put } from "../../utils/requests";
 import cx from "classnames";
+import { darkPositive } from "src/utils/colors.js";
 
 const ChangePasswordForm = ({
   password,
@@ -89,7 +90,7 @@ const ChangePasswordForm = ({
 
 const PasswordResetConfirmed = () => (
   <div className="d-flex flex-column align-items-center text-black">
-    <Check color="#1DB954" size={64} />
+    <Check color={darkPositive} size={64} />
     <H5 className="mt-6" text="Password Reset" bold />
     <P2 className="mt-2" text="Your password has been succesfully reset." />
     <a

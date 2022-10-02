@@ -83,6 +83,7 @@ const Login = (props) => {
         </form>
       </div>
       <LinkedinSignInButton
+        className="mt-3"
         clientId={linkedinClientId}
         redirectUri={linkedinRedirectUri}
       />

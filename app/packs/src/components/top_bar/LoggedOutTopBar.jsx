@@ -40,6 +40,7 @@ export const LoggedOutTopBar = ({}) => {
           />
           <Button
             type="white-subtle"
+            size="icon"
             onClick={simpleToggleTheme}
             className="text-black ml-2"
           >

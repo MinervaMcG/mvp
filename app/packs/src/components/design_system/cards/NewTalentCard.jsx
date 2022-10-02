@@ -13,6 +13,7 @@ import { Star, Polygon, Celo } from "src/components/icons";
 import { func } from "prop-types";
 import { Verified } from "../../icons";
 import { chainIdToName } from "src/onchain/utils";
+import { darkTextPrimary02, grayPrimary } from "src/utils/colors";
 
 const NewTalentCard = ({
   name,
@@ -66,7 +67,7 @@ const NewTalentCard = ({
 
   return (
     <div
-      className="talent-card"
+      className="talent-card profile-card"
       onMouseEnter={() => setShowUserDetails(true)}
       onMouseLeave={() => setShowUserDetails(false)}
     >
@@ -82,7 +83,9 @@ const NewTalentCard = ({
                   text={name}
                 />
                 {isVerified && (
-                  <Verified fill={mode == "light" ? "#9fa3a9" : "#ccced1"} />
+                  <Verified
+                    fill={mode == "light" ? grayPrimary : darkTextPrimary02}
+                  />
                 )}
               </div>
               <P2
@@ -126,7 +129,7 @@ const NewTalentCard = ({
                     />
                     {isVerified && (
                       <Verified
-                        fill={mode == "light" ? "#9fa3a9" : "#ccced1"}
+                        fill={mode == "light" ? grayPrimary : darkTextPrimary02}
                       />
                     )}
                   </div>

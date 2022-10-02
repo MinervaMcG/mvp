@@ -1,10 +1,7 @@
 import React, { useState, useMemo, useContext } from "react";
 import { useWindowDimensionsHook } from "../../utils/window";
-import {
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { Caret } from "src/components/icons";
 
 import ThemeContainer, { ThemeContext } from "src/contexts/ThemeContext";
 
@@ -76,7 +73,7 @@ const UpcomingTalents = ({ talents }) => {
               mode={theme.mode()}
               className="mr-2"
             >
-              <FontAwesomeIcon icon={faChevronLeft} size="sm" />
+              <Caret size={16} color="currentColor" className="rotate-90" />
             </Button>
             <Button
               onClick={slideRight}
@@ -84,7 +81,7 @@ const UpcomingTalents = ({ talents }) => {
               type="white-ghost"
               mode={theme.mode()}
             >
-              <FontAwesomeIcon icon={faChevronRight} size="sm" />
+              <Caret size={16} color="currentColor" className="rotate-270" />
             </Button>
           </div>
         )}

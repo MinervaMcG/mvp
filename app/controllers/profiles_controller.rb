@@ -6,9 +6,9 @@ class ProfilesController < ApplicationController
 
     CreateProfilePageVisitorJob.perform_later(ip: request.remote_ip, user_id: user.id)
 
-    @profile = ProfileBlueprint.render_as_json(
+    @talent = TalentBlueprint.render_as_json(
       talent,
-      view: :normal,
+      view: :extended,
       current_user_watchlist: current_user_watchlist,
       tags: user.tags.where(hidden: false)
     )

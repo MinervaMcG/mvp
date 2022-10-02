@@ -167,7 +167,7 @@ RSpec.shared_examples "a moralis client get nfts request" do
     expect(client_class).to have_received(:new)
     expect(client).to have_received(:retrieve_nfts).with(
       wallet_address: wallet_address,
-      chain: chain
+      chain: formatted_chain
     )
   end
 
@@ -523,18 +523,21 @@ RSpec.describe Web3::ApiProxy do
     context "when the chain matches ethereum network" do
       context "when the chain is eth" do
         let(:chain) { "eth" }
+        let(:formatted_chain) { "eth" }
 
         it_behaves_like "a moralis client get nfts request"
       end
 
       context "when the chain is 1" do
         let(:chain) { 1 }
+        let(:formatted_chain) { "0x1" }
 
         it_behaves_like "a moralis client get nfts request"
       end
 
       context "when the chain is 0x1" do
         let(:chain) { "0x1" }
+        let(:formatted_chain) { "0x1" }
 
         it_behaves_like "a moralis client get nfts request"
       end
@@ -545,18 +548,21 @@ RSpec.describe Web3::ApiProxy do
 
       context "when the chain is polygon" do
         let(:chain) { "polygon" }
+        let(:formatted_chain) { "polygon" }
 
         it_behaves_like "a moralis client get nfts request"
       end
 
       context "when the chain is 0x89" do
         let(:chain) { "0x89" }
+        let(:formatted_chain) { "0x89" }
 
         it_behaves_like "a moralis client get nfts request"
       end
 
       context "when the chain is 137" do
         let(:chain) { 137 }
+        let(:formatted_chain) { "0x89" }
 
         it_behaves_like "a moralis client get nfts request"
       end

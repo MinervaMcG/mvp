@@ -10,11 +10,11 @@
 .chat-search-icon {
   top: 10px;
   left: 10px;
-  color: $gray-primary;
+  color: $light-text-primary-disable;
 }
 
 .dark-body .chat-search-icon {
-  color: $gray-400;
+  color: $dark-text-primary-04;
 }
 
 .display-messages {
@@ -26,7 +26,7 @@
   border-radius: 4px;
 
   &:hover {
-    background-color: $gray-surface-2;
+    background-color: $light-surface-disable;
     text-decoration: none;
   }
 }
@@ -35,7 +35,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $surface-02;
+    background-color: $dark-surface-02;
     text-decoration: none;
   }
 }
@@ -46,18 +46,18 @@
 }
 
 .chat-user.active {
-  background-color: $surface-hover;
+  background-color: $light-surface-disable;
 }
 
 .dark-body .chat-user.active {
-  background-color: $gray-800;
+  background-color: $dark-surface-disable;
 }
 
 .chat-unread-count {
   width: 2em;
   min-width: 2em;
   height: 2em;
-  background-color: $primary;
+  background-color: $light-primary;
   color: white;
   text-align: center;
   border-radius: 50%;
@@ -76,16 +76,16 @@
 }
 
 .send-message-button {
-  color: $primary;
+  color: $light-primary;
 
   &:disabled {
-    color: $gray;
+    color: $light-text-primary-disable;
   }
 }
 
 .dark-body .send-message-button {
   &:disabled {
-    color: $gray-600;
+    color: $dark-surface-disable;
   }
 }
 

@@ -9,36 +9,36 @@
 
   &.primary {
     > * {
-      color: $primary !important;
+      color: $light-primary !important;
     }
 
     &:hover {
       > * {
-        color: $primary-link-hover !important;
+        color: $light-primary-hover !important;
       }
     }
 
     &.disabled {
       > * {
-        color: $primary-outline-disabled !important;
+        color: $light-text-primary-disable !important;
       }
     }
   }
 
   &.white {
     > * {
-      color: $gray-800 !important;
+      color: $light-text-primary-01 !important;
     }
 
     &:hover {
       > * {
-        color: $gray-400 !important;
+        color: $dark-text-primary-04 !important;
       }
     }
 
     &.disabled {
       > * {
-        color: $gray !important;
+        color: $light-text-primary-disable !important;
       }
     }
   }
@@ -46,53 +46,63 @@
 
 .dark-body .link-container {
   &.primary {
+    > * {
+      color: $dark-primary !important;
+    }
+
+    &:hover {
+      > * {
+        color: $dark-primary-hover !important;
+      }
+    }
+
     &.disabled {
       > * {
-        color: $primary-shade-01 !important;
+        color: $dark-text-primary-disable !important;
       }
     }
   }
 
   &.white {
     > * {
-      color: $white !important;
+      color: $dark-text-primary-01 !important;
     }
 
     &:hover {
       > * {
-        color: $gray-300 !important;
+        color: $dark-text-primary-03 !important;
       }
     }
 
     &.disabled {
       > * {
-        color: $gray-600 !important;
+        color: $dark-surface-disable !important;
       }
     }
   }
 }
 
 .paragraph-link {
-  color: $light-primary-01 !important;
+  color: $light-text-primary-01 !important;
   text-decoration: underline !important;
 
   &:hover {
-    color: $light-primary-03 !important;
+    color: $light-text-primary-03 !important;
   }
 
   &.disabled {
-    color: $light-primary-disabled !important;
+    color: $light-text-primary-disable !important;
   }
 }
 
 .dark-body .paragraph-link {
-  color: $white !important;
+  color: $dark-text-primary-01 !important;
 
   &:hover {
-    color: $gray-300 !important;
+    color: $dark-text-primary-03 !important;
   }
 
   &.disabled {
-    color: $dark-primary-disabled !important;
+    color: $dark-text-primary-disable !important;
   }
 }

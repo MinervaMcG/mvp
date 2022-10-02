@@ -1,5 +1,6 @@
 import React from "react";
 import { number, string } from "prop-types";
+import { black } from "src/utils/colors";
 
 const Moon = ({
   size,
@@ -60,7 +61,7 @@ const Moon = ({
 
 Moon.defaultProps = {
   size: 16,
-  color: "#000000",
+  color: black,
   fill: "none",
   viewBox: "0 0 16 16",
   className: "",

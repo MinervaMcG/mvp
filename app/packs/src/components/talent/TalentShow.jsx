@@ -32,6 +32,11 @@ import cx from "classnames";
 import Verified from "../icons/Verified";
 import { toast } from "react-toastify";
 import { ToastBody } from "src/components/design_system/toasts";
+import {
+  darkTextPrimary01,
+  darkTextPrimary02,
+  grayPrimary,
+} from "src/utils/colors";
 
 const TalentShow = ({
   admin,
@@ -250,7 +255,7 @@ const TalentShow = ({
         >
           <>
             Verify
-            <Verified className="ml-1" fill="#FFFFFF" />
+            <Verified className="ml-1" fill={darkTextPrimary01} />
           </>
         </Button>
       )}
@@ -544,7 +549,9 @@ const TalentShow = ({
               {sharedState.talent.verified && (
                 <Verified
                   className="mr-4"
-                  fill={theme.mode() == "light" ? "#9fa3a9" : "#ccced1"}
+                  fill={
+                    theme.mode() == "light" ? grayPrimary : darkTextPrimary02
+                  }
                 />
               )}
               {ticker() != "" && (

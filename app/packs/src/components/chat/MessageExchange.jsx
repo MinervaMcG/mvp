@@ -124,6 +124,7 @@ const MessageExchange = (props) => {
             <ThemedButton
               onClick={() => props.clearActiveUserId()}
               type="white-ghost"
+              size="icon"
               mode={mode}
               className="mx-2 p-2"
             >

@@ -15,6 +15,7 @@ import { H3, P1, P2 } from "src/components/design_system/typography";
 import TextInput from "src/components/design_system/fields/textinput";
 import Button from "src/components/design_system/button";
 import { useWindowDimensionsHook } from "src/utils/window";
+import { darkTextPrimary01, black } from "src/utils/colors";
 
 const StakeModal = ({
   show,
@@ -384,8 +385,8 @@ const StakeModal = ({
                               railsContext.disableSmartContracts == "true"
                             }
                             success={didAllowance}
-                            fillPrimary={"#FFF"}
-                            fillSecondary={"#000"}
+                            fillPrimary={darkTextPrimary01}
+                            fillSecondary={black}
                             opacity={"1"}
                           >
                             Approve
@@ -402,8 +403,8 @@ const StakeModal = ({
                             }
                             loading={stage == "Confirm"}
                             success={stage == "Verified"}
-                            fillPrimary={"#FFF"}
-                            fillSecondary={"#000"}
+                            fillPrimary={darkTextPrimary01}
+                            fillSecondary={black}
                             opacity={"1"}
                           >
                             Buy

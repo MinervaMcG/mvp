@@ -41,13 +41,13 @@
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 50px;
-  background-color: $gray;
+  background-color: $light-text-primary-disable;
   border: 4px solid rgba(0, 0, 0, 0);
   background-clip: padding-box;
 }
 
 .dark-body::-webkit-scrollbar-thumb {
-  background-color: $surface-hover-02;
+  background-color: $dark-surface-hover-02;
 }
 
 html {
@@ -62,14 +62,22 @@ body {
   overflow-y: overlay;
 }
 
+a {
+  color: $light-primary;
+}
+
+.dark-body a {
+  color: $dark-primary;
+}
+
 .dark-body {
   background-color: $dark-bg-01;
-  color: $white;
+  color: $dark-text-primary-01;
 }
 
 .light-body {
-  background-color: $bg-01;
-  color: $gray-900;
+  background-color: $light-bg-01;
+  color: $dark-surface-01;
 }
 
 @media (min-width: 992px) {

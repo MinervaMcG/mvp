@@ -66,7 +66,7 @@ Rails.application.routes.draw do
           resources :delete_account_tokens, module: "users", only: [:create]
 
           namespace :profile do
-            resources :web3, param: :token_id, controller: :web3, only: [:update]
+            resources :web3, controller: :web3, only: [:update]
 
             scope :web3 do
               get :tokens, to: "web3#tokens"

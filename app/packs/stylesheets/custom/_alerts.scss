@@ -1,61 +1,61 @@
 @import "../bootstrap/overrides";
 
 .alert {
-  background-color: $bg-01;
-  border: 1px solid $gray;
+  background-color: $light-bg-01;
+  border: 1px solid $light-text-primary-disable;
   box-sizing: border-box;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.06);
   border-radius: 4px;
   padding: 0.6rem;
 
   &.dark {
-    background: $gray-600;
+    background: $dark-surface-disable;
     border: 0;
     box-shadow: 0;
   }
 }
 
 .alert-success {
-  color: $positive;
+  color: $light-positive;
 
   &.dark {
-    color: $green-500;
+    color: $dark-positive;
   }
 }
 
 .alert-warning {
-  color: $warning;
+  color: $light-warning;
 
   &.dark {
-    color: $yellow-500;
+    color: $light-warning-tint-01;
   }
 }
 
 .alert-info {
-  color: $gray-800;
+  color: $light-text-primary-01;
 
   &.dark {
-    color: $white;
+    color: $dark-text-primary-01;
   }
 }
 
 .alert-critical {
-  color: $danger;
+  color: $dark-danger;
 
   &.dark {
-    color: $danger-tint-01;
+    color: $dark-danger-tint-01;
   }
 }
 
 .alert-dismissable .close,
 .alert-dismissible .close {
-  color: $gray-400;
+  color: $dark-text-primary-04;
   font-weight: 200;
   font-size: 1.5rem;
   text-shadow: none;
 
   &.dark {
-    color: $gray-300;
+    color: $dark-text-primary-03;
   }
 }
 
@@ -74,10 +74,10 @@
   font-size: 0.8rem;
   padding-right: 10px;
   margin-bottom: 0.5rem;
-  color: $gray-400;
+  color: $dark-text-primary-04;
 
   &.dark {
-    color: $gray-300;
+    color: $dark-text-primary-03;
   }
 }
 
@@ -85,5 +85,5 @@
   padding-top: 4px;
   font-size: 0.8rem;
   font-weight: 700;
-  color: $primary;
+  color: $light-primary;
 }

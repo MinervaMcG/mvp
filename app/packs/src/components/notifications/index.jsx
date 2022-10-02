@@ -124,6 +124,7 @@ const Notifications = ({ notifications, mode, hideBackground = false }) => {
                 <Button
                   onClick={() => notificationRead(notification)}
                   type="white-ghost"
+                  size="icon"
                   mode={mode}
                   className="text-left text-black p-0"
                 >

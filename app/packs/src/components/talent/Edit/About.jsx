@@ -27,6 +27,8 @@ import { getENSFromAddress } from "../../../onchain/utils";
 
 import { railsContextStore } from "src/contexts/state";
 
+import { lightTextPrimary03 } from "src/utils/colors";
+
 import cx from "classnames";
 
 import {
@@ -503,7 +505,7 @@ const About = (props) => {
       >
         <div className="w-100 mb-2 cursor-pointer d-flex align-items-center">
           <H5 className="mr-2 mb-0" text="Diversity & Inclusion" bold />
-          <Help color="#536471" />
+          <Help color={lightTextPrimary03} />
         </div>
       </Tooltip>
       <div className="d-flex flex-row w-100 justify-content-between mt-4 flex-wrap">

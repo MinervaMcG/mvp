@@ -7,7 +7,7 @@
 .registration-left-screen {
   width: 550px;
   background-image: url(images/tp-logo-opacity.png),
-    linear-gradient(145.69deg, $primary -1.68%, $primary-700 100.36%);
+    linear-gradient(145.69deg, $light-primary -1.68%, $primary-700 100.36%);
 }
 
 .registration-mobile {
@@ -15,7 +15,7 @@
 }
 
 .registration-mobile-menu {
-  background-color: $white;
+  background-color: $dark-text-primary-01;
 }
 
 .dark-body .registration-mobile-menu {
@@ -26,7 +26,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $primary;
+  background-color: $light-primary;
   height: 36px;
 }
 

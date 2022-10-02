@@ -1,37 +1,41 @@
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import Button from "src/components/design_system/button";
+import { P1, P2 } from "src/components/design_system/typography";
+import { TALENT_GUIDE } from "src/utils/constants";
+import { useWindowDimensionsHook } from "src/utils/window";
 
 import { patch } from "src/utils/requests";
 
 const TalentContent = () => (
   <>
-    <Modal.Header closeButton>
-      <Modal.Title className="px-4 pt-4">
-        🎉 Welcome to Talent Protocol!
-      </Modal.Title>
+    <Modal.Header closeButton className="mt-2 mx-2 mb-0 pb-0">
+      <P1 text="🎉 Welcome to Talent Protocol!" bold />
     </Modal.Header>
-    <Modal.Body>
-      <div className="d-flex flex-column w-100 p-4">
-        <p className="mx-3">
+    <Modal.Body className="d-flex flex-column justify-content-between mx-2 mb-2">
+      <div>
+        <P2 className="mb-1">
           Read this onboarding guide that will help you complete your profile,
           launch your token, and find your first supporters.
-        </p>
-        <p className="mx-3">
+        </P2>
+        <P2 className="mb-1">
           We're still in early beta, but already live on the Celo blockchain.
           Beta users like you have access to the $TAL token at a discounted
           price, and will be able to start earning rewards.
-        </p>
-        <p className="mx-3">
+        </P2>
+        <P2 className="mb-2">
           Thank you for being an early believer in the project.
-        </p>
-        <a
-          className="btn btn-primary mx-3"
-          href="https://talentprotocol.notion.site/Talent-Onboarding-Guide-4a7fcc0ede144f8296c418bb173e45ff"
-          target="self"
-        >
-          Check the Talent Guide
-        </a>
+        </P2>
       </div>
+      <a className="button-link" target="self" href={TALENT_GUIDE}>
+        <Button
+          size="big"
+          className="w-100 mt-6"
+          type="primary-default"
+          text="Check the Talent Guide"
+          onClick={() => null}
+        />
+      </a>
     </Modal.Body>
   </>
 );
@@ -70,6 +74,8 @@ const SupporterContent = () => (
 );
 
 const WelcomePopup = ({ talent, user_id }) => {
+  const { mobile } = useWindowDimensionsHook();
+
   const [show, setShow] = useState(true);
 
   const onClose = () => {
@@ -83,11 +89,12 @@ const WelcomePopup = ({ talent, user_id }) => {
   return (
     <Modal
       scrollable={true}
-      fullscreen={"md-down"}
       show={show}
-      centered
       onHide={onClose}
-      dialogClassName="remove-background"
+      centered
+      dialogClassName={mobile ? "mw-100 mh-100 m-0" : "remove-background"}
+      contentClassName={mobile ? "h-100" : ""}
+      fullscreen="true"
     >
       {talent ? <TalentContent /> : <SupporterContent />}
     </Modal>

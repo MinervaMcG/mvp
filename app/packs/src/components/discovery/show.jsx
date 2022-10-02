@@ -9,6 +9,7 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useWindowDimensionsHook } from "src/utils/window";
+import { lightTextPrimary03 } from "src/utils/colors";
 
 import {
   getSupporterCount,
@@ -148,7 +149,7 @@ const DiscoveryShow = ({ discoveryRow, talents, env }) => {
               placement="top"
             >
               <div className="cursor-pointer d-flex align-items-center">
-                <Help color="#536471" />
+                <Help color={lightTextPrimary03} />
               </div>
             </Tooltip>
           )}

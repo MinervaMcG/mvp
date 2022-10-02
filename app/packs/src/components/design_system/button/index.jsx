@@ -11,6 +11,7 @@ const Button = ({
   disabled,
   className,
   children,
+  Icon,
 }) => {
   const typeClassName = `${type}-button`;
 
@@ -26,6 +27,7 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
     >
+      {Icon}
       {text ? text : children}
     </button>
   );

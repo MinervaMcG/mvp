@@ -1,22 +1,33 @@
 import React from "react";
-import LinkedinSignIn from "images/linkedin-sign-in.png";
+import Linkedin from "images/linkedin.png";
+import Button from "src/components/design_system/button";
+import { useTheme } from "src/contexts/ThemeContext";
 
-const LinkedinSignInButton = ({
-  clientId,
-  redirectUri,
-}) => {
-  const baseAuthorizationUri = "https://www.linkedin.com/oauth/v2/authorization"
-  const scope = "r_liteprofile%20r_emailaddress"
+import cx from "classnames";
+
+const LinkedinSignInButton = ({ className, clientId, redirectUri }) => {
+  const { mode } = useTheme();
+
+  const baseAuthorizationUri =
+    "https://www.linkedin.com/oauth/v2/authorization";
+  const scope = "r_liteprofile%20r_emailaddress";
 
   const onClick = () => {
-    window.location.href = `${baseAuthorizationUri}?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`
-  }
+    window.location.href = `${baseAuthorizationUri}?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+  };
 
   return (
-    <div className="text-center">
-      <div className="my-2">or</div>
-      <img className="cursor-pointer" height={50} onClick={onClick} src={LinkedinSignIn} />
-    </div>
+    <Button
+      className={cx(
+        className,
+        "d-flex align-items-center justify-content-center"
+      )}
+      onClick={onClick}
+      type="white-outline"
+      size="extra-big"
+      text="Sign in with LinkedIn"
+      Icon={<img className="mr-2" height={16} src={Linkedin} />}
+    ></Button>
   );
 };
 

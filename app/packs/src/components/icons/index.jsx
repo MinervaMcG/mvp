@@ -44,6 +44,7 @@ export { default as Smile } from "src/components/icons/Smile";
 export { default as Support } from "src/components/icons/Support";
 export { default as Swap } from "src/components/icons/Swap";
 export { default as Talent } from "src/components/icons/Talent";
+export { default as Toolbox } from "src/components/icons/Toolbox";
 export { default as Typing } from "src/components/icons/Typing";
 export { default as Wallet } from "src/components/icons/Wallet";
 export { default as Bell } from "src/components/icons/Bell";

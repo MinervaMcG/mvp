@@ -42,6 +42,7 @@ class API::UpdateTalent
         new_profile_type: params[:profile_type],
         note: params[:note]
       )
+      Tasks::Update.new.call(type: "Tasks::ApplyTokenLaunch", user: user)
 
       if params[:profile_type] == "approved"
         talent.update!(public: true)

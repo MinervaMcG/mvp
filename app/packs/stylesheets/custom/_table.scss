@@ -13,17 +13,17 @@
 .talent-table {
   display: table;
   width: 100%;
-  color: $gray-800;
+  color: $light-text-primary-01;
 
   thead tr {
-    border-bottom: 1px solid $surface-hover;
+    border-bottom: 1px solid $light-surface-disable;
   }
 
   tbody tr {
-    border-bottom: 1px solid $surface-hover;
+    border-bottom: 1px solid $light-surface-disable;
 
     &:hover {
-      background-color: $surface-hover;
+      background-color: $light-surface-disable;
       cursor: pointer;
     }
   }
@@ -42,50 +42,50 @@
 }
 
 .dark-body .talent-table {
-  color: $white;
+  color: $dark-text-primary-01;
 
   thead tr {
-    border-bottom: 1px solid $gray-800;
+    border-bottom: 1px solid $dark-surface-disable;
   }
 
   tbody tr {
-    border-bottom: 1px solid $gray-800;
+    border-bottom: 1px solid $dark-surface-disable;
 
     &:hover {
-      background-color: $gray-900;
+      background-color: $dark-surface-01;
       cursor: pointer;
     }
   }
 }
 
 .wallet-id-text {
-  color: $gray-primary;
+  color: $light-text-primary-disable;
 }
 
 .progress {
-  background-color: $gray-surface-2;
+  background-color: $light-surface-disable;
 
   .bg-secondary {
-    background-color: $gray !important;
+    background-color: $light-text-primary-disable !important;
   }
 }
 
 .dark-body .progress {
-  background-color: $gray-800;
+  background-color: $dark-surface-disable;
 
   .bg-secondary {
-    background-color: $gray-400 !important;
+    background-color: $dark-text-primary-04 !important;
   }
 }
 
 // TODO need to find a more suitable place for these
 .star {
   stroke: none;
-  fill: $warning;
+  fill: $light-warning;
 }
 
 .star-outline {
-  stroke: $gray-primary;
+  stroke: $light-text-primary-disable;
 }
 
 .table-options-dropdown {

@@ -8,7 +8,6 @@ const Checkbox = ({
   checked,
   disabled,
   label,
-  mode,
   id,
   className,
   htmlFor,
@@ -23,8 +22,8 @@ const Checkbox = ({
       disabled={disabled}
       className={className}
     />
-    <span className={cx("checkmark", mode)}></span>
-    {label && <P3 className="label-checkbox" text={label} mode={mode} />}
+    <span className={cx("checkmark")}></span>
+    {label && <P3 className="label-checkbox" text={label} />}
     {children}
   </label>
 );
@@ -34,7 +33,6 @@ Checkbox.propTypes = {
   checked: bool,
   disabled: bool,
   label: string,
-  mode: oneOf(["light", "dark"]),
   id: string,
   className: string,
   htmlFor: string,
@@ -45,7 +43,6 @@ Checkbox.defaultProps = {
   checked: null,
   disabled: false,
   label: null,
-  mode: "light",
   id: null,
   className: null,
   htmlFor: null,

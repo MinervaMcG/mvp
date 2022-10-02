@@ -133,6 +133,7 @@ module Users
 
     def create_tasks(user)
       Tasks::PopulateForUser.new.call(user: user)
+      Tasks::Update.new.call(type: "Tasks::ApplyTokenLaunch", user: user)
     end
 
     def create_invite_used_notification(invite, user)

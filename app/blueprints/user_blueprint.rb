@@ -2,7 +2,7 @@ class UserBlueprint < Blueprinter::Base
   fields :id
 
   view :normal do
-    fields :username, :display_name, :profile_type
+    fields :username, :display_name, :profile_type, :created_at
     field :name do |user, _options|
       user.name
     end
@@ -17,6 +17,15 @@ class UserBlueprint < Blueprinter::Base
   view :extended do
     include_view :normal
     fields :email, :wallet_id, :profile_type, :admin?
+
+    field :invited_by do |user, _options|
+      if user.invited
+        {
+          name: user.invited.user.name,
+          profile_picture_url: user.invited.user.profile_picture_url
+        }
+      end
+    end
   end
 
   view :with_pictures do

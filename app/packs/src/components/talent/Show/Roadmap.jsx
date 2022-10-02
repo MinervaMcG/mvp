@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import {
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { Caret } from "src/components/icons";
 
 import RoadmapCard from "src/components/design_system/cards/Roadmap";
 import P1 from "src/components/design_system/typography/p1";
@@ -60,18 +57,20 @@ const Roadmap = ({ goals, width, mode, mobile }) => {
           <div className="d-flex flex-row">
             <Button
               type="white-subtle"
+              size="icon"
               onClick={slideLeft}
               disabled={disableLeft}
             >
-              <FontAwesomeIcon icon={faChevronLeft} size="sm" />
+              <Caret size={16} color="currentColor" className="rotate-90" />
             </Button>
             <Button
               type="white-subtle"
+              size="icon"
               className="ml-2"
               onClick={slideRight}
               disabled={disableRight}
             >
-              <FontAwesomeIcon icon={faChevronRight} size="sm" />
+              <Caret size={16} color="currentColor" className="rotate-270" />
             </Button>
           </div>
         )}

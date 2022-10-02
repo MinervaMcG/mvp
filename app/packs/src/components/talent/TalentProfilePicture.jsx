@@ -16,6 +16,8 @@ const TalentProfilePicture = ({
   blur,
   border,
   link,
+  borderRadius,
+  contained,
 }) => {
   const { mode } = useTheme();
 
@@ -37,6 +39,7 @@ const TalentProfilePicture = ({
   const roundPhoto = straight ? "" : "rounded-circle ";
   const blurPhoto = !blur ? "" : "blur-photo ";
   const borderPhoto = !border ? "" : "border-photo ";
+  const imageContained = !contained ? "image-fit" : "image-contain";
 
   const WithLink = ({ link, children }) =>
     link ? <a href={link}>{children}</a> : children;
@@ -46,11 +49,12 @@ const TalentProfilePicture = ({
       <img
         className={`${roundPhoto}${grey}${blurPhoto}${borderPhoto} ${
           className || ""
-        } image-fit`}
+        } ${imageContained}`}
         src={imgSrc()}
         width={width || height}
         height={height}
         alt="Profile Picture"
+        style={{ borderRadius: borderRadius }}
       />
     </WithLink>
   );

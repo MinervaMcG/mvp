@@ -17,7 +17,7 @@
 }
 
 .border-photo {
-  border: 8px solid $bg-01;
+  border: 8px solid $light-bg-01;
 }
 
 .dark-body .border-photo {
@@ -33,7 +33,7 @@
   }
 
   &::before {
-    background-color: $surface-01;
+    background-color: $light-surface-01;
     content: "";
     height: inherit;
     z-index: -1;
@@ -41,15 +41,15 @@
     position: absolute;
     top: 0;
     width: 100vw;
-    border-bottom: 1px solid $surface-01-hover;
+    border-bottom: 1px solid $light-surface-01;
     margin-top: 66px;
   }
 }
 
 .dark-body .talent-list-header {
   &::before {
-    background-color: $gray-900;
-    border-bottom: 1px solid $gray-800;
+    background-color: $dark-surface-01;
+    border-bottom: 1px solid $dark-surface-disable;
   }
 }
 
@@ -67,39 +67,40 @@
 }
 
 .active-talent-table-tab {
-  border-bottom: 1px solid $primary !important;
+  border-bottom: 1px solid $light-primary !important;
   font-weight: 700;
-  color: $gray-800 !important;
+  color: $light-text-primary-01 !important;
 }
 
 .dark-body .active-talent-table-tab {
-  color: $white !important;
+  border-bottom: 1px solid $dark-primary !important;
+  color: $dark-text-primary-01 !important;
 }
 
 .talent-table-tabs {
-  border-bottom: 1px solid $surface-hover;
+  border-bottom: 1px solid $light-surface-disable;
 }
 
 .dark-body .talent-table-tabs {
-  border-bottom: 1px solid $gray-800;
+  border-bottom: 1px solid $dark-surface-disable;
 }
 
 .talent-table-tab {
   cursor: pointer;
   padding-bottom: 16px;
   margin-right: 24px;
-  color: $gray-400;
+  color: $dark-text-primary-04;
 
   &:hover {
-    color: $gray-800;
+    color: $light-text-primary-01;
   }
 }
 
 .dark-body .talent-table-tab {
-  color: $gray-300;
+  color: $dark-text-primary-03;
 
   &:hover {
-    color: $white;
+    color: $dark-text-primary-01;
   }
 }
 
@@ -107,11 +108,11 @@
   pointer-events: none;
   padding-bottom: 16px;
   margin-right: 24px;
-  color: $gray;
+  color: $light-text-primary-disable;
 }
 
 .dark-body .disabled-talent-table-tab {
-  color: $surface-hover-02;
+  color: $dark-surface-hover-02;
 }
 
 .table-hover {
@@ -137,27 +138,31 @@
 }
 
 .edit-profile-public-check {
-  fill: $green-500;
-  color: $surface-hover;
+  fill: $dark-positive;
+  color: $light-surface-disable;
 }
 
 .dark-body .edit-profile-public-check {
-  color: $gray-800;
+  color: $dark-surface-disable;
 }
 
 .edit-profile-talent-progress-container-primary {
-  background: rgba($primary, 0.2);
-  color: $primary-400;
+  background: rgba($light-primary, 0.2);
+  color: $light-primary-hover;
+}
+
+.dark-body .edit-profile-talent-progress-container-primary {
+  background: $dark-secondary-shade-01;
 }
 
 .edit-profile-talent-progress-container-yellow {
-  background: rgba($yellow-500, 0.2);
-  color: $yellow-400;
+  background: rgba($light-warning-tint-01, 0.2);
+  color: $dark-warning-text;
 }
 
 .edit-profile-talent-progress-container-green {
-  background: rgba($green-500, 0.2);
-  color: $positive-shade-01;
+  background: rgba($dark-positive, 0.2);
+  color: $dark-positive-tint-01;
 }
 
 .edit-profile-talent-progress {
@@ -177,7 +182,7 @@
 }
 
 .dark-body .uppy-FileInput-input {
-  color: $white;
+  color: $dark-text-primary-01;
 }
 
 .light-body .uppy-FileInput-input {
@@ -185,13 +190,23 @@
 }
 
 .uppy-FileInput-btn {
-  background-color: $primary;
-  color: $white;
-  border: 1px solid $primary;
-  border-radius: 4px;
+  background-color: $light-primary;
+  color: $dark-text-primary-01;
+  border: 1px solid $light-primary;
+  border-radius: 24px;
   font-weight: 700;
   &:hover {
-    background: rgba($primary, 0.8);
+    background: rgba($light-primary, 0.8);
+  }
+}
+
+.dark-body .uppy-FileInput-btn {
+  color: $dark-bg-01;
+  background-color: $dark-primary !important;
+  border: 1px solid $dark-primary;
+
+  &:hover {
+    background-color: $dark-primary-hover !important;
   }
 }
 

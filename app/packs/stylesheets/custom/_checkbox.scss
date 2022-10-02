@@ -7,7 +7,7 @@
   cursor: pointer;
 
   &:hover input ~ .checkmark {
-    border: 1px solid $primary;
+    border: 1px solid $light-primary;
   }
 
   &:hover input:checked ~ .checkmark {
@@ -24,7 +24,7 @@
     left: 0;
     height: 16px;
     width: 16px;
-    border: 1px solid $gray-300;
+    border: 1px solid $light-text-primary-disable;
     border-radius: 4px;
 
     &:after {
@@ -46,76 +46,90 @@
 
   input:disabled {
     ~ .checkmark {
-      &.light {
-        border: 1px solid $gray-surface-2;
-      }
-
-      &.dark {
-        border: 1px solid $gray-600;
-      }
+      border: 1px solid $light-surface-disable;
     }
 
     ~ .label-checkbox {
-      &.light {
-        color: $gray-surface-2;
-      }
-
-      &.dark {
-        color: $gray-600;
-      }
+      color: $light-surface-disable;
     }
   }
 
   input:checked {
     &:disabled {
       ~ .checkmark {
-        &.light {
-          border: none;
-          background-color: $primary-disabled;
+        border: none;
+        background-color: $light-surface-disable;
 
-          &:after {
-            left: 5px;
-            top: 2px;
-            width: 5px;
-            height: 10px;
-            border: solid $primary-outline-disabled;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-          }
-
-          &::after {
-            display: block;
-          }
+        &:after {
+          left: 5px;
+          top: 2px;
+          width: 5px;
+          height: 10px;
+          border: solid $light-text-primary-disable;
+          border-width: 0 2px 2px 0;
+          transform: rotate(45deg);
         }
 
-        &.dark {
-          border: none;
-          background-color: $primary-light;
-
-          &:after {
-            left: 5px;
-            top: 2px;
-            width: 5px;
-            height: 10px;
-            border: solid $gray-600;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-          }
-
-          &::after {
-            display: block;
-          }
+        &::after {
+          display: block;
         }
       }
     }
 
     ~ .checkmark {
       border: none;
-      background-color: $primary;
+      background-color: $light-primary;
 
       &::after {
         display: block;
       }
+    }
+  }
+}
+
+.dark-body .container-checkbox {
+  .checkmark {
+    border: 1px solid $dark-text-primary-disable;
+
+    &:after {
+      border: solid $dark-bg-01;
+      left: 5px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+
+  &:hover input ~ .checkmark {
+    border: 1px solid $dark-primary;
+  }
+
+  input:disabled {
+    ~ .checkmark {
+      border: 1px solid $dark-surface-disable;
+    }
+
+    ~ .label-checkbox {
+      color: $dark-surface-disable;
+    }
+  }
+
+  input:checked {
+    &:disabled {
+      ~ .checkmark {
+        background-color: $dark-primary;
+
+        &:after {
+          border: solid $dark-surface-disable;
+        }
+      }
+    }
+
+    ~ .checkmark {
+      background-color: $dark-primary;
+      border: 1px solid $dark-primary;
     }
   }
 }

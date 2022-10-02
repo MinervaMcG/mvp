@@ -1,11 +1,11 @@
 import React from "react";
+import { darkPrimary } from "src/utils/colors";
 
 const Icon = (props) => {
   return (
     <svg
       width={props.width ? props.width : "172"}
       height={props.height ? props.height : "35"}
-      height="35"
       viewBox="0 0 250 35"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +66,7 @@ const Icon = (props) => {
           fillRule="evenodd"
           clipRule="evenodd"
           d="M6.2 0.799988L0 2.09999V6.19999V12.4L26 6.99999V0.799988L7.8 4.59999C7 4.79999 6.2 4.19999 6.2 3.29999V0.799988ZM6.2 21.4C6.2 21 6.5 20.7 6.9 20.6L26 16.6V10.4L0 15.9V21.3V21.4V21.5C0.1 28.6 5.9 34.4 13 34.4C20.1 34.4 25.9 28.7 26 21.5V21.4V20L19.8 21.3V21.4C19.8 25.2 16.8 28.2 13 28.2C9.2 28.2 6.2 25.2 6.2 21.4Z"
-          fill="#7A55FF"
+          fill={darkPrimary}
         />
       </g>
       <defs>

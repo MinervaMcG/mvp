@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { P2 } from "src/components/design_system/typography";
 import { CheckBold } from "src/components/icons";
+import { lightPrimary, darkPrimary, darkPositive } from "src/utils/colors.js";
+import ThemeContainer, { useTheme } from "src/contexts/ThemeContext";
 
 const ProgressCircle = ({
   id,
@@ -10,6 +12,8 @@ const ProgressCircle = ({
   allTasks,
   done = false,
 }) => {
+  const { mode } = useTheme();
+
   const setProgress = (circle, progress) => {
     const radius = circle.r.baseVal.value;
     const circumference = radius * 2 * Math.PI;
@@ -34,7 +38,11 @@ const ProgressCircle = ({
   return (
     <div className="whole-ring" id={`circle-${id}`}>
       {done ? (
-        <CheckBold className="position-absolute" color="#1DB954" size={21} />
+        <CheckBold
+          className="position-absolute"
+          color={darkPositive}
+          size={21}
+        />
       ) : (
         <div className="d-flex position-absolute">
           <P2 className="text-black" bold text={`${completedTasks}`} />
@@ -54,7 +62,13 @@ const ProgressCircle = ({
         />
         <circle
           className="progress-ring"
-          stroke={progress === 1 ? "#1DB954" : "#7A55FF"}
+          stroke={
+            progress === 1
+              ? darkPositive
+              : mode() == "dark"
+              ? darkPrimary
+              : lightPrimary
+          }
           strokeWidth="3"
           fill="transparent"
           r={width / 2}
@@ -66,4 +80,10 @@ const ProgressCircle = ({
   );
 };
 
-export default ProgressCircle;
+export default (props, _railsContext) => {
+  return (
+    <ThemeContainer>
+      <ProgressCircle {...props} />
+    </ThemeContainer>
+  );
+};

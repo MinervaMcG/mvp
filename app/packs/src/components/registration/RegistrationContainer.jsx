@@ -4,7 +4,7 @@ import ThemeContainer, { useTheme } from "../../contexts/ThemeContext";
 import RegistrationStaticScreen from "./RegistrationStaticScreen";
 import Button from "../design_system/button";
 import { Sun, Moon, Padlock, LogoWord } from "../icons";
-import { P3 } from "../design_system/typography";
+import { darkPrimary } from "src/utils/colors";
 import cx from "classnames";
 
 const RegistrationContainer = ({ children }) => {
@@ -16,6 +16,7 @@ const RegistrationContainer = ({ children }) => {
       {!mobile && (
         <>
           <Button
+            size="icon"
             type="white-ghost"
             mode={mode()}
             onClick={simpleToggleTheme}
@@ -33,12 +34,13 @@ const RegistrationContainer = ({ children }) => {
         <div className="registration-mobile-menu position-fixed z-index-1 text-black w-100">
           <div className="d-flex justify-content-between px-4 pt-4 pb-2">
             <LogoWord
-              logoFill="#7a55ff"
+              logoFill={darkPrimary}
               textFill="currentColor"
               viewBox="0 0 250 20"
             />
             {theme === "light-body" && (
               <Button
+                size="icon"
                 type="white-ghost"
                 mode={mode()}
                 onClick={simpleToggleTheme}
@@ -49,6 +51,7 @@ const RegistrationContainer = ({ children }) => {
             )}
             {theme === "dark-body" && (
               <Button
+                size="icon"
                 type="white-ghost"
                 mode={mode()}
                 onClick={simpleToggleTheme}
@@ -59,7 +62,7 @@ const RegistrationContainer = ({ children }) => {
             )}
           </div>
           {/* <div className="url-verification-container">
-            <Padlock size={16} color="#1db954" />
+            <Padlock size={16} color={darkPositive} />
             <P3 className="text-black mx-1" text="URL Verification:" bold />
             <P3 className="text-green-500" text="https://" />
             <P3 className="text-black" text="beta.talentprotocol.com" />

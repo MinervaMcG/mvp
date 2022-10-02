@@ -1,0 +1,16 @@
+export const lightPrimary = "#7857ed";
+export const darkPrimary = "#bbed55";
+export const lightTextPrimary01 = "#1c2126";
+export const darkTextPrimary01 = "#ffffff";
+export const darkTextPrimary02 = "#CCCED1";
+export const lightTextPrimary03 = "#536471";
+export const lightTextPrimary04 = "#697f8f";
+export const darkTextPrimary04 = "#71767b";
+export const darkPositive = "#1DB954";
+export const darkBg01 = "#131415";
+export const black = "#000000";
+export const lightSurfaceHover = "#EBEDF0";
+export const darkSurfaceHover = "#2D2F32";
+export const warning = "#FFD166";
+export const danger = "#FF2222";
+export const grayPrimary = "#9fa3a9";

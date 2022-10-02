@@ -17,6 +17,7 @@ import Table from "src/components/design_system/table";
 import Caption from "src/components/design_system/typography/caption";
 import Tag from "src/components/design_system/tag";
 import ApplyToLaunchTokenModal from "src/components/design_system/modals/ApplyToLaunchTokenModal";
+import { lightTextPrimary03 } from "src/utils/colors";
 
 const InviteHeader = ({ investorId, username }) => {
   const [showApplyToLaunchTokenModal, setShowApplyToLaunchTokenModal] =
@@ -111,7 +112,7 @@ const Overview = ({ inviteType, invites }) => {
 
   return (
     <div className="d-flex flex-column mt-5">
-      <div className="mx-4 mx-lg-0 py-6 d-flex flex-column flex-lg-row justify-content-between overview-section rounded-sm">
+      <div className="mx-4 mx-lg-0 py-6 d-flex flex-column flex-lg-row justify-content-between overview-section">
         <div className="d-flex flex-column mx-4 mb-4 mb-lg-0">
           <div className="d-flex flex-column">
             <P3 className="mb-2">{`${
@@ -132,7 +133,7 @@ const Overview = ({ inviteType, invites }) => {
               >
                 <div className="mb-2 cursor-pointer d-flex align-items-center">
                   <P3 className="mr-2">{`${inviteType} Invites Available`}</P3>
-                  <Help color="#536471" />
+                  <Help color={lightTextPrimary03} />
                 </div>
               </Tooltip>
             ) : (
@@ -153,6 +154,7 @@ const Overview = ({ inviteType, invites }) => {
             >
               <Button
                 type="white-ghost"
+                size="icon"
                 className="ml-2 text-primary"
                 onClick={copyCode}
               >
@@ -172,6 +174,7 @@ const Overview = ({ inviteType, invites }) => {
             >
               <Button
                 type="white-ghost"
+                size="icon"
                 className="ml-2 text-primary"
                 onClick={copyLink}
               >
@@ -418,7 +421,7 @@ const Invites = ({
           style={{ width: "fit-content" }}
         >
           <H4 bold className="mr-2 d-inline" text="Invite Your Friends"></H4>
-          <Help color="#536471" className="cursor-pointer" />
+          <Help color={lightTextPrimary03} className="cursor-pointer" />
         </div>
       </Tooltip>
       <Overview inviteType="User" invites={supporterInvites} />
@@ -436,7 +439,7 @@ const Invites = ({
               style={{ width: "fit-content" }}
             >
               <H4 bold className="mr-2 d-inline" text="Talent Invite"></H4>
-              <Help color="#536471" className="cursor-pointer" />
+              <Help color={lightTextPrimary03} className="cursor-pointer" />
             </div>
           </Tooltip>
           <Overview inviteType="Talent" invites={talentInvites} />

@@ -121,6 +121,7 @@ const DiscoveryRows = ({ discoveryRows, updateFollow, env }) => {
                       onClick={() => slideLeft(row.title, row.talents)}
                       disabled={disableLeft(row.title)}
                       type="white-ghost"
+                      size="icon"
                       className="mr-2"
                     >
                       <Caret
@@ -133,6 +134,7 @@ const DiscoveryRows = ({ discoveryRows, updateFollow, env }) => {
                       onClick={() => slideRight(row.title, row.talents)}
                       disabled={disableRight(row.title, row.talents)}
                       type="white-ghost"
+                      size="icon"
                     >
                       <Caret
                         size={16}

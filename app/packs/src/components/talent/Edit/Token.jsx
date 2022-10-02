@@ -16,7 +16,7 @@ import Button from "src/components/design_system/button";
 import TokenDetails from "src/components/talent/Show/TokenDetails";
 import Caption from "src/components/design_system/typography/caption";
 import ChainSelectionDropdown from "src/components/design_system/dropdowns/chain_selection_dropdown";
-import Link from "src/components/design_system/link";
+import ParagraphLink from "src/components/design_system/link/ParagraphLink";
 import {
   ArrowRight,
   ArrowLeft,
@@ -439,9 +439,7 @@ const Token = (props) => {
         <H5 className="w-100 text-left" text={ticker} bold />
         <P2 className="w-100 text-left" mode={mode}>
           You can see all your token activity on your{" "}
-          <a href="/portfolio" target="_blank">
-            portfolio
-          </a>
+          <ParagraphLink text="portfolio" href="/portfolio" target="_blank" />
         </P2>
         <TokenDetails
           ticker={token.ticker}

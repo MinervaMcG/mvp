@@ -307,7 +307,7 @@ RSpec.describe Web3::RefreshUserTokens do
       end
 
       context "when one of the nfts was already imported" do
-        let!(:existing_nft) { create :erc721_token, address: "ccc", nft_type: "nft", chain_id: 1, show: true, user: user }
+        let!(:existing_nft) { create :erc721_token, address: "ccc", token_id: "5", nft_type: "nft", chain_id: 1, show: true, user: user }
 
         it "only creates one new nft in the database" do
           expect { refresh_user_tokens }.to change(Erc721Token, :count).from(1).to(2)
@@ -400,7 +400,7 @@ RSpec.describe Web3::RefreshUserTokens do
     end
 
     context "when the nft was already imported" do
-      let!(:existing_nft) { create :erc721_token, address: "eee", nft_type: "poap", chain_id: 100, show: true, user: user }
+      let!(:existing_nft) { create :erc721_token, address: "eee", token_id: "10", nft_type: "poap", chain_id: 100, show: true, user: user }
 
       it "does not create a new nft in the database" do
         expect { refresh_user_tokens }.not_to change(Erc721Token, :count)

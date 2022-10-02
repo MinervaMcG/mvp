@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Spinner, Check } from "../icons";
-import { H5, P2 } from "../design_system/typography";
+import { Spinner, Check } from "src/components/icons";
+import { H5, P2 } from "src/components/design_system/typography";
 
-import { post } from "../../utils/requests";
-import Button from "../design_system/button";
-import Link from "../design_system/link";
+import { post } from "src/utils/requests";
+import Button from "src/components/design_system/button";
+import Link from "src/components/design_system/link";
+
+import { lightPrimary, darkPrimary } from "src/utils/colors.js";
+import { useTheme } from "src/contexts/ThemeContext";
 
 const ProcessingUser = ({ themePreference }) => (
   <>
@@ -22,7 +25,7 @@ const ProcessingUser = ({ themePreference }) => (
   </>
 );
 
-const UserCreated = ({ themePreference, sendConfirmationEmail }) => (
+const UserCreated = ({ themePreference, sendConfirmationEmail, mode }) => (
   <>
     <H5
       className="mb-1"
@@ -31,7 +34,7 @@ const UserCreated = ({ themePreference, sendConfirmationEmail }) => (
       mode={themePreference}
     />
     <P2 className="mb-6" text="We've just sent you a confirmation email" />
-    <Check color="#1DB954" size={64} />
+    <Check color={mode() == "dark" ? darkPrimary : lightPrimary} size={64} />
     <p className="p2 text-black mt-6">
       Didn't received an email?{" "}
       <button
@@ -88,6 +91,8 @@ const ProcessFlow = ({
   captcha,
   themePreference,
 }) => {
+  const { mode } = useTheme();
+
   const [userCreated, setUserCreated] = useState(false);
   const [userId, setUserId] = useState(null);
   const [requesting, setRequesting] = useState(false);
@@ -137,6 +142,7 @@ const ProcessFlow = ({
         <UserCreated
           themePreference={themePreference}
           sendConfirmationEmail={sendConfirmationEmail}
+          mode={mode}
         />
       )}
       <ConfirmationEmailModal

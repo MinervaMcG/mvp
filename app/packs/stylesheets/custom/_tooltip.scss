@@ -1,77 +1,77 @@
 @import "../colors";
 
 .talent-tooltip {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 4px 12px;
-    border-radius: 4px;
-    background-color: $gray-600;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background-color: $light-text-primary-02;
 
-    &[x-placement=bottom] > .arrow::after {
-        border-bottom-color: $gray-600;
-    }
+  &[x-placement="bottom"] > .arrow::after {
+    border-bottom-color: $light-text-primary-02;
+  }
 
-    &[x-placement=top] > .arrow::after {
-        border-top-color: $gray-600;
-    }
+  &[x-placement="top"] > .arrow::after {
+    border-top-color: $light-text-primary-02;
+  }
 
-    &[x-placement=left] > .arrow::after {
-        border-left-color: $gray-600;
-    }
+  &[x-placement="left"] > .arrow::after {
+    border-left-color: $light-text-primary-02;
+  }
 
-    &[x-placement=right] > .arrow::after {
-        border-right-color: $gray-600;
-    }
+  &[x-placement="right"] > .arrow::after {
+    border-right-color: $light-text-primary-02;
+  }
 
-    .tooltip-title {
-        color: $gray-primary;
-        text-align: center;
-        margin-bottom: 2px;
-        margin-top: 4px !important;
-        margin-left: 12px;
-        margin-right: 12px;
-    }
+  .tooltip-title {
+    color: $light-text-primary-disable;
+    text-align: center;
+    margin-bottom: 2px;
+    margin-top: 4px !important;
+    margin-left: 12px;
+    margin-right: 12px;
+  }
 
-    .tooltip-body {
-        color: $white !important;
-        text-align: center;
-        margin-bottom: 0px;
-    }
+  .tooltip-body {
+    color: $dark-text-primary-01 !important;
+    text-align: center;
+    margin-bottom: 0px;
+  }
 }
 
 .dark-body .talent-tooltip {
-    background-color: $white;
+  background-color: $dark-text-primary-01;
 
-    &[x-placement=bottom] > .arrow::after {
-        border-bottom-color: $white;
-    }
+  &[x-placement="bottom"] > .arrow::after {
+    border-bottom-color: $dark-text-primary-01;
+  }
 
-    &[x-placement=top] > .arrow::after {
-        border-top-color: $white;
-    }
+  &[x-placement="top"] > .arrow::after {
+    border-top-color: $dark-text-primary-01;
+  }
 
-    &[x-placement=left] > .arrow::after {
-        border-left-color: $white;
-    }
+  &[x-placement="left"] > .arrow::after {
+    border-left-color: $dark-text-primary-01;
+  }
 
-    &[x-placement=right] > .arrow::after {
-        border-right-color: $white;
-    }
+  &[x-placement="right"] > .arrow::after {
+    border-right-color: $dark-text-primary-01;
+  }
 
-    .tooltip-title {
-        color: $gray-300;
-        text-align: center;
-        margin-bottom: 2px;
-        margin-top: 4px !important;
-        margin-left: 12px;
-        margin-right: 12px;
-    }
+  .tooltip-title {
+    color: $dark-text-primary-03;
+    text-align: center;
+    margin-bottom: 2px;
+    margin-top: 4px !important;
+    margin-left: 12px;
+    margin-right: 12px;
+  }
 
-    .tooltip-body {
-        color: $gray-900 !important;
-        text-align: center;
-        margin-bottom: 0px;
-    }
+  .tooltip-body {
+    color: $dark-surface-01 !important;
+    text-align: center;
+    margin-bottom: 0px;
+  }
 }

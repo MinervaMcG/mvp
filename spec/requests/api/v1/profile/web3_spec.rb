@@ -16,13 +16,20 @@ RSpec.describe "Web3", type: :request do
     let(:address) { SecureRandom.hex }
     let(:chain_id) { 1 }
 
-    subject(:update_token) { put api_v1_user_profile_web3_path(user_id: current_user.id, token_id: token_id, params: params, as: current_user) }
+    subject(:update_token) { put api_v1_user_profile_web3_path(user_id: current_user.id, id: token_id, params: params, as: current_user) }
 
     let(:params) do
       {
         address: address,
-        chain_id: chain_id
+        chain_id: chain_id,
+        show: true
       }
+    end
+
+    it "returns a successful response" do
+      update_token
+
+      expect(response).to have_http_status(:ok)
     end
 
     it "changes the token show" do
@@ -61,7 +68,7 @@ RSpec.describe "Web3", type: :request do
       it "only returns tokens of the user for that specific chain" do
         get_tokens
 
-        expect(json).to eq [
+        expect(json[:tokens]).to eq [
           {
             id: token_1.id,
             address: token_1.address,
@@ -84,7 +91,7 @@ RSpec.describe "Web3", type: :request do
       it "only returns tokens of the user for all chains" do
         get_tokens
 
-        expect(json).to eq [
+        expect(json[:tokens]).to eq [
           {
             id: token_1.id,
             address: token_1.address,
@@ -134,7 +141,7 @@ RSpec.describe "Web3", type: :request do
       it "only returns nfts of the user for that specific chain" do
         get_nfts
 
-        expect(json).to eq [
+        expect(json[:tokens]).to eq [
           {
             id: token_1.id,
             address: token_1.address,
@@ -142,7 +149,9 @@ RSpec.describe "Web3", type: :request do
             symbol: token_1.symbol,
             chain_id: token_1.chain_id,
             url: token_1.url,
-            image_url: nil,
+            blockchain_image_url: nil,
+            local_image_url: nil,
+            description: nil,
             token_id: token_1.token_id,
             amount: token_1.amount,
             show: token_1.show
@@ -157,7 +166,7 @@ RSpec.describe "Web3", type: :request do
       it "returns nfts of the user for all chains" do
         get_nfts
 
-        expect(json).to eq [
+        expect(json[:tokens]).to eq [
           {
             id: token_1.id,
             address: token_1.address,
@@ -165,7 +174,9 @@ RSpec.describe "Web3", type: :request do
             symbol: token_1.symbol,
             chain_id: token_1.chain_id,
             url: token_1.url,
-            image_url: nil,
+            blockchain_image_url: nil,
+            local_image_url: nil,
+            description: nil,
             token_id: token_1.token_id,
             amount: token_1.amount,
             show: token_1.show
@@ -177,7 +188,9 @@ RSpec.describe "Web3", type: :request do
             symbol: token_3.symbol,
             chain_id: token_3.chain_id,
             url: token_3.url,
-            image_url: nil,
+            blockchain_image_url: nil,
+            local_image_url: nil,
+            description: nil,
             token_id: token_3.token_id,
             amount: token_3.amount,
             show: token_3.show
@@ -188,75 +201,48 @@ RSpec.describe "Web3", type: :request do
   end
 
   describe "#poaps" do
-    subject(:get_poaps) { get api_v1_user_profile_poaps_path(user_id: current_user.id, params: params, as: current_user) }
+    subject(:get_poaps) { get api_v1_user_profile_poaps_path(user_id: current_user.id, as: current_user) }
 
-    let(:chain_id) { 1 }
+    let(:chain_id) { 100 }
 
     let!(:token_1) { create :erc721_token, user: current_user, chain_id: chain_id, nft_type: "poap" }
     let!(:token_2) { create :erc721_token, user: create(:user), chain_id: chain_id, nft_type: "poap" }
-    let!(:token_3) { create :erc721_token, user: current_user, chain_id: 8000, nft_type: "poap" }
+    let!(:token_3) { create :erc721_token, user: current_user, chain_id: chain_id, nft_type: "poap" }
     let!(:token_4) { create :erc721_token, user: current_user, chain_id: chain_id, nft_type: "nft" }
 
-    context "when a chain id is passed" do
-      let(:params) do
+    it "only returns poaps of the user" do
+      get_poaps
+
+      expect(json[:tokens]).to eq [
         {
-          chain_id: chain_id
+          id: token_1.id,
+          address: token_1.address,
+          name: token_1.name,
+          symbol: token_1.symbol,
+          chain_id: token_1.chain_id,
+          blockchain_image_url: nil,
+          local_image_url: nil,
+          description: nil,
+          url: token_1.url,
+          token_id: token_1.token_id,
+          amount: token_1.amount,
+          show: token_1.show
+        },
+        {
+          id: token_3.id,
+          address: token_3.address,
+          name: token_3.name,
+          symbol: token_3.symbol,
+          chain_id: token_3.chain_id,
+          blockchain_image_url: nil,
+          local_image_url: nil,
+          description: nil,
+          url: token_3.url,
+          token_id: token_3.token_id,
+          amount: token_3.amount,
+          show: token_3.show
         }
-      end
-
-      it "only returns poaps of the user for that specific chain" do
-        get_poaps
-
-        expect(json).to eq [
-          {
-            id: token_1.id,
-            address: token_1.address,
-            name: token_1.name,
-            symbol: token_1.symbol,
-            chain_id: token_1.chain_id,
-            image_url: nil,
-            url: token_1.url,
-            token_id: token_1.token_id,
-            amount: token_1.amount,
-            show: token_1.show
-          }
-        ]
-      end
-    end
-
-    context "when a chain id is not passed" do
-      let(:params) { {} }
-
-      it "returns poaps of the user for all chains" do
-        get_poaps
-
-        expect(json).to eq [
-          {
-            id: token_1.id,
-            address: token_1.address,
-            name: token_1.name,
-            symbol: token_1.symbol,
-            chain_id: token_1.chain_id,
-            url: token_1.url,
-            image_url: nil,
-            token_id: token_1.token_id,
-            amount: token_1.amount,
-            show: token_1.show
-          },
-          {
-            id: token_3.id,
-            address: token_3.address,
-            name: token_3.name,
-            symbol: token_3.symbol,
-            chain_id: token_3.chain_id,
-            url: token_3.url,
-            image_url: nil,
-            token_id: token_3.token_id,
-            amount: token_3.amount,
-            show: token_3.show
-          }
-        ]
-      end
+      ]
     end
   end
 
@@ -290,7 +276,7 @@ RSpec.describe "Web3", type: :request do
     it "only returns tokens of the user for that specific chain" do
       refresh_tokens
 
-      expect(json).to eq [
+      expect(json[:tokens]).to eq [
         {
           id: token_1.id,
           address: token_1.address,
@@ -338,7 +324,7 @@ RSpec.describe "Web3", type: :request do
     it "only returns nfts of the user for that specific chain" do
       refresh_nfts
 
-      expect(json).to eq [
+      expect(json[:tokens]).to eq [
         {
           id: token_1.id,
           address: token_1.address,
@@ -346,7 +332,9 @@ RSpec.describe "Web3", type: :request do
           symbol: token_1.symbol,
           chain_id: token_1.chain_id,
           url: token_1.url,
-          image_url: nil,
+          blockchain_image_url: nil,
+          local_image_url: nil,
+          description: nil,
           token_id: token_1.token_id,
           amount: token_1.amount,
           show: token_1.show
@@ -356,7 +344,7 @@ RSpec.describe "Web3", type: :request do
   end
 
   describe "#refresh_poaps" do
-    let(:chain_id) { 1 }
+    let(:chain_id) { 100 }
 
     let(:params) do
       {
@@ -368,7 +356,7 @@ RSpec.describe "Web3", type: :request do
 
     let!(:token_1) { create :erc721_token, user: current_user, chain_id: chain_id, nft_type: "poap" }
     let!(:token_2) { create :erc721_token, user: create(:user), chain_id: chain_id, nft_type: "poap" }
-    let!(:token_3) { create :erc721_token, user: current_user, chain_id: 8000, nft_type: "poap" }
+    let!(:token_3) { create :erc721_token, user: current_user, chain_id: chain_id, nft_type: "poap" }
     let!(:token_4) { create :erc721_token, user: current_user, chain_id: chain_id, nft_type: "nft" }
 
     it "initializes and calls the refresh user poaps service with the correct arguments" do
@@ -382,10 +370,10 @@ RSpec.describe "Web3", type: :request do
       end
     end
 
-    it "only returns poaps of the user for that specific chain" do
+    it "it only returns poaps of the user" do
       refresh_poaps
 
-      expect(json).to eq [
+      expect(json[:tokens]).to eq [
         {
           id: token_1.id,
           address: token_1.address,
@@ -393,10 +381,26 @@ RSpec.describe "Web3", type: :request do
           symbol: token_1.symbol,
           chain_id: token_1.chain_id,
           url: token_1.url,
-          image_url: nil,
+          blockchain_image_url: nil,
+          local_image_url: nil,
+          description: nil,
           token_id: token_1.token_id,
           amount: token_1.amount,
           show: token_1.show
+        },
+        {
+          id: token_3.id,
+          address: token_3.address,
+          name: token_3.name,
+          symbol: token_3.symbol,
+          chain_id: token_3.chain_id,
+          url: token_3.url,
+          blockchain_image_url: nil,
+          local_image_url: nil,
+          description: nil,
+          token_id: token_3.token_id,
+          amount: token_3.amount,
+          show: token_3.show
         }
       ]
     end

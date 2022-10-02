@@ -8,6 +8,7 @@ import Link from "src/components/design_system/link";
 import { Check } from "src/components/icons";
 import debounce from "lodash/debounce";
 import { post } from "src/utils/requests";
+import { darkPositive } from "src/utils/colors.js";
 
 const SuccessConfirmation = ({ mode, redirectToMessages }) => (
   <>
@@ -17,7 +18,7 @@ const SuccessConfirmation = ({ mode, redirectToMessages }) => (
     <Modal.Body>
       <div className="d-flex flex-column justify-content-center align-items-center w-100 px-3">
         <P2 className="mb-5">Message sent successfully!</P2>
-        <Check width="64" height="64" color="#1DB954" />
+        <Check width="64" height="64" color={darkPositive} />
         <Button
           onClick={redirectToMessages}
           type="primary-default"
@@ -43,7 +44,7 @@ const SendMessage = ({
 }) => (
   <>
     <Modal.Header className="d-flex flex-column justify-content-center align-items-center">
-      <Check width="64" height="64" color="#1DB954" className="my-6" />
+      <Check width="64" height="64" color={darkPositive} className="my-6" />
       <H3 mode={mode} text="Congratulations!" bold className="py-1" />
       <P2
         mode={mode}

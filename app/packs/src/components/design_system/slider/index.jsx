@@ -1,9 +1,10 @@
 import React from "react";
 import { func, bool } from "prop-types";
+import cx from "classnames";
 
-const Slider = ({ onChange, checked }) => {
+const Slider = ({ onChange, checked, className }) => {
   return (
-    <label className="form-switch">
+    <label className={cx("form-switch", className)}>
       <input type="checkbox" checked={checked} onChange={onChange} />
       <i />
     </label>

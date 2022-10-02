@@ -7,85 +7,88 @@
 }
 
 .dark-body .title-field {
-  color: $white;
+  color: $dark-text-primary-01;
 }
 
 .short-caption {
   margin-top: 0.6rem;
   margin-bottom: 0;
   font-size: 0.8rem !important;
-  color: $gray-primary;
+  color: $light-text-primary-disable;
   font-weight: 400;
 }
 
 .dark-body .short-caption {
-  color: $gray-400;
+  color: $dark-text-primary-04;
 }
 
 .form-control {
-  background: $surface-hover;
-  color: $gray-800;
-  border: 1px solid $surface-hover;
+  background: $light-surface-disable;
+  color: $light-text-primary-01;
+  border: 1px solid $light-surface-disable;
   height: 34px;
+  border-radius: 8px;
 
   &:hover {
-    background: $surface-hover;
-    border: 1px solid $primary-400;
+    background: $light-surface-disable;
+    border: 1px solid $light-primary-hover;
     box-sizing: border-box;
-    border-radius: 4px;
   }
 
   &:active {
-    background-color: $surface-hover;
+    background-color: $light-surface-disable;
   }
 
   &:focus {
-    background-color: $surface-hover;
-    border: 1px solid $primary-400 !important;
+    background-color: $light-bg-01;
+    border: 1px solid $light-primary !important;
+    box-shadow: 0px 0px 0px 3px $info !important;
   }
 
   &:disabled {
-    color: $primary-outline-disabled;
-    background: $surface-hover;
-    border: 1px solid $surface-hover;
-    color: $gray-800;
+    color: $light-text-primary-disable;
+    background: $light-surface-disable;
+    border: 1px solid $light-surface-disable;
+    color: $light-text-primary-01;
   }
 }
 
 .dark-body .form-control {
-  background: $gray-800;
-  color: $white;
-  border: 1px solid $gray-800;
+  background: $dark-surface-disable;
+  color: $dark-text-primary-01;
+  border: 1px solid $dark-surface-disable;
 
   ::placeholder {
-    color: $gray-400 !important;
+    color: $dark-text-primary-04 !important;
   }
 
   &:hover {
-    background: $gray-800;
-    border: 1px solid $primary;
+    background: $dark-surface-disable;
+    border: 1px solid $dark-primary;
     box-sizing: border-box;
-    border-radius: 4px;
+    border-radius: 8px;
   }
 
   &:active {
-    background: $gray-800;
+    background: $dark-surface-disable;
   }
 
   &:focus {
-    background: $gray-800;
+    background: $dark-surface-disable !important;
+    border: 1px solid $dark-primary !important;
+    box-shadow: 0px 0px 0px 3px $dark-primary-shade-02 !important;
   }
 
   &:disabled {
-    color: $primary-outline-disabled;
-    background: $gray-800;
-    border: 1px solid $gray-800;
-    color: $gray-600;
+    color: $light-text-primary-disable;
+    background: $dark-surface-disable;
+    border: 1px solid $dark-surface-disable;
+    color: $dark-surface-disable;
   }
 }
 
 ::placeholder {
-  color: $gray-primary !important;
+  color: $light-text-primary-disable !important;
   font-size: 0.9rem;
 }
 
@@ -118,51 +121,58 @@
 }
 
 .tag-input-caption {
-  color: $gray-primary;
+  color: $light-text-primary-disable;
 }
 
 .dark-body .tag-input-caption {
-  color: $gray-400;
+  color: $dark-text-primary-04;
 }
 
 ::placeholder {
-  color: $gray-400 !important;
+  color: $dark-text-primary-04 !important;
   font-size: 0.9rem;
 }
 
 .select {
   &__control {
-    background: $surface-hover !important;
-    color: $gray-800 !important;
-    border: 1px solid $surface-hover !important;
+    background: $light-surface-disable !important;
+    color: $light-text-primary-01 !important;
+    border: 1px solid $light-surface-disable !important;
     box-shadow: none !important;
+    border-radius: 8px !important;
 
     &:hover {
-      background: $surface-hover !important;
-      border: 1px solid $primary-400 !important;
+      background: $light-surface-disable !important;
+      border: 1px solid $light-primary-hover !important;
       box-sizing: border-box !important;
-      border-radius: 4px !important;
     }
 
     &:active {
-      background-color: $surface-hover !important;
+      background-color: $light-surface-disable !important;
     }
 
     &:focus {
-      background-color: $surface-hover !important;
-      border: 1px solid $primary-400 !important;
+      background-color: $light-bg-01 !important;
+      border: 1px solid $light-primary !important;
+      box-shadow: 0px 0px 0px 3px $info !important;
     }
 
     &:disabled {
-      color: $primary-outline-disabled !important;
-      background: $surface-hover !important;
-      border: 1px solid $surface-hover !important;
-      color: $gray-800 !important;
+      color: $light-text-primary-disable !important;
+      background: $light-surface-disable !important;
+      border: 1px solid $light-surface-disable !important;
+      color: $light-text-primary-01 !important;
+    }
+
+    &.select__control--is-focused {
+      background-color: $light-bg-01 !important;
+      border: 1px solid $light-primary !important;
+      box-shadow: 0px 0px 0px 3px $info !important;
     }
   }
 
   &__menu {
-    background-color: $white !important;
+    background-color: $dark-text-primary-01 !important;
     color: $black !important;
     padding: 8px 8px !important;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.2) !important;
@@ -176,46 +186,46 @@
     background-color: inherit !important;
 
     &:hover {
-      background-color: $surface-hover !important;
+      background-color: $light-surface-disable !important;
     }
 
     &.select__option--is-focused {
-      background-color: $surface-hover !important;
+      background-color: $light-surface-disable !important;
     }
   }
 
   &__input-container {
-    color: $gray-800 !important;
+    color: $light-text-primary-01 !important;
   }
 
   &__indicator {
-    color: $gray-primary !important;
+    color: $light-text-primary-disable !important;
 
     &:hover {
-      color: $gray-800 !important;
+      color: $light-text-primary-01 !important;
       cursor: pointer !important;
     }
   }
 
   &__multi-value {
-    background-color: $gray !important;
+    background-color: $light-text-primary-disable !important;
     border-radius: 4px !important;
 
     &:hover {
-      background-color: $light-gray-200 !important;
+      background-color: $light-surface-hover-02 !important;
     }
 
     .select__multi-value__label {
-      color: $gray-800 !important;
+      color: $light-text-primary-01 !important;
     }
 
     .select__multi-value__remove {
       background-color: inherit !important;
-      color: $gray-primary !important;
+      color: $light-text-primary-disable !important;
       border-radius: 0 4px 4px 0 !important;
 
       &:hover {
-        color: $gray-800 !important;
+        color: $light-text-primary-01 !important;
       }
     }
   }
@@ -223,81 +233,89 @@
 
 .dark-body .select {
   &__control {
-    background: $gray-800 !important;
-    color: $white !important;
-    border: 1px solid $gray-800 !important;
+    background: $dark-surface-disable !important;
+    color: $dark-text-primary-01 !important;
+    border: 1px solid $dark-surface-disable !important;
+    border-radius: 8px !important;
 
     ::placeholder {
-      color: $gray-400 !important;
+      color: $dark-text-primary-04 !important;
     }
 
     &:hover {
-      background: $gray-800 !important;
-      border: 1px solid $primary !important;
+      background: $dark-surface-disable !important;
+      border: 1px solid $dark-primary !important;
       box-sizing: border-box !important;
-      border-radius: 4px !important;
     }
 
     &:active {
-      background: $gray-800 !important;
+      background: $dark-surface-disable !important;
     }
 
     &:focus {
-      background: $gray-800 !important;
+      background: $dark-surface-disable !important;
+      border: 1px solid $dark-primary !important;
+      box-shadow: 0px 0px 0px 3px $dark-primary-shade-02 !important;
     }
 
     &:disabled {
-      color: $primary-outline-disabled !important;
-      background: $gray-800 !important;
-      border: 1px solid $gray-800 !important;
-      color: $gray-600 !important;
+      color: $light-text-primary-disable !important;
+      background: $dark-surface-disable !important;
+      border: 1px solid $dark-surface-disable !important;
+      color: $dark-surface-disable !important;
+    }
+
+    &.select__control--is-focused {
+      background: $dark-surface-disable !important;
+      border: 1px solid $dark-primary !important;
+      box-shadow: 0px 0px 0px 3px $dark-primary-shade-02 !important;
     }
   }
 
   &__menu {
-    color: $white !important;
-    background-color: $gray-800 !important;
+    color: $dark-text-primary-01 !important;
+    background-color: $dark-surface-disable !important;
     box-shadow: none !important;
   }
 
   &__option {
     &:hover {
-      background-color: $surface-hover-02 !important;
+      background-color: $dark-surface-hover-02 !important;
     }
 
     &.select__option--is-focused {
-      background-color: $surface-hover-02 !important;
+      background-color: $dark-surface-hover-02 !important;
     }
   }
 
   &__input-container {
-    color: $white !important;
+    color: $dark-text-primary-01 !important;
   }
 
   &__indicator {
-    color: $gray-200 !important;
+    color: $dark-text-primary-02 !important;
 
     &:hover {
-      color: $white !important;
+      color: $dark-text-primary-01 !important;
     }
   }
 
   &__multi-value {
-    background-color: $gray-400 !important;
+    background-color: $dark-text-primary-04 !important;
 
     &:hover {
-      background-color: $gray-300 !important;
+      background-color: $dark-text-primary-03 !important;
     }
 
     .select__multi-value__label {
-      color: $white !important;
+      color: $dark-text-primary-01 !important;
     }
 
     .select__multi-value__remove {
-      color: $gray-200 !important;
+      color: $dark-text-primary-02 !important;
 
       &:hover {
-        color: $white !important;
+        color: $dark-text-primary-01 !important;
       }
     }
   }

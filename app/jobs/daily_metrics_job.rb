@@ -169,19 +169,21 @@ class DailyMetricsJob < ApplicationJob
   end
 
   def total_celo_tokens
-    TalentToken.where(deployed: true).count
+    TalentToken.where(chain_id: 42220, deployed: true).count
   end
 
   def total_celo_supporters
-    User.where(tokens_purchased: true).count
+    celo_contracts = TalentToken.where(chain_id: 42220, deployed: true).pluck(:contract_id)
+    TalentSupporter.where(talent_contract_id: celo_contracts).distinct.count(:supporter_wallet_id)
   end
 
   def total_polygon_tokens
-    0
+    TalentToken.where(chain_id: 137, deployed: true).count
   end
 
   def total_polygon_supporters
-    0
+    polygon_contracts = TalentToken.where(chain_id: 137, deployed: true).pluck(:contract_id)
+    TalentSupporter.where(talent_contract_id: polygon_contracts).distinct.count(:supporter_wallet_id)
   end
 
   def one_month_ago

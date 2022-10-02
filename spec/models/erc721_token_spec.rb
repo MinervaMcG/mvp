@@ -10,4 +10,12 @@ RSpec.describe Erc721Token, type: :model do
 
     it { is_expected.to validate_presence_of(:address) }
   end
+
+  describe ".erc_20?" do
+    subject { build :erc721_token }
+
+    it "returns false" do
+      expect(subject.erc_20?).to eq false
+    end
+  end
 end

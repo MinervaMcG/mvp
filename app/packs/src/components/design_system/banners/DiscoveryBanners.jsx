@@ -196,7 +196,8 @@ const DiscoveryBanners = ({ user }) => {
       return <TalentTokenApplicationBanner user={user} />;
     }
   };
-  return <>{currentBanner()}</>;
+
+  return <div className="banners">{currentBanner()}</div>;
 };
 
 export default DiscoveryBanners;

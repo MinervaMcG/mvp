@@ -180,7 +180,7 @@ const SupporterOverview = ({
   if (mobile) {
     return (
       <div className="d-flex flex-column w-100 px-4">
-        <div className="d-flex flex-column mt-3">
+        <div className="d-flex flex-column">
           <P3 mode={mode} text={"Market Cap"} />
           <div className="d-flex flex-row flex-wrap mt-3 align-items-end">
             <H4
@@ -198,7 +198,7 @@ const SupporterOverview = ({
             />
           </div>
         </div>
-        <div className="d-flex flex-column mt-3">
+        <div className="d-flex flex-column">
           <P3 mode={mode} text={"Unclaimed Rewards"} />
           <div className="d-flex flex-row flex-wrap mt-3 align-items-end">
             <H4
@@ -231,7 +231,7 @@ const SupporterOverview = ({
 
   return (
     <div className="d-flex flex-row justify-content-between flex-wrap w-100 mt-4">
-      <div className="d-flex flex-column mt-3 portfolio-amounts-overview p-3 w-32">
+      <div className="d-flex flex-column portfolio-amounts-overview p-3 w-32">
         <P3 mode={mode} text={"Market Cap"} />
         <div className="d-flex flex-row flex-wrap mt-3 align-items-end">
           <H4
@@ -249,14 +249,14 @@ const SupporterOverview = ({
           />
         </div>
       </div>
-      <div className="d-flex flex-column mt-3 portfolio-amounts-overview p-3 w-32">
+      <div className="d-flex flex-column portfolio-amounts-overview p-3 w-32">
         <P3 mode={mode} text={"Total Rewards Claimed"} />
         <div className="d-flex flex-row flex-wrap mt-3 align-items-end">
           <H4 mode={mode} text={"$0.00"} bold className="mb-0 mr-2" />
           <P2 mode={mode} text={"0 $TAL"} bold />
         </div>
       </div>
-      <div className="d-flex flex-column mt-3 portfolio-amounts-overview p-3 w-32">
+      <div className="d-flex flex-column portfolio-amounts-overview p-3 w-32">
         <P3 mode={mode} text={"Unclaimed Rewards"} className="text-warning" />
         <div className="d-flex flex-row flex-wrap mt-3 align-items-end">
           <H4

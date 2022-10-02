@@ -2,112 +2,118 @@
   text-decoration: none !important;
 
   &.primary {
-    color: $primary;
+    color: $light-primary;
   }
 
   &.white {
-    color: $gray-400;
+    color: $dark-text-primary-04;
 
     &.active {
-      color: $gray-800;
+      color: $light-text-primary-01;
     }
   }
 
   &:hover {
     &.primary {
-      color: $primary-link-hover;
+      color: $light-primary-hover;
     }
 
     &.white {
-      color: $gray-800;
+      color: $light-text-primary-01;
     }
   }
 
   &:disabled {
     &.primary {
-      color: $primary-outline-disabled;
+      color: $light-text-primary-disable;
     }
 
     &.white {
-      color: $gray;
+      color: $light-text-primary-disable;
     }
   }
 }
 
 .dark-body .tab-container {
   &.primary {
-    color: $primary;
+    color: $dark-primary;
   }
 
   &.white {
-    color: $gray-300;
+    color: $dark-text-primary-03;
 
     &.active {
-      color: $white;
+      color: $dark-text-primary-01;
     }
   }
 
   &:hover {
     &.primary {
-      color: $primary-link-hover;
+      color: $light-primary-hover;
     }
 
     &.white {
-      color: $white;
+      color: $dark-text-primary-01;
     }
   }
 
   &:disabled {
     &.primary {
-      color: $primary-shade-01;
+      color: $dark-text-primary-disable;
     }
 
     &.white {
-      color: $gray-600;
+      color: $dark-surface-disable;
     }
   }
 }
 
 .tab-button-container {
-  background-color: $surface-hover;
-  border-radius: 4px;
+  background-color: $light-surface-disable;
+  border-radius: 24px;
 
   .active {
-    background-color: $primary !important;
-    border-radius: 2px;
+    background-color: $light-primary !important;
+    border-radius: 24px;
 
     .tab-text {
-      color: $white;
+      color: $dark-text-primary-01;
 
       &:hover {
-        color: $white;
+        color: $dark-text-primary-01;
       }
     }
   }
 
   .tab-text {
-    color: $gray-400;
+    color: $dark-text-primary-04;
 
     &:hover {
-      color: $gray-800;
+      color: $light-text-primary-01;
     }
   }
 }
 
 .dark-body .tab-button-container {
-  background-color: $gray-800;
+  background-color: $dark-surface-hover;
 
   .active {
+    background-color: $dark-primary !important;
+
     .tab-text {
-      color: $white;
+      color: $dark-bg-01;
+
+      &:hover {
+        color: $dark-bg-01;
+      }
     }
   }
 
   .tab-text {
-    color: $gray-300;
+    color: $dark-text-primary-03;
 
     &:hover {
-      color: $white;
+      color: $dark-text-primary-01;
     }
   }
 }

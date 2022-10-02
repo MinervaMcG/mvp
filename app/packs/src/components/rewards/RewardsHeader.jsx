@@ -4,6 +4,7 @@ import currency from "currency.js";
 import { H3, H5, P1, P2 } from "src/components/design_system/typography";
 import Tooltip from "src/components/design_system/tooltip";
 import { Help } from "src/components/icons";
+import { lightTextPrimary03 } from "src/utils/colors";
 
 const sumRewardAmounts = (total, reward) => total + reward.amount;
 
@@ -66,7 +67,7 @@ const RewardsHeader = ({ rewards }) => {
           >
             <div className="cursor-pointer d-flex align-items-center">
               <P2 className="mr-1">Invite Earnings</P2>
-              <Help color="#536471" />
+              <Help color={lightTextPrimary03} />
             </div>
           </Tooltip>
           <P2 className="text-black">
@@ -81,7 +82,7 @@ const RewardsHeader = ({ rewards }) => {
           >
             <div className="cursor-pointer d-flex align-items-center">
               <P2 className="mr-1">Others</P2>
-              <Help color="#536471" />
+              <Help color={lightTextPrimary03} />
             </div>
           </Tooltip>
           <P2 className="text-black">{amountToTal(userRewards.others)}</P2>
