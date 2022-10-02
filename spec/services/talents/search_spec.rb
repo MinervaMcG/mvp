@@ -27,11 +27,30 @@ RSpec.describe Talents::Search do
   let!(:user_without_token) { create :user, talent: talent_without_token, username: "jona" }
   let(:talent_without_token) { create :talent, public: true }
 
+  let!(:user_5) { create :user, talent: talent_5, username: "john" }
+  let(:talent_5) { create :talent, talent_token: token_5, public: true }
+  let(:token_5) { create :talent_token, deployed_at: Time.now }
+
+  let!(:user_without_launched_token) { create :user, talent: talent_without_launched_token, username: "alexa" }
+  let(:talent_without_launched_token) { create :talent, talent_token: token_without_launch, public: true }
+  let(:token_without_launch) { create :talent_token, contract_id: nil }
+
+  let!(:verfied_talent_user) { create :user, talent: verified_talent, username: "verfied" }
+  let(:verified_talent) { create :talent, :with_token, verified: true, public: true }
+
+  let!(:celo_talent_user) { create :user, talent: celo_talent, username: "will" }
+  let(:celo_talent) { create :talent, talent_token: celo_talent_token, public: true }
+  let(:celo_talent_token) { create :talent_token, chain_id: 44787 }
+
+  let!(:polygon_talent_user) { create :user, talent: polygon_talent, username: "ryan" }
+  let(:polygon_talent) { create :talent, talent_token: polygon_talent_token, public: true }
+  let(:polygon_talent_token) { create :talent_token, chain_id: 80001 }
+
   context "when filter params are empty" do
     let(:filter_params) { {} }
 
     it "returns all talent users" do
-      expect(search_talents).to match_array([talent_1, talent_2, talent_3, talent_4])
+      expect(search_talents).to match_array([talent_1, talent_2, talent_3, talent_4, talent_5, talent_without_launched_token, verified_talent, celo_talent, polygon_talent])
     end
   end
 
@@ -56,7 +75,7 @@ RSpec.describe Talents::Search do
       end
 
       it "returns all talent users with display_name matching the passed keyword" do
-        expect(search_talents).to match_array([talent_2, talent_4])
+        expect(search_talents).to match_array([talent_2, talent_4, talent_without_launched_token])
       end
     end
 
@@ -115,6 +134,68 @@ RSpec.describe Talents::Search do
 
       it "returns all talent users part of the discovery row with username matching the passed keyword" do
         expect(search_talents).to match_array([talent_1, talent_3])
+      end
+    end
+  end
+
+  context "when the status filter is passed" do
+    context "when the status filter is Trending or Latest added" do
+      let(:filter_params) do
+        {
+          status: "Trending"
+        }
+      end
+
+      it "returns all latest added or trending talents" do
+        expect(search_talents).to match_array([talent_5])
+      end
+    end
+
+    context "when the status filter is Launching soon" do
+      let(:filter_params) do
+        {
+          status: "Launching soon"
+        }
+      end
+
+      it "returns all latest talents without tokens" do
+        expect(search_talents).to match_array([talent_without_launched_token])
+      end
+    end
+
+    context "when the status filter is Verified" do
+      let(:filter_params) do
+        {
+          status: "Verified"
+        }
+      end
+
+      it "returns all latest talents that are verified" do
+        expect(search_talents).to match_array([verified_talent])
+      end
+    end
+
+    context "when the status filter is By Celo Network" do
+      let(:filter_params) do
+        {
+          status: "By Celo Network"
+        }
+      end
+
+      it "returns all latest talents that are launched on Celo network" do
+        expect(search_talents).to match_array([celo_talent])
+      end
+    end
+
+    context "when the status filter is By Polygon Network" do
+      let(:filter_params) do
+        {
+          status: "By Polygon Network"
+        }
+      end
+
+      it "returns all latest talents that are launched on Polygon network" do
+        expect(search_talents).to match_array([polygon_talent])
       end
     end
   end
