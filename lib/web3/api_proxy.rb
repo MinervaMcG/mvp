@@ -17,6 +17,11 @@ module Web3
     CELO_CHAIN = %w[celo 0xa4ec 42220]
     ETH_CHAIN = %w[eth 0x1 1]
     POLYGON_CHAIN = %w[polygon 0x89 137]
+
+    TESTNET_CELO_CHAIN = %w[celo 0xaef3 44787]
+    TESTNET_ETH_CHAIN = %w[eth 0x3 3]
+    TESTNET_POLYGON_CHAIN = %w[polygon 0x1f41 80001]
+
     GNOSIS_CHAIN_ID = 100
 
     SUPPORTED_CHAINS = SUPPORTED_CHAIN_IDS + SUPPORTED_CHAIN_NAMES
