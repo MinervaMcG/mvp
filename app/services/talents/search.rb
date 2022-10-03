@@ -53,8 +53,6 @@ module Talents
     end
 
     def filter_by_status(talents)
-      contract_env = ENV["CONTRACTS_ENV"]
-
       if filter_params[:status] == "Launching soon"
         talents.upcoming.order(created_at: :asc)
       elsif filter_params[:status] == "Latest added" || filter_params[:status] == "Trending"
@@ -67,11 +65,9 @@ module Talents
       elsif filter_params[:status] == "Verified"
         talents.where(verified: true)
       elsif filter_params[:status] == "By Celo Network"
-        chain_id = contract_env == "production" ? Web3::ApiProxy::CELO_CHAIN[2].to_i : Web3::ApiProxy::STAGING_CELO_CHAIN[2].to_i
-        talents.where(talent_token: {chain_id: chain_id})
+        talents.where(talent_token: {chain_id: chain_id("celo")})
       elsif filter_params[:status] == "By Polygon Network"
-        chain_id = contract_env == "production" ? Web3::ApiProxy::POLYGON_CHAIN[2].to_i : Web3::ApiProxy::STAGING_POLYGON_CHAIN[2].to_i
-        talents.where(talent_token: {chain_id: chain_id})
+        talents.where(talent_token: {chain_id: chain_id("polygon")})
       else
         talents
           .select("setseed(0.#{Date.today.jd}), talent.*")
@@ -91,6 +87,12 @@ module Talents
       else
         talents.order(created_at: :desc)
       end
+    end
+
+    def chain_id(network_name)
+      contract_env = ENV["CONTRACTS_ENV"]
+      network = contract_env == "production" ? Web3::ApiProxy.const_get("#{network_name.upcase}_CHAIN") : Web3::ApiProxy.const_get("TESTNET_#{network_name.upcase}_CHAIN")
+      network[2].to_i
     end
   end
 end

@@ -18,9 +18,9 @@ module Web3
     ETH_CHAIN = %w[eth 0x1 1]
     POLYGON_CHAIN = %w[polygon 0x89 137]
 
-    STAGING_CELO_CHAIN = %w[celo 0xaef3 44787]
-    STAGING_ETH_CHAIN = %w[eth 0x3 3]
-    STAGING_POLYGON_CHAIN = %w[polygon 0x1f41 80001]
+    TESTNET_CELO_CHAIN = %w[celo 0xaef3 44787]
+    TESTNET_ETH_CHAIN = %w[eth 0x3 3]
+    TESTNET_POLYGON_CHAIN = %w[polygon 0x1f41 80001]
 
     GNOSIS_CHAIN_ID = 100
 
