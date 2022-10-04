@@ -9,7 +9,7 @@ module Talents
 
     def call(user)
       polygon_tokens_count = TalentToken.deployed.on_chain(@chain_id).count
-      Reward.create!(user: user, amount: 500, category: "race") if polygon_tokens_count < 5
+      Reward.create!(user: user, amount: 500, category: "race") if polygon_tokens_count <= 50
     end
 
     private
