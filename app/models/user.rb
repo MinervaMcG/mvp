@@ -45,6 +45,9 @@ class User < ApplicationRecord
   has_many :erc20_tokens, dependent: :destroy
   has_many :erc721_tokens, dependent: :destroy
 
+  # Elasticsearch index update
+  update_index("talents") { self }
+
   VALID_ROLES = ["admin", "basic", "moderator"].freeze
 
   enum profile_type: {
