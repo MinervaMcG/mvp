@@ -1,4 +1,4 @@
-require "web3/api_proxy"
+require "web3_api/api_proxy"
 
 module Talents
   class PolygonLaunchReward
@@ -10,7 +10,7 @@ module Talents
     private
 
     def chain_id
-      network = Web3::ApiProxy.const_get("#{ENV["CONTRACTS_ENV"] == "production" ? "" : "TESTNET_"}POLYGON_CHAIN")
+      network = Web3Api::ApiProxy.const_get("#{ENV["CONTRACTS_ENV"] == "production" ? "" : "TESTNET_"}POLYGON_CHAIN")
       network[2].to_i
     end
   end

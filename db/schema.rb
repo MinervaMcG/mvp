@@ -11,6 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2022_10_13_092626) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -540,8 +541,8 @@ ActiveRecord::Schema.define(version: 2022_10_13_092626) do
     t.bigint "invite_id"
     t.boolean "tokens_purchased", default: false
     t.boolean "token_purchase_reminder_sent", default: false
-    t.boolean "disabled", default: false
     t.string "theme_preference", default: "light"
+    t.boolean "disabled", default: false
     t.boolean "messaging_disabled", default: false
     t.jsonb "notification_preferences", default: {}
     t.string "user_nft_address"
