@@ -39,6 +39,9 @@ class User < ApplicationRecord
   has_many :erc20_tokens
   has_many :erc721_tokens
 
+  # Elasticsearch index update
+  update_index("talents") { self }
+
   VALID_ROLES = ["admin", "basic"].freeze
 
   enum profile_type: {

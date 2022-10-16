@@ -39,6 +39,8 @@ class Talent < ApplicationRecord
 
   delegate :wallet_id, :username, to: :user
 
+  update_index("talents") { self }
+
   def self.base_supply
     2000000000000000000000
   end
