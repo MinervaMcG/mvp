@@ -19,7 +19,7 @@
     <% end %>
     <% if @talent.present? %>
       <%= react_component("ProfileShow", props:
-        {talent: @talent, currentUserId: current_acting_user.id}, prerender: false)
+        {talent: @talent, currentUserId: current_acting_user.id, currentUserAdmin: current_user.admin?}, prerender: false)
       %>
     <% end %>
   </div>

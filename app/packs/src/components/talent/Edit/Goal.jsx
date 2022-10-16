@@ -65,6 +65,7 @@ const GoalForm = ({
           className="edit-profile-input"
           shortCaption={"Describe your goal"}
           maxLength="175"
+          maxLengthText
           required={true}
           error={validationErrors?.description}
           rows={3}
@@ -385,6 +386,7 @@ const Goal = (props) => {
           value={careerInfo["pitch"]}
           className="edit-profile-input"
           maxLength="400"
+          maxLengthText
           required={true}
           rows={3}
         />
@@ -410,6 +412,7 @@ const Goal = (props) => {
             "What are your challenges? This is where sponsors can help you!"
           }
           maxLength="175"
+          maxLengthText
           rows={3}
         />
       </div>

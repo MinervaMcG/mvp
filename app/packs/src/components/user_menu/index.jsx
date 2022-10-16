@@ -28,23 +28,12 @@ const UserMenu = ({ user, toggleTheme, mode, onClickTransak, signOut }) => {
   return (
     <Dropdown>
       <Dropdown.Toggle
-        className="talent-button white-subtle-button normal-size-button no-caret d-flex align-items-center text-primary-03"
+        className="talent-button white-subtle-button normal-size-button p-2 no-caret d-flex align-items-center text-primary-03"
         id="user-dropdown"
         bsPrefix=""
         as="div"
-        style={{ height: 34 }}
       >
-        <TalentProfilePicture
-          src={user.profilePictureUrl}
-          height={20}
-          className="mr-2"
-        />
-        <ArrowFill
-          className="toggle-arrow"
-          size={8}
-          pathClassName="text-primary-04"
-          color="currentColor"
-        />
+        <TalentProfilePicture src={user.profilePictureUrl} height={20} />
       </Dropdown.Toggle>
 
       <Dropdown.Menu className="user-menu-dropdown">

@@ -65,7 +65,7 @@ const UserMenuFullScreen = ({
           mode={mode}
           className="w-100 my-2"
         >
-          <P1 className="text-black" bold text="Get Funds" />
+          <P1 className="text-black" text="Get Funds" />
         </Button>
       </div>
       <div className={`divider ${mode}`}></div>
@@ -73,21 +73,45 @@ const UserMenuFullScreen = ({
         onClick={() => (window.location.href = `/u/${user.username}`)}
         type="white-ghost"
         mode={mode}
-        className="d-flex flex-row justify-content-between my-3"
+        className="d-flex flex-row justify-content-between mt-3"
       >
         <P1 className="text-black" bold text="My Profile" />
         <ArrowRight color="currentColor" />
       </Button>
-      <div className={`divider ${mode}`}></div>
       <Button
-        onClick={() =>
-          (window.location.href = `/u/${user.username}/edit_profile?tab=Invites`)
-        }
+        onClick={() => (window.location.href = `/talent`)}
+        type="white-ghost"
+        mode={mode}
+        className="d-flex flex-row justify-content-between mt-3"
+      >
+        <P1 className="text-black" bold text="Explore" />
+        <ArrowRight color="currentColor" />
+      </Button>
+      <Button
+        onClick={() => (window.location.href = `/messages`)}
+        type="white-ghost"
+        mode={mode}
+        className="d-flex flex-row justify-content-between mt-3"
+      >
+        <P1 className="text-black" bold text="Messages" />
+        <ArrowRight color="currentColor" />
+      </Button>
+      <Button
+        onClick={() => (window.location.href = `/portfolio`)}
+        type="white-ghost"
+        mode={mode}
+        className="d-flex flex-row justify-content-between mt-3"
+      >
+        <P1 className="text-black" bold text="Community" />
+        <ArrowRight color="currentColor" />
+      </Button>
+      <Button
+        onClick={() => (window.location.href = `/earn`)}
         type="white-ghost"
         mode={mode}
         className="d-flex flex-row justify-content-between my-3"
       >
-        <P1 className="text-black" bold text="Invites" />
+        <P1 className="text-black" bold text="Earn" />
         <ArrowRight color="currentColor" />
       </Button>
       <div className={`divider ${mode}`}></div>

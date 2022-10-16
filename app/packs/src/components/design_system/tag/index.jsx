@@ -9,8 +9,8 @@ const Tag = ({ text, size, children, className }) => {
     <div className={cx("tag-container", className)}>
       {text && (
         <>
-          {size === "normal" && <P2 text={text} />}
-          {size === "small" && <P3 text={text} />}
+          {size === "normal" && <P2 className="text-primary-01" text={text} />}
+          {size === "small" && <P3 className="text-primary-01" text={text} />}
         </>
       )}
       {children}

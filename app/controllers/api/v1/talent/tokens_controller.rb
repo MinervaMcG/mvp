@@ -22,9 +22,15 @@ class API::V1::Talent::TokensController < ApplicationController
         UserMailer.with(user: current_user).send_token_launched_email.deliver_later(wait: 5.seconds)
       end
       CreateNotificationTalentChangedJob.perform_later(talent.user.followers.pluck(:follower_id), talent.user_id)
-      render json: talent_token.as_json, status: :ok
+
+      render json: TalentBlueprint.render(
+        talent,
+        view: :extended,
+        current_user_watchlist: current_user_watchlist,
+        tags: current_acting_user.tags.where(hidden: false)
+      )
     else
-      render json: {error: token.errors.full_messages.join(", ")}, status: :unprocessable_entity
+      render json: {error: talent_token.errors.full_messages.join(", ")}, status: :unprocessable_entity
     end
   end
 

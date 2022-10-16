@@ -75,18 +75,26 @@ const CHAIN_RPC_URLS = {
 
 export const getNftData = async (nft) => {
   try {
-    const provider = new ethers.providers.JsonRpcProvider(
-      CHAIN_RPC_URLS[nft.chain_id]
-    );
+    const provider = new ethers.providers.JsonRpcProvider({
+      url: CHAIN_RPC_URLS[nft.chain_id],
+      timeout: 5000,
+    });
 
-    const fetcher = ["ethers", { provider: provider }];
+    const fetcher = [
+      "ethers",
+      {
+        provider: provider,
+        jsonProxy: (url) =>
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+      },
+    ];
 
     const fetchWrapper = new FetchWrapper(fetcher);
 
     const result = await fetchWrapper.fetchNft(nft.address, nft.token_id);
     return result;
   } catch (e) {
-    console.log("error", e);
+    // console.log("error", e);
     return {};
   }
 };

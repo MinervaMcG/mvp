@@ -57,6 +57,10 @@
   margin-bottom: -40px;
 }
 
+.pull-bottom-content-70 {
+  margin-bottom: -70px;
+}
+
 .talent-search-icon {
   position: absolute;
   top: 1px;
@@ -230,4 +234,15 @@
   .talent-list-header {
     height: 240px;
   }
+}
+
+.rocket-position-absolute {
+  position: absolute;
+  top: -4px;
+  left: -16px;
+  background-color: $light-bg-01;
+}
+
+.dark-body .rocket-position-absolute {
+  background-color: $dark-bg-01;
 }

@@ -51,7 +51,7 @@ export const profileProgress = ({
     total -= 10;
   }
 
-  if (perks.length == 0) {
+  if (perks.length == 0 && user.profile_type == "talent") {
     total -= 10;
   }
 

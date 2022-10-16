@@ -7,7 +7,7 @@ class ImageUploader < Shrine
     validate_max_size 10 * 1024 * 1024
 
     # Validate that the image format is an expected one
-    validate_extension %w[jpg jpeg png] unless context[:omniauth]
-    validate_mime_type %w[image/jpeg image/png]
+    validate_extension %w[jpg jpeg png gif] unless context[:omniauth]
+    validate_mime_type %w[image/jpeg image/png image/gif]
   end
 end

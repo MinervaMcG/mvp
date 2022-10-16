@@ -29,7 +29,7 @@ const TabButton = ({
         onClick={() => changeActiveTab(textTabPrimary)}
       >
         {textTabPrimary && (
-          <P2 className="tab-text px-2" text={textTabPrimary} bold />
+          <P2 className="tab-text px-2" text={textTabPrimary} medium />
         )}
       </button>
       <button

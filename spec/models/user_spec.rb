@@ -18,6 +18,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:following) }
     it { is_expected.to have_many(:comments) }
     it { is_expected.to have_many(:posts) }
+    it { is_expected.to have_many(:connections) }
   end
 
   describe "email_and_credentials validation" do
@@ -227,6 +228,69 @@ RSpec.describe User, type: :model do
         it "returns the portfolio that invested in the talent after that date" do
           expect(user.portfolio(invested_after: date)).to match_array([talent_user_two, user])
         end
+      end
+    end
+  end
+
+  describe "#amount_invested_in" do
+    let(:user) { create :user }
+
+    let(:other_user) { create :user, talent: talent }
+    let(:talent) { create :talent }
+    let(:talent_token) { create :talent_token, talent: talent, deployed: true }
+
+    context "when the user does not have an investment in the other user" do
+      it "returns 0" do
+        expect(user.amount_invested_in(other_user)).to eq 0
+      end
+    end
+
+    context "when the user has an investment in the other user" do
+      before do
+        create :talent_supporter, supporter_wallet_id: user.wallet_id, talent_contract_id: talent_token.contract_id, amount: "1000000"
+      end
+
+      it "returns the amount invested by the user" do
+        expect(user.amount_invested_in(other_user)).to eq 1000000
+      end
+    end
+  end
+
+  describe "#connected_with_since" do
+    let(:user) { create :user }
+
+    let(:other_user) { create :user, talent: talent }
+    let(:talent) { create :talent }
+    let(:talent_token) { create :talent_token, talent: talent, deployed: true }
+
+    context "when the user is only following the other user" do
+      before do
+        create :follow, user: other_user, follower: user, created_at: Date.yesterday
+      end
+
+      it "returns the date of the follow" do
+        expect(user.connected_with_since(other_user)).to eq Date.yesterday
+      end
+    end
+
+    context "when the user is only invested in the other user" do
+      before do
+        create :talent_supporter, supporter_wallet_id: user.wallet_id, talent_contract_id: talent_token.contract_id, first_time_bought_at: Date.today - 10.days
+      end
+
+      it "returns the date of the first investment" do
+        expect(user.connected_with_since(other_user)).to eq Date.today - 10.days
+      end
+    end
+
+    context "when the user is invested in and is following the other user" do
+      before do
+        create :follow, user: other_user, follower: user, created_at: Date.yesterday
+        create :talent_supporter, supporter_wallet_id: user.wallet_id, talent_contract_id: talent_token.contract_id, first_time_bought_at: Date.today - 10.days
+      end
+
+      it "returns the date the oldest date" do
+        expect(user.connected_with_since(other_user)).to eq Date.today - 10.days
       end
     end
   end

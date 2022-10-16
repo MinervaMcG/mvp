@@ -22,19 +22,11 @@
     <%= render partial: "services/hotjar" %>
   </head>
 
-  <% if current_user.present? %>
+  <% if current_user.present? && current_user.onboarding_complete? %>
     <body class=<%= current_user&.active_theme || "light-body" %> id="user-logged">
       <div class="page-container">
         <div class="content-wrapper">
-          <% if !current_user.welcome_pop_up %>
-            <%=
-              react_component("WelcomePopup",
-              props: {
-                talent: current_user.talent?,
-                user_id: current_user.id
-              },
-              prerender: false)%>
-          <% elsif !current_user.first_quest_popup %>
+          <% if !current_user.first_quest_popup %>
             <%=
               react_component("FirstQuestPopup",
               props: { userId: current_user.id },
@@ -47,7 +39,7 @@
       </div>
     </body>
   <% else %>
-    <body class="light-body" id="user-not-logged">
+    <body class="light-body" id="user-not-logged-or-onboarding">
       <%= yield %>
     </body>
   <% end %>

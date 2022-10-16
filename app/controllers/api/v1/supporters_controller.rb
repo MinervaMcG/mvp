@@ -21,7 +21,7 @@ class API::V1::SupportersController < ApplicationController
       return render json: {error: "You don't have access to perform that action"}, status: :unauthorized
     end
 
-    Supporter::UpgradeToTalent.new.call(user_id: investor.user.id, applying: true)
+    Supporter::UpgradeToTalent.new.call(user: investor.user, applying: true)
 
     render json: {}, status: :ok
   end

@@ -62,3 +62,5 @@ export { default as ToastWarning } from "src/components/icons/ToastWarning";
 export { default as Verified } from "src/components/icons/Verified";
 export { default as Celo } from "src/components/icons/Celo";
 export { default as Polygon } from "src/components/icons/Polygon";
+export { default as Bulb } from "src/components/icons/Bulb";
+export { default as Learn } from "src/components/icons/Learn";

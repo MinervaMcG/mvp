@@ -7,8 +7,11 @@ class API::V1::Talent::CareerGoalsController < ApplicationController
       talent.profile["video"] = talent_params[:video]
     end
 
-    if career_goal.update(career_goal_params) && talent.save
-      render json: career_goal, status: :ok
+    career_goal.image = career_goal_params[:image_data].as_json
+    career_goal.image_derivatives! if career_goal.image && career_goal.image_changed?
+
+    if career_goal.update(career_goal_params.except(:image_url, :image_data)) && talent.save
+      render json: CareerGoalBlueprint.render(career_goal, view: :normal), status: :ok
     else
       render json: {error: "Unable to update Career goal"}, status: :unprocessable_entity
     end
@@ -48,7 +51,9 @@ class API::V1::Talent::CareerGoalsController < ApplicationController
     params.require(:career_goal).permit(
       :bio,
       :pitch,
-      :challenges
+      :challenges,
+      :image_url,
+      image_data: {}
     )
   end
 

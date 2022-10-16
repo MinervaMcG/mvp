@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { post, put, get } from "src/utils/requests";
 import { P1, P2, P3 } from "src/components/design_system/typography";
+import debounce from "lodash/debounce";
 
 import Slider from "src/components/design_system/slider";
 
@@ -36,8 +37,8 @@ const DisplayTokensModal = ({
           </div>
         )}
         {tokens.map((token) => (
-          <div className="col-12 col-md-6 mb-4">
-            <div className="web3-card web3-card__full_height">
+          <div className="col-12 col-md-6 mb-4" key={token.id}>
+            <div className="card web3-card web3-card__full_height">
               <div className="mb-4 d-flex align-items-center">
                 <Slider
                   checked={token.show}
@@ -150,6 +151,8 @@ const TokensModal = ({
     return newTokens;
   };
 
+  const debouncedUpdateToken = debounce((token) => updateToken(token), 400);
+
   const updateToken = (token) => {
     const params = {
       show: !token.show,
@@ -232,7 +235,7 @@ const TokensModal = ({
         setChain={setChain}
         mobile={mobile}
         loading={loading}
-        updateToken={updateToken}
+        updateToken={debouncedUpdateToken}
         showLoadMoreTokens={showLoadMoreTokens()}
         loadMoreTokens={loadMoreTokens}
         tokenLogo={tokenLogo}

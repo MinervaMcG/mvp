@@ -31,6 +31,7 @@ class User < ApplicationRecord
   has_many :posts
   has_many :notifications, as: :recipient
   has_many :quests
+  has_many :connections
 
   # Rewards
   has_many :rewards
@@ -187,6 +188,26 @@ class User < ApplicationRecord
     supporters = User.where(wallet_id: supporters_wallet_ids)
 
     including_self ? supporters : supporters.where.not(id: id)
+  end
+
+  def amount_invested_in(user)
+    return 0 unless user.talent&.talent_token&.deployed?
+
+    TalentSupporter.where(supporter_wallet_id: wallet_id, talent_contract_id: user.talent.talent_token.contract_id).sum { |ts| ts.amount.to_i }
+  end
+
+  def connected_with_since(other_user)
+    supporter_data = TalentSupporter.find_by(supporter_wallet_id: wallet_id, talent_contract_id: other_user.talent&.talent_token&.contract_id)
+    supporting_data = TalentSupporter.find_by(supporter_wallet_id: other_user.wallet_id, talent_contract_id: talent&.talent_token&.contract_id)
+    follower_data = follows.find_by(follower: other_user)
+    following_data = following.find_by(user: other_user)
+
+    [
+      supporter_data&.first_time_bought_at,
+      supporting_data&.first_time_bought_at,
+      follower_data&.created_at,
+      following_data&.created_at
+    ].compact.min
   end
 
   def talent?

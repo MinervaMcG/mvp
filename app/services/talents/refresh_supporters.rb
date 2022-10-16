@@ -47,7 +47,11 @@ module Talents
     end
 
     def talent
-      talent_token.talent
+      @talent ||= talent_token.talent
+    end
+
+    def user
+      @user ||= talent.user
     end
 
     def upsert_talent_supporters(supporters)
@@ -61,9 +65,27 @@ module Talents
           amount: supporter.amount,
           tal_amount: supporter.tal_amount,
           last_time_bought_at: Time.at(supporter.last_time_bought_at.to_i),
+          first_time_bought_at: Time.at(supporter.first_time_bought_at.to_i),
           synced_at: Time.zone.now
         )
+
+        user_supporter = User.find_by(wallet_id: supporter.supporter.id)
+        upsert_connections(user_supporter) if user_supporter && user.id != user_supporter.id
       end
+    end
+
+    def upsert_connections(supporter)
+      supporting_connection ||= Connection.find_or_initialize_by(
+        user: user,
+        connected_user: supporter
+      )
+      supporter_connection ||= Connection.find_or_initialize_by(
+        user: supporter,
+        connected_user: user
+      )
+
+      supporting_connection.refresh_connection!
+      supporter_connection.refresh_connection!
     end
 
     def the_graph_client(chain_id)

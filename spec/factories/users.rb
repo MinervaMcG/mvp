@@ -9,6 +9,7 @@ FactoryBot.define do
     password { "password" }
     email_confirmed_at { Date.today }
     wallet_id { SecureRandom.hex }
+    onboarding_complete { true }
 
     trait :with_talent do
       association :talent

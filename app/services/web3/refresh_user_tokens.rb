@@ -1,4 +1,4 @@
-require "web3/api_proxy"
+require "web3_api/api_proxy"
 
 module Web3
   class RefreshUserTokens
@@ -93,16 +93,16 @@ module Web3
       poaps = web3_proxy.retrieve_poaps(wallet_address: wallet_address)
 
       poaps.each do |token|
-        upsert_erc721_token(token, Web3::ApiProxy::GNOSIS_CHAIN_ID, "poap")
+        upsert_erc721_token(token, web3_proxy_class::GNOSIS_CHAIN_ID, "poap")
       end
     end
 
     def chain_id_from(chain)
       formatted_chain = chain.to_s.downcase
 
-      return 1 if Web3::ApiProxy::ETH_CHAIN.include?(formatted_chain)
-      return 137 if Web3::ApiProxy::POLYGON_CHAIN.include?(formatted_chain)
-      return 42220 if Web3::ApiProxy::CELO_CHAIN.include?(formatted_chain)
+      return 1 if web3_proxy_class::ETH_CHAIN.include?(formatted_chain)
+      return 137 if web3_proxy_class::POLYGON_CHAIN.include?(formatted_chain)
+      return 42220 if web3_proxy_class::CELO_CHAIN.include?(formatted_chain)
 
       raise UNknownChainIdError.new
     end
@@ -123,11 +123,15 @@ module Web3
     end
 
     def all_chains
-      Web3::ApiProxy::SUPPORTED_CHAIN_NAMES
+      web3_proxy_class::SUPPORTED_CHAIN_NAMES
     end
 
     def web3_proxy
-      @web3_proxy ||= Web3::ApiProxy.new
+      @web3_proxy ||= web3_proxy_class.new
+    end
+
+    def web3_proxy_class
+      Web3Api::ApiProxy
     end
 
     def current_time

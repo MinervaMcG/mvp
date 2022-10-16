@@ -23,6 +23,7 @@ const TalentOptions = ({
   setLocalTalents,
   setSelectedSort,
   setSortDirection,
+  addTalentData,
   isAdmin,
 }) => {
   const { mobile } = useWindowDimensionsHook();
@@ -38,7 +39,11 @@ const TalentOptions = ({
     params.set(filterType, option);
 
     get(`${searchUrl}?${params.toString()}`).then((response) => {
-      const talents = response.map((talent) => camelCaseObject(talent));
+      let talents = response.map((talent) => ({
+        ...camelCaseObject(talent),
+      }));
+
+      talents = addTalentData(talents);
 
       if (option === "Trending") {
         setSelectedSort("Market Cap");

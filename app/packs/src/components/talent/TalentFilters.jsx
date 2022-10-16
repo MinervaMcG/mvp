@@ -13,11 +13,21 @@ const TalentFilters = ({ status, setStatus, filter, isAdmin = false }) => {
         "Latest added",
         "Launching soon",
         "Pending approval",
-        "Verified"
+        "Verified",
+        "By Celo Network",
+        "By Polygon Network",
       ];
     }
 
-    return ["All", "Trending", "Latest added", "Launching soon", "Verified"];
+    return [
+      "All",
+      "Trending",
+      "Latest added",
+      "Launching soon",
+      "Verified",
+      "By Celo Network",
+      "By Polygon Network",
+    ];
   }, []);
 
   const selectedClass = (option) =>
@@ -37,7 +47,11 @@ const TalentFilters = ({ status, setStatus, filter, isAdmin = false }) => {
         as="div"
         style={{ height: 34, width: 150 }}
       >
-        <P2 bold text={status} className="mr-2 align-middle text-black" />
+        <P2
+          bold
+          text={status}
+          className="mr-2 align-middle text-black text-ellipsis"
+        />
         <OrderBy black />
       </Dropdown.Toggle>
 

@@ -1,3 +1,5 @@
+require "web3_api/api_proxy"
+
 module Talents
   class Search
     def initialize(filter_params: {}, sort_params: {}, discovery_row: nil, admin: false)
@@ -62,6 +64,10 @@ module Talents
         talents.where(user: {profile_type: "waiting_for_approval"})
       elsif filter_params[:status] == "Verified"
         talents.where(verified: true)
+      elsif filter_params[:status] == "By Celo Network"
+        talents.where(talent_token: {chain_id: chain_id("celo")})
+      elsif filter_params[:status] == "By Polygon Network"
+        talents.where(talent_token: {chain_id: chain_id("polygon")})
       else
         talents
           .select("setseed(0.#{Date.today.jd}), talent.*")
@@ -81,6 +87,12 @@ module Talents
       else
         talents.order(created_at: :desc)
       end
+    end
+
+    def chain_id(network_name)
+      contract_env = ENV["CONTRACTS_ENV"]
+      network = contract_env == "production" ? Web3Api::ApiProxy.const_get("#{network_name.upcase}_CHAIN") : Web3Api::ApiProxy.const_get("TESTNET_#{network_name.upcase}_CHAIN")
+      network[2].to_i
     end
   end
 end

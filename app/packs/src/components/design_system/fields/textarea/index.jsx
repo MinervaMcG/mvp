@@ -19,6 +19,7 @@ const TextArea = ({
   onKeyDown,
   limitHeight,
   rows,
+  maxLengthText = false,
 }) => {
   const textAreaRef = useRef(null);
   const [textAreaHeight, setTextAreaHeight] = useState("auto");
@@ -53,7 +54,7 @@ const TextArea = ({
             {title} {required && <span className="text-danger">*</span>}
           </h6>
         ) : null}
-        {maxLength ? (
+        {maxLengthText ? (
           <P2 mode={mode} text={`${value.length}/${maxLength}`} />
         ) : null}
       </div>

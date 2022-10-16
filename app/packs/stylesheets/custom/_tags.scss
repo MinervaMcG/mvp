@@ -7,24 +7,11 @@
   width: fit-content;
   padding: 6px 10px;
   border-radius: 48px;
-  background-color: $light-surface-disable;
-
-  &.primary {
-    background-color: transparent;
-  }
-
-  &.secondary {
-    background-color: $light-surface-disable;
-  }
+  border: 1px solid $light-surface-hover-02;
 }
 
 .dark-body .tag-container {
-  background-color: $dark-surface-disable;
-  color: $dark-primary-text;
-
-  &.secondary {
-    background-color: $dark-primary-shade-02;
-  }
+  border: 1px solid $dark-surface-hover-02;
 }
 
 .optional-tag-container {
@@ -90,4 +77,12 @@
 
 .dark-body .tag-inside-dropdown {
   background-color: $dark-surface-hover-02 !important;
+}
+
+.tag-selected {
+  background-color: $light-text-primary-01;
+}
+
+.dark-body .tag-selected {
+  background-color: $dark-text-primary-01;
 }

@@ -98,6 +98,10 @@ const TalentPage = ({ talents, isAdmin, env }) => {
   }, [localTalents, watchlistOnly, selectedSort, sortDirection]);
 
   useEffect(() => {
+    setLocalTalents(addTalentData(talents));
+  }, [talents]);
+
+  const addTalentData = (talents) => {
     const newTalents = talents.map((talent) => ({
       ...talent,
       marketCap: getMarketCap(talent.totalSupply),
@@ -107,9 +111,8 @@ const TalentPage = ({ talents, isAdmin, env }) => {
         talent.id
       ),
     }));
-
-    setLocalTalents(newTalents);
-  }, [talents]);
+    return newTalents;
+  };
 
   return (
     <div className={cx("pb-6", mobile && "p-4")}>
@@ -128,6 +131,7 @@ const TalentPage = ({ talents, isAdmin, env }) => {
         setLocalTalents={setLocalTalents}
         setSelectedSort={setSelectedSort}
         setSortDirection={setSortDirection}
+        addTalentData={addTalentData}
         isAdmin={isAdmin}
       />
       {localTalents.length === 0 && (

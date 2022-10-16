@@ -9,5 +9,6 @@ module Token
     validates :address, presence: true
 
     scope :visible, -> { where(show: true) }
+    scope :order_by_name, -> { order("LOWER(name)") }
   end
 end

@@ -5,42 +5,34 @@ class API::V1::FollowsController < ApplicationController
   end
 
   def create
-    follow = Follow.find_or_initialize_by(user_id: follow_params[:user_id], follower_id: current_user.id)
+    Follows::Create.new(follower_user: current_user, following_user: following_user).call
 
-    if follow.persisted?
-      render json: {error: "Already following."}, status: :conflict
-    elsif follow.save
-      # if params[:user_id] != current_user.id
-      #   SyncFollowerPostsJob.perform_later(user_id: follow_params[:user_id], follower_id: current_user.id)
-      # end
-
-      if Follow.where(follower_id: current_user.id).count > 2
-        UpdateTasksJob.perform_later(type: "Tasks::Watchlist", user_id: current_user.id)
-      end
-
-      render json: {success: "Follow successfully created."}, status: :created
-    else
-      render json: {error: "Unable to create follow."}, status: :bad_request
-    end
+    render json: {success: "Follow successfully created."}, status: :created
+  rescue Follows::Create::AlreadyExistsError
+    render json: {error: "Already following."}, status: :conflict
+  rescue Follows::Create::CreationError => error
+    Rollbar.error(error, "Error creating follow", current_user_id: current_user.id, following_user_id: following_user.id)
+    render json: {error: "Unable to create follow."}, status: :bad_request
   end
 
   def destroy
-    follow = Follow.find_by(user_id: follow_params[:user_id], follower_id: current_user.id)
+    follow = Follow.find_by!(user: following_user, follower: current_user)
 
-    if follow&.destroy
-      # if params[:user_id] != current_user.id
-      #   DeSyncFollowerPostsJob.perform_later(user_id: follow_params[:user_id], follower_id: current_user.id)
-      # end
+    Follows::Destroy.new(follow: follow).call
 
-      render json: {success: "Follow successfully removed."}, status: :ok
-    else
-      render json: {error: "Follow does not exist."}, status: :not_found
-    end
+    render json: {success: "Follow successfully removed."}, status: :ok
+  rescue Follows::Destroy::DestroyError => error
+    Rollbar.error(error, "Error destroying follow", current_user_id: current_user.id, following_user_id: following_user.id, follow_id: follow.id)
+    render json: {error: "Unable to remove follow."}, status: :bad_request
   end
 
   private
 
   def follow_params
     params.permit(:user_id)
+  end
+
+  def following_user
+    @following_user ||= User.find(follow_params[:user_id])
   end
 end

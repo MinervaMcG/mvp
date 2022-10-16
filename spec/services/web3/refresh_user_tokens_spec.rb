@@ -1,11 +1,11 @@
 require "rails_helper"
-require "web3/api_proxy"
+require "web3_api/api_proxy"
 
 RSpec.shared_examples "an nft creation" do
 end
 
 RSpec.describe Web3::RefreshUserTokens do
-  let(:web3_proxy_class) { Web3::ApiProxy }
+  let(:web3_proxy_class) { Web3Api::ApiProxy }
   let(:web3_proxy) { instance_double(web3_proxy_class) }
 
   before do

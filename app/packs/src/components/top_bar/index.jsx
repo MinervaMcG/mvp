@@ -13,15 +13,13 @@ import { useWindowDimensionsHook } from "src/utils/window";
 import ThemeContainer, { ThemeContext } from "src/contexts/ThemeContext";
 import Notifications from "src/components/notifications";
 import UserMenu from "src/components/user_menu";
-import LogoLight from "src/components/icons/LogoLight";
-import LogoDark from "src/components/icons/LogoDark";
 import Tab from "src/components/design_system/tab";
 import Button from "src/components/design_system/button";
 import MobileTopBar from "src/components/top_bar/MobileTopBar";
-import { Copy } from "src/components/icons";
+import { Polygon, Celo } from "src/components/icons";
 import EarnMenu from "src/components/menus/EarnMenu";
 
-import { P2 } from "src/components/design_system/typography";
+import { P2, H5 } from "src/components/design_system/typography";
 
 const UnreadMessagesIndicator = () => {
   return (
@@ -206,19 +204,27 @@ export const TopBar = ({
     }
   };
 
+  const stableCoinIcon = () => {
+    return chainName == "Polygon" ? (
+      <Polygon className="mr-1" />
+    ) : (
+      <Celo className="mr-1" />
+    );
+  };
+
   const connectedButton = (extraClasses = "") => (
     <Button
       onClick={copyAddressToClipboard}
       type="white-subtle"
       size="normal"
       mode={theme.mode()}
-      className={extraClasses}
+      className={`${extraClasses} font-weight-normal p-1 pl-2 navbar-wallet-button-radius`}
     >
-      <strong>
-        {parseAndCommify(stableBalance)} {stableCoinName()}{" "}
-        <span className="text-primary-03">{user.displayWalletId}</span>
-        <Copy color="currentColor" className="ml-2" />
-      </strong>
+      {parseAndCommify(stableBalance)}{" "}
+      <span className="text-primary-04">{stableCoinName()}</span>{" "}
+      <span className="text-primary-01 background-bg-01 py-1 px-2 navbar-wallet-display-radius medium">
+        {stableCoinIcon()} {user.displayWalletId}
+      </span>
     </Button>
   );
 
@@ -260,26 +266,26 @@ export const TopBar = ({
 
   return (
     <div className="navbar-container">
-      <nav className={`navbar ${theme.mode()} d-flex justify-content-between`}>
+      <nav
+        className={`navbar ${theme.mode()} d-flex justify-content-between align-items-center`}
+      >
         <TransakDone show={transakDone} hide={() => setTransakDone(false)} />
-        <div className="d-flex align-items-center" style={{ height: 34 }}>
-          <a href="/" className="mr-6" style={{ height: 30 }}>
-            {theme.mode() == "light" ? (
-              <LogoLight width={128} height={20} />
-            ) : (
-              <LogoDark width={128} height={20} />
-            )}
-          </a>
+        <a href="/" className="mr-6">
+          <H5 bold className="mb-0">
+            Talent Protocol
+          </H5>
+        </a>
+        <div className="d-flex align-items-center">
           <Tab
             href="/talent"
-            text="Talent"
+            text="Explore"
             type="white"
             active={activeTab.includes("/talent")}
             className="mr-4"
           />
           <Tab
             href="/portfolio"
-            text="Portfolio"
+            text="Community"
             type="white"
             active={activeTab === "/portfolio"}
             className="mr-4"

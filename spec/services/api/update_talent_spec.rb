@@ -14,9 +14,10 @@ RSpec.describe API::UpdateTalent do
     let(:user_params) { {profile_type: "approved"} }
     let(:talent_params) { {} }
     let(:tag_params) { {} }
+    let(:career_needs_params) { {} }
 
     it "the talent becomes public" do
-      update_talent.call(talent_params, user_params, tag_params)
+      update_talent.call(talent_params, user_params, tag_params, career_needs_params)
 
       expect(user.talent.public).to eq true
     end
