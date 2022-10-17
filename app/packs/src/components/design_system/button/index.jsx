@@ -1,5 +1,5 @@
 import React from "react";
-import { string, func, oneOf, bool } from "prop-types";
+import { string, func, oneOf, bool, object } from "prop-types";
 import cx from "classnames";
 
 const Button = ({
@@ -12,6 +12,7 @@ const Button = ({
   className,
   children,
   Icon,
+  style,
 }) => {
   const typeClassName = `${type}-button`;
 
@@ -24,6 +25,7 @@ const Button = ({
         `${size}-size-button`,
         className
       )}
+      style={style}
       onClick={onClick}
       disabled={disabled}
     >
@@ -40,6 +42,7 @@ Button.defaultProps = {
   className: "",
   disabled: false,
   type: "",
+  style: {},
 };
 
 Button.propTypes = {
@@ -69,6 +72,7 @@ Button.propTypes = {
   size: oneOf(["none", "icon", "normal", "big", "extra-big"]),
   className: string,
   disabled: bool,
+  style: object,
 };
 
 export default Button;

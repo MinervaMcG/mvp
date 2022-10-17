@@ -2,6 +2,6 @@ class MilestoneBlueprint < Blueprinter::Base
   fields :id, :title, :description
 
   view :normal do
-    fields :start_date, :end_date, :link, :institution
+    fields :start_date, :end_date, :link, :institution, :category
   end
 end

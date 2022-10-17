@@ -38,7 +38,7 @@ const DisplayTokensModal = ({
         )}
         {tokens.map((token) => (
           <div className="col-12 col-md-6 mb-4" key={token.id}>
-            <div className="web3-card web3-card__full_height">
+            <div className="card web3-card web3-card__full_height">
               <div className="mb-4 d-flex align-items-center">
                 <Slider
                   checked={token.show}

@@ -368,6 +368,7 @@ const About = ({
           value={investor.profile.headline || ""}
           className="w-100"
           maxLength="240"
+          maxLengthText
           required={true}
           rows={3}
         />

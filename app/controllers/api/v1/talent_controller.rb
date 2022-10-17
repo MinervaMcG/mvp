@@ -35,7 +35,7 @@ class API::V1::TalentController < ApplicationController
     end
 
     service = API::UpdateTalent.new(talent, current_user)
-    service.call(talent_params, user_params, tag_params)
+    service.call(talent_params, user_params, tag_params, career_need_params)
 
     if service.success
       CreateNotificationTalentChangedJob.perform_later(talent.user.followers.pluck(:follower_id), talent.user_id)
@@ -76,6 +76,10 @@ class API::V1::TalentController < ApplicationController
 
   def tag_params
     params.permit(tags: [])
+  end
+
+  def career_need_params
+    params.permit(career_needs: [])
   end
 
   def talent_params

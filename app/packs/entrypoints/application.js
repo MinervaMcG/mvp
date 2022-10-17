@@ -18,7 +18,6 @@ import TalentKeywordSearch from "src/components/talent/TalentKeywordSearch";
 import Web3ModalConnect from "src/components/login/Web3ModalConnect";
 import UpcomingTalents from "src/components/talent/UpcomingTalents";
 import Notifications from "src/components/notifications";
-import WelcomePopup from "src/components/one_time_popups/WelcomePopup";
 
 // New Layout components - @TODO: we need to check which of the above components we'll still be using or not
 
@@ -42,6 +41,7 @@ import Footer from "src/components/design_system/footer";
 import FirstQuestPopup from "src/components/one_time_popups/FirstQuestPopup";
 import FlashMessages from "src/components/FlashMessages";
 import ProfileShow from "src/components/profile/show";
+import OnboardingFlow from "src/components/onboarding/OnboardingFlow";
 
 import "stylesheets/application.scss";
 
@@ -76,7 +76,7 @@ ReactOnRails.register({
   TopBar,
   UpcomingTalents,
   Web3ModalConnect,
-  WelcomePopup,
+  OnboardingFlow,
 });
 
 Rails.start();

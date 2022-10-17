@@ -25,7 +25,12 @@ const ProcessingUser = ({ themePreference }) => (
   </>
 );
 
-const UserCreated = ({ themePreference, sendConfirmationEmail, mode }) => (
+const UserCreated = ({
+  themePreference,
+  sendConfirmationEmail,
+  mode,
+  email,
+}) => (
   <>
     <H5
       className="mb-1"
@@ -33,7 +38,10 @@ const UserCreated = ({ themePreference, sendConfirmationEmail, mode }) => (
       bold
       mode={themePreference}
     />
-    <P2 className="mb-6" text="We've just sent you a confirmation email" />
+    <P2
+      className="mb-6 text-center"
+      text={`We've just sent a confirmation email to ${email}`}
+    />
     <Check color={mode() == "dark" ? darkPrimary : lightPrimary} size={64} />
     <p className="p2 text-black mt-6">
       Didn't received an email?{" "}
@@ -86,6 +94,8 @@ const ConfirmationEmailModal = ({ show, setShow, themePreference }) => (
 const ProcessFlow = ({
   email,
   username,
+  firstName,
+  lastName,
   password,
   code,
   captcha,
@@ -114,6 +124,8 @@ const ProcessFlow = ({
       password,
       code,
       captcha,
+      legal_first_name: firstName,
+      legal_last_name: lastName,
       theme_preference: themePreference,
     })
       .then((response) => {
@@ -142,6 +154,7 @@ const ProcessFlow = ({
         <UserCreated
           themePreference={themePreference}
           sendConfirmationEmail={sendConfirmationEmail}
+          email={email}
           mode={mode}
         />
       )}

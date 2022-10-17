@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_28_191125) do
-
+ActiveRecord::Schema.define(version: 2022_10_13_092626) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -116,6 +115,21 @@ ActiveRecord::Schema.define(version: 2022_09_28_191125) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "connections", force: :cascade do |t|
+    t.string "user_invested_amount"
+    t.string "connected_user_invested_amount"
+    t.integer "connection_type", null: false
+    t.datetime "connected_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.bigint "connected_user_id"
+    t.index ["connected_user_id"], name: "index_connections_on_connected_user_id"
+    t.index ["user_id", "connected_user_id"], name: "index_connections_on_user_id_and_connected_user_id", unique: true
+    t.index ["user_id"], name: "index_connections_on_user_id"
+    t.check_constraint "user_id <> connected_user_id", name: "user_connections_constraint"
+  end
+
   create_table "daily_metrics", force: :cascade do |t|
     t.date "date", null: false
     t.integer "total_users"
@@ -216,6 +230,14 @@ ActiveRecord::Schema.define(version: 2022_09_28_191125) do
     t.index ["user_id"], name: "index_follows_on_user_id"
   end
 
+  create_table "goal_images", force: :cascade do |t|
+    t.bigint "goal_id", null: false
+    t.text "image_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["goal_id"], name: "index_goal_images_on_goal_id"
+  end
+
   create_table "goals", force: :cascade do |t|
     t.date "due_date", null: false
     t.string "description"
@@ -223,6 +245,7 @@ ActiveRecord::Schema.define(version: 2022_09_28_191125) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "career_goal_id"
     t.string "title"
+    t.string "link"
     t.index ["career_goal_id"], name: "index_goals_on_career_goal_id"
   end
 
@@ -288,6 +311,14 @@ ActiveRecord::Schema.define(version: 2022_09_28_191125) do
     t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
+  create_table "milestone_images", force: :cascade do |t|
+    t.bigint "milestone_id", null: false
+    t.text "image_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["milestone_id"], name: "index_milestone_images_on_milestone_id"
+  end
+
   create_table "milestones", force: :cascade do |t|
     t.string "title", null: false
     t.date "start_date", null: false
@@ -298,6 +329,7 @@ ActiveRecord::Schema.define(version: 2022_09_28_191125) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "talent_id"
+    t.string "category"
     t.index ["talent_id"], name: "index_milestones_on_talent_id"
   end
 
@@ -410,6 +442,7 @@ ActiveRecord::Schema.define(version: 2022_09_28_191125) do
     t.boolean "hide_profile", default: false, null: false
     t.boolean "open_to_job_offers", default: false, null: false
     t.boolean "verified", default: false
+    t.integer "experience_level", default: 0
     t.index ["activity_count"], name: "index_talent_on_activity_count"
     t.index ["ito_date"], name: "index_talent_on_ito_date"
     t.index ["public_key"], name: "index_talent_on_public_key", unique: true
@@ -425,6 +458,7 @@ ActiveRecord::Schema.define(version: 2022_09_28_191125) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "last_time_bought_at"
+    t.datetime "first_time_bought_at"
     t.index ["supporter_wallet_id", "talent_contract_id"], name: "talent_supporters_wallet_token_contract_uidx", unique: true
   end
 
@@ -504,11 +538,10 @@ ActiveRecord::Schema.define(version: 2022_09_28_191125) do
     t.datetime "email_confirmed_at"
     t.string "display_name"
     t.bigint "invite_id"
-    t.boolean "welcome_pop_up", default: false
     t.boolean "tokens_purchased", default: false
     t.boolean "token_purchase_reminder_sent", default: false
-    t.string "theme_preference", default: "light"
     t.boolean "disabled", default: false
+    t.string "theme_preference", default: "light"
     t.boolean "messaging_disabled", default: false
     t.jsonb "notification_preferences", default: {}
     t.string "user_nft_address"
@@ -531,6 +564,9 @@ ActiveRecord::Schema.define(version: 2022_09_28_191125) do
     t.string "linkedin_id"
     t.string "delete_account_token"
     t.datetime "delete_account_token_expires_at"
+    t.string "legal_first_name"
+    t.string "legal_last_name"
+    t.boolean "onboarding_complete", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invite_id"], name: "index_users_on_invite_id"
     t.index ["linkedin_id"], name: "index_users_on_linkedin_id", unique: true
@@ -567,6 +603,8 @@ ActiveRecord::Schema.define(version: 2022_09_28_191125) do
   add_foreign_key "chats", "users", column: "sender_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "connections", "users"
+  add_foreign_key "connections", "users", column: "connected_user_id"
   add_foreign_key "discovery_rows", "partnerships"
   add_foreign_key "erc20_tokens", "users"
   add_foreign_key "erc721_tokens", "users"
@@ -575,12 +613,14 @@ ActiveRecord::Schema.define(version: 2022_09_28_191125) do
   add_foreign_key "feeds", "users"
   add_foreign_key "follows", "users"
   add_foreign_key "follows", "users", column: "follower_id"
+  add_foreign_key "goal_images", "goals"
   add_foreign_key "goals", "career_goals"
   add_foreign_key "impersonations", "users", column: "impersonated_id"
   add_foreign_key "impersonations", "users", column: "impersonator_id"
   add_foreign_key "invites", "users"
   add_foreign_key "marketing_articles", "users"
   add_foreign_key "messages", "chats"
+  add_foreign_key "milestone_images", "milestones"
   add_foreign_key "milestones", "talent"
   add_foreign_key "partnerships", "invites"
   add_foreign_key "perks", "talent"

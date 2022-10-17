@@ -36,16 +36,15 @@ const FirstQuestPopup = ({ userId }) => {
       contentClassName={mobile ? "h-100" : ""}
       fullscreen="true"
     >
-      <Modal.Header closeButton className="mt-2 mx-2 mb-0 pb-0">
+      <Modal.Header closeButton className="mt-4 mx-4 mb-0 pb-0">
         <P1 className="text-black mb-2 text-center" bold text="Earn rewards" />
       </Modal.Header>
-      <Modal.Body className="d-flex flex-column justify-content-between mx-2 mb-2">
+      <Modal.Body className="d-flex flex-column justify-content-between mx-4 mb-4">
         {mobile && <div></div>}
         <div>
           <P2
             className="text-primary-03"
-            text="Now that you're set, it's time for your first quest. Complete the 'About' section
-                  on your profile and connect your wallet to earn your first reward."
+            text="Now that you're set, you can start exploring! Connect with talent, complete your profile and earns rewards. You can start by checking the available quests."
           />
         </div>
         <div className="d-flex mt-6 w-100">

@@ -34,12 +34,12 @@ const Tab = ({
       >
         {Icon && <Icon pathClassName="tab-icon" color="current-color" />}
         {text && (
-          <P2 className={cx("tab-text", "current-color")} text={text} bold />
+          <P2 className={cx("tab-text", "current-color")} text={text} medium />
         )}
         {children}
         {!!newTab && (
           <Tag className="bg-primary text-white cursor-pointer">
-            <P3 className="current-color" bold text="New" />
+            <P3 className="current-color" medium text="New" />
           </Tag>
         )}
       </button>
@@ -61,10 +61,10 @@ const Tab = ({
       {Icon && <Icon pathClassName="tab-icon" color="current-color" />}
       {text && (
         <div className="d-flex flex-row">
-          <P2 className={cx("tab-text", "current-color")} text={text} bold />
+          <P2 className={cx("tab-text", "current-color")} text={text} medium />
           {!!newTab && (
             <Tag className="bg-primary permanent-text-white cursor-pointer ml-1">
-              <P3 className="current-color" bold text="New" />
+              <P3 className="current-color" medium text="New" />
             </Tag>
           )}
         </div>

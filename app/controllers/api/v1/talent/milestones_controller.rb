@@ -6,6 +6,10 @@ class API::V1::Talent::MilestonesController < ApplicationController
     milestone.assign_attributes(milestone_params)
     parsed_date = milestone_params[:start_date].split("-").map(&:to_i)
     milestone.start_date = Date.new(parsed_date[0], parsed_date[1])
+    if milestone_params[:end_date]
+      parsed_date = milestone_params[:end_date].split("-").map(&:to_i)
+      milestone.end_date = Date.new(parsed_date[0], parsed_date[1])
+    end
 
     if milestone.save
       render json: milestone, status: :ok
@@ -19,6 +23,11 @@ class API::V1::Talent::MilestonesController < ApplicationController
 
     parsed_date = milestone_params[:start_date].split("-").map(&:to_i)
     @milestone.start_date = Date.new(parsed_date[0], parsed_date[1])
+    if milestone_params[:end_date]
+      parsed_date = milestone_params[:end_date].split("-").map(&:to_i)
+      @milestone.end_date = Date.new(parsed_date[0], parsed_date[1])
+    end
+
     @milestone.talent = talent
 
     if @milestone.save
@@ -60,9 +69,11 @@ class API::V1::Talent::MilestonesController < ApplicationController
     params.require(:milestone).permit(
       :title,
       :start_date,
+      :end_date,
       :institution,
       :description,
-      :link
+      :link,
+      :category
     )
   end
 

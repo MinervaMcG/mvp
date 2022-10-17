@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class Supporter::UpgradeToTalent
-  def call(user_id:, applying: false)
-    user = User.find(user_id)
-
+  def call(user:, applying: false, sync_mailerlite: true)
     return false if user.talent.present?
 
     user.create_talent!
@@ -15,8 +13,10 @@ class Supporter::UpgradeToTalent
 
     copy_information_to_talent(user)
 
-    service = Mailerlite::SyncSubscriber.new
-    service.call(user)
+    if sync_mailerlite
+      service = Mailerlite::SyncSubscriber.new
+      service.call(user)
+    end
 
     task_service = Tasks::Update.new
     task_service.call(type: "Tasks::ApplyTokenLaunch", user: user)

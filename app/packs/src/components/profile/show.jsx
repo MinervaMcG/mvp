@@ -1,5 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
-import { ethers } from "ethers";
+import React, { useEffect, useState } from "react";
 import Divider from "src/components/design_system/other/Divider";
 
 import ThemeContainer from "src/contexts/ThemeContext";
@@ -7,34 +6,27 @@ import { camelCaseObject } from "src/utils/transformObjects";
 import { useWindowDimensionsHook } from "src/utils/window";
 import Button from "src/components/design_system/button";
 
-import {
-  ApolloProvider,
-  useQuery,
-  GET_TALENT_PORTFOLIO_FOR_ID_SIMPLE,
-  client,
-} from "src/utils/thegraph";
-
 import Poaps from "./web3/poaps";
 import Nfts from "./web3/nfts";
 import Tokens from "./web3/tokens";
 import Overview from "./Overview";
 import About from "./About";
 import Journey from "./Journey";
+import Community from "./Community";
+import Token from "./Token";
+import LaunchToken from "./LaunchToken";
+import ApplyToLaunchToken from "./ApplyToLaunchToken";
+import Perks from "./Perks";
 
-const Show = ({ talent, railsContext, currentUserId }) => {
-  const localTalent = camelCaseObject(talent);
-  const canUpdate = talent.user.id == currentUserId;
+const Show = ({ talent, railsContext, currentUserId, currentUserAdmin }) => {
+  const [localTalent, setLocalTalent] = useState(camelCaseObject(talent));
+  const user = localTalent.user;
+  const token = localTalent.token;
   const [selectedSection, setSelectedSection] = useState(window.location.hash);
-  const [listLoaded, setListLoaded] = useState(false);
-  const [tokenData, setTokenData] = useState({
-    price: 0.1,
-    totalSupply: 0,
-  });
-
-  const { loading, data } = useQuery(GET_TALENT_PORTFOLIO_FOR_ID_SIMPLE, {
-    variables: { id: localTalent.token.contractId?.toLowerCase() },
-    skip: listLoaded,
-  });
+  const [showLastDivider, setShowLastDivider] = useState(false);
+  const [previewMode, setPreviewMode] = useState(false);
+  const talentTokenPrice = 0.1;
+  const canUpdate = talent.user.id == currentUserId && !previewMode;
 
   const { mobile } = useWindowDimensionsHook();
 
@@ -44,6 +36,8 @@ const Show = ({ talent, railsContext, currentUserId }) => {
 
   const buttonType = (section) => {
     if (section == selectedSection) {
+      return "white-default";
+    } else if (!selectedSection && section == "#about") {
       return "white-default";
     } else {
       return "white-ghost";
@@ -62,77 +56,141 @@ const Show = ({ talent, railsContext, currentUserId }) => {
     }
   }, [selectedSection]);
 
-  useEffect(() => {
-    if (loading || !data || !data.talentToken) {
-      if (!loading) {
-        setListLoaded(true);
-      }
-      return;
+  const onWalletConnect = (account) => {
+    setTalent((prev) => ({
+      ...prev,
+      user: {
+        ...prev.user,
+        walletId: account,
+      },
+    }));
+  };
+
+  const getCurrentTokenSection = () => {
+    if (
+      (user.profileType == "approved" || user.profileType == "talent") &&
+      !token.contractId
+    ) {
+      return LaunchToken;
     }
 
-    setListLoaded(true);
-    setTokenData({
-      ...tokenData,
-      totalSupply: ethers.utils.formatUnits(data.talentToken.totalSupply || 0),
-    });
-  }, [data, loading]);
+    if (user.profileType != "approved" && user.profileType != "talent") {
+      return ApplyToLaunchToken;
+    }
+
+    return Token;
+  };
+
+  const CurrentTokenSection = getCurrentTokenSection();
 
   return (
     <div className="d-flex flex-column lg-h-100 p-0 mt-7">
       <Overview
         className="mb-2"
         talent={localTalent}
-        tokenData={tokenData}
+        setTalent={setLocalTalent}
         currentUserId={currentUserId}
+        currentUserAdmin={currentUserAdmin}
         railsContext={railsContext}
+        changeSection={changeSection}
+        talentTokenPrice={talentTokenPrice}
+        canUpdate={canUpdate}
+        previewMode={previewMode}
+        setPreviewMode={setPreviewMode}
       />
       <Divider className="my-6" />
-      <div>
-        <div className="d-flex justify-content-center overflow-x-scroll mx-4">
-          <Button
-            className="mr-2"
-            type={buttonType("#About")}
-            text="About"
-            onClick={() => changeSection("#About")}
-          />
-          <Button
-            className="mr-2"
-            type={buttonType("#Journey")}
-            text="Journey"
-            onClick={() => changeSection("#Journey")}
-          />
-          <Button
-            className="mr-2"
-            type={buttonType(`#${localTalent.token.ticker}`)}
-            text={localTalent.token.ticker}
-            onClick={() => changeSection(`#${localTalent.token.ticker}`)}
-          />
-          <Button
-            className="mr-2"
-            type={buttonType("#Community")}
-            text="Community"
-            onClick={() => changeSection("#Community")}
-          />
-          <Button
-            type={buttonType("#DigitalCollectibles")}
-            text="Digital Collectibles"
-            onClick={() => changeSection("#DigitalCollectibles")}
-          />
-        </div>
+      <div className="d-flex justify-content-lg-center overflow-x-scroll mx-4">
+        <Button
+          className="mr-2"
+          type={buttonType("#about")}
+          text="About"
+          onClick={() => changeSection("#about")}
+        />
+        <Button
+          className="mr-2"
+          type={buttonType("#journey")}
+          text="Journey"
+          onClick={() => changeSection("#journey")}
+        />
+        <Button
+          className="mr-2"
+          type={buttonType("#token")}
+          text={token.ticker ? `$${token.ticker}` : "Token"}
+          onClick={() => changeSection("#token")}
+        />
+        <Button
+          className="mr-2"
+          type={buttonType("#community")}
+          text="Community"
+          onClick={() => changeSection("#community")}
+        />
+        <Button
+          type={buttonType("#digital-collectibles")}
+          text="Digital Collectibles"
+          onClick={() => changeSection("#digital-collectibles")}
+        />
       </div>
-      <div className="my-7 w-100" id="#About">
-        <About talent={localTalent} />
+      <div className="my-7 w-100 col-12" id="#about">
+        <About
+          talent={localTalent}
+          setTalent={setLocalTalent}
+          canUpdate={canUpdate}
+          previewMode={previewMode}
+        />
       </div>
       {mobile && <Divider />}
-      <div className="my-7 w-100" id="#Journey">
-        <Journey talent={localTalent} />
+      <div className="my-7 w-100 col-12" id="#journey">
+        <Journey
+          talent={localTalent}
+          setTalent={setLocalTalent}
+          canUpdate={canUpdate}
+        />
       </div>
-      <div className="my-7 w-100" id={`#${localTalent.token.ticker}`}></div>
-      <div className="my-7 w-100" id="#Community"></div>
-      <div className="my-7 w-100" id="#DigitalCollectibles">
-        <Poaps userId={talent.user.id} canUpdate={canUpdate} />
-        <Nfts userId={talent.user.id} canUpdate={canUpdate} />
-        <Tokens userId={talent.user.id} canUpdate={canUpdate} />
+      <div className="my-7 w-100" id={"#token"}>
+        {token.contractId && (
+          <Perks talent={localTalent} canUpdate={canUpdate} />
+        )}
+        <CurrentTokenSection
+          talent={localTalent}
+          talentTokenPrice={talentTokenPrice}
+          setLocalTalent={setLocalTalent}
+          railsContext={railsContext}
+          waitingApproval={user.profileType == "waiting_for_approval"}
+        />
+      </div>
+      <div className="my-7 w-100 col-12" id="#community">
+        <Community
+          userId={localTalent.user.id}
+          talent={localTalent}
+          canUpdate={canUpdate}
+        />
+      </div>
+      {(showLastDivider || canUpdate) && <Divider className="my-6" />}
+      <div className="mt-7 w-100" id="#digital-collectibles">
+        <Poaps
+          user={localTalent.user}
+          canUpdate={canUpdate}
+          setShowLastDivider={setShowLastDivider}
+          setTalent={setLocalTalent}
+          railsContext={railsContext}
+          onWalletConnect={onWalletConnect}
+        />
+        <Nfts
+          user={localTalent.user}
+          canUpdate={canUpdate}
+          setShowLastDivider={setShowLastDivider}
+          setTalent={setLocalTalent}
+          railsContext={railsContext}
+          onWalletConnect={onWalletConnect}
+        />
+        <Tokens
+          user={localTalent.user}
+          canUpdate={canUpdate}
+          setShowLastDivider={setShowLastDivider}
+          setTalent={setLocalTalent}
+          railsContext={railsContext}
+          onWalletConnect={onWalletConnect}
+        />
       </div>
     </div>
   );
@@ -141,9 +199,7 @@ const Show = ({ talent, railsContext, currentUserId }) => {
 export default (props, railsContext) => {
   return () => (
     <ThemeContainer>
-      <ApolloProvider client={client(props.talent.token.chain_id)}>
-        <Show {...props} railsContext={railsContext} />
-      </ApolloProvider>
+      <Show {...props} railsContext={railsContext} />
     </ThemeContainer>
   );
 };

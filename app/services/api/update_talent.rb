@@ -7,27 +7,11 @@ class API::UpdateTalent
     @success = false
   end
 
-  def call(talent_params, user_params, tag_params)
+  def call(talent_params, user_params, tag_params, career_need_params)
     update_talent(talent_params)
     update_user(user_params)
-
-    if tag_params[:tags]
-      all_tags = tag_params[:tags]
-      talent
-        .user
-        .user_tags
-        .joins(:tag)
-        .where(tag: {hidden: false})
-        .where.not(tag: {description: all_tags})
-        .delete_all
-
-      all_tags.each do |description|
-        tag = Tag.find_or_create_by(description: description.downcase)
-        user_tag = UserTag.find_or_initialize_by(user: talent.user, tag: tag)
-
-        user_tag.save! unless user_tag.persisted?
-      end
-    end
+    update_tags(tag_params[:tags]) if tag_params[:tags]
+    update_career_needs(career_need_params[:career_needs]) if career_need_params[:career_needs]
 
     @success = true
   end
@@ -60,10 +44,8 @@ class API::UpdateTalent
       AddUsersToMailerliteJob.perform_later(talent.user.id)
     end
 
-    if params[:profile_picture_data]
-      talent.profile_picture = params[:profile_picture_data].as_json
-      talent.profile_picture_derivatives! if talent.profile_picture_changed?
-    end
+    talent.profile_picture = params[:profile_picture_data].as_json
+    talent.profile_picture_derivatives! if talent.profile_picture && talent.profile_picture_changed?
 
     if params[:profile]
       if params[:profile][:headline]
@@ -114,11 +96,38 @@ class API::UpdateTalent
       Tasks::Update.new.call(type: "Tasks::Verified", user: talent.user) if talent.verified?
     end
 
-    if params[:banner_data]
-      talent.banner = params[:banner_data].as_json
-      talent.banner_derivatives! if talent.banner_changed?
-    end
+    talent.banner = params[:banner_data].as_json
+    talent.banner_derivatives! if talent.banner && talent.banner_changed?
 
     talent.save!
+  end
+
+  def update_tags(all_tags)
+    talent
+      .user
+      .user_tags
+      .joins(:tag)
+      .where(tag: {hidden: false})
+      .where.not(tag: {description: all_tags})
+      .delete_all
+
+    all_tags.each do |description|
+      tag = Tag.find_or_create_by(description: description.downcase)
+      user_tag = UserTag.find_or_initialize_by(user: talent.user, tag: tag)
+
+      user_tag.save! unless user_tag.persisted?
+    end
+  end
+
+  def update_career_needs(career_needs)
+    talent
+      .career_goal
+      .career_needs
+      .where.not(title: career_needs)
+      .delete_all
+
+    career_needs.each do |title|
+      CareerNeed.find_or_create_by!(title: title, career_goal: talent.career_goal)
+    end
   end
 end

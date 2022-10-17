@@ -50,7 +50,8 @@ class API::V1::CareerGoals::GoalsController < ApplicationController
     params.require(:goal).permit(
       :title,
       :due_date,
-      :description
+      :description,
+      :link
     )
   end
 

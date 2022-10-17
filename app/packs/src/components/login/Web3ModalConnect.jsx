@@ -111,7 +111,7 @@ const Web3ModalConnect = ({
         onClick={connectWallet}
         type={buttonClassName ? "" : "white-subtle"}
         mode={mode}
-        className={buttonClassName || "mr-2"}
+        className={`${buttonClassName || "mr-2"} medium`}
         disabled={!allowConnect()}
       >
         {account == "" ? "Connect Wallet" : `${shortenAddress(account)}`}{" "}

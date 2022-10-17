@@ -100,6 +100,7 @@ const HighlightForm = ({
           value={highlight["description"]}
           className="edit-profile-input"
           maxLength="175"
+          maxLengthText
           required={true}
           error={validationErrors?.description}
           rows={3}

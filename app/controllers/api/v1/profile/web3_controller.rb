@@ -75,13 +75,13 @@ class API::V1::Profile::Web3Controller < ApplicationController
     tokens = tokens.visible if only_visible_tokens?
     tokens = tokens.where(chain_id: refresh_params[:chain_id]) if refresh_params[:chain_id].present?
 
-    @pagy, tokens = pagy(tokens.order_by_name, items: per_page)
-    @tokens = Web3::Erc20TokenBlueprint.render_as_json(tokens, view: :normal)
+    pagy, tokens = pagy(tokens.order_by_name, items: per_page)
+    tokens = Web3::Erc20TokenBlueprint.render_as_json(tokens, view: :normal)
 
     render(
       json: {
-        tokens: @tokens,
-        pagination: render_pagination(@pagy)
+        tokens: tokens,
+        pagination: render_pagination(pagy)
       },
       status: :ok
     )
@@ -91,7 +91,7 @@ class API::V1::Profile::Web3Controller < ApplicationController
       "Error while refreshing tokens",
       user_id: current_acting_user.id
     )
-    render json: {error: "Something went wrong while refreshing tokens"}, status: :bad_request
+    render json: {error: "Something went wrong while refreshing tokens. Try again later."}, status: :bad_request
   end
 
   def refresh_nfts
@@ -117,7 +117,7 @@ class API::V1::Profile::Web3Controller < ApplicationController
       "Error while refreshing nfts",
       user_id: current_acting_user.id
     )
-    render json: {error: "Something went wrong while refreshing nfts"}, status: :bad_request
+    render json: {error: "Something went wrong while refreshing nfts. Try again later."}, status: :bad_request
   end
 
   def refresh_poaps
@@ -142,7 +142,7 @@ class API::V1::Profile::Web3Controller < ApplicationController
       "Error while refreshing poaps",
       user_id: current_acting_user.id
     )
-    render json: {error: "Something went wrong while refreshing poaps"}, status: :bad_request
+    render json: {error: "Something went wrong while refreshing poaps. Try again later."}, status: :bad_request
   end
 
   private

@@ -2,15 +2,14 @@
 @import "../bootstrap/overrides";
 
 .card {
-  background-color: $dark-text-primary-01;
+  background-color: transparent;
   padding: 1.5rem;
   border-radius: 24px;
-  border: 0;
+  border: 1px solid $light-surface-hover-02;
   text-decoration: none !important;
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.04);
 
   &:hover {
-    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+    border: 2px solid $light-surface-hover-02;
   }
 
   img {
@@ -35,13 +34,8 @@
 }
 
 .dark-body .card {
-  background-color: $dark-surface-01;
+  background-color: transparent;
   box-shadow: none;
-
-  &:hover {
-    background-color: $dark-surface-02;
-    box-shadow: none;
-  }
 }
 
 .card-size {

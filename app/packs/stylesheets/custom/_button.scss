@@ -725,6 +725,79 @@
   }
 }
 
+.all-journey-button {
+  color: $light-text-primary-03;
+  background-color: none !important;
+  border: 1px solid $light-surface-hover-02;
+  line-height: 165%;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 48px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+
+  &:hover {
+    border: 1px solid transparent !important;
+    background-color: $light-surface-hover !important;
+  }
+
+  &:active {
+    color: $light-text-inverse-01;
+    background-color: $light-text-primary-01 !important;
+  }
+
+  &.active {
+    color: $light-text-inverse-01;
+    background-color: $light-text-primary-01 !important;
+  }
+}
+
+.dark-body .all-journey-button {
+  color: $dark-text-primary-03;
+  background-color: none !important;
+  border: 1px solid $dark-surface-hover-02;
+
+  &:hover {
+    background-color: $dark-surface-hover !important;
+  }
+
+  &:active {
+    color: $dark-bg-01;
+    background-color: $dark-text-primary-01 !important;
+  }
+
+  &.active {
+    color: $dark-bg-01;
+    background-color: $dark-text-primary-01 !important;
+  }
+}
+
+.position-journey-button {
+  &:hover {
+    color: #328aff;
+  }
+}
+
+.goal-journey-button {
+  &:hover {
+    color: $dark-secondary;
+  }
+}
+
+.education-journey-button {
+  &:hover {
+    color: $dark-positive;
+  }
+}
+
+.other-journey-button {
+  &:hover {
+    color: #fd9a00;
+  }
+}
+
 .icon-size-button {
   padding: 0px;
   width: 34px;
@@ -735,6 +808,12 @@
   padding: 0px;
   width: 16px;
   height: 16px;
+}
+
+.big-icon-size-button {
+  padding: 0px;
+  width: 40px;
+  height: 40px;
 }
 
 .normal-size-button {

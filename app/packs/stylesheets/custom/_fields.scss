@@ -23,66 +23,57 @@
 }
 
 .form-control {
-  background: $light-surface-disable;
+  background: none !important;
   color: $light-text-primary-01;
-  border: 1px solid $light-surface-disable;
+  border: 1px solid $light-surface-hover-02;
   height: 34px;
   border-radius: 8px;
 
   &:hover {
-    background: $light-surface-disable;
-    border: 1px solid $light-primary-hover;
+    border: 1px solid $light-primary;
     box-sizing: border-box;
   }
 
   &:active {
-    background-color: $light-surface-disable;
+    border: 1px solid $light-primary;
   }
 
   &:focus {
-    background-color: $light-bg-01;
-    border: 1px solid $light-primary !important;
-    box-shadow: 0px 0px 0px 3px $info !important;
+    border: 1px solid $light-primary;
+    box-shadow: 0px 0px 0px 3px $info;
   }
 
   &:disabled {
     color: $light-text-primary-disable;
-    background: $light-surface-disable;
     border: 1px solid $light-surface-disable;
     color: $light-text-primary-01;
   }
 }
 
 .dark-body .form-control {
-  background: $dark-surface-disable;
+  background: none !important;
   color: $dark-text-primary-01;
-  border: 1px solid $dark-surface-disable;
+  border: 1px solid $dark-surface-hover-02 !important;
 
   ::placeholder {
     color: $dark-text-primary-04 !important;
   }
 
   &:hover {
-    background: $dark-surface-disable;
-    border: 1px solid $dark-primary;
+    border: 1px solid $dark-primary !important;
     box-sizing: border-box;
     border-radius: 8px;
   }
 
-  &:active {
-    background: $dark-surface-disable;
-  }
-
   &:focus {
-    background: $dark-surface-disable !important;
     border: 1px solid $dark-primary !important;
     box-shadow: 0px 0px 0px 3px $dark-primary-shade-02 !important;
   }
 
   &:disabled {
     color: $light-text-primary-disable;
-    background: $dark-surface-disable;
-    border: 1px solid $dark-surface-disable;
+    background: $dark-surface-disable !important;
+    border: 1px solid $dark-surface-disable !important;
     color: $dark-surface-disable;
   }
 }
@@ -135,14 +126,12 @@
 
 .select {
   &__control {
-    background: $light-surface-disable !important;
     color: $light-text-primary-01 !important;
-    border: 1px solid $light-surface-disable !important;
+    border: 1px solid $light-surface-hover-02 !important;
     box-shadow: none !important;
     border-radius: 8px !important;
 
     &:hover {
-      background: $light-surface-disable !important;
       border: 1px solid $light-primary-hover !important;
       box-sizing: border-box !important;
     }
@@ -208,11 +197,12 @@
   }
 
   &__multi-value {
-    background-color: $light-text-primary-disable !important;
+    background-color: inherit !important;
+    border: 1px solid $light-surface-hover-02;
     border-radius: 4px !important;
 
     &:hover {
-      background-color: $light-surface-hover-02 !important;
+      background-color: $light-surface-hover !important;
     }
 
     .select__multi-value__label {
@@ -221,7 +211,7 @@
 
     .select__multi-value__remove {
       background-color: inherit !important;
-      color: $light-text-primary-disable !important;
+      color: $light-text-primary-04 !important;
       border-radius: 0 4px 4px 0 !important;
 
       &:hover {
@@ -233,7 +223,7 @@
 
 .dark-body .select {
   &__control {
-    background: $dark-surface-disable !important;
+    background: inherit !important;
     color: $dark-text-primary-01 !important;
     border: 1px solid $dark-surface-disable !important;
     border-radius: 8px !important;
@@ -301,10 +291,11 @@
   }
 
   &__multi-value {
-    background-color: $dark-text-primary-04 !important;
+    background-color: inherit !important;
+    border: 1px solid $dark-surface-hover-02;
 
     &:hover {
-      background-color: $dark-text-primary-03 !important;
+      background-color: $dark-surface-hover !important;
     }
 
     .select__multi-value__label {

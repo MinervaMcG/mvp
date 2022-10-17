@@ -21,16 +21,17 @@ const TextInput = ({
   ariaDescribedBy,
   topCaption,
   type = "text",
+  maxLengthText = false,
 }) => {
   return (
     <div className={cx("d-flex flex-column", className)}>
       <div className="d-flex flex-row justify-content-between align-items-end">
         {title ? (
-          <P2 bold className="text-black mb-2">
+          <P2 bold className="text-primary-01 mb-2">
             {title} {required && <span className="text-danger">*</span>}
           </P2>
         ) : null}
-        {maxLength ? (
+        {maxLengthText ? (
           <P2 className="mb-2" text={`${value.length}/${maxLength}`} />
         ) : null}
         {topCaption ? <P3 className="mb-2" text={topCaption} /> : null}

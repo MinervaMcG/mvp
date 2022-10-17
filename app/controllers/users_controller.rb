@@ -57,7 +57,9 @@ class UsersController < ApplicationController
         username: user_params[:username],
         password: user_params[:password],
         invite_code: user_params[:code],
-        theme_preference: user_params[:theme_preference]
+        theme_preference: user_params[:theme_preference],
+        first_name: user_params[:first_name],
+        last_name: user_params[:last_name]
       )
 
       if @result[:success]
@@ -108,7 +110,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.permit(:email, :username, :password, :code, :captcha, :mode, :theme_preference)
+    params.permit(:email, :username, :password, :code, :captcha, :mode, :theme_preference, :legal_first_name, :legal_last_name)
   end
 
   def verify_captcha

@@ -477,6 +477,7 @@ const About = (props) => {
           value={props.talent.profile.headline || ""}
           className="w-100"
           maxLength="240"
+          maxLengthText
           required={true}
           rows={3}
         />

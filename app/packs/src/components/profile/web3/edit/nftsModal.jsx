@@ -51,7 +51,7 @@ const DisplayNftsModal = ({
           )}
           {nfts.map((nft) => (
             <div className="col-12 col-md-6 mb-4" key={nft.id}>
-              <div className="web3-card">
+              <div className="card web3-card">
                 <div className="mb-3 d-flex align-items-center">
                   <Slider
                     checked={nft.show}

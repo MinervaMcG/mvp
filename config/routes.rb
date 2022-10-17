@@ -20,10 +20,16 @@ Rails.application.routes.draw do
   end
   # end Public API
 
-  # Business - require log-in
-  constraints Clearance::Constraints::SignedIn.new do
-    root to: "discovery#index", as: :user_root
+  constraints Clearance::Constraints::SignedIn.new { |user| !user.onboarding_complete? } do
+    root to: "onboarding#index", as: :onboarding_root
+    post "/finish" => "onboarding#finish"
 
+    match "*unmatched", to: redirect("/"), via: :all
+  end
+
+  # Business - require log-in
+  constraints Clearance::Constraints::SignedIn.new { |user| user.onboarding_complete? } do
+    root to: "discovery#index", as: :user_root
     # file uploads
     unless Rails.env.test?
       mount Shrine.uppy_s3_multipart(:cache) => "/s3/multipart"
@@ -67,6 +73,8 @@ Rails.application.routes.draw do
 
           namespace :profile do
             resources :web3, controller: :web3, only: [:update]
+            resources :community, only: [:index]
+            resources :perks, only: [:index]
 
             scope :web3 do
               get :tokens, to: "web3#tokens"

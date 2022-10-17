@@ -1,7 +1,7 @@
 export const TERMS_HREF =
-  "https://drive.google.com/file/d/1Pcf_sa6fvUItxVMiUzuOt41aCbRRFVrh/view";
+  "https://talentprotocol.notion.site/Terms-Conditions-ec060cb6c06e49a98f17d235d0835773";
 export const PRIVACY_HREF =
-  "https://drive.google.com/file/d/1Cts7FcmstLa_IISHFeO6vizy8Um5rKZE/view";
+  "https://talentprotocol.notion.site/Privacy-Policy-cc2b297006b54b3db1a008592302ccf5";
 
 export const THE_GRAPH_ENDPOINTS = {
   137: "https://api.thegraph.com/subgraphs/name/talent-protocol/polygon-prod",
@@ -58,3 +58,21 @@ export const ERROR_MESSAGES = {
   ticker_reserved: "talent token with this symbol already exists",
   action_canceled: "User denied transaction signature",
 };
+
+// This list and order is used to present in the onboarding flow by different categories
+// make sure to check app/packs/src/components/onboarding/OpenTo.jsx after making changes
+export const CAREER_NEEDS_OPTIONS = [
+  "Full-time Roles",
+  "Part-time Roles",
+  "Freelancing or contract roles",
+  "Internships",
+  "Volunteering for impact projects",
+  "Being matched with a mentor",
+  "Finding a co-founder",
+  "Find and hiring talent",
+  "Learning about web3",
+  "Meet new people",
+  "Mentoring others",
+  "Assisting others with their job search",
+  "Investing in talent, projects or startups",
+];

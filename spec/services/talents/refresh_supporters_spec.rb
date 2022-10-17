@@ -1,9 +1,13 @@
 require "rails_helper"
 
 RSpec.describe Talents::RefreshSupporters do
-  let(:talent_token) { create :talent_token, talent: talent, chain_id: 42220 }
-  let(:talent) { create :talent }
+  let(:talent_user) { create :user }
+  let(:talent_token) { create :talent_token, talent: talent, chain_id: 42220, deployed: true }
+  let(:talent) { create :talent, user: talent_user }
   let(:talent_contract_id) { talent_token.contract_id }
+
+  let!(:supporter_one) { create :user, wallet_id: "99asn" }
+  let!(:supporter_two) { create :user, wallet_id: "01ksh" }
 
   subject(:refresh_supporters) { described_class.new(talent_token: talent_token).call }
 
@@ -25,16 +29,24 @@ RSpec.describe Talents::RefreshSupporters do
   let(:supporter_counter) { "2" }
 
   let(:supporters_data) do
-    result = []
-    supporter_counter.to_i.times do
-      result << OpenStruct.new(
+    [
+      OpenStruct.new(
         id: SecureRandom.hex,
-        supporter: OpenStruct.new(id: SecureRandom.hex),
-        amount: "30000000000000000000",
-        tal_amount: "150000000000000000000"
+        supporter: OpenStruct.new(id: "99asn"),
+        amount: "60000000000000000000",
+        tal_amount: "300000000000000000000",
+        last_time_bought_at: "1657727823",
+        first_time_bought_at: "1627727823"
+      ),
+      OpenStruct.new(
+        id: SecureRandom.hex,
+        supporter: OpenStruct.new(id: "01ksh"),
+        amount: "90000000000000000000",
+        tal_amount: "450000000000000000000",
+        last_time_bought_at: "1657564775",
+        first_time_bought_at: "1627564775"
       )
-    end
-    result
+    ]
   end
 
   before do
@@ -58,6 +70,10 @@ RSpec.describe Talents::RefreshSupporters do
     expect { refresh_supporters }.to change(TalentSupporter, :count).from(0).to(2)
   end
 
+  it "creates 2 connection records" do
+    expect { refresh_supporters }.to change(Connection, :count).from(0).to(4)
+  end
+
   it "updates the talent information with the correct data" do
     refresh_supporters
 
@@ -70,25 +86,6 @@ RSpec.describe Talents::RefreshSupporters do
   end
 
   context "when the talent supporter records already exist in the database" do
-    let(:supporters_data) do
-      [
-        OpenStruct.new(
-          id: SecureRandom.hex,
-          supporter: OpenStruct.new(id: "99asn"),
-          amount: "60000000000000000000",
-          tal_amount: "300000000000000000000",
-          last_time_bought_at: "1657727823"
-        ),
-        OpenStruct.new(
-          id: SecureRandom.hex,
-          supporter: OpenStruct.new(id: "01ksh"),
-          amount: "90000000000000000000",
-          tal_amount: "450000000000000000000",
-          last_time_bought_at: "1657564775"
-        )
-      ]
-    end
-
     let!(:talent_supporter_one) do
       create(
         :talent_supporter,
@@ -106,8 +103,44 @@ RSpec.describe Talents::RefreshSupporters do
       )
     end
 
+    let!(:connection_one) do
+      create(
+        :connection,
+        user: talent_user,
+        connected_user: supporter_one
+      )
+    end
+
+    let!(:connection_two) do
+      create(
+        :connection,
+        user: supporter_one,
+        connected_user: talent_user
+      )
+    end
+
+    let!(:connection_three) do
+      create(
+        :connection,
+        user: talent_user,
+        connected_user: supporter_two
+      )
+    end
+
+    let!(:connection_four) do
+      create(
+        :connection,
+        user: supporter_two,
+        connected_user: talent_user
+      )
+    end
+
     it "does not create extra talent supporter records" do
       expect { refresh_supporters }.not_to change(TalentSupporter, :count)
+    end
+
+    it "does not create extra connection records" do
+      expect { refresh_supporters }.not_to change(Connection, :count)
     end
 
     it "updates the talent supporter records data" do
@@ -120,10 +153,43 @@ RSpec.describe Talents::RefreshSupporters do
         expect(talent_supporter_one.amount).to eq "60000000000000000000"
         expect(talent_supporter_one.tal_amount).to eq "300000000000000000000"
         expect(talent_supporter_one.last_time_bought_at).to eq Time.at(1657727823)
+        expect(talent_supporter_one.first_time_bought_at).to eq Time.at(1627727823)
 
         expect(talent_supporter_two.amount).to eq "90000000000000000000"
         expect(talent_supporter_two.tal_amount).to eq "450000000000000000000"
         expect(talent_supporter_two.last_time_bought_at).to eq Time.at(1657564775)
+        expect(talent_supporter_two.first_time_bought_at).to eq Time.at(1627564775)
+      end
+    end
+
+    it "updates the connections records data" do
+      refresh_supporters
+
+      connection_one.reload
+      connection_two.reload
+      connection_three.reload
+      connection_four.reload
+
+      aggregate_failures do
+        expect(connection_one.user_invested_amount).to eq "0"
+        expect(connection_one.connected_user_invested_amount).to eq "60000000000000000000"
+        expect(connection_one.connection_type).to eq "supporter"
+        expect(connection_one.connected_at).to eq Time.at(1627727823)
+
+        expect(connection_two.user_invested_amount).to eq "60000000000000000000"
+        expect(connection_two.connected_user_invested_amount).to eq "0"
+        expect(connection_two.connection_type).to eq "supporting"
+        expect(connection_two.connected_at).to eq Time.at(1627727823)
+
+        expect(connection_three.user_invested_amount).to eq "0"
+        expect(connection_three.connected_user_invested_amount).to eq "90000000000000000000"
+        expect(connection_three.connection_type).to eq "supporter"
+        expect(connection_three.connected_at).to eq Time.at(1627564775)
+
+        expect(connection_four.user_invested_amount).to eq "90000000000000000000"
+        expect(connection_four.connected_user_invested_amount).to eq "0"
+        expect(connection_four.connection_type).to eq "supporting"
+        expect(connection_four.connected_at).to eq Time.at(1627564775)
       end
     end
   end
