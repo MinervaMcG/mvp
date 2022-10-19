@@ -367,8 +367,6 @@ const About = ({
           onChange={(e) => changeInvestorAttribute("headline", e.target.value)}
           value={investor.profile.headline || ""}
           className="w-100"
-          maxLength="240"
-          maxLengthText
           required={true}
           rows={3}
         />

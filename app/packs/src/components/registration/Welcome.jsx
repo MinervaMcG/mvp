@@ -142,7 +142,7 @@ const Welcome = ({
   const shouldRenderInvitedBy = inviteCode !== "" && !!name;
 
   return (
-    <>
+    <div className="registration-items">
       <div className="mb-6">
         {!shouldRenderInvitedBy && (
           <>
@@ -317,7 +317,7 @@ const Welcome = ({
           text="Check the user guide."
         />
       </div>
-    </>
+    </div>
   );
 };
 

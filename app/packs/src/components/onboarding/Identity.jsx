@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { P2, H5 } from "../design_system/typography";
-import TextInput from "../design_system/fields/textinput";
+import Link from "src/components/design_system/link";
 import Form from "react-bootstrap/Form";
 
 import {
@@ -18,6 +18,7 @@ const Identity = ({
   changeEthnicity,
   nationality,
   changeNationality,
+  allSteps,
 }) => {
   const [localGender, setLocalGender] = useState(gender);
   const [localEthnicity, setLocalEthnicity] = useState(ethnicity);
@@ -30,6 +31,12 @@ const Identity = ({
     e.preventDefault();
 
     changeStep(6);
+  };
+
+  const goBack = (e) => {
+    e.preventDefault();
+
+    changeStep(4);
   };
 
   const submitIdentityForm = (e) => {
@@ -45,12 +52,22 @@ const Identity = ({
   };
 
   return (
-    <>
+    <div className="registration-items">
+      <div className="d-flex flex-row justify-content-between mb-4">
+        <P2 medium>
+          Step {allSteps === 4 ? 4 : 5}
+          <span className="text-primary-04">/{allSteps}</span>
+        </P2>
+        <Link onClick={skipStep}>
+          <P2 className="" bold text={"Skip"} />
+        </Link>
+      </div>
       <H5 text="A few quick things about yourself" bold />
       <P2 className="mb-5 mt-2">
-        A network is only as strong as its capacity of creating meaningful
-        connections. We would love to know more about you to help you grow
-        professionally.
+        Talent Protocol is committed to building a diverse community. These next
+        questions help us stay accountable to this goal. Your responses won't be
+        made public. Your response will only be used by Talent Protocol to gain
+        an understanding of the aggregate diversity of our talent pool.
       </P2>
       <form onSubmit={submitIdentityForm} className="d-flex flex-column w-100">
         <div className="form-group position-relative">
@@ -111,21 +128,21 @@ const Identity = ({
         </div>
         <div className="d-flex flex-row justify-content-between mt-6">
           <button
-            onClick={skipStep}
-            className="btn btn-secondary talent-button primary-outline-button extra-big-size-button mt-6"
+            onClick={goBack}
+            className="btn btn-secondary talent-button primary-outline-button big-size-button mb-4"
           >
-            Skip
+            Back
           </button>
           <button
             type="submit"
             disabled={invalidForm}
-            className="btn btn-primary talent-button primary-default-button extra-big-size-button mt-6"
+            className="btn btn-primary talent-button primary-default-button big-size-button mb-4"
           >
             Continue
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 

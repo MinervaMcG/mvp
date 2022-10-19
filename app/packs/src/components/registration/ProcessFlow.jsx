@@ -145,7 +145,7 @@ const ProcessFlow = ({
   }, [email]);
 
   return (
-    <div className="d-flex flex-column align-items-center">
+    <div className="d-flex flex-column align-items-center registration-items">
       {error != "" && <UserFailed error={error} />}
       {!userCreated && requesting && (
         <ProcessingUser themePreference={themePreference} />

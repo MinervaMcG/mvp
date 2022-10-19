@@ -6,12 +6,16 @@
 
 .registration-left-screen {
   width: 550px;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: inherit;
   background-image: url(images/tp-logo-opacity.png),
     linear-gradient(145.69deg, $light-primary -1.68%, $primary-700 100.36%);
 }
 
 .registration-mobile {
-  padding-top: 100px !important;
+  padding-top: 64px !important;
 }
 
 .registration-mobile-menu {
@@ -33,8 +37,19 @@
 .registration-box {
   margin-right: auto;
   margin-left: auto;
-  width: 471px;
-  height: 454px;
+}
+
+@media (min-width: 992px) {
+  .registration-box {
+    padding-left: 636px !important;
+    padding-right: 96px !important;
+    padding-top: 64px !important;
+    padding-bottom: 64px !important;
+  }
+
+  .registration-items {
+    max-width: 576px;
+  }
 }
 
 .registration-logo {

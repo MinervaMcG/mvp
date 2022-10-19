@@ -26,12 +26,6 @@
     <body class=<%= current_user&.active_theme || "light-body" %> id="user-logged">
       <div class="page-container">
         <div class="content-wrapper">
-          <% if !current_user.first_quest_popup %>
-            <%=
-              react_component("FirstQuestPopup",
-              props: { userId: current_user.id },
-              prerender: false)%>
-          <% end %>
           <%= render "shared/navbar" %>
           <%= yield %>
         </div>

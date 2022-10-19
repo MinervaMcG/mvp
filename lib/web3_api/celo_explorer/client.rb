@@ -1,15 +1,13 @@
 module Web3Api
   module CeloExplorer
     class Client
-      BASE_URI = "https://explorer.celo.org/api"
-
       def retrieve_tokens(wallet_address:)
         params = {
           module: "account",
           action: "tokenlist",
           address: wallet_address
         }
-        Faraday.get(BASE_URI, params, headers)
+        Faraday.get(ENV["CELO_EXPLORER_BASE_URI"], params, headers)
       end
 
       private

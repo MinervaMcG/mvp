@@ -206,14 +206,16 @@ const Perks = ({ talent, canUpdate }) => {
                         bold
                         className="text-primary-01"
                       />
-                      <ThemedButton
-                        onClick={() => startEditing(perk)}
-                        type="primary-default"
-                        className="position-absolute edit-perk-button"
-                        style={{ right: 0, top: 0 }}
-                      >
-                        Edit
-                      </ThemedButton>
+                      {canUpdate && (
+                        <ThemedButton
+                          onClick={() => startEditing(perk)}
+                          type="primary-default"
+                          className="position-absolute edit-perk-button"
+                          style={{ right: 0, top: 0 }}
+                        >
+                          Edit
+                        </ThemedButton>
+                      )}
                     </div>
                   </div>
                 </div>

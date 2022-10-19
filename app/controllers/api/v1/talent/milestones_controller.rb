@@ -6,7 +6,7 @@ class API::V1::Talent::MilestonesController < ApplicationController
     milestone.assign_attributes(milestone_params)
     parsed_date = milestone_params[:start_date].split("-").map(&:to_i)
     milestone.start_date = Date.new(parsed_date[0], parsed_date[1])
-    if milestone_params[:end_date]
+    if milestone_params[:end_date].length > 0
       parsed_date = milestone_params[:end_date].split("-").map(&:to_i)
       milestone.end_date = Date.new(parsed_date[0], parsed_date[1])
     end
@@ -23,7 +23,7 @@ class API::V1::Talent::MilestonesController < ApplicationController
 
     parsed_date = milestone_params[:start_date].split("-").map(&:to_i)
     @milestone.start_date = Date.new(parsed_date[0], parsed_date[1])
-    if milestone_params[:end_date]
+    if milestone_params[:end_date].length > 0
       parsed_date = milestone_params[:end_date].split("-").map(&:to_i)
       @milestone.end_date = Date.new(parsed_date[0], parsed_date[1])
     end

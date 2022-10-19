@@ -9,6 +9,7 @@ const Occupation = ({
   changeOccupation,
   experienceLevel,
   changeExperienceLevel,
+  allSteps,
 }) => {
   const [localOccupation, setLocalOccupation] = useState(occupation);
   const [localExperienceLevel, setLocalExperienceLevel] =
@@ -27,19 +28,28 @@ const Occupation = ({
     changeStep(3);
   };
 
+  const goBack = (e) => {
+    e.preventDefault();
+
+    changeStep(2);
+  };
+
   return (
-    <>
+    <div className="registration-items">
+      <div className="d-flex flex-row justify-content-between mb-4">
+        <P2 medium>
+          Step {allSteps === 4 ? 1 : 2}
+          <span className="text-primary-04">/{allSteps}</span>
+        </P2>
+      </div>
       <H5 text="What do you do?" bold />
       <P2 className="mt-2">
         Talent Protocol is a community for builders: those who are passionate,
         entrepreneurial, tech-savvy and curious.
       </P2>
       <P2 className="mb-5 mt-2">
-        Tell us which type of builder would best fit you (ex:{" "}
-        <strong>
-          operator, writer, founder, marketer, designer, developer, builder, etc
-        </strong>
-        ).
+        Tell us which type of builder would best fit you (ex: operator, writer,
+        founder, marketer, designer, developer, builder, etc ).
       </P2>
       <form
         onSubmit={submitOccupationForm}
@@ -62,7 +72,7 @@ const Occupation = ({
             type={"radio"}
             id={"entry-radio"}
             name="experience-radio-group"
-            label={"Entry Level (New Grad)"}
+            label={"Entry Level"}
             onClick={() => setLocalExperienceLevel(1)}
             defaultChecked={localExperienceLevel === 1}
             className="mb-2"
@@ -103,15 +113,17 @@ const Occupation = ({
             onClick={() => setLocalExperienceLevel(5)}
           />
         </div>
-        <button
-          type="submit"
-          disabled={invalidForm}
-          className="btn btn-primary talent-button primary-default-button extra-big-size-button w-100 mt-6"
-        >
-          Continue
-        </button>
+        <div className="d-flex flex-row justify-content-end mt-6">
+          <button
+            type="submit"
+            disabled={invalidForm}
+            className="btn btn-primary talent-button primary-default-button big-size-button mb-4"
+          >
+            Continue
+          </button>
+        </div>
       </form>
-    </>
+    </div>
   );
 };
 

@@ -26,17 +26,5 @@ RSpec.describe "Profiles", type: :request do
         expect(assigns(:talent)).to eq(TalentBlueprint.render_as_json(talent, view: :extended))
       end
     end
-
-    context "when the current user is not admin" do
-      before do
-        current_user.update(role: "basic")
-      end
-
-      it "redirects the request" do
-        get_profile
-
-        expect(response).to have_http_status(:redirect)
-      end
-    end
   end
 end

@@ -21,6 +21,7 @@ const TalentOptions = ({
   headerDescription,
   setListModeOnly,
   setLocalTalents,
+  setLocalPagination,
   setSelectedSort,
   setSortDirection,
   addTalentData,
@@ -37,9 +38,12 @@ const TalentOptions = ({
 
     const params = new URLSearchParams(document.location.search);
     params.set(filterType, option);
+    params.set("page", 1);
 
     get(`${searchUrl}?${params.toString()}`).then((response) => {
-      let talents = response.map((talent) => ({
+      setLocalPagination(response.pagination);
+
+      let talents = response.talents.map((talent) => ({
         ...camelCaseObject(talent),
       }));
 

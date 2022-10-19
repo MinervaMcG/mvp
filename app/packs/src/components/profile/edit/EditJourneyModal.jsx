@@ -112,8 +112,8 @@ const MilestoneExperience = ({
         }}
       >
         <div className="w-100 mb-5">
-          <P2 className="mb-2 text-primary-01" bold text="Title" />
           <TextInput
+            title="Title"
             onChange={(e) => changeAttribute("title", e.target.value)}
             value={currentJourneyItem.title}
             placeholder="Ex: Senior Product Designer"
@@ -122,8 +122,8 @@ const MilestoneExperience = ({
           />
         </div>
         <div className="w-100 mb-5">
-          <P2 className="mb-2 text-primary-01" bold text="Organization" />
           <TextInput
+            title="Organization"
             onChange={(e) => changeAttribute("institution", e.target.value)}
             value={currentJourneyItem.institution}
             placeholder="Ex: Talent Protocol"
@@ -132,21 +132,10 @@ const MilestoneExperience = ({
           />
         </div>
         <div className="w-100 mb-5">
-          <div className="mb-2 d-flex justify-content-between align-items-center">
-            <P2 className="text-primary-01" bold text="Description" />
-            <div className="d-flex">
-              <P3
-                className="text-primary-01"
-                bold
-                text={currentJourneyItem.description.length || "0"}
-              />
-              <P3 className="text-primary-04" bold text="/240" />
-            </div>
-          </div>
           <TextArea
+            title="Description"
             onChange={(e) => changeAttribute("description", e.target.value)}
             value={currentJourneyItem.description}
-            maxLength={240}
             rows={3}
             required={true}
             error={validationErrors?.description}
@@ -164,7 +153,9 @@ const MilestoneExperience = ({
           </Checkbox>
         </div>
         <div className="w-100 mb-5">
-          <P2 className="mb-2 text-primary-01" bold text="Start date" />
+          <P2 className="mb-2 text-primary-01" bold>
+            Start date <span className="text-danger">*</span>
+          </P2>
           <input
             className={cx(
               "form-control",
@@ -263,8 +254,8 @@ const GoalExperience = ({
         }}
       >
         <div className="w-100 mb-5">
-          <P2 className="mb-2 text-primary-01" bold text="Title" />
           <TextInput
+            title="Title"
             onChange={(e) => changeAttribute("title", e.target.value)}
             value={currentJourneyItem.title}
             placeholder="Ex: Finding a co-founder for my startup"
@@ -273,28 +264,19 @@ const GoalExperience = ({
           />
         </div>
         <div className="w-100 mb-5">
-          <div className="mb-2 d-flex justify-content-between align-items-center">
-            <P2 className="text-primary-01" bold text="Description" />
-            <div className="d-flex">
-              <P3
-                className="text-primary-01"
-                bold
-                text={currentJourneyItem.description.length || "0"}
-              />
-              <P3 className="text-primary-04" bold text="/240" />
-            </div>
-          </div>
           <TextArea
+            title="Description"
             onChange={(e) => changeAttribute("description", e.target.value)}
             value={currentJourneyItem.description}
-            maxLength={240}
             rows={3}
             required={true}
             error={validationErrors?.description}
           />
         </div>
         <div className="w-100 mb-5">
-          <P2 className="mb-2 text-primary-01" bold text="Due date" />
+          <P2 className="mb-2 text-primary-01" bold>
+            Due date <span className="text-danger">*</span>
+          </P2>
           <input
             className={cx(
               "form-control",
@@ -367,10 +349,15 @@ const EditJourneyModal = ({
   const [currentJourneyItem, setCurrentJourneyItem] = useState({
     id: journeyItem?.id || "",
     title: journeyItem?.title || "",
-    startDate:
-      dayjs(journeyItem?.startDate, "YYYY-MM-DD").format("YYYY-MM") || "",
-    endDate: dayjs(journeyItem?.endDate, "YYYY-MM-DD").format("YYYY-MM") || "",
-    dueDate: dayjs(journeyItem?.dueDate, "YYYY-MM-DD").format("YYYY-MM") || "",
+    startDate: journeyItem?.startDate
+      ? dayjs(journeyItem.startDate, "YYYY-MM-DD").format("YYYY-MM")
+      : "",
+    endDate: journeyItem?.endDate
+      ? dayjs(journeyItem.endDate, "YYYY-MM-DD").format("YYYY-MM")
+      : "",
+    dueDate: journeyItem?.dueDate
+      ? dayjs(journeyItem.dueDate, "YYYY-MM-DD").format("YYYY-MM")
+      : "",
     description: journeyItem?.description || "",
     link: journeyItem?.link || "",
     institution: journeyItem?.institution || "",

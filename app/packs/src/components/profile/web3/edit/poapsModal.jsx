@@ -104,13 +104,6 @@ const DisplayPoapsModal = ({
         <a onClick={() => closeModal()} className="mr-3">
           Cancel
         </a>
-        <ThemedButton
-          onClick={() => closeModal()}
-          type="primary-default"
-          className="ml-2"
-        >
-          Save
-        </ThemedButton>
       </Modal.Footer>
     </>
   );

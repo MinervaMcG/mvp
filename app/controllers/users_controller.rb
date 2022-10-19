@@ -58,8 +58,8 @@ class UsersController < ApplicationController
         password: user_params[:password],
         invite_code: user_params[:code],
         theme_preference: user_params[:theme_preference],
-        first_name: user_params[:first_name],
-        last_name: user_params[:last_name]
+        legal_first_name: user_params[:legal_first_name],
+        legal_last_name: user_params[:legal_last_name]
       )
 
       if @result[:success]
@@ -79,7 +79,6 @@ class UsersController < ApplicationController
     end
 
     @talent = @user.talent
-    @investor = @user.investor
   end
 
   def send_confirmation_email

@@ -218,6 +218,7 @@ const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
             tags={talent.careerGoal.careerNeeds.map((need) => need.title)}
             className="mr-2 mb-4"
             clickable={false}
+            talent_id={"show-about"}
           />
         </div>
         <P1 text={talent.careerGoal.pitch} />

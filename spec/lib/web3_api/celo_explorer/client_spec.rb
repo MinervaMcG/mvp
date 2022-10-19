@@ -7,10 +7,11 @@ RSpec.describe Web3Api::CeloExplorer::Client do
   describe "#retrieve_tokens" do
     let(:wallet_address) { SecureRandom.hex }
 
-    let(:request_path) { "#{described_class::BASE_URI}?action=tokenlist&address=#{wallet_address}&module=account" }
+    let(:request_path) { "https://celo.api?action=tokenlist&address=#{wallet_address}&module=account" }
 
     before do
       stub_request(:get, request_path)
+      ENV["CELO_EXPLORER_BASE_URI"] = "https://celo.api"
     end
 
     let(:expected_headers) do

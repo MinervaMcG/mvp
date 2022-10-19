@@ -28,18 +28,8 @@ const NotificationInputs = [
 ];
 
 const Settings = (props) => {
-  const {
-    notificationPreferences,
-    user,
-    mobile,
-    changeTab,
-    mode,
-    changeSharedState,
-    onProfileButtonClick,
-    publicButtonType,
-    disablePublicButton,
-    buttonText,
-  } = props;
+  const { notificationPreferences, user, mobile, mode, changeSharedState } =
+    props;
   const [settings, setSettings] = useState({
     username: user.username || "",
     email: user.email || "",
@@ -135,12 +125,6 @@ const Settings = (props) => {
     if (response && response.success) {
       toast.success(<ToastBody heading="Success!" body="Email sent!" />);
     }
-  };
-
-  const onTogglePublic = async () => {
-    setSaving((prev) => ({ ...prev, loading: true }));
-    await onProfileButtonClick();
-    setSaving((prev) => ({ ...prev, loading: false, public: true }));
   };
 
   const setNotificationSettings = (name) => (event) => {
@@ -310,38 +294,11 @@ const Settings = (props) => {
       >
         Change password
       </Button>
-      {mobile && (
-        <div className="d-flex flex-row justify-content-between w-100 mb-3">
-          <div className="d-flex flex-column">
-            <P3 text="PREVIOUS" />
-            <div
-              className="text-grey cursor-pointer"
-              onClick={() => changeTab("Invites")}
-            >
-              <ArrowLeft color="currentColor" /> Invites
-            </div>
-          </div>
-        </div>
-      )}
       <div
         className={`d-flex flex-row ${
           mobile ? "justify-content-between" : "mt-4"
         } w-100 pb-4`}
       >
-        {mobile && buttonText != "N/A" && (
-          <LoadingButton
-            onClick={() => onTogglePublic()}
-            type={publicButtonType}
-            disabled={disablePublicButton || saving.loading}
-            mode={mode}
-            loading={saving.loading}
-            success={props.talent.public}
-            className="ml-auto mr-3"
-            checkClassName="edit-profile-public-check"
-          >
-            {buttonText}
-          </LoadingButton>
-        )}
         <LoadingButton
           onClick={() => updateUser()}
           type="primary-default"

@@ -29,7 +29,11 @@
               isVerified: talent["verified"]
             }
           },
-          isAdmin: current_user.admin?
+          isAdmin: current_user.admin?,
+          pagination: {
+            currentPage: @pagy.page,
+            lastPage: @pagy.last
+          },
         },
         prerender: false) %>
     </div>

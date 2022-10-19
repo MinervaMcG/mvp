@@ -21,7 +21,9 @@ RSpec.describe TheGraph::Alfajores::Client do
       the_graph_client.talent_supporters(params)
     end
 
-    let(:params) { {talent_address: talent_address} }
+    let(:variance_start_date) { Time.now.utc.to_i }
+
+    let(:params) { {talent_address: talent_address, variance_start_date: variance_start_date} }
 
     before do
       allow(api_client).to receive(:query).and_return(response)
@@ -31,9 +33,10 @@ RSpec.describe TheGraph::Alfajores::Client do
       get_talent_supporters
 
       expect(api_client).to have_received(:query).with(
-        TheGraph::Alfajores::TALENT_SUPPORTERS_QUERY,
+        TheGraph::Alfajores::TALENT_SUPPORTERS,
         variables: {
           id: talent_address,
+          variance_start_date: variance_start_date,
           skip: 0,
           first: 100
         }
@@ -48,6 +51,7 @@ RSpec.describe TheGraph::Alfajores::Client do
       let(:params) do
         {
           talent_address: talent_address,
+          variance_start_date: variance_start_date,
           offset: 100
         }
       end
@@ -56,9 +60,10 @@ RSpec.describe TheGraph::Alfajores::Client do
         get_talent_supporters
 
         expect(api_client).to have_received(:query).with(
-          TheGraph::Alfajores::TALENT_SUPPORTERS_QUERY,
+          TheGraph::Alfajores::TALENT_SUPPORTERS,
           variables: {
             id: talent_address,
+            variance_start_date: variance_start_date,
             skip: 100,
             first: 100
           }

@@ -1,47 +1,34 @@
-import React, { useEffect, useState, useContext, useMemo } from "react";
-import { ArrowLeft, Help } from "src/components/icons";
-import Tooltip from "src/components/design_system/tooltip";
-import Button from "src/components/design_system/button";
 import { ethers } from "ethers";
-
 import { faGlobeEurope } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import cx from "classnames";
+import React, { useState, useContext, useMemo } from "react";
 
-import { useWindowDimensionsHook } from "src/utils/window";
-import { lightTextPrimary03 } from "src/utils/colors";
-
+import { ArrowLeft, Help } from "src/components/icons";
 import {
-  getSupporterCount,
-  getMarketCap,
-  getProgress,
-  getStartDateForVariance,
-  getUTCDate,
-  getMarketCapVariance,
-} from "src/utils/viewHelpers";
-import {
+  compareMarketCap,
+  compareMarketCapVariance,
   compareName,
   compareOccupation,
   compareSupporters,
-  compareMarketCap,
-  compareMarketCapVariance,
 } from "src/components/talent/utils/talent";
-import { post, destroy } from "src/utils/requests";
-import ThemeContainer, { ThemeContext } from "src/contexts/ThemeContext";
-
+import { destroy, post } from "src/utils/requests";
 import { H3, P1, P2 } from "src/components/design_system/typography";
-import TalentTableListMode from "src/components/talent/TalentTableListMode";
-import TalentTableCardMode from "src/components/talent/TalentTableCardMode";
+import { lightTextPrimary03 } from "src/utils/colors";
+import { parseAndCommify } from "src/onchain/utils";
+import { useWindowDimensionsHook } from "src/utils/window";
+import Button from "src/components/design_system/button";
 import TalentOptions from "src/components/talent/TalentOptions";
-
-import cx from "classnames";
+import TalentTableCardMode from "src/components/talent/TalentTableCardMode";
+import TalentTableListMode from "src/components/talent/TalentTableListMode";
+import ThemeContainer, { ThemeContext } from "src/contexts/ThemeContext";
+import Tooltip from "src/components/design_system/tooltip";
 
 const DiscoveryShow = ({ discoveryRow, talents, env }) => {
   const theme = useContext(ThemeContext);
   const { mobile } = useWindowDimensionsHook();
   const [localTalents, setLocalTalents] = useState(talents);
-
-  const startDate = getStartDateForVariance();
   const [listModeOnly, setListModeOnly] = useState(false);
   const [selectedSort, setSelectedSort] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
@@ -49,9 +36,12 @@ const DiscoveryShow = ({ discoveryRow, talents, env }) => {
   const partnershipSocialLinks =
     partnership && (partnership.website_url || partnership.twitter_url);
 
+  const showPartnershipButton = partnership?.button_name && partnership?.button_url
+
   const totalSupplyToString = (totalSupply) => {
     const bignumber = ethers.BigNumber.from(totalSupply).div(10);
-    return ethers.utils.commify(ethers.utils.formatUnits(bignumber));
+    const formattedNumber = ethers.utils.formatUnits(bignumber)
+    return parseAndCommify(formattedNumber);
   };
 
   const updateFollow = async (talent) => {
@@ -132,73 +122,111 @@ const DiscoveryShow = ({ discoveryRow, talents, env }) => {
             <ArrowLeft color="currentColor" size={16} />
           </Button>
         </a>
-        {partnership && partnership.logo_url && (
-          <img
-            className="rounded-circle image-fit mb-4"
-            src={partnership.logo_url}
-            width={"72px"}
-            alt="Partnership Picture"
-          />
-        )}
-        <div className="d-flex align-items-center">
-          <H3 className="text-black mr-2" bold text={discoveryRow.title} />
-          {discoveryRow.tags && (
-            <Tooltip
-              body={discoveryRow.tags}
-              popOverAccessibilityId={"discovery_row_tags"}
-              placement="top"
-            >
-              <div className="cursor-pointer d-flex align-items-center">
-                <Help color={lightTextPrimary03} />
-              </div>
-            </Tooltip>
-          )}
-        </div>
-        {discoveryRow.description && (
-          <P1
-            className="text-primary-03 mb-4"
-            text={discoveryRow.description}
-          />
-        )}
-
-        {partnershipSocialLinks && (
-          <div className="d-flex flex-row flex-wrap text-primary-03 mb-4">
-            {partnership.website_url && (
-              <a
-                href={partnership.website_url}
-                target="self"
-                className="mr-4 text-reset hover-primary"
-              >
-                <FontAwesomeIcon icon={faGlobeEurope} />
-              </a>
-            )}
-            {partnership.twitter_url && (
-              <a
-                href={partnership.twitter_url}
-                target="self"
-                className="mr-4 text-reset hover-primary"
-              >
-                <FontAwesomeIcon icon={faTwitter} />
-              </a>
-            )}
+        {partnership?.banner_url && (
+          <div className="partnership-banner" style={{ backgroundImage: `url(${partnership.banner_url})`, }}>
           </div>
         )}
-        <div className="d-flex">
-          <P1
-            bold
-            className="text-black d-inline mr-2"
-            text={`$${totalSupplyToString(discoveryRow.talentsTotalSupply)}`}
-          />
-          <P1
-            className="text-primary-03 mr-4 d-inline"
-            text={`${discoveryRow.title} Market Cap`}
-          />
-          <P1
-            bold
-            className="text-black d-inline mr-2"
-            text={discoveryRow.talentsCount}
-          />
-          <P1 className="text-primary-03 d-inline" text="talents" />
+        <div className={cx("d-flex flex-column flex-lg-row justify-content-between mb-4 row")}>
+          <div className="col-lg-8 d-flex flex-column">
+            <div className="d-flex">
+              {partnership?.logo_url && (
+                <img
+                  alt="Partnership Picture"
+                  className={cx("image-fit rounded-circle", partnership.banner_url && "partnership-logo")}
+                  height={mobile ? 120 : 173}
+                  src={partnership.logo_url}
+                  width={mobile ? 120 : 173}
+                />
+              )}
+              <div className={cx(partnership?.logo_url && "ml-5 mt-3")}>
+                <H3 className="mb-0 text-black" bold text={discoveryRow.title} />
+                {partnershipSocialLinks && (
+                  <div className="d-flex flex-row flex-wrap text-primary-03 mt-3">
+                    {partnership.website_url && (
+                      <a
+                        className="hover-primary mr-4 partnership-social-link px-2 py-1 text-reset"
+                        href={partnership.website_url}
+                        target="self"
+                      >
+                        <FontAwesomeIcon icon={faGlobeEurope} />
+                      </a>
+                    )}
+                    {partnership.twitter_url && (
+                      <a
+                        className="hover-primary partnership-social-link px-2 text-reset"
+                        href={partnership.twitter_url}
+                        target="self"
+                      >
+                        <FontAwesomeIcon className="mt-2" icon={faTwitter} />
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="my-4">
+              <span className="caption">{`@${discoveryRow.slug.toUpperCase()}`}</span>
+              {partnership?.location && <span className="caption ml-4">{partnership.location.toUpperCase()}</span>}
+            </div>
+            {showPartnershipButton && (
+              <div className="d-block d-lg-none mb-3">
+                <a href={partnership.button_url} target="_blank">
+                  <div className="partnership-button primary-default-button">{partnership.button_name}</div>
+                </a>
+              </div>
+            )}
+            <div className="d-flex align-items-center">
+              {discoveryRow.tags && (
+                <Tooltip
+                  body={discoveryRow.tags}
+                  popOverAccessibilityId={"discovery_row_tags"}
+                  placement="top"
+                >
+                  <div className="cursor-pointer d-flex align-items-center">
+                    <Help color={lightTextPrimary03} />
+                  </div>
+                </Tooltip>
+              )}
+            </div>
+            {discoveryRow.description && (
+              <P1 className="text-primary-03" text={discoveryRow.description} />
+            )}
+          </div>
+          <div className={cx("col-lg-4", partnership?.logo_url && "mt-3")}>
+            {showPartnershipButton && (
+              <div className="d-none d-lg-flex justify-content-lg-end mb-3">
+                <a href={partnership.button_url} target="_blank">
+                  <div className="partnership-button primary-default-button">{partnership.button_name}</div>
+                </a>
+              </div>
+            )}
+            <div className="d-flex flex-column flex-sm-row flex-lg-column discovery-stats">
+              <div className="discovery-stat">
+                <P1
+                  bold
+                  className="text-primary-03 d-inline"
+                  text={`${discoveryRow.title} Market Cap`}
+                />
+                <P1
+                  bold
+                  className="text-black d-inline"
+                  text={`$${totalSupplyToString(discoveryRow.talentsTotalSupply)}`}
+                />
+              </div>
+              <div className="discovery-stat">
+                <P1
+                  bold
+                  className="text-primary-03 d-inline"
+                  text={`${discoveryRow.title} Talents`}
+                />
+                <P1
+                  bold
+                  className="text-black d-inline"
+                  text={discoveryRow.talentsCount}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <TalentOptions

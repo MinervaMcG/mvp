@@ -1,9 +1,19 @@
 class API::V1::TalentController < ApplicationController
+  PER_PAGE = 40
+
   def index
     service = Talents::Search.new(filter_params: filter_params.to_h, admin: current_user.admin?)
-    talents = service.call
+    pagy, talents = pagy(service.call, items: per_page)
 
-    render json: TalentBlueprint.render(talents.includes(:talent_token, user: :investor), view: :normal, current_user_watchlist: current_user_watchlist), status: :ok
+    talents = TalentBlueprint.render_as_json(talents.includes(:talent_token), view: :normal, current_user_watchlist: current_user_watchlist)
+
+    render json: {
+      talents: talents,
+      pagination: {
+        currentPage: pagy.page,
+        lastPage: pagy.last
+      }
+    }, status: :ok
   end
 
   # public /
@@ -112,5 +122,9 @@ class API::V1::TalentController < ApplicationController
       profile_picture_data: {},
       banner_data: {}
     )
+  end
+
+  def per_page
+    params[:per_page] || PER_PAGE
   end
 end

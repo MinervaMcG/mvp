@@ -9,6 +9,7 @@ const Welcome = ({
   changeFirstName,
   lastName,
   changeLastName,
+  allSteps,
 }) => {
   const [localFirstName, setLocalFirstName] = useState(firstName);
   const [localLastName, setLocalLastName] = useState(lastName);
@@ -27,8 +28,13 @@ const Welcome = ({
   const invalidForm = localFirstName == "" || localLastName == "";
 
   return (
-    <>
-      <H5 text="Welcome back!" bold />
+    <div className="registration-items">
+      <div className="d-flex flex-row justify-content-between mb-4">
+        <P2 medium>
+          Step 1<span className="text-primary-04">/{allSteps}</span>
+        </P2>
+      </div>
+      <H5 text={`Welcome back!`} bold />
       <P2 className="mb-5 mt-2">
         A lot has changed since you last saw us! Take advantage of this quick
         onboarding to make sure relevant information is up to date and that new
@@ -57,15 +63,17 @@ const Welcome = ({
             onChange={(e) => setLocalLastName(e.target.value)}
           />
         </div>
-        <button
-          type="submit"
-          disabled={invalidForm}
-          className="btn btn-primary talent-button primary-default-button extra-big-size-button w-100 mt-6"
-        >
-          Continue
-        </button>
+        <div className="d-flex flex-row justify-content-end mt-6">
+          <button
+            type="submit"
+            disabled={invalidForm}
+            className="btn btn-primary talent-button primary-default-button big-size-button mb-4"
+          >
+            Continue
+          </button>
+        </div>
       </form>
-    </>
+    </div>
   );
 };
 

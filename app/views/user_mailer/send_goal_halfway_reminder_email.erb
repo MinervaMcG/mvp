@@ -7,7 +7,7 @@
 </p>
 <ul class="mb-2 paragraph primary-3">
   <li class="mb-2">
-    <%= link_to "Update your profile and roadmap", edit_profile_url(username: @user.username) %> 📝
+    <%= link_to "Update your profile and roadmap", profile_url(username: @user.username) %> 📝
   </li>
   <li>
     Send an <%= link_to "accountability update to your token holders", messages_url %> on your progress, and request their support.

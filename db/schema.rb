@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_13_092626) do
+ActiveRecord::Schema.define(version: 2022_10_18_141222) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "blazer_audits", force: :cascade do |t|
@@ -356,6 +357,10 @@ ActiveRecord::Schema.define(version: 2022_10_13_092626) do
     t.bigint "invite_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "banner_data"
+    t.string "button_name"
+    t.string "button_url"
+    t.string "location"
     t.index ["invite_id"], name: "index_partnerships_on_invite_id"
   end
 
@@ -444,6 +449,8 @@ ActiveRecord::Schema.define(version: 2022_10_13_092626) do
     t.boolean "open_to_job_offers", default: false, null: false
     t.boolean "verified", default: false
     t.integer "experience_level", default: 0
+    t.string "market_cap"
+    t.decimal "market_cap_variance", precision: 10, scale: 2
     t.index ["activity_count"], name: "index_talent_on_activity_count"
     t.index ["ito_date"], name: "index_talent_on_ito_date"
     t.index ["public_key"], name: "index_talent_on_public_key", unique: true

@@ -1,7 +1,7 @@
 <% user = talent.user %>
 <% profile_picture_url = attachments["profile_picture-#{user.id}.png"]&.url %>
 
-<%= link_to edit_profile_url(username: user.username) do %>
+<%= link_to profile_url(username: user.username) do %>
   <div class="row mb-5 border rounded-xl mx-0 gap-2">
     <% if profile_picture_url %>
       <div class="col-1 py-3">

@@ -32,7 +32,7 @@ const TalentTableCardMode = ({
             updateFollow={() => updateFollow(talent)}
             talentLink={`/u/${talent.user.username}`}
             marketCap={talent.marketCap}
-            supporterCount={talent.supportersCount}
+            supporterCount={talent.supportersCount?.toString()}
             publicPageViewer={publicPageViewer}
             isVerified={talent.isVerified}
             profileType={talent.user.profileType}

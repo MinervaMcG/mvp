@@ -76,6 +76,8 @@ module Users
         password: params[:password],
         role: "basic",
         theme_preference: params[:theme_preference],
+        legal_first_name: params[:legal_first_name],
+        legal_last_name: params[:legal_last_name],
         username: params[:username].downcase.delete(" ", "")
       }.compact
     end

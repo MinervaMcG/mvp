@@ -74,7 +74,7 @@ const CommunityTable = ({ connections, mode, ticker, mobile }) => {
             <Table.Td>
               <div className="d-flex align-items-center">
                 <TalentProfilePicture
-                  src={connection.profilePictureUrl}
+                  src={connection.profile_picture_url}
                   height={24}
                 />
                 <P2 text={connection.name} bold className="ml-2" />
