@@ -41,7 +41,7 @@ class User < ApplicationRecord
   has_many :erc721_tokens
 
   # Elasticsearch index update
-  update_index("talents") { self }
+  update_index("talents") { talent }
 
   VALID_ROLES = ["admin", "basic"].freeze
 
