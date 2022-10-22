@@ -13,4 +13,7 @@ class Goal < ApplicationRecord
   def to_s
     "#{due_date}: #{description}"
   end
+
+  update_index("talents") { career_goal.talent }
+
 end

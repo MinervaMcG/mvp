@@ -8,4 +8,6 @@ class Milestone < ApplicationRecord
   validates_associated :milestone_images
 
   enum category: {Position: "Position", Education: "Education", Other: "Other"}
+
+  update_index("talents") { talent }
 end
