@@ -5,6 +5,9 @@ class TalentToken < ApplicationRecord
   validates :ticker, length: {in: 3..8}, if: :ticker_exists?
   validates :ticker, uniqueness: {message: "already taken."}, if: :ticker_exists?
 
+  # Elasticsearch index update
+  update_index("talents") { talent }
+
   TAL_VALUE = 2
   TAL_DECIMALS = 10**18
   TAL_VALUE_IN_USD = 0.02
