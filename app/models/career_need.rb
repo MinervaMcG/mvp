@@ -13,4 +13,6 @@ class CareerNeed < ApplicationRecord
 
   MENTORING_OTHERS = "Mentoring others".freeze
   LOOKING_MENTORSHIP = "Being matched with a mentor".freeze
+
+  update_index("talents") { career_goal.talent }
 end

@@ -11,6 +11,8 @@ class Milestone < ApplicationRecord
 
   enum category: {Position: "Position", Education: "Education", Other: "Other"}
 
+  update_index("talents") { talent }
+
   private
 
   def end_date_after_start_date
