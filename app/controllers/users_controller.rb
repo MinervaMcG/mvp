@@ -58,12 +58,11 @@ class UsersController < ApplicationController
         password: user_params[:password],
         invite_code: user_params[:code],
         theme_preference: user_params[:theme_preference],
-        first_name: user_params[:first_name],
-        last_name: user_params[:last_name]
+        legal_first_name: user_params[:legal_first_name],
+        legal_last_name: user_params[:legal_last_name]
       )
 
       if @result[:success]
-        RemoveEmailFromWaitlistJob.perform_later(email: user_params[:email])
         UserMailer.with(user_id: @result[:user].id).send_sign_up_email.deliver_later(wait: 5.seconds)
 
         render json: @result[:user], status: :created
@@ -79,7 +78,6 @@ class UsersController < ApplicationController
     end
 
     @talent = @user.talent
-    @investor = @user.investor
   end
 
   def send_confirmation_email

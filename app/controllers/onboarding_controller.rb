@@ -34,13 +34,13 @@ class OnboardingController < ApplicationController
     if last_milestone.present?
       last_milestone.assign_attributes(milestone_params)
       parsed_date = milestone_params[:start_date].split("-").map(&:to_i)
-      last_milestone.start_date = Date.new(parsed_date[0], parsed_date[1])
+      last_milestone.start_date = Date.new(parsed_date[2], parsed_date[1], parsed_date[0])
       last_milestone.save
     elsif milestone_params[:title].present? && milestone_params[:start_date].present?
       milestone = Milestone.new(milestone_params)
 
       parsed_date = milestone_params[:start_date].split("-").map(&:to_i)
-      milestone.start_date = Date.new(parsed_date[0], parsed_date[1])
+      milestone.start_date = Date.new(parsed_date[2], parsed_date[1], parsed_date[0])
       milestone.talent = current_user.talent
       milestone.category = "Position"
       milestone.save!

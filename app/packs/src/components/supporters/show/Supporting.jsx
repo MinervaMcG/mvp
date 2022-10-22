@@ -7,6 +7,8 @@ import React, {
 } from "react";
 import { ethers } from "ethers";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 import {
   ApolloProvider,

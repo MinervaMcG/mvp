@@ -2,7 +2,7 @@ class TalentBlueprint < Blueprinter::Base
   fields :id, :profile_picture_url
 
   view :normal do
-    fields :occupation, :headline, :user_id, :verified, :supporters_count, :total_supply
+    fields :occupation, :headline, :user_id, :verified, :supporters_count, :total_supply, :market_cap, :market_cap_variance
     association :talent_token, blueprint: TalentTokenBlueprint, view: :normal, name: :token
     association :user, blueprint: UserBlueprint, view: :normal
 
@@ -18,8 +18,8 @@ class TalentBlueprint < Blueprinter::Base
       Talent.max_supply.to_s
     end
 
-    field :total_supply do |talent, _options|
-      talent.total_supply.to_s
+    field :supply_progress do |talent, _options|
+      (talent.total_supply.to_f / Talent.max_supply) * 100
     end
   end
 

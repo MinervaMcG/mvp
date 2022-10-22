@@ -81,15 +81,12 @@ const DisplayTokensModal = ({
       >
         Back
       </ThemedButton>
-      <a onClick={() => closeModal()} className="mr-3">
-        Cancel
-      </a>
       <ThemedButton
         onClick={() => closeModal()}
-        type="primary-default"
-        className="ml-2"
+        type="white-ghost"
+        className="mr-3"
       >
-        Save
+        Cancel
       </ThemedButton>
     </Modal.Footer>
   </>

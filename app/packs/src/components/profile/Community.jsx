@@ -4,6 +4,8 @@ import { get } from "src/utils/requests";
 import { ethers } from "ethers";
 import { parseAndCommify } from "src/onchain/utils";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 import debounce from "lodash/debounce";
 
 import {
@@ -74,7 +76,7 @@ const CommunityTable = ({ connections, mode, ticker, mobile }) => {
             <Table.Td>
               <div className="d-flex align-items-center">
                 <TalentProfilePicture
-                  src={connection.profilePictureUrl}
+                  src={connection.profile_picture_url}
                   height={24}
                 />
                 <P2 text={connection.name} bold className="ml-2" />

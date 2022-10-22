@@ -1,7 +1,5 @@
 class ProfilesController < ApplicationController
   def show
-    redirect_to talent_profile_url(username: params[:username]) unless current_user.admin?
-
     talent = user.talent
 
     CreateProfilePageVisitorJob.perform_later(ip: request.remote_ip, user_id: user.id)

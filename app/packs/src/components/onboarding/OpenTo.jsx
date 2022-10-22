@@ -4,7 +4,7 @@ import { CAREER_NEEDS_OPTIONS } from "src/utils/constants";
 import { P2, H5 } from "../design_system/typography";
 import Checkbox from "../design_system/checkbox";
 
-const OpenTo = ({ changeStep, careerNeeds, changeCareerNeeds }) => {
+const OpenTo = ({ changeStep, careerNeeds, changeCareerNeeds, allSteps }) => {
   const [selectedCareerNeeds, setSelectedCareerNeeds] = useState(careerNeeds);
 
   const invalidForm = selectedCareerNeeds.length === 0;
@@ -17,6 +17,11 @@ const OpenTo = ({ changeStep, careerNeeds, changeCareerNeeds }) => {
 
     changeCareerNeeds(selectedCareerNeeds);
     changeStep(4);
+  };
+
+  const goBack = (e) => {
+    e.preventDefault();
+    changeStep(2);
   };
 
   const toogleCareerNeedOption = (field) => {
@@ -35,17 +40,17 @@ const OpenTo = ({ changeStep, careerNeeds, changeCareerNeeds }) => {
   const canHelpWithOptions = CAREER_NEEDS_OPTIONS.slice(10, 13);
 
   return (
-    <>
+    <div className="registration-items">
+      <div className="d-flex flex-row justify-content-between mb-4">
+        <P2 medium>
+          Step {allSteps === 4 ? 2 : 3}
+          <span className="text-primary-04">/{allSteps}</span>
+        </P2>
+      </div>
       <H5 text="How can the Talent Protocol community help you?" bold />
-      <P2 className="mt-2">
+      <P2 className="mt-2 mb-4">
         There is a lot we can help you with. Choose the priority categories that
         are key for you to thrive professionally.
-      </P2>
-      <P2 className="mb-5 mt-2">
-        What do you need to take your career to the next level? You can always
-        change this later. Talent Protocol also gives you access to an
-        Opportunities Board where you can find what you are looking for or… be
-        found!
       </P2>
       <form onSubmit={submitOpenToForm} className="d-flex flex-column w-100">
         <P2 bold className="mb-2">
@@ -93,15 +98,23 @@ const OpenTo = ({ changeStep, careerNeeds, changeCareerNeeds }) => {
             </div>
           </Checkbox>
         ))}
-        <button
-          type="submit"
-          disabled={invalidForm}
-          className="btn btn-primary talent-button primary-default-button extra-big-size-button w-100 mt-6"
-        >
-          Continue
-        </button>
+        <div className="d-flex flex-row justify-content-end mt-6">
+          <button
+            onClick={goBack}
+            className="btn btn-secondary talent-button primary-outline-button big-size-button mb-4 mr-2"
+          >
+            Back
+          </button>
+          <button
+            type="submit"
+            disabled={invalidForm}
+            className="btn btn-primary talent-button primary-default-button big-size-button mb-4"
+          >
+            Continue
+          </button>
+        </div>
       </form>
-    </>
+    </div>
   );
 };
 

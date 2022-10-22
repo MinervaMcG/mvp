@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 import { Caption, P2, P3 } from "src/components/design_system/typography";
 import ProjectCard from "src/components/design_system/cards/ProjectCard";

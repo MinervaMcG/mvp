@@ -23,7 +23,7 @@ const RegisterFirstAndLastName = ({
   };
 
   return (
-    <>
+    <div className="registration-items">
       <H5 text="What is your legal name?" bold />
       <P2 className="mb-5 mt-2">
         At Talent Protocol we're building the professional network for
@@ -65,7 +65,7 @@ const RegisterFirstAndLastName = ({
           Continue
         </button>
       </form>
-    </>
+    </div>
   );
 };
 

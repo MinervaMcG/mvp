@@ -141,7 +141,7 @@ const Perks = ({ talent, canUpdate }) => {
             )}
           </div>
           <P1 className="text-center pb-3">
-            {`Perks that ${token.ticker} holders can claim and use whenever they want!`}
+            {`Perks that $${token.ticker} holders can claim and use whenever they want!`}
           </P1>
           {perks.length == 0 && canUpdate && (
             <div className="mt-7">
@@ -151,9 +151,7 @@ const Perks = ({ talent, canUpdate }) => {
                 className="text-primary-01 text-center mb-2"
               />
               <P2
-                text={
-                  "Now that $XPM is launched, create some utility by giving benefits for your supporters."
-                }
+                text={`Now that $${token.ticker} is launched, create some utility by giving benefits for your supporters.`}
                 className="text-primary-03 text-center"
               />
               <div className="d-flex flex-column justify-content-center my-5">
@@ -206,14 +204,16 @@ const Perks = ({ talent, canUpdate }) => {
                         bold
                         className="text-primary-01"
                       />
-                      <ThemedButton
-                        onClick={() => startEditing(perk)}
-                        type="primary-default"
-                        className="position-absolute edit-perk-button"
-                        style={{ right: 0, top: 0 }}
-                      >
-                        Edit
-                      </ThemedButton>
+                      {canUpdate && (
+                        <ThemedButton
+                          onClick={() => startEditing(perk)}
+                          type="primary-default"
+                          className="position-absolute edit-perk-button"
+                          style={{ right: 0, top: 0 }}
+                        >
+                          Edit
+                        </ThemedButton>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -2,6 +2,9 @@ import { ethers } from "ethers";
 import { parseAndCommify } from "src/onchain/utils";
 import currency from "currency.js";
 
+import verifiedDark from "images/verified-dark.png";
+import verifiedLight from "images/verified-light.png";
+
 export const shortenAddress = (address) => {
   return `${address.substring(0, 5)}...${address.substring(
     address.length - 4,
@@ -53,16 +56,15 @@ export const getMarketCapVariance = (
     ethers.utils.formatUnits(tokenDayData[0].dailySupply)
   );
   const lastSupply = parseFloat(ethers.utils.formatUnits(totalSupply));
-  return (lastSupply - startSupply) / startSupply;
+  return ((lastSupply - startSupply) * 100) / startSupply;
 };
 
 export const parsedVariance = (variance) => {
   if (!variance) return "0%";
 
-  if (Math.abs(variance) < 0.01) return "0%";
+  if (Math.abs(variance) < 1) return "0%";
 
-  const percentageVariance = variance * 100;
-  let parsedVariance = `${parseAndCommify(percentageVariance)}%`;
+  let parsedVariance = `${parseAndCommify(variance)}%`;
 
   if (variance > 0) {
     parsedVariance = `+${parsedVariance}`;
@@ -106,3 +108,16 @@ export const getUTCDate = (date) => {
 };
 
 export const formatNumberWithSymbol = (value) => currency(value).format();
+
+export const verifiedIcon = (mode) =>
+  mode == "light" ? verifiedLight : verifiedDark;
+
+export const displayableAmount = (amount) => {
+  if (!amount) {
+    return "0";
+  }
+  const amountBigNum = ethers.BigNumber.from(amount);
+  const formattedAmount = ethers.utils.formatUnits(amountBigNum);
+
+  return parseAndCommify(formattedAmount);
+};

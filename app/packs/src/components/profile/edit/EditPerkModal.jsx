@@ -157,7 +157,11 @@ const EditPerkModal = ({
         >
           Delete Perk
         </ThemedButton>
-        <ThemedButton onClick={() => closeModal()} className="button-link mr-2">
+        <ThemedButton
+          onClick={() => closeModal()}
+          type="white-ghost"
+          className="mr-2"
+        >
           Cancel
         </ThemedButton>
         <ThemedButton

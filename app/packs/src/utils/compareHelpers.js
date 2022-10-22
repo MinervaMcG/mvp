@@ -1,4 +1,6 @@
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 export const compareStrings = (string1, string2) => {
   const name1 = string1?.toLowerCase() || "";

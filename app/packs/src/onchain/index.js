@@ -3,6 +3,8 @@ import { newKit, CeloContract } from "@celo/contractkit";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 import TalentToken from "../abis/recent/TalentToken.json";
 import Staking from "../abis/recent/Staking.json";

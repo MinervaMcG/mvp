@@ -80,8 +80,23 @@ const Nfts = ({
     });
   };
 
-  const appendNft = (newNft) => {
-    setNfts((prev) => [newNft, ...prev]);
+  const removeNft = (previousNfts, updatedNft) => {
+    const nftIndex = previousNfts.findIndex((Nft) => Nft.id === updatedNft.id);
+
+    const newNfts = [
+      ...previousNfts.slice(0, nftIndex),
+      ...previousNfts.slice(nftIndex + 1),
+    ];
+
+    return newNfts;
+  };
+
+  const appendNft = (updatedNft) => {
+    if (updatedNft.show) {
+      setNfts((prev) => [updatedNft, ...prev]);
+    } else {
+      setNfts((previousNfts) => removeNft(previousNfts, updatedNft));
+    }
   };
 
   const loadMoreNfts = () => {

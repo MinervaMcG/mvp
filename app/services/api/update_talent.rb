@@ -44,8 +44,10 @@ class API::UpdateTalent
       AddUsersToMailerliteJob.perform_later(talent.user.id)
     end
 
-    talent.profile_picture = params[:profile_picture_data].as_json
-    talent.profile_picture_derivatives! if talent.profile_picture && talent.profile_picture_changed?
+    if params.key?(:profile_picture_data)
+      talent.profile_picture = params[:profile_picture_data].as_json
+      talent.profile_picture_derivatives! if talent.profile_picture && talent.profile_picture_changed?
+    end
 
     if params[:profile]
       if params[:profile][:headline]
@@ -96,8 +98,10 @@ class API::UpdateTalent
       Tasks::Update.new.call(type: "Tasks::Verified", user: talent.user) if talent.verified?
     end
 
-    talent.banner = params[:banner_data].as_json
-    talent.banner_derivatives! if talent.banner && talent.banner_changed?
+    if params.key?(:banner_data)
+      talent.banner = params[:banner_data].as_json
+      talent.banner_derivatives! if talent.banner && talent.banner_changed?
+    end
 
     talent.save!
   end

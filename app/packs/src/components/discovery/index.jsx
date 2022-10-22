@@ -2,8 +2,6 @@ import React, { useEffect, useMemo, useState, useCallback } from "react";
 
 import { post, destroy } from "src/utils/requests";
 import { useWindowDimensionsHook } from "src/utils/window";
-import { ethers } from "ethers";
-import { parseAndCommify } from "src/onchain/utils";
 
 import { Spinner } from "src/components/icons";
 import HighlightsCard from "src/components/design_system/highlights_card";

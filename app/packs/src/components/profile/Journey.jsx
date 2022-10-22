@@ -10,6 +10,8 @@ import Button from "src/components/design_system/button";
 import EditJourneyModal from "./edit/EditJourneyModal";
 
 import cx from "classnames";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 const Journey = ({ className, talent, setTalent, canUpdate }) => {
   const { mobile } = useWindowDimensionsHook();
@@ -217,22 +219,29 @@ const Journey = ({ className, talent, setTalent, canUpdate }) => {
                 <div className="d-flex col-11 pr-0">
                   {!mobile && (
                     <P3
-                      className="text-primary-04 col-2 text-right pr-6 pt-1"
+                      className="text-primary-04 col-3 text-right pr-6 pt-1"
                       bold
-                      text={dayjs(journeyItem.startDate, "YYYY-MM-DD").format(
+                    >
+                      {dayjs(journeyItem.startDate, "YYYY-MM-DD").format(
                         "MMM YYYY"
                       )}
-                    />
+                      {journeyItem.inProgress && " - Today"}
+                      {journeyItem.endDate && !journeyItem.inProgress
+                        ? ` - ${dayjs(journeyItem.endDate, "YYYY-MM-DD").format(
+                            "MMM YYYY"
+                          )}`
+                        : ""}
+                    </P3>
                   )}
                   <div
                     className={cx(
                       mobile
-                        ? `col-10 pl-6 ${cssForBorder(
+                        ? `col-9 pl-6 ${cssForBorder(
                             journeyItem,
                             index,
                             filteredJourneyItems.length
                           )} position-relative`
-                        : `col-10 pl-7 pr-0 ${cssForBorder(
+                        : `col-9 pl-7 pr-0 ${cssForBorder(
                             journeyItem,
                             index,
                             filteredJourneyItems.length
@@ -240,13 +249,17 @@ const Journey = ({ className, talent, setTalent, canUpdate }) => {
                     )}
                   >
                     {mobile && (
-                      <P3
-                        className="text-primary-04 mb-4"
-                        bold
-                        text={dayjs(journeyItem.startDate, "YYYY-MM-DD").format(
-                          "MMM-YYYY"
+                      <P3 className="text-primary-04 mb-4" bold>
+                        {dayjs(journeyItem.startDate, "YYYY-MM-DD").format(
+                          "MMM YYYY"
                         )}
-                      />
+                        {journeyItem.endDate
+                          ? ` - ${dayjs(
+                              journeyItem.endDate,
+                              "YYYY-MM-DD"
+                            ).format("MMM YYYY")}`
+                          : ""}
+                      </P3>
                     )}
                     <div className="d-flex justify-content-between">
                       <P1

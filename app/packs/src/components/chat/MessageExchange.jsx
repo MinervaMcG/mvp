@@ -7,6 +7,8 @@ import TalentProfilePicture from "../talent/TalentProfilePicture";
 import P2 from "src/components/design_system/typography/p2";
 import TextArea from "src/components/design_system/fields/textarea";
 import { Send, ArrowLeft } from "src/components/icons";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 const EmptyMessages = () => {
   return (

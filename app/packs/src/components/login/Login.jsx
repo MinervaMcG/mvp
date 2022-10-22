@@ -37,10 +37,10 @@ const Login = (props) => {
   return (
     <div
       className={cx(
-        "d-flex flex-column align-self-center",
+        "d-flex flex-column",
         mobile
-          ? "p-4 justify-content-between w-100 h-100"
-          : "justify-content-center p-0 registration-box"
+          ? "p-4 justify-content-between align-self-center w-100 h-100"
+          : "p-0 registration-box w-100"
       )}
     >
       <div>

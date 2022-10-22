@@ -16,17 +16,20 @@ import CameraButton from "images/camera-button.png";
 import DeleteButton from "images/delete-button.png";
 import TalentBanner from "images/overview.gif";
 import { useWindowDimensionsHook } from "src/utils/window";
+import { useTheme } from "src/contexts/ThemeContext";
 import { ToastBody } from "src/components/design_system/toasts";
 import UserTags from "src/components/talent/UserTags";
 import Button from "src/components/design_system/button";
 import StakeModal from "src/components/token/StakeModal";
-import { Globe, Calendar, Envelope, Share } from "src/components/icons";
+import { Globe, Calendar, Envelope } from "src/components/icons";
 import { lightTextPrimary04 } from "src/utils/colors";
 
-import { formatNumberWithSymbol } from "src/utils/viewHelpers";
+import { formatNumberWithSymbol, verifiedIcon } from "src/utils/viewHelpers";
 import EditOverviewModal from "src/components/profile/edit/EditOverviewModal";
 
 import cx from "classnames";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 const Overview = ({
   className,
@@ -44,6 +47,7 @@ const Overview = ({
   const joinedAt = dayjs(talent.user.createdAt).format("MMMM YYYY");
 
   const { mobile } = useWindowDimensionsHook();
+  const { mode } = useTheme();
   const [showStakeModal, setShowStakeModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [overviewProfileFileInput, setOverviewProfileFileInput] =
@@ -407,10 +411,18 @@ const Overview = ({
               )}
             </>
           )}
-          <H4
-            className="mb-1 medium"
-            text={talent.user.displayName || talent.user.username}
-          />
+          <div className="d-flex align-items-center mb-1">
+            <H4 className="medium mr-2 mb-0" text={talent.user.name} />
+            {talent.token.contractId && (
+              <P2 className="medium mr-2" text={`$${talent.token.ticker}`} />
+            )}
+            {talent.verified && (
+              <img
+                src={verifiedIcon(mode())}
+                style={{ width: "22px", height: "22px" }}
+              />
+            )}
+          </div>
           <P2 className="text-primary-03 mb-4" text={talent.occupation} />
           {mobile && (
             <>

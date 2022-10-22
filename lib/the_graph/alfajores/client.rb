@@ -1,38 +1,18 @@
+require "the_graph/queries"
+
 module TheGraph
   module Alfajores
     MAX_RECORDS = 100
 
-    TALENT_SUPPORTERS_QUERY = ::TheGraphAPI::Alfajores::Client.parse <<-'GRAPHQL'
-      query($id: ID!, $skip: Int!, $first: Int!) {
-        talentToken(id: $id) {
-          supporterCounter
-          totalSupply
-          supporters(
-            skip: $skip
-            first: $first
-            orderBy: id
-            orderDirection: asc
-          ) {
-            id
-            amount
-            lastTimeBoughtAt
-            firstTimeBoughtAt
-            supporter {
-              id
-            }
-            talAmount
-          }
-        }
-      }
-    GRAPHQL
+    TALENT_SUPPORTERS = ::TheGraphAPI::Alfajores::Client.parse TheGraph::Queries::TALENT_SUPPORTERS_QUERY
 
     class Client
       class Error < StandardError; end
 
       class QueryError < Error; end
 
-      def talent_supporters(talent_address:, offset: 0)
-        query TALENT_SUPPORTERS_QUERY, id: talent_address, skip: offset, first: MAX_RECORDS
+      def talent_supporters(talent_address:, variance_start_date:, offset: 0)
+        query TALENT_SUPPORTERS, id: talent_address, variance_start_date: variance_start_date, skip: offset, first: MAX_RECORDS
       end
 
       private

@@ -79,7 +79,7 @@ const RegisterEmail = ({
   }, [localEmail]);
 
   return (
-    <>
+    <div className="registration-items">
       <H5 text="What is your email?" bold />
       <P2
         className="text-black mb-5 mt-2"
@@ -147,7 +147,7 @@ const RegisterEmail = ({
           Create account
         </button>
       </form>
-    </>
+    </div>
   );
 };
 

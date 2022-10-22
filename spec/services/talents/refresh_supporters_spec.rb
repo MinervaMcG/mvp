@@ -21,8 +21,9 @@ RSpec.describe Talents::RefreshSupporters do
   let(:talent_token_data) do
     OpenStruct.new(
       supporter_counter: supporter_counter,
-      total_supply: "70000",
-      supporters: supporters_data
+      total_supply: "183000000000000000000",
+      supporters: supporters_data,
+      token_day_data: token_day_data
     )
   end
 
@@ -45,6 +46,23 @@ RSpec.describe Talents::RefreshSupporters do
         tal_amount: "450000000000000000000",
         last_time_bought_at: "1657564775",
         first_time_bought_at: "1627564775"
+      )
+    ]
+  end
+
+  # results will always be sorted asc
+  # check: lib/the_graph/queries.rb
+  let(:token_day_data) do
+    [
+      OpenStruct.new(
+        id: SecureRandom.hex,
+        date: (Date.today - 15.days).to_time.to_i,
+        daily_supply: "180000000000000000000"
+      ),
+      OpenStruct.new(
+        id: SecureRandom.hex,
+        date: Date.yesterday.to_time.to_i,
+        daily_supply: "900000000000000000000"
       )
     ]
   end
@@ -79,9 +97,30 @@ RSpec.describe Talents::RefreshSupporters do
 
     talent.reload
 
+    variance = (("183000000000000000000".to_f - "180000000000000000000".to_f) * 100 / "180000000000000000000".to_f).round(2)
+
     aggregate_failures do
-      expect(talent.total_supply).to eq "70000"
+      expect(talent.total_supply).to eq "183000000000000000000"
+      expect(talent.market_cap).to eq ("183000000000000000000".to_f * TalentToken::TALENT_TOKEN_VALUE_IN_USD).to_i.to_s
+      expect(talent.market_cap_variance).to eq variance
       expect(talent.supporters_count).to eq 2
+    end
+  end
+
+  context "when there are no changes in the token day data" do
+    let(:token_day_data) { [] }
+
+    it "updates the talent information with the correct data" do
+      refresh_supporters
+
+      talent.reload
+
+      aggregate_failures do
+        expect(talent.total_supply).to eq "183000000000000000000"
+        expect(talent.market_cap).to eq ("183000000000000000000".to_f * TalentToken::TALENT_TOKEN_VALUE_IN_USD).to_i.to_s
+        expect(talent.market_cap_variance).to eq 0
+        expect(talent.supporters_count).to eq 2
+      end
     end
   end
 
@@ -213,16 +252,20 @@ RSpec.describe Talents::RefreshSupporters do
     end
 
     it "requests the talent supporters twice" do
-      refresh_supporters
+      freeze_time do
+        refresh_supporters
 
-      expect(the_graph_client_instance).to have_received(:talent_supporters).with(
-        talent_address: talent_contract_id,
-        offset: 0
-      )
-      expect(the_graph_client_instance).to have_received(:talent_supporters).with(
-        talent_address: talent_contract_id,
-        offset: 1
-      )
+        expect(the_graph_client_instance).to have_received(:talent_supporters).with(
+          talent_address: talent_contract_id,
+          variance_start_date: (Time.now.utc - 30.days).to_i,
+          offset: 0
+        )
+        expect(the_graph_client_instance).to have_received(:talent_supporters).with(
+          talent_address: talent_contract_id,
+          variance_start_date: (Time.now.utc - 30.days).to_i,
+          offset: 1
+        )
+      end
     end
   end
 end

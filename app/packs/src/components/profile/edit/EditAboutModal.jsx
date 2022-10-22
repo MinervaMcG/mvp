@@ -279,20 +279,11 @@ const EditAboutModal = ({ show, hide, talent, setTalent }) => {
             <P2 className="text-primary-01" bold>
               About <span className="text-danger">*</span>
             </P2>
-            <div className="d-flex">
-              <P3
-                className="text-primary-01"
-                bold
-                text={editedTalent.careerGoal.pitch?.length || "0"}
-              />
-              <P3 className="text-primary-04" bold text="/240" />
-            </div>
           </div>
           <TextArea
             className="mb-2"
             onChange={(e) => changeCareerGoalAttribute("pitch", e.target.value)}
             value={editedTalent.careerGoal.pitch || ""}
-            maxLength={70}
             rows={3}
             required={true}
             error={validationErrors?.pitch}
@@ -306,6 +297,7 @@ const EditAboutModal = ({ show, hide, talent, setTalent }) => {
             tagsSelected={selectedCareerNeeds}
             className="mr-2 mb-4"
             clickable={false}
+            talent_id={`Edit-About`}
             onClick={(tag) => changeSelectedCareerNeeds(tag)}
           />
         </div>

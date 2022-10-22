@@ -13,6 +13,9 @@
               supporterCounter: talent["supporters_count"].to_s,
               totalSupply: talent["total_supply"].to_s,
               maxSupply: Talent.max_supply.to_s,
+              marketCap: talent["market_cap"],
+              marketCapVariance: talent["market_cap_variance"],
+              supplyProgress: talent["supply_progress"],
               token: {
                 ticker: talent["token"]["ticker"],
                 contractId: talent["token"]["contract_id"],
@@ -29,7 +32,11 @@
               isVerified: talent["verified"]
             }
           },
-          isAdmin: current_user.admin?
+          isAdmin: current_user.admin?,
+          pagination: {
+            currentPage: @pagy.page,
+            lastPage: @pagy.last
+          },
         },
         prerender: false) %>
     </div>

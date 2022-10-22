@@ -12,6 +12,7 @@ module Talents
     def call
       talents = admin ? Talent.joins(:user, :talent_token) : Talent.base.joins(:user, :talent_token)
 
+      talents = talents.where.not(user: {profile_type: "applying"})
       talents = filter_by_discovery_row(talents) if discovery_row
       talents = filter_by_keyword(talents) if keyword
       talents = filter_by_status(talents)
@@ -70,8 +71,6 @@ module Talents
         talents.where(talent_token: {chain_id: chain_id("polygon")})
       else
         talents
-          .select("setseed(0.#{Date.today.jd}), talent.*")
-          .order("random()")
       end
     end
 

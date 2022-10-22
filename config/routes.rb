@@ -15,7 +15,18 @@ Rails.application.routes.draw do
       resources :supporters, only: [:index]
       resources :talent, only: [:show]
       get "/public_talent" => "talent#public_index"
-      resources :users, only: [:show]
+      resources :users, only: [:show] do
+        namespace :profile do
+          resources :community, only: [:index]
+          resources :perks, only: [:index]
+
+          scope :web3 do
+            get :tokens, to: "web3#tokens"
+            get :nfts, to: "web3#nfts"
+            get :poaps, to: "web3#poaps"
+          end
+        end
+      end
     end
   end
   # end Public API
@@ -59,7 +70,7 @@ Rails.application.routes.draw do
     resources :profiles, only: [:show], param: :username
 
     # Edit profile
-    get "/u/:username/edit_profile", to: "users#edit_profile", as: "edit_profile"
+    get "/u/:username/edit_profile", to: redirect("/u/%{username}/account_settings")
 
     # Quests
     resources :quests, only: [:show]
@@ -73,15 +84,10 @@ Rails.application.routes.draw do
 
           namespace :profile do
             resources :web3, controller: :web3, only: [:update]
-            resources :community, only: [:index]
-            resources :perks, only: [:index]
 
             scope :web3 do
-              get :tokens, to: "web3#tokens"
               post :refresh_tokens, to: "web3#refresh_tokens"
-              get :nfts, to: "web3#nfts"
               post :refresh_nfts, to: "web3#refresh_nfts"
-              get :poaps, to: "web3#poaps"
               post :refresh_poaps, to: "web3#refresh_poaps"
             end
           end
@@ -149,7 +155,8 @@ Rails.application.routes.draw do
   resources :wait_list, only: [:create, :index]
 
   get "/u/:username/delete_account" => "users#destroy", :as => "delete_account", :constraints => {username: /[^\/]+/}
-  get "/u/:username" => "users#show", :as => "user", :constraints => {username: /[^\/]+/}
+  get "/u/:username" => "profiles#show", :as => "user", :constraints => {username: /[^\/]+/}
+  get "/u/:username/account_settings" => "users#edit_profile", :as => "account_settings", :constraints => {username: /[^\/]+/}
   # redirect /talent to /u so we have the old route still working
   get "/talent/:username", to: redirect("/u/%{username}"), as: "talent_profile"
 

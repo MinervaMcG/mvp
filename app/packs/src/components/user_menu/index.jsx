@@ -46,17 +46,9 @@ const UserMenu = ({ user, toggleTheme, mode, onClickTransak, signOut }) => {
           <P2 bold text="My profile" className="text-black ml-3" />
         </Dropdown.Item>
         <Dropdown.Item
-          key="tab-dropdown-edit-profile"
-          className="text-black d-flex flex-row align-items-center user-menu-dropdown-item"
-          href={`/u/${user.username}/edit_profile`}
-        >
-          <Edit pathClassName="icon-dropdown-item" />
-          <P2 bold text="Edit Profile" className="text-black ml-3" />
-        </Dropdown.Item>
-        <Dropdown.Item
           key="tab-dropdown-settings"
           className="text-black d-flex flex-row align-items-center user-menu-dropdown-item"
-          href={`/u/${user.username}/edit_profile?tab=Settings`}
+          href={`/u/${user.username}/account_settings`}
         >
           <Settings pathClassName="icon-dropdown-item" />
           <P2 bold text="Settings" className="text-black ml-3" />

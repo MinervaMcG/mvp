@@ -9,6 +9,7 @@ import { useWindowDimensionsHook } from "src/utils/window";
 import { useTheme } from "src/contexts/ThemeContext";
 
 import { formatNumberWithSymbol, shortenAddress } from "src/utils/viewHelpers";
+import { parseAndCommify } from "src/onchain/utils";
 
 import cx from "classnames";
 
@@ -42,16 +43,14 @@ const Token = ({ talent, talentTokenPrice, railsContext }) => {
       <div className="row">
         <div className={cx("col-12 col-lg-4", mobile && "mb-6")}>
           <H3
-            text={formatNumberWithSymbol(totalSupply)}
+            text={`$${parseAndCommify(totalSupply * talentTokenPrice)}`}
             className="text-center inverted-text-primary-01"
           ></H3>
           <P3 className="text-center inverted-text-primary-03">Market Cap</P3>
         </div>
         <div className={cx("col-12 col-lg-4", mobile && "mb-6")}>
           <H3
-            text={`${ethers.utils.commify(
-              (totalSupply * talentTokenPrice).toFixed(2)
-            )} $${token.ticker}`}
+            text={`${parseAndCommify(totalSupply)} $${token.ticker}`}
             className="text-center inverted-text-primary-01"
           ></H3>
           <P3 className="text-center inverted-text-primary-03">
@@ -60,7 +59,7 @@ const Token = ({ talent, talentTokenPrice, railsContext }) => {
         </div>
         <div className={cx("col-12 col-lg-4", mobile && "mb-6")}>
           <H3
-            text={formatNumberWithSymbol(maxSupply)}
+            text={`${ethers.utils.commify(maxSupply)} $${token.ticker}`}
             className="text-center inverted-text-primary-01"
           ></H3>
           <P3 className="text-center inverted-text-primary-03">Max Supply</P3>

@@ -123,7 +123,7 @@ const CreatePerkModal = ({
       <Modal.Footer className="px-4 py-3">
         <ThemedButton
           onClick={() => closeModal()}
-          type="primary-outline"
+          type="white-ghost"
           className="mr-auto"
         >
           Cancel

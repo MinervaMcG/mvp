@@ -5,6 +5,8 @@ import { LinkIt, LinkItEmail, urlRegex } from "react-linkify-it";
 
 import TalentProfilePicture from "../talent/TalentProfilePicture";
 import { P1, P2, P3 } from "src/components/design_system/typography";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 export const PhisingAwarenessModal = ({ show, hide, url }) => (
   <Modal show={show} onHide={hide} centered dialogClassName="remove-background">

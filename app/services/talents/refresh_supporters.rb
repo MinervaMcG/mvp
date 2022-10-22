@@ -15,8 +15,9 @@ module Talents
       talent_supporters_response = talent_supporters(offset: fetched_supporters_count)
       supporters_count = talent_supporters_response.talent_token.supporter_counter.to_i
       total_supply = talent_supporters_response.talent_token.total_supply
+      token_day_data = talent_supporters_response.talent_token.token_day_data
 
-      upsert_talent_info(supporters_count, total_supply)
+      upsert_talent_info(supporters_count, total_supply, token_day_data)
 
       loop do
         supporters = talent_supporters_response.talent_token.supporters
@@ -36,14 +37,33 @@ module Talents
     attr_reader :talent_token
 
     def talent_supporters(offset: 0)
-      the_graph_client(talent_token.chain_id).talent_supporters(talent_address: talent_token.contract_id, offset: offset)
+      the_graph_client(talent_token.chain_id).talent_supporters(
+        talent_address: talent_token.contract_id,
+        offset: offset,
+        variance_start_date: variance_start_date
+      )
     end
 
-    def upsert_talent_info(supporters_count, total_supply)
+    def variance_start_date
+      @variance_start_date ||= (Time.now.utc - 30.days).to_i
+    end
+
+    def upsert_talent_info(supporters_count, total_supply, token_day_data)
+      market_cap = total_supply.to_f * TalentToken::TALENT_TOKEN_VALUE_IN_USD
       talent.update!(
         supporters_count: supporters_count,
-        total_supply: total_supply
+        total_supply: total_supply,
+        market_cap: market_cap.to_i,
+        market_cap_variance: market_cap_variance(total_supply, token_day_data)
       )
+    end
+
+    def market_cap_variance(total_supply, token_day_data)
+      return 0 if token_day_data.blank?
+
+      last_supply = token_day_data[0].daily_supply
+
+      ((total_supply.to_f - last_supply.to_f) * 100 / last_supply.to_f).round(2)
     end
 
     def talent

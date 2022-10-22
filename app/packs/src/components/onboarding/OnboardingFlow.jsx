@@ -12,6 +12,8 @@ import ProcessFlow from "./ProcessFlow";
 import { useWindowDimensionsHook } from "../../utils/window";
 
 const renderCurrentStep = (currentStep) => {
+  window.scrollTo(0, 0);
+
   switch (currentStep) {
     case 1:
       return Welcome;
@@ -37,6 +39,7 @@ const OnboardingFlow = (props) => {
     !!props.user.legalFirstName && !!props.user.legalLastName;
 
   const [currentStep, setCurrentStep] = useState(nameComplete ? 2 : 1);
+  const allSteps = nameComplete ? 4 : 5;
 
   const [localFirstName, setLocalFirstName] = useState(
     props.user.legalFirstName || ""
@@ -76,11 +79,9 @@ const OnboardingFlow = (props) => {
   return (
     <div
       className={cx(
-        "d-flex flex-column align-self-center",
         mobile
-          ? "p-4 justify-content-start w-100 h-100"
-          : "justify-content-center p-0 registration-box",
-        currentStep === 4 && "justify-content-center"
+          ? "p-4 d-flex flex-column align-self-center justify-content-start w-100 h-100"
+          : "justify-content-center registration-box"
       )}
     >
       <Component
@@ -103,6 +104,7 @@ const OnboardingFlow = (props) => {
         nationality={localNationality}
         changeNationality={setLocalNationality}
         changeStep={setCurrentStep}
+        allSteps={allSteps}
       />
     </div>
   );

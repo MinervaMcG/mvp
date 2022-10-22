@@ -1,5 +1,7 @@
 import React from "react";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 import { P1, P2, Caption } from "src/components/design_system/typography";
 

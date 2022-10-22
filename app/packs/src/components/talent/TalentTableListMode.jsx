@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import currency from "currency.js";
+import { displayableAmount } from "src/utils/viewHelpers";
 import { faStar as faStarOutline } from "@fortawesome/free-regular-svg-icons";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -167,7 +168,7 @@ const TalentTableListMode = ({
       case "Occupation":
         return talent.occupation;
       case "Market Cap":
-        return contractId ? `$${talent.marketCap}` : "-";
+        return contractId ? `$${displayableAmount(talent.marketCap)}` : "-";
       case "Market Cap Variance":
         return contractId ? parsedVariance(talent.marketCapVariance) : "-";
       case "Alphabetical Order":
@@ -393,7 +394,9 @@ const TalentTableListMode = ({
               <P2
                 text={
                   talent.token.contractId
-                    ? `${currency(talent.marketCap).format()}`
+                    ? `${currency(
+                        displayableAmount(talent.marketCap)
+                      ).format()}`
                     : "-"
                 }
               />
@@ -401,8 +404,8 @@ const TalentTableListMode = ({
                 <div
                   className="progress-bar bg-secondary"
                   role="progressbar"
-                  aria-valuenow={talent.progress || 0}
-                  style={{ width: `${talent.progress || 0}%` }}
+                  aria-valuenow={talent.supplyProgress || 0}
+                  style={{ width: `${talent.supplyProgress || 0}%` }}
                   aria-valuemin="0"
                   aria-valuemax="100"
                 ></div>

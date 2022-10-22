@@ -19,6 +19,9 @@ import Tag from "src/components/design_system/tag";
 import ApplyToLaunchTokenModal from "src/components/design_system/modals/ApplyToLaunchTokenModal";
 import { lightTextPrimary03 } from "src/utils/colors";
 
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
+
 const InviteHeader = ({ investorId, username }) => {
   const [showApplyToLaunchTokenModal, setShowApplyToLaunchTokenModal] =
     useState(false);

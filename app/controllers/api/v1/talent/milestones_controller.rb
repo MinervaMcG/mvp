@@ -5,13 +5,13 @@ class API::V1::Talent::MilestonesController < ApplicationController
   def update
     milestone.assign_attributes(milestone_params)
     parsed_date = milestone_params[:start_date].split("-").map(&:to_i)
-    milestone.start_date = Date.new(parsed_date[0], parsed_date[1])
-    if milestone_params[:end_date]
+    milestone.start_date = Date.new(parsed_date[2], parsed_date[1], parsed_date[0])
+    if milestone_params[:end_date].length > 0
       parsed_date = milestone_params[:end_date].split("-").map(&:to_i)
-      milestone.end_date = Date.new(parsed_date[0], parsed_date[1])
+      milestone.end_date = Date.new(parsed_date[2], parsed_date[1], parsed_date[0])
     end
 
-    if milestone.save
+    if milestone.save!
       render json: milestone, status: :ok
     else
       render json: {error: "Unable to update milestone"}, status: :unprocessable_entity
@@ -22,15 +22,15 @@ class API::V1::Talent::MilestonesController < ApplicationController
     @milestone = Milestone.new(milestone_params)
 
     parsed_date = milestone_params[:start_date].split("-").map(&:to_i)
-    @milestone.start_date = Date.new(parsed_date[0], parsed_date[1])
-    if milestone_params[:end_date]
+    @milestone.start_date = Date.new(parsed_date[2], parsed_date[1], parsed_date[0])
+    if milestone_params[:end_date].length > 0
       parsed_date = milestone_params[:end_date].split("-").map(&:to_i)
-      @milestone.end_date = Date.new(parsed_date[0], parsed_date[1])
+      @milestone.end_date = Date.new(parsed_date[2], parsed_date[1], parsed_date[0])
     end
 
     @milestone.talent = talent
 
-    if @milestone.save
+    if @milestone.save!
       UpdateTasksJob.perform_later(type: "Tasks::Highlights", user_id: current_user.id) if talent.milestones.length >= 1
       render json: @milestone, status: :created
     else
@@ -73,7 +73,8 @@ class API::V1::Talent::MilestonesController < ApplicationController
       :institution,
       :description,
       :link,
-      :category
+      :category,
+      :in_progress
     )
   end
 

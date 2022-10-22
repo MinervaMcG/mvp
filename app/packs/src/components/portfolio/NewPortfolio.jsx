@@ -68,7 +68,7 @@ export const LoadingPortfolio = ({ mode }) => {
   );
 };
 
-const ChangeNetwork = ({ mode, networkChange, railsContext }) => {
+const ChangeNetwork = ({ mode }) => {
   return (
     <div className="w-100 h-100 d-flex flex-column justify-content-center align-items-center p-4 p-lg-0 mt-3">
       <H5 mode={mode} text="Please switch your network" bold />

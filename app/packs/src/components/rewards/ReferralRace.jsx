@@ -14,6 +14,9 @@ import Table from "src/components/design_system/table";
 import Tooltip from "src/components/design_system/tooltip";
 import TalentProfilePicture from "src/components/talent/TalentProfilePicture";
 import { lightTextPrimary03 } from "src/utils/colors";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat);
 
 const sumRewardAmounts = (total, reward) => total + reward.amount;
 
