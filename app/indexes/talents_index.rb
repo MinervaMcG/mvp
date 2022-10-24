@@ -8,10 +8,10 @@ class TalentsIndex < Chewy::Index
   end
 
   field :talent_token do
-    field :ticker, :contract_id, :deployed_at, :chain_id, :market_cap
+    field :ticker, :contract_id, :deployed_at, :chain_id
   end
 
-  field :occupation, value: ->(talent) { talent.profile[:occupation] } 
+  field :occupation, value: ->(talent) { talent.profile[:occupation] }
 
   field :milestones do
     field :institution, :title, :description
@@ -22,10 +22,8 @@ class TalentsIndex < Chewy::Index
     field :goals do
       field :description, :title
     end
-    field :carrer_needs do
+    field :career_needs do
       field :title
     end
   end
-
-
 end
