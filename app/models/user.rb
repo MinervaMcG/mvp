@@ -47,6 +47,8 @@ class User < ApplicationRecord
 
   # Elasticsearch index update
   update_index("talents") { talent }
+  
+  after_save :touch_talent
 
   VALID_ROLES = ["admin", "basic", "moderator"].freeze
 
@@ -296,4 +298,9 @@ class User < ApplicationRecord
       errors.add(:notification_preferences, "Invalid notification preferences.")
     end
   end
+
+  def touch_talent
+    talent.touch if talent.present?
+  end
+
 end

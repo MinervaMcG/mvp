@@ -12,4 +12,13 @@ class CareerGoal < ApplicationRecord
   end
 
   update_index("talents") { talent }
+
+  after_save :touch_talent
+
+  private
+
+  def touch_talent
+    talent.touch
+  end
+
 end

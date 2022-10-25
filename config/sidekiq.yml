@@ -53,3 +53,6 @@
   sync_with_persona_job:
     cron: "0 * * * *" # Runs every hour
     class: SyncWithPersonaJob
+  update_chewy_index:
+    cron: "0 * * * *" # Runs every hour
+    class: TriggerChewyIndexUpdateJob
