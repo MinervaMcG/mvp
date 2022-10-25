@@ -14,3 +14,7 @@ Chewy.settings = {
     end
   }
 }
+
+Chewy.root_strategy = :lazy_sidekiq
+Chewy.request_strategy = :lazy_sidekiq
+Chewy.console_strategy = :lazy_sidekiq

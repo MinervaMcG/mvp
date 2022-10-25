@@ -47,3 +47,6 @@
   setup_next_race:
     cron: "1 0 * * 3" # Runs every Wednesday at 00:01
     class: SetupNextRaceJob
+  update_chewy_index:
+    cron: "0 * * * *" # Runs every hour
+    class: TriggerChewyIndexUpdateJob

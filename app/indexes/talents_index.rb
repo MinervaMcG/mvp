@@ -1,6 +1,6 @@
 class TalentsIndex < Chewy::Index
   index_scope Talent
-  field :verified, :activity_count, :created_at
+  field :verified, :activity_count, :created_at, :updated_at
 
   field :user do
     field :username, :display_name, :profile_type, :legal_first_name, :legal_last_name

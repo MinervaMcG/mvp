@@ -10,4 +10,13 @@ class Milestone < ApplicationRecord
   enum category: {Position: "Position", Education: "Education", Other: "Other"}
 
   update_index("talents") { talent }
+
+  after_save :touch_talent
+
+  private
+
+  def touch_talent
+    talent.touch
+  end
+
 end
