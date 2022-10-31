@@ -15,7 +15,7 @@ class API::V1::TalentController < ApplicationController
     #   }
     # }, status: :ok
 
-    talents = Talents::ChewySearch.new(filter_params: filter_params.to_h).call
+    talents = Talents::ChewySearch.new(filter_params: filter_params.to_h, admin: current_user.admin?).call
     render json: {talents: talents}, status: :ok
   end
 
