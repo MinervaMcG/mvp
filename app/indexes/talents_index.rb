@@ -1,6 +1,8 @@
 class TalentsIndex < Chewy::Index
   index_scope Talent
-  field :verified, :activity_count, :created_at, :updated_at
+  field :verified, type: "boolean"
+  field :activity_count
+  field :created_at, type: "date"
 
   field :user do
     field :username, :display_name, :profile_type, :legal_first_name, :legal_last_name
@@ -8,7 +10,8 @@ class TalentsIndex < Chewy::Index
   end
 
   field :talent_token do
-    field :ticker, :contract_id, :deployed_at, :chain_id
+    field :ticker, :contract_id, :chain_id
+    field :deployed_at, type: "date"
   end
 
   field :occupation, value: ->(talent) { talent.profile[:occupation] }

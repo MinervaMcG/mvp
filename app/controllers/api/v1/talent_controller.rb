@@ -15,8 +15,8 @@ class API::V1::TalentController < ApplicationController
     #   }
     # }, status: :ok
 
-    talents = Talents::ChewySearch.new(filter_params: filter_params.to_h, admin: current_user.admin?).call
-    render json: {talents: talents}, status: :ok
+    paging, talents = Talents::ChewySearch.new(filter_params: filter_params.to_h, admin: current_user.admin?, size: per_page, from: ((params[:page] || "1").to_i - 1) * per_page).call
+    render json: {talents: talents, pagination: paging}, status: :ok
   end
 
   # public /
@@ -136,6 +136,6 @@ class API::V1::TalentController < ApplicationController
   end
 
   def per_page
-    params[:per_page] || PER_PAGE
+    (params[:per_page] || PER_PAGE).to_i
   end
 end

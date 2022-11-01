@@ -1,19 +1,28 @@
 require "web3_api/api_proxy"
+
 module Talents
   class ChewySearch
-    def initialize(filter_params: {}, admin: false)
+    def initialize(filter_params: {}, admin: false, size: 40, from: 1)
       @filter_params = filter_params
       @admin = admin
+      @size = size
+      @from = from
     end
 
     def call
-      data = TalentsIndex.class_eval(query_for_status).query(query_for_keyword).query.not({match: {profile_type: "applying"}}).order(sort_query).to_a
-      data.map { |obj| obj.attributes.deep_symbolize_keys }
+      talents = TalentsIndex.class_eval(query_for_status).query(query_for_keyword).query.not({match: {profile_type: "applying"}})
+      talents = talents.order(sort_query)
+      total_count = talents.count
+      talents = talents.limit(size).offset(from).to_a
+      [{
+        currentPage: ((from + 1) / size.to_f).ceil,
+        lastPage: (total_count / size.to_f).ceil
+      }, talents.map { |talent| talent.attributes.deep_stringify_keys }]
     end
 
     private
 
-    attr_reader :filter_params, :admin
+    attr_reader :filter_params, :admin, :size, :from
 
     def query_for_keyword
       {
@@ -43,9 +52,9 @@ module Talents
       elsif filter_params[:status] == "Verified"
         "query({term: {verified: true}})"
       elsif filter_params[:status] == "By Celo Network"
-        'query({match: {"talent_token.chain_id": chain_id("celo")}})'
+        "query({match: {'talent_token.chain_id': #{Web3Api::ApiProxy.chain_id("celo")}}})"
       elsif filter_params[:status] == "By Polygon Network"
-        'query({match: {"talent_token.chain_id": chain_id("polygon")}})'
+        "query({match: {'talent_token.chain_id': #{Web3Api::ApiProxy.chain_id("polygon")}}})"
       else
         "query({match_all: {}})"
       end
@@ -59,12 +68,6 @@ module Talents
 
     def keyword
       @keyword ||= filter_params[:keyword]
-    end
-
-    def chain_id(network_name)
-      contract_env = ENV["CONTRACTS_ENV"]
-      network = contract_env == "production" ? Web3Api::ApiProxy.const_get("#{network_name.upcase}_CHAIN") : Web3Api::ApiProxy.const_get("TESTNET_#{network_name.upcase}_CHAIN")
-      network[2].to_i
     end
   end
 end
