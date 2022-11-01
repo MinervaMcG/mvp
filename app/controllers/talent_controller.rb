@@ -2,10 +2,10 @@ class TalentController < ApplicationController
   PER_PAGE = 40
 
   def index
-    service = Talents::Search.new(filter_params: filter_params.to_h, admin: current_user.admin?)
-    @pagy, talents = pagy(service.call, items: per_page)
+    @paging, @talents = Talents::ChewySearch.new(filter_params: filter_params.to_h, admin: current_user.admin?, size: per_page, from: ((params[:page] || "1").to_i - 1) * per_page).call
+    # @pagy, talents = pagy(service.call, items: per_page)
 
-    @talents = TalentBlueprint.render_as_json(talents.includes(:talent_token, user: :investor), view: :normal, current_user_watchlist: current_user_watchlist)
+    # @talents = TalentBlueprint.render_as_json(talents.includes(:talent_token, user: :investor), view: :normal, current_user_watchlist: current_user_watchlist)
 
     respond_to do |format|
       format.html
@@ -13,10 +13,7 @@ class TalentController < ApplicationController
         render(
           json: {
             talents: @talents,
-            pagination: {
-              currentPage: @pagy.page,
-              lastPage: @pagy.last
-            }
+            pagination: @paging
           },
           status: :ok
         )

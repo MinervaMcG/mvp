@@ -50,6 +50,14 @@ module Web3Api
       gnosis_poaps(wallet_address)
     end
 
+    class << self
+      def chain_id(network_name)
+        contract_env = ENV["CONTRACTS_ENV"]
+        network = contract_env == "production" ? const_get("#{network_name.upcase}_CHAIN") : const_get("TESTNET_#{network_name.upcase}_CHAIN")
+        network[2].to_i
+      end
+    end
+
     private
 
     def validate_chain!(chain)

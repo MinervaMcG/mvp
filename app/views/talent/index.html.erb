@@ -16,11 +16,11 @@
               marketCap: talent["market_cap"],
               marketCapVariance: talent["market_cap_variance"],
               supplyProgress: talent["supply_progress"],
-              token: {
-                ticker: talent["token"]["ticker"],
-                contractId: talent["token"]["contract_id"],
-                deployedAt: talent["token"]["deployed_at"],
-                chainId: talent["token"]["chain_id"]
+              talentToken: {
+                ticker: talent["talent_token"]["ticker"],
+                contractId: talent["talent_token"]["contract_id"],
+                deployedAt: talent["talent_token"]["deployed_at"],
+                chainId: talent["talent_token"]["chain_id"]
               },
               user: {
                 username: talent["user"]["username"],
@@ -33,10 +33,7 @@
             }
           },
           isAdmin: current_user.admin?,
-          pagination: {
-            currentPage: @pagy.page,
-            lastPage: @pagy.last
-          },
+          pagination: @paging
         },
         prerender: false) %>
     </div>

@@ -34,7 +34,6 @@ const TalentPage = ({ talents, pagination, isAdmin, env }) => {
   const [selectedSort, setSelectedSort] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
   const [localPagination, setLocalPagination] = useState(pagination);
-
   const changeTab = (tab) => {
     setWatchlistOnly(tab === "Watchlist" ? true : false);
   };
