@@ -2,6 +2,8 @@ require "web3_api/api_proxy"
 
 module Talents
   class ChewySearch
+    PAGE_NEUTRALIZER = 1
+
     def initialize(filter_params: {}, admin: false, size: 40, from: 1)
       @filter_params = filter_params
       @admin = admin
@@ -15,7 +17,7 @@ module Talents
       total_count = talents.count
       talents = talents.limit(size).offset(from).to_a
       [{
-        currentPage: ((from + 1) / size.to_f).ceil,
+        currentPage: ((from + PAGE_NEUTRALIZER) / size.to_f).ceil,
         lastPage: (total_count / size.to_f).ceil
       }, talents.map { |talent| talent.attributes.deep_stringify_keys }]
     end
@@ -52,9 +54,17 @@ module Talents
       elsif filter_params[:status] == "Verified"
         "query({term: {verified: true}})"
       elsif filter_params[:status] == "By Celo Network"
-        "query({match: {'talent_token.chain_id': #{Web3Api::ApiProxy.chain_id("celo")}}})"
+        "query([{
+          exists: {field: 'talent_token.contract_id'}
+        }, {
+          match: {'talent_token.chain_id': #{Web3Api::ApiProxy.chain_id("celo")}}
+        }])"
       elsif filter_params[:status] == "By Polygon Network"
-        "query({match: {'talent_token.chain_id': #{Web3Api::ApiProxy.chain_id("polygon")}}})"
+        "query([{
+          exists: {field: 'talent_token.contract_id'}
+        }, {
+          match: {'talent_token.chain_id': #{Web3Api::ApiProxy.chain_id("polygon")}}
+        }])"
       else
         "query({match_all: {}})"
       end
