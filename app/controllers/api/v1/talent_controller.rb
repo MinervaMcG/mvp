@@ -1,5 +1,6 @@
 class API::V1::TalentController < ApplicationController
   PER_PAGE = 40
+  PAGE_NEUTRALIZER = 1
 
   def index
     # service = Talents::Search.new(filter_params: filter_params.to_h, admin: current_user.admin?)
@@ -15,7 +16,7 @@ class API::V1::TalentController < ApplicationController
     #   }
     # }, status: :ok
 
-    paging, talents = Talents::ChewySearch.new(filter_params: filter_params.to_h, admin: current_user.admin?, size: per_page, from: ((params[:page] || "1").to_i - 1) * per_page).call
+    paging, talents = Talents::ChewySearch.new(filter_params: filter_params.to_h, admin: current_user.admin?, size: per_page, from: ((params[:page] || PAGE_NEUTRALIZER).to_i - PAGE_NEUTRALIZER) * per_page).call
     render json: {talents: talents, pagination: paging}, status: :ok
   end
 
