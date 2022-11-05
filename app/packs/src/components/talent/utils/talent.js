@@ -5,7 +5,7 @@ export const completeProfile = (args) => {
   return missingFields(args).length == 0;
 };
 
-export const missingFields = ({ talent, profilePictureUrl, career_goal }) => {
+export const missingFields = ({ talent, profilePictureUrl, careerGoal }) => {
   const fields = [];
 
   if (!talent.profile?.occupation || talent.profile.occupation == "") {
@@ -17,7 +17,7 @@ export const missingFields = ({ talent, profilePictureUrl, career_goal }) => {
   if (!profilePictureUrl || profilePictureUrl == "") {
     fields.push("Profile picture");
   }
-  if (!career_goal?.pitch || career_goal.pitch == "") {
+  if (!careerGoal?.pitch || careerGoal.pitch == "") {
     fields.push("Pitch");
   }
 

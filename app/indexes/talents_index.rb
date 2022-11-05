@@ -2,7 +2,7 @@ class TalentsIndex < Chewy::Index
   index_scope Talent
   field :verified, type: "boolean"
   field :created_at, type: "date"
-  field :market_cap, :user_id
+  field :market_cap, :user_id, :supporters_count
 
   field :user do
     field :username, :display_name, :profile_type, :legal_first_name, :legal_last_name
