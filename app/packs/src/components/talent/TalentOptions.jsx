@@ -40,6 +40,7 @@ const TalentOptions = ({
     const params = new URLSearchParams(document.location.search);
     params.set(filterType, option);
     params.set("page", 1);
+    params.set("keyword", keyword);
 
     if (discoveryRowId) {
       params.set("discovery_row_id", discoveryRowId);
