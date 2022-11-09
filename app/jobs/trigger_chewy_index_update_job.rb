@@ -1,7 +1,7 @@
 class TriggerChewyIndexUpdateJob < ApplicationJob
   queue_as :default
 
-  def perform()
+  def perform
     Chewy::Index::Syncer.new(TalentsIndex).perform
   end
 end
