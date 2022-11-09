@@ -112,7 +112,7 @@ const TalentPage = ({ talents, pagination, isAdminOrModerator, env }) => {
       }));
       const newTalents = [...localTalents, ...responseTalents];
       setLocalTalents(newTalents);
-      setLocalPagination(response.pagination);
+      setLocalPagination(camelCaseObject(response.pagination));
 
       window.history.replaceState(
         {},
