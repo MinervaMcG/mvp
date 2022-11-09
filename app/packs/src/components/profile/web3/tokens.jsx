@@ -4,7 +4,6 @@ import { get } from "src/utils/requests";
 
 import { P1, P3, H3, H5, P2 } from "src/components/design_system/typography";
 import ThemedButton from "src/components/design_system/button";
-import { Edit } from "src/components/icons";
 import { Polygon, Celo } from "src/components/icons";
 import ethLogo from "images/eth-logo.png";
 import bitcoinLogo from "images/bitcoin-logo.png";
@@ -14,6 +13,8 @@ import { useWindowDimensionsHook } from "src/utils/window";
 
 import Web3ModalConnect from "src/components/login/Web3ModalConnect";
 import TokensModal from "./edit/tokensModal";
+
+import cx from "classnames";
 
 const Tokens = ({
   user,
@@ -38,7 +39,6 @@ const Tokens = ({
       (response) => {
         if (response.error) {
           toast.error(<ToastBody heading="Error!" body={response.error} />);
-          console.log(response.error);
         } else {
           setPagination(response.pagination);
           setTokens(response.tokens);
@@ -125,12 +125,24 @@ const Tokens = ({
         />
       )}
       <div className="container">
-        <div className="d-flex w-100 mb-3">
+        <div
+          className={cx(
+            "d-flex w-100 mb-3 position-relative",
+            mobile && "flex-column"
+          )}
+        >
           <H3 className="w-100 text-center mb-0">Tokens</H3>
           {canUpdate && walletConnected && (
-            <a onClick={() => setEditShow(true)} className="ml-auto">
-              <Edit />
-            </a>
+            <ThemedButton
+              type="primary-default"
+              size="big"
+              text="Edit Tokens"
+              onClick={() => setEditShow(true)}
+              className={cx(
+                mobile ? "mx-auto mt-3" : "ml-auto position-absolute"
+              )}
+              style={{ width: "190px", right: 0 }}
+            />
           )}
         </div>
         <P1 className="text-center pb-3 mb-4">

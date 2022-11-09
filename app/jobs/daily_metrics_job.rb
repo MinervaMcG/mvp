@@ -8,7 +8,6 @@ class DailyMetricsJob < ApplicationJob
       total_connected_wallets: total_connected_wallets,
       total_active_users: total_active_users,
       total_dead_accounts: total_dead_accounts,
-      total_talent_profiles: total_talent_profiles,
       talent_applications: talent_applications,
       total_advocates: total_advocates,
       total_scouts: total_scouts,
@@ -56,10 +55,6 @@ class DailyMetricsJob < ApplicationJob
     ActiveRecord::Base.connection.execute(sanitized_sql).first["count"]
   end
 
-  def total_talent_profiles
-    Talent.count
-  end
-
   def total_engaged_users
     query = <<~SQL
       SELECT COUNT(*)
@@ -81,11 +76,6 @@ class DailyMetricsJob < ApplicationJob
           OR milestones.created_at > :one_month_ago
           OR goals.updated_at > :one_month_ago
           OR goals.created_at > :one_month_ago
-      )
-      OR users.id IN (
-          select investors.user_id
-          from investors
-          where investors.updated_at > :one_month_ago
       )
       OR users.wallet_id IN (
           select talent_supporters.supporter_wallet_id

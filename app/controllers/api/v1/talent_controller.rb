@@ -3,20 +3,7 @@ class API::V1::TalentController < ApplicationController
   PAGE_NEUTRALIZER = 1
 
   def index
-    # service = Talents::Search.new(filter_params: filter_params.to_h, admin: current_user.admin?)
-    # pagy, talents = pagy(service.call, items: per_page)
-
-    # talents = TalentBlueprint.render_as_json(talents.includes(:talent_token), view: :normal, current_user_watchlist: current_user_watchlist)
-
-    # render json: {
-    #   talents: talents,
-    #   pagination: {
-    #     currentPage: pagy.page,
-    #     lastPage: pagy.last
-    #   }
-    # }, status: :ok
-
-    paging, talents = Talents::ChewySearch.new(filter_params: filter_params.to_h, admin: current_user.admin?, size: per_page, from: ((params[:page] || PAGE_NEUTRALIZER).to_i - PAGE_NEUTRALIZER) * per_page, current_user_watchlist: current_user_watchlist).call
+    paging, talents = Talents::ChewySearch.new(filter_params: filter_params.to_h, admin: admin_or_moderator: current_user.admin_or_moderator?, size: per_page, from: ((params[:page] || PAGE_NEUTRALIZER).to_i - PAGE_NEUTRALIZER) * per_page, current_user_watchlist: current_user_watchlist).call
     render json: {talents: talents, pagination: paging}, status: :ok
   end
 
@@ -44,7 +31,7 @@ class API::V1::TalentController < ApplicationController
   end
 
   def update
-    if !current_user.admin? && talent.id != current_acting_user.talent&.id
+    if !current_user.admin? && !current_user.moderator? && talent.id != current_acting_user.talent&.id
       return render json: {error: "You don't have access to perform that action"}, status: :unauthorized
     end
 
@@ -75,7 +62,11 @@ class API::V1::TalentController < ApplicationController
   end
 
   def filter_params
-    params.permit(:keyword, :status)
+    params.permit(:keyword, :status, :discovery_row_id)
+  end
+
+  def discovery_row
+    DiscoveryRow.find_by(id: filter_params[:discovery_row_id])
   end
 
   def user_params
@@ -121,7 +112,8 @@ class API::V1::TalentController < ApplicationController
         :gender,
         :ethnicity,
         :nationality,
-        :based_in
+        :based_in,
+        highlighted_headline_words_index: []
       ],
       profile_picture_data: {},
       banner_data: {}

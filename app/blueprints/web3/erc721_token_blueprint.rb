@@ -4,7 +4,7 @@ class Web3::Erc721TokenBlueprint < Blueprinter::Base
   view :normal do
     fields :symbol, :url, :token_id, :amount, :show, :chain_id
 
-    field :local_image_url do |token, _options|
+    field :image_url do |token, _options|
       token.token_image
     end
 

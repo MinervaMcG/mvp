@@ -2,34 +2,44 @@ class API::V1::CareerGoals::GoalsController < ApplicationController
   before_action :validate_access
 
   def update
-    goal.assign_attributes(goal_params)
-    parsed_date = goal_params[:due_date].split("-").map(&:to_i)
-    goal.due_date = Date.new(parsed_date[2], parsed_date[1], parsed_date[0])
+    service = Goals::Update.new(goal: goal, params: goal_params)
+    updated_goal = service.call
 
-    if goal.save
-      render json: goal, status: :ok
-    else
-      render json: {error: "Unable to update goal"}, status: :unprocessable_entity
-    end
+    render json: GoalBlueprint.render(updated_goal, view: :normal), status: :ok
+  rescue => e
+    Rollbar.error(
+      e,
+      "Unable to update goal",
+      goal_id: updated_goal.id,
+      career_goal_id: career_goal.id
+    )
+
+    render json: {error: "Unable to update goal"}, status: :unprocessable_entity
   end
 
   def create
-    @goal = Goal.new(goal_params)
-    parsed_date = goal_params[:due_date].split("-").map(&:to_i)
-    @goal.due_date = Date.new(parsed_date[2], parsed_date[1], parsed_date[0])
-    @goal.career_goal = career_goal
+    service = Goals::Create.new(
+      career_goal: career_goal,
+      current_user: current_acting_user,
+      params: goal_params
+    )
+    goal = service.call
 
-    if @goal.save
-      UpdateTasksJob.perform_later(type: "Tasks::Goals", user_id: current_user.id) if career_goal.goals.length >= 1
-      render json: @goal, status: :created
-    else
-      render json: {error: "Unable to create goal"}, status: :unprocessable_entity
-    end
+    render json: GoalBlueprint.render(goal, view: :normal), status: :created
+  rescue => e
+    Rollbar.error(
+      e,
+      "Unable to create goal",
+      goal_id: goal.id,
+      career_goal_id: career_goal.id
+    )
+
+    render json: {error: "Unable to create goal"}, status: :unprocessable_entity
   end
 
   def destroy
     if goal.destroy
-      render json: goal, status: :ok
+      render json: GoalBlueprint.render(goal, view: :normal), status: :ok
     else
       render json: {error: "Unable to delete requested goal."}, status: :unprocessable_entity
     end
@@ -51,7 +61,11 @@ class API::V1::CareerGoals::GoalsController < ApplicationController
       :title,
       :due_date,
       :description,
-      :link
+      :link,
+      images: [
+        :id,
+        image_data: {}
+      ]
     )
   end
 

@@ -2,6 +2,8 @@
   <%= react_component(
     "Login",
     props: {
+      unstoppableDomainsClientId: ENV["UNSTOPPABLE_DOMAINS_CLIENT_ID"],
+      unstoppableDomainsRedirectUri: ENV["UNSTOPPABLE_DOMAINS_REDIRECT_URI"],
       linkedinClientId: ENV["LINKEDIN_CLIENT_ID"],
       linkedinRedirectUri: ENV["LINKEDIN_REDIRECT_URI"],
       loginSession: session_path

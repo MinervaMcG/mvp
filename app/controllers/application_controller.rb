@@ -33,8 +33,9 @@ class ApplicationController < ActionController::Base
           )
         }
       end
-
     end
+  rescue ActionController::UnknownFormat
+    redirect_to root_path
   end
 
   def current_impersonated_user

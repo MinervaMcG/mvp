@@ -14,14 +14,14 @@ RSpec.describe Talents::Search do
 
   let!(:user_1) { create :user, talent: talent_1, username: "jonas" }
   let(:talent_1) { create :talent, :with_token, public: true }
-  let!(:user_2) { create :user, talent: talent_2, display_name: "Alexander" }
+  let!(:user_2) { create :user, profile_type: "talent", talent: talent_2, display_name: "Alexander" }
   let(:talent_2) { create :talent, :with_token, public: true }
-  let!(:user_3) { create :user, talent: talent_3, username: "jonathan" }
+  let!(:user_3) { create :user, profile_type: "talent", talent: talent_3, username: "jonathan" }
   let(:talent_3) { create :talent, :with_token, public: true }
-  let!(:user_4) { create :user, talent: talent_4, display_name: "Alex" }
+  let!(:user_4) { create :user, profile_type: "talent", talent: talent_4, display_name: "Alex" }
   let(:talent_4) { create :talent, :with_token, public: true }
 
-  let!(:private_user) { create :user, talent: private_talent, display_name: "Alexandrina" }
+  let!(:private_user) { create :user, talent: private_talent, display_name: "Alexandrina", profile_type: "waiting_for_approval" }
   let(:private_talent) { create :talent, :with_token, public: false }
 
   let!(:user_without_token) { create :user, talent: talent_without_token, username: "jona" }
@@ -121,8 +121,8 @@ RSpec.describe Talents::Search do
       private_user.tags << [tag_1]
     end
 
-    it "returns all talent users that are part of the discovery row" do
-      expect(search_talents).to match_array([talent_1, talent_2, talent_3])
+    it "returns all talent users that are part of the discovery row and have a talent profile type" do
+      expect(search_talents).to match_array([talent_2, talent_3])
     end
 
     context "when the keyword filter is passed" do
@@ -132,8 +132,8 @@ RSpec.describe Talents::Search do
         }
       end
 
-      it "returns all talent users part of the discovery row with username matching the passed keyword" do
-        expect(search_talents).to match_array([talent_1, talent_3])
+      it "returns all talent users part of the discovery row with username matching the passed keyword and have a talent profile type" do
+        expect(search_talents).to match_array([talent_3])
       end
     end
   end
@@ -175,6 +175,18 @@ RSpec.describe Talents::Search do
       end
     end
 
+    context "when the status filter is Pending approval" do
+      let(:filter_params) do
+        {
+          status: "Pending approval"
+        }
+      end
+
+      it "does not return private talents that are pending approval" do
+        expect(search_talents).not_to include(private_talent)
+      end
+    end
+
     context "when the status filter is By Celo Network" do
       let(:filter_params) do
         {
@@ -196,6 +208,31 @@ RSpec.describe Talents::Search do
 
       it "returns all latest talents that are launched on Polygon network" do
         expect(search_talents).to match_array([polygon_talent])
+      end
+    end
+  end
+
+  context "when the user is an admin or a moderator" do
+    context "when the status filter is passed" do
+      subject(:search_talents) do
+        described_class.new(
+          admin_or_moderator: true,
+          discovery_row: discovery_row,
+          filter_params: filter_params,
+          sort_params: sort_params
+        ).call
+      end
+
+      context "when the status filter is Pending approval" do
+        let(:filter_params) do
+          {
+            status: "Pending approval"
+          }
+        end
+
+        it "returns talents that are pending approval" do
+          expect(search_talents).to include(private_talent)
+        end
       end
     end
   end

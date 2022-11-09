@@ -39,9 +39,7 @@ const Welcome = ({
   const [localCode, setCode] = useState(inviteCode || "");
   const [localUsername, setUsername] = useState(username);
   const [requestingUsername, setRequestingUsername] = useState(false);
-  const [usernameValidated, setUsernameValidated] = useState(false);
-  const [usernameExists, setUsernameExists] = useState(false);
-  const [usernameError, setUsernameError] = useState(false);
+  const [usernameError, setUsernameError] = useState("");
   const [localPassword, setLocalPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [samePassword, setSamePassword] = useState(true);
@@ -51,19 +49,9 @@ const Welcome = ({
     tags,
   } = passwordMatchesRequirements(localPassword);
 
-  const editUsername = (e) => {
-    if (e.target.value != "" && !/^[a-z0-9]+$/.test(e.target.value)) {
-      setUsernameError(true);
-    } else {
-      setUsernameError(false);
-    }
-    setUsername(e.target.value);
-  };
-
   const invalidForm =
     !acceptedTerms ||
     !localCaptcha ||
-    !usernameValidated ||
     usernameError ||
     localPassword.length < 8 ||
     passwordConfirmation.length < 8 ||
@@ -83,45 +71,20 @@ const Welcome = ({
     }
   };
 
-  const verify = useCallback(
-    debounce((name, setname, setvalid, setexists) => {
-      setRequestingUsername(true);
-      setvalid(false);
+  const updateUsername = (newUsername) => {
+    setRequestingUsername(true);
+    get(`api/v1/username/valid?username=${newUsername}`).then((response) => {
+      setUsernameError(response.error);
 
-      get(`/users?username=${name}`)
-        .then((response) => {
-          if (response.error) {
-            setname(false);
-            setexists(false);
-            setvalid(true);
-          } else {
-            setname(false);
-            setvalid(false);
-            setexists(true);
-          }
-        })
-        .catch(() => {
-          setname(false);
-          setexists(false);
-          setvalid(true);
-        });
-    }, 200),
-    []
+      setUsername(newUsername);
+      setRequestingUsername(false);
+    });
+  };
+
+  const debouncedUpdateUsername = debounce(
+    (newUsername) => updateUsername(newUsername),
+    200
   );
-
-  useEffect(() => {
-    if (localUsername == "") {
-      setUsernameValidated(false);
-      return;
-    }
-
-    verify(
-      localUsername,
-      setRequestingUsername,
-      setUsernameValidated,
-      setUsernameExists
-    );
-  }, [localUsername]);
 
   useEffect(() => {
     if (localPassword.length > 7 && passwordConfirmation.length > 7) {
@@ -179,7 +142,7 @@ const Welcome = ({
             type="text"
             id="inputUsername"
             value={localUsername}
-            onChange={editUsername}
+            onChange={(e) => debouncedUpdateUsername(e.target.value)}
             error={usernameError}
           />
           <P2
@@ -194,23 +157,23 @@ const Welcome = ({
               style={{ top: 48, right: 10 }}
             />
           )}
-          {usernameValidated && !usernameError && (
+          {!usernameError && (
             <FontAwesomeIcon
               icon={faCheck}
               className="position-absolute text-success"
               style={{ top: 48, right: 10 }}
             />
           )}
-          {(usernameExists || usernameError) && (
+          {usernameError && (
             <FontAwesomeIcon
               icon={faTimes}
               className="position-absolute text-danger"
               style={{ top: 48, right: 10 }}
             />
           )}
-          {usernameExists && (
+          {usernameError && (
             <small id="usernameErrorHelp" className="form-text text-danger">
-              We already have that username in the system.
+              {usernameError}
             </small>
           )}
           <label htmlFor="inputPassword">

@@ -3,10 +3,7 @@ class TalentController < ApplicationController
   PAGE_NEUTRALIZER = 1
 
   def index
-    @paging, @talents = Talents::ChewySearch.new(filter_params: filter_params.to_h, admin: current_user.admin?, size: per_page, from: ((params[:page] || PAGE_NEUTRALIZER).to_i - PAGE_NEUTRALIZER) * per_page, current_user_watchlist: current_user_watchlist).call
-    # @pagy, talents = pagy(service.call, items: per_page)
-
-    # @talents = TalentBlueprint.render_as_json(talents.includes(:talent_token, user: :investor), view: :normal, current_user_watchlist: current_user_watchlist)
+    @paging, @talents = Talents::ChewySearch.new(filter_params: filter_params.to_h, admin_or_moderator: current_user.admin_or_moderator?, size: per_page, from: ((params[:page] || PAGE_NEUTRALIZER).to_i - PAGE_NEUTRALIZER) * per_page, current_user_watchlist: current_user_watchlist).call
 
     respond_to do |format|
       format.html

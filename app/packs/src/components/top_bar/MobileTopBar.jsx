@@ -9,7 +9,6 @@ import Button from "src/components/design_system/button";
 
 const MobileUserMenu = ({
   mode,
-  notifications,
   user,
   toggleTheme,
   connectedButton,
@@ -38,11 +37,7 @@ const MobileUserMenu = ({
           )}
         </a>
         <div className="d-flex flex-row" style={{ height: 26 }}>
-          <Notifications
-            notifications={notifications}
-            mode={mode}
-            hideBackground={true}
-          />
+          <Notifications mode={mode} hideBackground={true} />
           <Button
             onClick={() => setShowMenu(true)}
             type="white-ghost"

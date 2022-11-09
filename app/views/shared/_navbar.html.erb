@@ -2,9 +2,8 @@
   mode: current_user&.theme_preference || "light",
   user: {
     id: current_acting_user.id,
-    profilePictureUrl: current_acting_user.talent&.profile_picture_url || current_acting_user.investor&.profile_picture_url,
+    profilePictureUrl: current_acting_user.profile_picture_url,
     talentId: current_acting_user.talent&.id,
-    investorId: current_acting_user.investor&.id,
     isTalent: current_acting_user.talent.present?,
     displayWalletId: current_acting_user.display_wallet_id,
     walletId: current_acting_user.wallet_id,
@@ -13,18 +12,6 @@
     currentTheme: current_acting_user.theme_preference,
   },
   hasUnreadMessages: is_user_impersonated? ? false : current_user&.has_unread_messages?,
-  notifications: is_user_impersonated? ? [] : current_user.notifications.newest_first.map do |notif|
-    notif = notif.to_notification
-    {
-      id: notif.record.id,
-      title: notif.title,
-      body: notif.body,
-      type: notif.record.type,
-      read: notif.read?,
-      url: notif.url,
-      created_at: notif.record.created_at
-    }
-  end,
   signOutPath: sign_out_path,
   isUserImpersonated: is_user_impersonated?,
   impersonatedUsername: current_impersonated_user&.username,

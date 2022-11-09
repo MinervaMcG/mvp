@@ -2,15 +2,15 @@ require "web3_api/api_proxy"
 
 module Talents
   class Search
-    def initialize(filter_params: {}, sort_params: {}, discovery_row: nil, admin: false)
+    def initialize(filter_params: {}, sort_params: {}, discovery_row: nil, admin_or_moderator: false)
       @filter_params = filter_params
       @sort_params = sort_params
       @discovery_row = discovery_row
-      @admin = admin
+      @admin_or_moderator = admin_or_moderator
     end
 
     def call
-      talents = admin ? Talent.joins(:user, :talent_token) : Talent.base.joins(:user, :talent_token)
+      talents = admin_or_moderator ? Talent.joins(:user, :talent_token) : Talent.base.joins(:user, :talent_token)
 
       talents = talents.where.not(user: {profile_type: "applying"})
       talents = filter_by_discovery_row(talents) if discovery_row
@@ -22,15 +22,11 @@ module Talents
 
     private
 
-    attr_reader :discovery_row, :filter_params, :sort_params, :admin
+    attr_reader :discovery_row, :filter_params, :sort_params, :admin_or_moderator
 
     def filter_by_discovery_row(talents)
       users = User.joins(tags: :discovery_row)
-
-      users = users.where(
-        "discovery_rows.id = ?",
-        discovery_row.id
-      )
+      users = users.where("discovery_rows.id = ? AND users.profile_type = ?", discovery_row.id, "talent")
 
       talents.where(user_id: users.distinct.pluck(:id))
     end
@@ -61,7 +57,7 @@ module Talents
           .active
           .where("talent_tokens.deployed_at > ?", 1.month.ago)
           .order("talent_tokens.deployed_at ASC")
-      elsif filter_params[:status] == "Pending approval" && admin
+      elsif filter_params[:status] == "Pending approval" && admin_or_moderator
         talents.where(user: {profile_type: "waiting_for_approval"})
       elsif filter_params[:status] == "Verified"
         talents.where(verified: true)

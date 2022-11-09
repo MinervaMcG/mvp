@@ -15,6 +15,11 @@ Rails.application.routes.draw do
       resources :supporters, only: [:index]
       resources :talent, only: [:show]
       get "/public_talent" => "talent#public_index"
+
+      resource :username, only: [] do
+        get :valid, on: :collection
+      end
+
       resources :users, only: [:show] do
         namespace :profile do
           resources :community, only: [:index]
@@ -78,7 +83,6 @@ Rails.application.routes.draw do
     namespace :api, defaults: {format: :json} do
       namespace :v1 do
         resources :tokens, only: [:show]
-
         resources :users, only: [:index, :update] do
           resources :delete_account_tokens, module: "users", only: [:create]
 
@@ -95,7 +99,7 @@ Rails.application.routes.draw do
 
         resources :follows, only: [:index, :create]
         delete "follows", to: "follows#destroy"
-        resources :notifications, only: [] do
+        resources :notifications, only: [:index] do
           put :mark_as_read
         end
         post "clear_notifications", to: "notifications#mark_all_as_read"
@@ -111,12 +115,8 @@ Rails.application.routes.draw do
         end
         resources :stakes, only: [:create]
         post "reward_claiming", to: "stakes#reward_claiming"
-        resources :investor, only: [:update]
         resources :perks, only: [:show]
         resources :races, only: [:show]
-        resources :supporters do
-          patch :upgrade_profile_to_talent
-        end
         resources :impersonations, only: [:create, :destroy]
         resources :tags, only: [:index]
       end
@@ -148,6 +148,7 @@ Rails.application.routes.draw do
   end
 
   get "/auth/linkedin/callback", to: "oauth_callbacks#linkedin"
+  post "/auth/unstoppable_domains/login", to: "oauth_callbacks#unstoppable_domains"
 
   delete "/sign_out" => "sessions#destroy", :as => "sign_out"
   # end Auth

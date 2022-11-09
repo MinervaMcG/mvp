@@ -1,16 +1,6 @@
 require "rails_helper"
 
 RSpec.shared_examples "a profile picture uploader" do
-  it "persists the profile picture to the user's investor" do
-    handle_linkedin_oauth
-
-    aggregate_failures do
-      expect(Down).to have_received(:open).with("profile_picture_url").at_least(:once)
-      expect(investor).to have_received(:profile_picture=).with(chunked_io)
-      expect(investor).to have_received(:save!)
-    end
-  end
-
   it "persists the profile picture to the user's talent" do
     handle_linkedin_oauth
 
@@ -101,8 +91,7 @@ RSpec.describe Linkedin::OauthHandler do
   let(:creator_class) { Users::Create }
   let(:creator) { instance_double(creator_class, call: result) }
   let(:result) { {success: true, user: user} }
-  let(:user) { create :user, investor: investor, talent: talent }
-  let(:investor) { create :investor }
+  let(:user) { create :user, talent: talent }
   let(:talent) { create :talent }
 
   let(:chunked_io) do
@@ -114,8 +103,6 @@ RSpec.describe Linkedin::OauthHandler do
     allow(creator_class).to receive(:new).and_return(creator)
     allow(SecureRandom).to receive(:random_number).and_return(314835)
     allow(Down).to receive(:open).and_return(chunked_io)
-    allow(investor).to receive(:profile_picture=)
-    allow(investor).to receive(:save!)
     allow(talent).to receive(:profile_picture=)
     allow(talent).to receive(:save!)
   end

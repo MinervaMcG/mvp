@@ -1,35 +1,8 @@
 class DiscoveryController < ApplicationController
   def index
-    discovery_rows = []
-
-    DiscoveryRow.find_each do |row|
-      ids = Talent
-        .base
-        .active
-        .joins(user: :tags)
-        .where(users: {role: "basic"}, tags: {id: row.tags.pluck(:id)})
-        .distinct
-        .order(:id)
-        .pluck(:id)
-
-      discovery_rows << {
-        id: row.id,
-        slug: row.slug,
-        title: row.title,
-        badge: row.badge,
-        badge_link: row.badge_link,
-        talents: Talent
-          .includes(:talent_token, user: :investor)
-          .where(id: ids)
-          .select("setseed(0.#{Date.today.jd}), talent.*")
-          .order("random()")
-      }
-    end
-
     @discovery_rows = DiscoveryRowBlueprint.render_as_json(
-      discovery_rows,
-      view: :with_talents,
-      current_user_watchlist: current_user_watchlist
+      DiscoveryRow.all.includes(:visible_tags, :partnership),
+      view: :normal
     )
 
     marketing_articles = MarketingArticle.all.order(created_at: :desc).limit(3)

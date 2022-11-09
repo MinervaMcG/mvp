@@ -7,7 +7,7 @@ module Tasks
     end
 
     def link
-      "/u/#{quest.user.username}/edit_profile?tab=Highlights"
+      "/u/#{quest.user.username}#journey"
     end
   end
 end

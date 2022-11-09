@@ -18,22 +18,26 @@ class API::UpdateTalent
 
   private
 
+  def talent_user
+    @talent_user ||= talent.user
+  end
+
   def update_user(params)
     if params[:profile_type]
       Users::UpdateProfileType.new.call(
-        user: talent.user,
+        user: talent_user,
         who_dunnit_id: user.id,
         new_profile_type: params[:profile_type],
         note: params[:note]
       )
-      Tasks::Update.new.call(type: "Tasks::ApplyTokenLaunch", user: user)
+      Tasks::Update.new.call(type: "Tasks::ApplyTokenLaunch", user: talent_user) if params[:profile_type] == "waiting_for_approval"
 
       if params[:profile_type] == "approved"
         talent.update!(public: true)
       end
     end
 
-    talent.user.update!(params.except(:profile_type, :note))
+    talent_user.update!(params.except(:profile_type, :note))
   end
 
   def update_talent(params)
@@ -41,7 +45,7 @@ class API::UpdateTalent
       # Notify mailerlite that profile was set public
       talent[:public] = params[:public] || false
 
-      AddUsersToMailerliteJob.perform_later(talent.user.id)
+      AddUsersToMailerliteJob.perform_later(talent_user.id)
     end
 
     if params.key?(:profile_picture_data)
@@ -63,9 +67,10 @@ class API::UpdateTalent
         talent.nationality = params[:profile][:nationality]
         talent.ethnicity = params[:profile][:ethnicity]
         talent.based_in = params[:profile][:based_in]
+        talent.highlighted_headline_words_index = params[:profile][:highlighted_headline_words_index]
 
         if params[:profile][:occupation]
-          UpdateTasksJob.perform_later(type: "Tasks::FillInAbout", user_id: talent.user.id)
+          UpdateTasksJob.perform_later(type: "Tasks::FillInAbout", user_id: talent_user.id)
         end
       end
 
@@ -95,7 +100,7 @@ class API::UpdateTalent
 
     if params.key?(:verified)
       talent.verified = params[:verified]
-      Tasks::Update.new.call(type: "Tasks::Verified", user: talent.user) if talent.verified?
+      Tasks::Update.new.call(type: "Tasks::Verified", user: talent_user) if talent.verified?
     end
 
     if params.key?(:banner_data)
@@ -117,7 +122,7 @@ class API::UpdateTalent
 
     all_tags.each do |description|
       tag = Tag.find_or_create_by(description: description.downcase)
-      user_tag = UserTag.find_or_initialize_by(user: talent.user, tag: tag)
+      user_tag = UserTag.find_or_initialize_by(user: talent_user, tag: tag)
 
       user_tag.save! unless user_tag.persisted?
     end

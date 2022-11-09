@@ -19,6 +19,14 @@ RSpec.describe Erc721Token, type: :model do
     end
   end
 
+  describe "#erc_721?" do
+    subject { build :erc721_token }
+
+    it "returns true" do
+      expect(subject.erc_721?).to eq true
+    end
+  end
+
   describe "#token_description" do
     let(:metadata) { {description: "Test Token"} }
     subject { build :erc721_token, metadata: metadata, description: description }
@@ -64,22 +72,17 @@ RSpec.describe Erc721Token, type: :model do
   describe "#token_image" do
     let(:metadata) { {image: image} }
     let(:image) { "ipfs://asdasdhaihsdiansodas.png" }
-    subject { build :erc721_token, metadata: metadata }
+    let(:external_image_url) { "https://image-path.png" }
+    subject { build :erc721_token, metadata: metadata, external_image_url: external_image_url }
 
-    context "when the token has an image attached" do
-      before do
-        allow(subject).to receive(:token_image_url).and_return("image_path")
-      end
-
+    context "when the token has the image url stored" do
       it "returns the path of the stored image" do
-        expect(subject.token_image).to eq "image_path"
+        expect(subject.token_image).to eq external_image_url
       end
     end
 
     context "when the token does not have an image attached" do
-      before do
-        allow(subject).to receive(:token_image_url).and_return(nil)
-      end
+      let(:external_image_url) { nil }
 
       context "when the image is from ipfs" do
         let(:image) { "ipfs://asdasdhaihsdiansodas.png" }

@@ -7,7 +7,7 @@ module Tasks
     end
 
     def link
-      "/u/#{quest.user.username}/edit_profile?tab=Perks"
+      "/u/#{quest.user.username}#token"
     end
   end
 end

@@ -114,7 +114,7 @@ const Rewards = ({
           quests={quests}
           questId={questId}
           setQuestId={setQuestId}
-          investorId={user.investorId}
+          userId={user.id}
           username={user.username}
         />
       )}

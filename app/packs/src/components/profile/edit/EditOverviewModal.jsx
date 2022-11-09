@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import debounce from "lodash/debounce";
 import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
@@ -21,6 +21,7 @@ import TextInput from "src/components/design_system/fields/textinput";
 import TextArea from "src/components/design_system/fields/textarea";
 import Button from "src/components/design_system/button";
 import UserTags from "src/components/talent/UserTags";
+import TagsWithIndex from "src/components/design_system/tag/TagsWithIndex";
 import { H5, P2, P3 } from "src/components/design_system/typography";
 import { ToastBody } from "src/components/design_system/toasts";
 import { CAREER_NEEDS_OPTIONS } from "src/utils/constants";
@@ -306,9 +307,37 @@ const EditOverviewModal = ({ show, hide, talent, setTalent }) => {
     }
   };
 
-  const headlineWords = useCallback(() => {
-    return editedTalent.profile.headline.trim().split(/\s+/);
+  const headlineHighlightedWords = useMemo(() => {
+    return editedTalent.profile.headline?.split(" ") || "";
   }, [editedTalent.profile.headline]);
+
+  const changeHeadlineHighlightedWords = (tagIndex) => {
+    let highlightedHeadlineWordsIndex =
+      editedTalent.profile.highlightedHeadlineWordsIndex || [];
+
+    if (highlightedHeadlineWordsIndex.includes(tagIndex)) {
+      const index = highlightedHeadlineWordsIndex.indexOf(tagIndex);
+      highlightedHeadlineWordsIndex.splice(index, 1);
+      setEditedTalent((prev) => ({
+        ...prev,
+        profile: {
+          ...prev.profile,
+          highlightedHeadlineWordsIndex: [...highlightedHeadlineWordsIndex],
+        },
+      }));
+    } else {
+      setEditedTalent((prev) => ({
+        ...prev,
+        profile: {
+          ...prev.profile,
+          highlightedHeadlineWordsIndex: [
+            ...highlightedHeadlineWordsIndex,
+            tagIndex,
+          ],
+        },
+      }));
+    }
+  };
 
   const deleteBannerImg = () => {
     setEditedTalent((prev) => ({
@@ -526,21 +555,22 @@ const EditOverviewModal = ({ show, hide, talent, setTalent }) => {
             error={validationErrors?.headline}
           />
         </div>
-        {/* <div className="w-100 mb-2">
+        <div className="w-100 mb-2">
           <P2
             className="text-primary-01 mb-2"
             bold
             text="Highlight headline keywords"
           />
-          <UserTags
-            tags={headlineWords()}
-            tagsSelected={[]}
+          <TagsWithIndex
+            tags={headlineHighlightedWords}
+            tagsIndexSelected={
+              editedTalent.profile.highlightedHeadlineWordsIndex || []
+            }
             className="mr-2 mb-4"
             clickable={false}
-            button={true}
-            onClick={(tag) => changeSelectedCareerNeeds(tag)}
+            onClick={(tagIndex) => changeHeadlineHighlightedWords(tagIndex)}
           />
-        </div> */}
+        </div>
         <div className="w-100 mb-5">
           <P2 className="mb-2 text-primary-01" bold text="Tags" />
           <AsyncCreatableSelect

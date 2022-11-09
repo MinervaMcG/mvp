@@ -6,7 +6,8 @@
           user: {
             isEligible: current_acting_user.beginner_quest_completed?,
             username: current_acting_user.username,
-            investorId: current_acting_user.investor&.id
+            id: current_acting_user.id,
+            talent_id: current_acting_user.talent.id
           },
           allRaces: @races,
           invites: @invites,

@@ -16,8 +16,8 @@ class Post < ApplicationRecord
         username: user.display_name.blank? ? user.username : user.display_name,
         ticker: user.talent&.talent_token&.display_ticker,
         contract_id: user.talent&.talent_token&.contract_id,
-        profilePictureUrl: user.talent.profile_picture_url,
-        talentUrl: user.talent && user.talent.id != 1 ? "/talent/#{user.username}" : nil,
+        profilePictureUrl: user.profile_picture_url,
+        talentUrl: user.talent && user.talent.id != 1 ? "/u/#{user.username}" : nil,
         active: user.talent.active?
       }
     }

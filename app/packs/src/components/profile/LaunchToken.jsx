@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 
-import { H3, P3, P2 } from "src/components/design_system/typography";
+import { H3, P2 } from "src/components/design_system/typography";
 import Button from "src/components/design_system/button";
+import Tooltip from "src/components/design_system/tooltip";
 import { useWindowDimensionsHook } from "src/utils/window";
 import { useTheme } from "src/contexts/ThemeContext";
-import { ArrowRight } from "src/components/icons";
+import { ArrowRight, Help } from "src/components/icons";
 
 import { missingFields } from "src/components/talent/utils/talent";
+import { lightTextPrimary03 } from "src/utils/colors";
 
 import cx from "classnames";
 
 import LaunchTokenModals from "../talent/Edit/LaunchTokenModals";
 
-const LaunchToken = ({ talent, railsContext, setLocalTalent }) => {
+const LaunchToken = ({ talent, railsContext, setLocalTalent, canUpdate }) => {
   const { mobile } = useWindowDimensionsHook();
   const { mode } = useTheme();
   const token = talent.token;
@@ -25,9 +27,13 @@ const LaunchToken = ({ talent, railsContext, setLocalTalent }) => {
     careerGoal: talent.careerGoal,
   });
 
+  if (!canUpdate) {
+    return <></>;
+  }
+
   return (
     <>
-      {show && (
+      {show && canUpdate && (
         <LaunchTokenModals
           show={show}
           setShow={setShow}
@@ -80,8 +86,20 @@ const LaunchToken = ({ talent, railsContext, setLocalTalent }) => {
                       : "Launch my token"
                   }
                 />
-                {requiredFields.length == 0 && (
+                {requiredFields.length == 0 ? (
                   <ArrowRight className="ml-2" size={16} />
+                ) : (
+                  <Tooltip
+                    body={`You are missing the following fields: ${requiredFields.join(
+                      ", "
+                    )}`}
+                    popOverAccessibilityId={"missing_fields"}
+                    placement="top"
+                  >
+                    <div className="cursor-pointer d-flex align-items-center ml-2">
+                      <Help color={lightTextPrimary03} />
+                    </div>
+                  </Tooltip>
                 )}
               </Button>
             </div>

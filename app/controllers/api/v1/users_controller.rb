@@ -5,10 +5,10 @@ class API::V1::UsersController < ApplicationController
     @users = search_params[:name].present? ? filtered_users : filtered_users.limit(20)
 
     render json: {
-      users: @users.includes(:investor, talent: :talent_token).map { |u|
+      users: @users.includes(talent: :talent_token).map { |u|
         {
           id: u.id,
-          profilePictureUrl: u&.talent&.profile_picture_url || u.investor&.profile_picture_url,
+          profilePictureUrl: u&.profile_picture_url,
           username: u.username,
           ticker: u.talent&.talent_token&.display_ticker
         }
@@ -23,7 +23,7 @@ class API::V1::UsersController < ApplicationController
     if @user
       render json: {
         id: @user.id,
-        profilePictureUrl: @user&.talent&.profile_picture_url || @user.investor.profile_picture_url,
+        profilePictureUrl: @user&.profile_picture_url,
         username: @user.username,
         messagingDisabled: @user.messaging_disabled
       }, status: :ok
@@ -50,12 +50,8 @@ class API::V1::UsersController < ApplicationController
       elsif params[:first_quest_popup]
         current_user.update!(first_quest_popup: true)
       elsif user_params[:email]
-        if current_user.authenticated?(password_params[:current_password])
-          current_user.update!(user_params)
-          current_user.update!(confirmation_token: Clearance::Token.new)
-        else
-          return render json: {errors: {currentPassword: "Current password is incorrect"}}, status: :conflict
-        end
+        current_user.update!(user_params)
+        current_user.update!(confirmation_token: Clearance::Token.new)
       else
         if password_params[:new_password]&.length&.positive?
           if current_user.authenticated?(password_params[:current_password])
@@ -76,11 +72,6 @@ class API::V1::UsersController < ApplicationController
         end
 
         current_user.update!(user_params)
-
-        if investor_params.present?
-          service = API::UpdateInvestor.new(investor: @user.investor)
-          service.call(investor_params: investor_params, tag_params: tag_params)
-        end
       end
 
       render json: @user, status: :ok
@@ -116,20 +107,6 @@ class API::V1::UsersController < ApplicationController
 
   def password_params
     params.require(:user).permit(:new_password, :current_password)
-  end
-
-  def investor_params
-    if params[:investor].present?
-      params.require(:investor).permit(
-        profile: [
-          :occupation, :location, :headline, :website, :video, :linkedin, :twitter, :telegram, :discord, :github
-        ],
-        profile_picture_data: {},
-        banner_data: {}
-      )
-    else
-      {}
-    end
   end
 
   def tag_params

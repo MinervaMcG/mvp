@@ -59,6 +59,16 @@ const QuestCard = ({
   const taskRewards = tasksType.map((type) => taskReward(type, completed));
   const rewards = taskRewards.concat(questRewards(type, completed));
 
+  // disable the start quest button for the verification task
+  // it's only a temporary change
+  const disableButton = () => {
+    if (title == "Verify Profile") {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <div className={cx("highlights-card", completed && "disabled")}>
       <div className="p-4 quest-card-title d-flex justify-content-between">
@@ -112,7 +122,7 @@ const QuestCard = ({
         <a className="button-link" href={`/quests/${id}`}>
           <Button
             className="w-100"
-            disabled={completed}
+            disabled={completed || disableButton()}
             size="extra-big"
             type={buttonType}
             text={buttonText}

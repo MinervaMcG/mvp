@@ -2,7 +2,6 @@ import { toast } from "react-toastify";
 import Form from "react-bootstrap/Form";
 import React, { useState } from "react";
 
-import { ArrowLeft } from "src/components/icons";
 import { emailRegex, usernameRegex } from "src/utils/regexes";
 import { H5, P2, P3 } from "src/components/design_system/typography";
 import { passwordMatchesRequirements } from "src/utils/passwordRequirements";
@@ -88,8 +87,6 @@ const Settings = (props) => {
     const response = await patch(`/api/v1/users/${user.id}`, {
       user: {
         ...settings,
-        current_password: settings.currentPassword,
-        new_password: settings.newPassword,
         messaging_disabled: settings.messagingDisabled,
       },
     }).catch(() => setValidationErrors((prev) => ({ ...prev, saving: true })));
@@ -103,6 +100,27 @@ const Settings = (props) => {
             ...response.user,
           },
         }));
+        setSaving((prev) => ({ ...prev, loading: false, profile: true }));
+      } else {
+        setValidationErrors((prev) => ({ ...prev, ...response.errors }));
+      }
+    }
+
+    setSaving((prev) => ({ ...prev, loading: false }));
+  };
+
+  const updatePassword = async () => {
+    setSaving((prev) => ({ ...prev, loading: true }));
+
+    const response = await patch(`/api/v1/users/${user.id}`, {
+      user: {
+        current_password: settings.currentPassword,
+        new_password: settings.newPassword,
+      },
+    }).catch(() => setValidationErrors((prev) => ({ ...prev, saving: true })));
+
+    if (response) {
+      if (!response.errors && !response.error) {
         setSettings((prev) => ({
           ...prev,
           currentPassword: "",
@@ -157,11 +175,7 @@ const Settings = (props) => {
     !emailValidated ||
     !!validationErrors.email ||
     settings.username.length == 0 ||
-    !!validationErrors.username ||
-    !!validationErrors.currentPassword ||
-    !!validationErrors.newPassword ||
-    (!!settings.newPassword && !validPassword) ||
-    !settings.currentPassword;
+    !!validationErrors.username;
 
   const cannotChangePassword = () =>
     !!validationErrors.currentPassword ||
@@ -242,7 +256,27 @@ const Settings = (props) => {
             <P2 className="mr-1" text="I don't want to receive messages" />
           </div>
         </Checkbox>
+        <div
+          className={`d-flex flex-row ${
+            mobile ? "justify-content-between" : "mt-4"
+          } w-100 pb-4`}
+        >
+          <LoadingButton
+            onClick={() => updateUser()}
+            type="primary-default"
+            mode={mode}
+            disabled={
+              (saving.loading || cannotSaveSettings()) &&
+              !messagingModeChanged()
+            }
+            loading={saving.loading}
+            success={saving.profile}
+          >
+            Save Profile
+          </LoadingButton>
+        </div>
       </div>
+      <Divider className="mb-4" />
       <div className="d-flex flex-row w-100 flex-wrap mt-4">
         <TextInput
           title={"Current Password"}
@@ -286,7 +320,7 @@ const Settings = (props) => {
         ))}
       </div>
       <Button
-        onClick={() => updateUser()}
+        onClick={() => updatePassword()}
         type="primary-default"
         mode={mode}
         disabled={cannotChangePassword()}
@@ -294,24 +328,6 @@ const Settings = (props) => {
       >
         Change password
       </Button>
-      <div
-        className={`d-flex flex-row ${
-          mobile ? "justify-content-between" : "mt-4"
-        } w-100 pb-4`}
-      >
-        <LoadingButton
-          onClick={() => updateUser()}
-          type="primary-default"
-          mode={mode}
-          disabled={
-            (saving.loading || cannotSaveSettings()) && !messagingModeChanged()
-          }
-          loading={saving.loading}
-          success={saving.profile}
-        >
-          Save Profile
-        </LoadingButton>
-      </div>
 
       <Divider className="mb-4" />
       <div className="d-flex flex-column w-100 my-3">

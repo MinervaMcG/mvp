@@ -7,18 +7,17 @@ export const completeProfile = (args) => {
 
 export const missingFields = ({ talent, profilePictureUrl, careerGoal }) => {
   const fields = [];
-
   if (!talent.profile?.occupation || talent.profile.occupation == "") {
     fields.push("Occupation");
   }
   if (!talent.profile?.headline || talent.profile.headline == "") {
-    fields.push("Bio");
+    fields.push("Headline");
   }
   if (!profilePictureUrl || profilePictureUrl == "") {
     fields.push("Profile picture");
   }
   if (!careerGoal?.pitch || careerGoal.pitch == "") {
-    fields.push("Pitch");
+    fields.push("About");
   }
 
   return fields;

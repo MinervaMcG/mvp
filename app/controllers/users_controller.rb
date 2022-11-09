@@ -17,32 +17,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
-    if @user.talent&.hide_profile && current_user&.role != "admin" && current_user&.id != @user.id
-      redirect_to root_url
-    end
-
-    talent = @user.talent
-    investor = @user.investor
-
-    CreateProfilePageVisitorJob.perform_later(ip: request.remote_ip, user_id: @user.id)
-
-    if talent && should_see_talent_page?(talent)
-      @talent = TalentBlueprint.render_as_json(
-        talent,
-        view: :extended,
-        current_user_watchlist: current_user_watchlist,
-        tags: @user.tags.where(hidden: false)
-      )
-    else
-      @investor = InvestorBlueprint.render_as_json(
-        investor,
-        view: :extended,
-        tags: @user.tags.where(hidden: false)
-      )
-    end
-  end
-
   def create
     if !verify_captcha
       render json: {error: "We were unable to validate your captcha.", field: "captcha"}, status: :conflict

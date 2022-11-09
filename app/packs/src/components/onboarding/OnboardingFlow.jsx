@@ -41,6 +41,8 @@ const OnboardingFlow = (props) => {
   const [currentStep, setCurrentStep] = useState(nameComplete ? 2 : 1);
   const allSteps = nameComplete ? 4 : 5;
 
+  const [localUsername, setUsername] = useState(props.user.username);
+
   const [localFirstName, setLocalFirstName] = useState(
     props.user.legalFirstName || ""
   );
@@ -85,10 +87,13 @@ const OnboardingFlow = (props) => {
       )}
     >
       <Component
+        userId={props.user.id}
         firstName={localFirstName}
         lastName={localLastName}
+        username={localUsername}
         changeFirstName={setLocalFirstName}
         changeLastName={setLocalLastName}
+        changeUsername={setUsername}
         occupation={localOccupation}
         changeOccupation={setLocalOccupation}
         experienceLevel={localExperienceLevel}

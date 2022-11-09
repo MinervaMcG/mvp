@@ -18,4 +18,12 @@ RSpec.describe Erc20Token, type: :model do
       expect(subject.erc_20?).to eq true
     end
   end
+
+  describe "#erc_721?" do
+    subject { build :erc20_token }
+
+    it "returns false" do
+      expect(subject.erc_721?).to eq false
+    end
+  end
 end

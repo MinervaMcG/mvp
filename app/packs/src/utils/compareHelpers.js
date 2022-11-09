@@ -31,3 +31,17 @@ export const compareDates = (date1, date2) => {
     return 0;
   }
 };
+
+export const diffDates = (date1, date2) => {
+  const diffInMonths = date1.diff(date2, "month");
+
+  if (diffInMonths === 1) {
+    return `${date1.diff(date2, "month")} month`;
+  } else if (diffInMonths > 11 && diffInMonths < 24) {
+    return `${date1.diff(date2, "year")} year`;
+  } else if (diffInMonths > 23) {
+    return `${date1.diff(date2, "year")} years`;
+  }
+
+  return `${diffInMonths} months`;
+};

@@ -18,7 +18,6 @@ class API::V1::Talent::TokensController < ApplicationController
         SendMemberNFTToUserJob.perform_later(user_id: current_user.id)
         UpdateTasksJob.perform_later(type: "Tasks::LaunchToken", user_id: current_user.id)
         SendTokenNotificationToDiscordJob.perform_later(talent_token.id)
-        Talents::PolygonLaunchReward.new.call(current_user)
         UserMailer.with(user: current_user).send_token_launched_email.deliver_later(wait: 5.seconds)
       end
       CreateNotificationTalentChangedJob.perform_later(talent.user.followers.pluck(:follower_id), talent.user_id)

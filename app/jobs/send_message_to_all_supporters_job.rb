@@ -9,11 +9,11 @@ class SendMessageToAllSupportersJob < ApplicationJob
     total supporters.count
     at 0
 
-    supporters.find_each.with_index do |investor, index|
+    supporters.find_each.with_index do |supporter, index|
       created_message = send_message_service.call(
         message: message,
         sender: sender,
-        receiver: investor,
+        receiver: supporter,
         sent_to_supporters: true
       )
 

@@ -3,14 +3,16 @@ class UserBlueprint < Blueprinter::Base
 
   view :normal do
     fields :username, :display_name, :profile_type, :created_at
+
+    field :talent_id do |user, _options|
+      user.talent.id
+    end
+
     field :name do |user, _options|
       user.name
     end
     field :is_talent do |user, _options|
       user.talent.present?
-    end
-    field :investor_id do |user, _options|
-      user.investor&.id
     end
   end
 
@@ -18,11 +20,20 @@ class UserBlueprint < Blueprinter::Base
     include_view :normal
     fields :email, :wallet_id, :profile_type, :admin?
 
+    field :approved_by do |user, _options|
+      if user.approved_by
+        {
+          name: user.approved_by.name,
+          profile_picture_url: user.approved_by.profile_picture_url
+        }
+      end
+    end
+
     field :invited_by do |user, _options|
       if user.invited
         {
-          name: user.invited.user.name,
-          profile_picture_url: user.invited.user.profile_picture_url
+          name: user.invited.name,
+          profile_picture_url: user.invited.profile_picture_url
         }
       end
     end

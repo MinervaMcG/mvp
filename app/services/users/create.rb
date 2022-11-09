@@ -13,7 +13,6 @@ module Users
         params[:invite] = invite if invite
         user = create_user(params)
 
-        create_investor(user)
         create_feed(user)
         create_talent(user)
         create_talent_token(user)
@@ -21,7 +20,7 @@ module Users
 
         if invite&.talent_invite?
           update_profile_type(user, invite)
-          upsert_discovery_row(invite, user) if invite.partnership.present?
+          upsert_discovery_row(invite, user) if invite.partnership_invitee.present?
         end
 
         create_invite(user)
@@ -71,6 +70,7 @@ module Users
         display_name: params[:display_name],
         email_confirmation_token: Clearance::Token.new,
         email: params[:email].downcase,
+        wallet_id: params[:wallet_id]&.downcase,
         invited: params[:invite],
         linkedin_id: params[:linkedin_id],
         password: params[:password],
@@ -92,9 +92,10 @@ module Users
     end
 
     def upsert_discovery_row(invite, user)
-      partnership = invite.partnership
+      partnership = invite.partnership_invitee
 
       discovery_row = partnership.discovery_row
+
       discovery_row ||= DiscoveryRow.create!(
         partnership: partnership,
         title: partnership.name,
@@ -106,13 +107,6 @@ module Users
 
       discovery_row.tags << tag unless discovery_row.tags.include?(tag)
       user.tags << tag unless user.tags.include?(tag)
-    end
-
-    def create_investor(user)
-      investor = Investor.new
-      investor.user = user
-      investor.save!
-      investor
     end
 
     def create_feed(user)
@@ -128,8 +122,7 @@ module Users
     end
 
     def create_invite(user)
-      service = Invites::Create.new(user_id: user.id)
-
+      service = Invites::Create.new(user: user)
       service.call
     end
 
@@ -151,9 +144,11 @@ module Users
     end
 
     def create_follow(invite, user)
-      return if invite.nil?
+      return unless invite
 
       invited_by_user = invite.user
+      return unless invited_by_user
+
       follow = Follow.find_or_initialize_by(user_id: user.id, follower_id: invited_by_user.id)
       unless follow.persisted? # validate if the watchlist quest is completed
         UpdateTasksJob.perform_later(type: "Tasks::Watchlist", user_id: invited_by_user.id)

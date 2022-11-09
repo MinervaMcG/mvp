@@ -38,19 +38,27 @@ const UserSaved = ({ mode }) => (
   </>
 );
 
-const UserFailed = ({ error }) => (
+const UserFailed = ({ error, changeStep }) => (
   <div className="d-flex flex-column text-danger align-items-center">
     <div className="d-flex flex-row align-items-center">
       <FontAwesomeIcon icon={faTimes} />
       <p className="ml-2 mb-0">We had an issue updating your user.</p>
     </div>
     <p className="ml-2 mb-0">{error}</p>
+    <button
+      type="button"
+      onClick={() => changeStep(1)}
+      className="btn btn-primary talent-button primary-default-button big-size-button w-100 mt-6"
+    >
+      Go back
+    </button>
   </div>
 );
 
 const ProcessFlow = ({
   firstName,
   lastName,
+  username,
   occupation,
   experienceLevel,
   careerNeeds,
@@ -58,6 +66,7 @@ const ProcessFlow = ({
   gender,
   ethnicity,
   nationality,
+  changeStep,
 }) => {
   const { mode } = useTheme();
 
@@ -77,13 +86,14 @@ const ProcessFlow = ({
       nationality,
       legal_first_name: firstName,
       legal_last_name: lastName,
+      username: username,
     })
       .then((response) => {
         if (response.success) {
           setUserSaved(true);
           setRequesting(false);
         } else {
-          setError("Unable to save your profile.");
+          setError(response.error);
           setRequesting(false);
         }
       })
@@ -95,7 +105,7 @@ const ProcessFlow = ({
 
   return (
     <div className="d-flex flex-column align-items-center registration-items">
-      {error != "" && <UserFailed error={error} />}
+      {error != "" && <UserFailed error={error} changeStep={changeStep} />}
       {!userSaved && requesting && <ProcessingUser />}
       {userSaved && <UserSaved mode={mode} />}
     </div>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TextInput from "src/components/design_system/fields/textinput";
 import RegistrationContainer from "src/components/registration/RegistrationContainer";
 import Link from "src/components/design_system/link";
+import UnstoppableDomainsSignInButton from "src/components/button/UnstoppableDomainsSignInButton";
 import LinkedinSignInButton from "src/components/button/LinkedinSignInButton";
 import { useTheme } from "src/contexts/ThemeContext";
 import { useWindowDimensionsHook } from "src/utils/window";
@@ -12,7 +13,12 @@ import { post } from "src/utils/requests";
 import cx from "classnames";
 
 const Login = (props) => {
-  const { linkedinClientId, linkedinRedirectUri } = props;
+  const {
+    linkedinClientId,
+    linkedinRedirectUri,
+    unstoppableDomainsClientId,
+    unstoppableDomainsRedirectUri,
+  } = props;
 
   const { mobile } = useWindowDimensionsHook();
   const { mode } = useTheme();
@@ -86,6 +92,11 @@ const Login = (props) => {
         className="mt-3"
         clientId={linkedinClientId}
         redirectUri={linkedinRedirectUri}
+      />
+      <UnstoppableDomainsSignInButton
+        className="mt-3"
+        clientId={unstoppableDomainsClientId}
+        redirectUri={unstoppableDomainsRedirectUri}
       />
       <div className={cx("mt-6 pb-4", mobile && "align-self-center")}>
         <div className="d-flex mb-2">

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 
 import { ethers } from "ethers";
-import { patch, getAuthToken } from "src/utils/requests";
+import { patch, getAuthToken, post } from "src/utils/requests";
 import { toast } from "react-toastify";
 
 import Uppy from "@uppy/core";
@@ -26,6 +26,8 @@ import { lightTextPrimary04 } from "src/utils/colors";
 
 import { formatNumberWithSymbol, verifiedIcon } from "src/utils/viewHelpers";
 import EditOverviewModal from "src/components/profile/edit/EditOverviewModal";
+import RejectTalentModal from "./RejectTalentModal";
+import SocialRow from "./SocialRow";
 
 import cx from "classnames";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -38,17 +40,20 @@ const Overview = ({
   talentTokenPrice,
   currentUserId,
   currentUserAdmin,
+  currentUserModerator,
   railsContext,
   changeSection,
   canUpdate,
   previewMode,
   setPreviewMode,
+  isCurrentUserImpersonated,
 }) => {
   const joinedAt = dayjs(talent.user.createdAt).format("MMMM YYYY");
 
   const { mobile } = useWindowDimensionsHook();
   const { mode } = useTheme();
   const [showStakeModal, setShowStakeModal] = useState(false);
+  const [showRejectModal, setShowRejectModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [overviewProfileFileInput, setOverviewProfileFileInput] =
     useState(null);
@@ -269,6 +274,30 @@ const Overview = ({
       return true;
     }
   };
+
+  const impersonateUser = async () => {
+    const params = {
+      username: talent.user.username,
+    };
+
+    const response = await post(`/api/v1/impersonations`, params).catch(() => {
+      return false;
+    });
+
+    if (response && !response.error) {
+      toast.success(
+        <ToastBody
+          heading="Success!"
+          body="Impersonation started successfully!"
+        />
+      );
+      window.location.reload();
+    }
+  };
+
+  const headlineArray = useMemo(() => {
+    return talent.profile.headline?.split(" ");
+  }, [talent.profile.headline]);
 
   return (
     <div className={cx(className)}>
@@ -491,33 +520,74 @@ const Overview = ({
                   </>
                 )}
               </div>
-              {currentUserAdmin && (
-                <div className="d-flex mb-4">
+              {(currentUserAdmin || currentUserModerator) && (
+                <div className="d-flex flex-column mb-4">
                   {talent.user.profileType == "waiting_for_approval" && (
-                    <Button
-                      className="mr-2"
-                      type="white-outline"
-                      size="big"
-                      text={"Approve"}
-                      onClick={() => approveUser(true)}
-                    />
+                    <>
+                      <Button
+                        className="mb-2"
+                        type="primary-default"
+                        size="big"
+                        text={"Approve"}
+                        onClick={() => approveUser(true)}
+                      />
+                      <Button
+                        onClick={() => setShowRejectModal(true)}
+                        type="white-subtle"
+                        className="mb-5"
+                      >
+                        Reject
+                      </Button>
+                    </>
                   )}
                   {!talent.verified && (
                     <Button
+                      className="mb-5"
                       type="primary-default"
                       size="big"
                       text="Verify"
                       onClick={() => verifyTalent()}
                     />
                   )}
+                  {!isCurrentUserImpersonated && (
+                    <Button
+                      type="white-outline"
+                      size="big"
+                      text="Impersonate"
+                      onClick={() => impersonateUser()}
+                    />
+                  )}
                 </div>
               )}
             </>
           )}
-          <H5
-            className="text-primary-01 mb-4"
-            text={`--E ${talent.headline || ""}`}
-          />
+          {talent.profile.headline && (
+            <div className="d-flex flex-wrap mb-4">
+              {talent.profile.highlightedHeadlineWordsIndex ? (
+                <>
+                  <H5 className="text-primary-01 mr-1" text="--E" />
+                  {headlineArray.map((word, index) => {
+                    if (
+                      talent.profile.highlightedHeadlineWordsIndex.includes(
+                        index
+                      )
+                    ) {
+                      return <H5 className="text-primary mr-1" text={word} />;
+                    } else {
+                      return (
+                        <H5 className="text-primary-01 mr-1" text={word} />
+                      );
+                    }
+                  })}
+                </>
+              ) : (
+                <H5
+                  className="text-primary-01"
+                  text={`--E ${talent.profile.headline}`}
+                />
+              )}
+            </div>
+          )}
           <UserTags
             tags={talent.tags.map((tag) => tag.description)}
             className="mr-2 mb-3"
@@ -596,6 +666,17 @@ const Overview = ({
               <P2 bold text={talent.user.invitedBy.name} />
             </div>
           )}
+          {currentUserAdmin && talent.user.approvedBy && (
+            <div className="d-flex align-items-center mt-3">
+              <P2 className="text-primary-04 mr-3" text="Approved by" />
+              <TalentProfilePicture
+                className="mr-2"
+                src={talent.user.approvedBy.profilePictureUrl}
+                height={32}
+              />
+              <P2 bold text={talent.user.approvedBy.name} />
+            </div>
+          )}
         </div>
         {!mobile && <div className="col-1"></div>}
         {!mobile && (
@@ -653,34 +734,55 @@ const Overview = ({
         )}
       </div>
       <div className="d-flex align-items-center justify-content-between">
-        <div></div>
+        <div>
+          <SocialRow profile={talent.profile} />
+        </div>
         {!mobile && (
           <div className="d-flex align-items-center">
-            {currentUserAdmin && (
+            {(currentUserAdmin || currentUserModerator) && (
               <>
+                {talent.user.profileType == "waiting_for_approval" && (
+                  <>
+                    <Button
+                      className="mr-2"
+                      size="big"
+                      type="primary-default"
+                      text="Approve"
+                      onClick={() => approveUser(true)}
+                    />
+                    <Button
+                      onClick={() => setShowRejectModal(true)}
+                      size="big"
+                      type="white-subtle"
+                      className="mr-7"
+                    >
+                      Reject
+                    </Button>
+                  </>
+                )}
                 {!talent.verified && (
                   <Button
-                    className="mr-2"
+                    className="mr-7"
                     size="big"
                     type="primary-default"
                     text="Verify"
                     onClick={() => verifyTalent()}
                   />
                 )}
-                {talent.user.profileType == "waiting_for_approval" && (
+                {!isCurrentUserImpersonated && (
                   <Button
-                    className="mr-7"
-                    size="big"
+                    className="mr-2"
                     type="white-outline"
-                    text="Approve"
-                    onClick={() => approveUser(true)}
+                    size="big"
+                    text="Impersonate"
+                    onClick={() => impersonateUser()}
                   />
                 )}
               </>
             )}
             {previewMode ? (
               <Button
-                type="primary-default"
+                type="white-outline"
                 text="Back to edit profile"
                 onClick={() => setPreviewMode(false)}
               />
@@ -760,6 +862,16 @@ const Overview = ({
         talentIsFromCurrentUser={canUpdate}
         railsContext={railsContext}
       />
+      {showRejectModal && (
+        <RejectTalentModal
+          show={showRejectModal}
+          setShow={setShowRejectModal}
+          mobile={mobile}
+          mode={mode()}
+          talent={talent}
+          setTalent={setTalent}
+        />
+      )}
       {editMode && (
         <EditOverviewModal
           show={editMode}

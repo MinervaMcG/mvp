@@ -52,7 +52,7 @@ RSpec.describe SendMessageToAllSupportersJob, type: :job do
   end
 
   context "when the user has invested in himself" do
-    let(:sender) { create :user, :with_investor, talent: talent }
+    let(:sender) { create :user, talent: talent }
 
     before do
       create :talent_supporter, supporter_wallet_id: sender.wallet_id, talent_contract_id: talent_token.contract_id

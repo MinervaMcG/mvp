@@ -18,13 +18,13 @@ class RewardsController < ApplicationController
         .where(invites: {talent_invite: false})
         .where("users.username = invites.code")
         .count
-    race_rewards = Reward.race.order(amount: :desc).includes([user: :investor], [user: :talent])
+    race_rewards = Reward.race.order(amount: :desc).includes([user: :talent])
     @race_rewards = RewardBlueprint.render_as_json(race_rewards, view: :normal)
 
     @pagy, invited_users = pagy(User.where(invited: @invites), items: per_page)
     @invited_users =
       UserBlueprint.render_as_json(
-        invited_users.includes([:investor], [talent: :talent_token]).order(created_at: :desc),
+        invited_users.includes([talent: :talent_token]).order(created_at: :desc),
         view: :rewards
       )
 

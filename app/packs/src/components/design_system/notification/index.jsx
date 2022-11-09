@@ -49,7 +49,7 @@ const Notification = ({
           <div className="w-100">
             {description && (
               <P3
-                className="notification-description text-wrap"
+                className="notification-description text-truncate"
                 text={description}
               />
             )}

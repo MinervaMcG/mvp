@@ -7,10 +7,4 @@ class DiscoveryRowBlueprint < Blueprinter::Base
     association :visible_tags, blueprint: TagBlueprint
     association :partnership, blueprint: PartnershipBlueprint, view: :normal
   end
-
-  view :with_talents do
-    include_view :normal
-
-    association :talents, blueprint: TalentBlueprint, view: :normal
-  end
 end

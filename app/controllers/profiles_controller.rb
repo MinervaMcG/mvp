@@ -1,6 +1,10 @@
 class ProfilesController < ApplicationController
   def show
-    talent = user.talent
+    # Done this way so we can eager load all the images
+    talent =
+      Talent
+        .includes([career_goal: {goals: :goal_images}, milestones: :milestone_images])
+        .find_by!(user: user)
 
     CreateProfilePageVisitorJob.perform_later(ip: request.remote_ip, user_id: user.id)
 

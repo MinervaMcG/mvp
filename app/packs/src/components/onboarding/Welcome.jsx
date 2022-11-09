@@ -1,6 +1,11 @@
 import React, { useState } from "react";
+import debounce from "lodash/debounce";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 
-import { P2, H5 } from "../design_system/typography";
+import { get } from "src/utils/requests";
+
+import { P2, P3, H5 } from "../design_system/typography";
 import TextInput from "../design_system/fields/textinput";
 
 const Welcome = ({
@@ -9,10 +14,15 @@ const Welcome = ({
   changeFirstName,
   lastName,
   changeLastName,
+  username,
+  changeUsername,
   allSteps,
 }) => {
   const [localFirstName, setLocalFirstName] = useState(firstName);
   const [localLastName, setLocalLastName] = useState(lastName);
+  const [localUsername, setLocalUsername] = useState(username);
+  const [usernameError, setUsernameError] = useState("");
+  const [validatingUsername, setValidatingUsername] = useState("");
 
   const submitWelcomeForm = (e) => {
     e.preventDefault();
@@ -22,10 +32,26 @@ const Welcome = ({
 
     changeFirstName(localFirstName);
     changeLastName(localLastName);
+    changeUsername(localUsername);
     changeStep(2);
   };
 
-  const invalidForm = localFirstName == "" || localLastName == "";
+  const updateUsername = (newUsername) => {
+    setValidatingUsername(true);
+    get(`api/v1/username/valid?username=${newUsername}`).then((response) => {
+      setUsernameError(response.error);
+      setLocalUsername(newUsername);
+      setValidatingUsername(false);
+    });
+  };
+
+  const debouncedUpdateUsername = debounce(
+    (newUsername) => updateUsername(newUsername),
+    200
+  );
+
+  const invalidForm =
+    localFirstName == "" || localLastName == "" || localUsername == "";
 
   return (
     <div className="registration-items">
@@ -41,6 +67,46 @@ const Welcome = ({
         information is filled in. Let's get started!
       </P2>
       <form onSubmit={submitWelcomeForm} className="d-flex flex-column w-100">
+        <div className="form-group position-relative">
+          <label htmlFor="inputUsername" className="mt-2">
+            <P2 className="text-black" text="Username" bold />
+          </label>
+          <TextInput
+            type="text"
+            id="inputUsername"
+            value={localUsername}
+            onChange={(e) => debouncedUpdateUsername(e.target.value)}
+            shortCaption={
+              !usernameError && `Your Talent Protocol URL: /u/${localUsername}`
+            }
+            error={usernameError}
+          />
+          {validatingUsername && (
+            <FontAwesomeIcon
+              icon={faSpinner}
+              spin
+              className="position-absolute"
+              style={{ top: 48, right: 10 }}
+            />
+          )}
+          {!usernameError && (
+            <FontAwesomeIcon
+              icon={faCheck}
+              className="position-absolute text-success"
+              style={{ top: 48, right: 10 }}
+            />
+          )}
+          {usernameError && (
+            <FontAwesomeIcon
+              icon={faTimes}
+              className="position-absolute text-danger"
+              style={{ top: 48, right: 10 }}
+            />
+          )}
+          {usernameError && (
+            <P3 className="mt-1 text-danger" text={usernameError} />
+          )}
+        </div>
         <div className="form-group position-relative">
           <label htmlFor="inputFirstName" className="mt-2">
             <P2 className="text-black" text="First Name" bold />

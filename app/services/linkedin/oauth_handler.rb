@@ -106,10 +106,7 @@ class Linkedin::OauthHandler
   end
 
   def username
-    parameterized_name = display_name.parameterize(separator: "")
-    return parameterized_name unless User.find_by(username: parameterized_name).present?
-
-    "#{parameterized_name}#{(SecureRandom.random_number(9e5) + 1e5).to_i}"
+    Users::GenerateUsername.new(display_name: display_name).call
   end
 
   def lite_profile
@@ -117,9 +114,10 @@ class Linkedin::OauthHandler
   end
 
   def upload_profile_picture(user)
-    investor = user.investor
     talent = user.talent
-    return unless investor || talent
+    return unless talent
+
+    return if talent.profile_picture_url
 
     elements = lite_profile.dig("profilePicture", "displayImage~", "elements")
     return unless elements.present?
@@ -127,14 +125,9 @@ class Linkedin::OauthHandler
     profile_picture_url = elements.reverse.dig(0, "identifiers", 0, "identifier")
     return unless profile_picture_url
 
-    [investor, talent].each do |record|
-      next unless record
-      next if record.profile_picture_url
-
-      record.profile_picture_attacher.context[:omniauth] = true
-      record.profile_picture = Down.open(profile_picture_url)
-      record.save!
-    end
+    talent.profile_picture_attacher.context[:omniauth] = true
+    talent.profile_picture = Down.open(profile_picture_url)
+    talent.save!
   end
 
   def profile_picture_url

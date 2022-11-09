@@ -19,7 +19,6 @@ class DestroyUser
 
       user.feed.feed_posts.destroy_all
       user.feed.destroy!
-      user.investor.destroy!
       user.follows.destroy_all
       user.following.destroy_all
 

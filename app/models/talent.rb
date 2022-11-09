@@ -22,6 +22,7 @@ class Talent < ApplicationRecord
     video
     wallet_address
     website
+    highlighted_headline_words_index
   ], coder: JSON
 
   validate :public_key_is_valid

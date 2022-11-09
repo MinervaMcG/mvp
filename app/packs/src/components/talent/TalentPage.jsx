@@ -23,7 +23,7 @@ import {
 
 import cx from "classnames";
 
-const TalentPage = ({ talents, pagination, isAdmin, env }) => {
+const TalentPage = ({ talents, pagination, isAdminOrModerator, env }) => {
   const theme = useContext(ThemeContext);
   const { mobile } = useWindowDimensionsHook();
   const url = new URL(document.location);
@@ -143,7 +143,7 @@ const TalentPage = ({ talents, pagination, isAdmin, env }) => {
         setLocalPagination={setLocalPagination}
         setSelectedSort={setSelectedSort}
         setSortDirection={setSortDirection}
-        isAdmin={isAdmin}
+        isAdminOrModerator={isAdminOrModerator}
       />
       {localTalents.length === 0 && (
         <div className="d-flex justify-content-center mt-6">

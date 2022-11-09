@@ -2,7 +2,10 @@ require "rails_helper"
 
 RSpec.describe Partnership, type: :model do
   describe "associations" do
-    it { is_expected.to belong_to(:invite).optional }
+    it { is_expected.to belong_to(:invited).optional }
+
+    it { is_expected.to have_many(:invites) }
+
     it { is_expected.to have_one(:discovery_row) }
   end
 

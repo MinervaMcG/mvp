@@ -12,8 +12,6 @@ module Web3
     def call
       token.update!(update_params)
 
-      TokenImageUploaderJob.perform_later(token_id: token.id, token_class: token.class.name, image_url: params[:image_url]) if !token.erc_20? && params[:image_url]
-
       token
     end
 
@@ -27,7 +25,10 @@ module Web3
         name: params[:name]
       }
 
-      update_params[:description] = params[:description] unless token.erc_20?
+      if token.erc_721?
+        update_params[:description] = params[:description]
+        update_params[:external_image_url] = params[:external_image_url]
+      end
 
       update_params
     end

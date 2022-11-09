@@ -19,7 +19,7 @@ import MobileTopBar from "src/components/top_bar/MobileTopBar";
 import { Polygon, Celo } from "src/components/icons";
 import EarnMenu from "src/components/menus/EarnMenu";
 
-import { P2, H5 } from "src/components/design_system/typography";
+import { H5 } from "src/components/design_system/typography";
 
 const UnreadMessagesIndicator = () => {
   return (
@@ -72,7 +72,6 @@ export const TopBar = ({
   user,
   signOutPath,
   railsContext,
-  notifications,
   hasUnreadMessages,
   isUserImpersonated,
   impersonatedUsername,
@@ -124,10 +123,18 @@ export const TopBar = ({
     });
   };
 
-  const signOut = () => {
+  const signOut = async () => {
+    await disconnectWallet();
+
     destroy(signOutPath).then(() => {
       window.location.replace("/");
     });
+  };
+
+  const disconnectWallet = async (account) => {
+    const onChain = new OnChain(railsContext.contractsEnv);
+
+    onChain.disconnect();
   };
 
   const setupChain = useCallback(
@@ -249,7 +256,6 @@ export const TopBar = ({
     return (
       <MobileTopBar
         mode={theme.mode()}
-        notifications={notifications}
         user={user}
         toggleTheme={toggleTheme}
         showConnectButton={showConnectButton}
@@ -303,16 +309,13 @@ export const TopBar = ({
         </div>
         <div className="d-flex" style={{ height: 34 }}>
           {isUserImpersonated && (
-            <>
-              <P2 className="mr-2 p-1">Impersonating {impersonatedUsername}</P2>
-              <Button
-                onClick={stopImpersonation}
-                type="white-subtle"
-                className="mr-2"
-              >
-                Stop Impersonation
-              </Button>
-            </>
+            <Button
+              onClick={stopImpersonation}
+              type="white-subtle"
+              className="mr-2"
+            >
+              Stop Impersonation {impersonatedUsername}
+            </Button>
           )}
           {!showConnectButton() && connectedButton("mr-2")}
           {showConnectButton() && walletConnectButton()}
@@ -326,7 +329,7 @@ export const TopBar = ({
             onClickTransak={onClickTransak}
             signOut={signOut}
           />
-          <Notifications notifications={notifications} mode={theme.mode()} />
+          <Notifications mode={theme.mode()} />
         </div>
       </nav>
     </div>

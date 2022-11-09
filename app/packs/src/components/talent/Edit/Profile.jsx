@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 
 import ThemeContainer, { ThemeContext } from "src/contexts/ThemeContext";
 import { useWindowDimensionsHook } from "src/utils/window";
-import { missingFields } from "src/components/talent/utils/talent";
 import { railsContextStore } from "src/contexts/state";
 
 import Settings from "./Settings";

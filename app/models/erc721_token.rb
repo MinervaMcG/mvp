@@ -10,6 +10,10 @@ class Erc721Token < ApplicationRecord
     false
   end
 
+  def erc_721?
+    true
+  end
+
   def token_name
     return name if name.present?
 
@@ -23,7 +27,7 @@ class Erc721Token < ApplicationRecord
   end
 
   def token_image
-    return token_image_url if token_image_url
+    return external_image_url if external_image_url
 
     metadata.present? ? ipfs_image(metadata["image"]) : nil
   end

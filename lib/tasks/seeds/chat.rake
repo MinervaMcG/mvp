@@ -10,8 +10,8 @@ if Rails.env.development?
         email_confirmed_at: Time.zone.now
       )
 
-      investor_invite = Invites::Create.new(user_id: admin.id).call
-      talent_invite = Invites::Create.new(user_id: admin.id, talent_invite: true).call
+      investor_invite = Invites::Create.new(user: admin).call
+      talent_invite = Invites::Create.new(user: admin, talent_invite: true).call
 
       user_2 = Users::Create.new.call(
         email: "chat_2@talentprotocol.com",

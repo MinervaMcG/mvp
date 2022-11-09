@@ -20,14 +20,12 @@ class MessagesController < ApplicationController
       sender: [
         {
           talent: :talent_token
-        },
-        :investor
+        }
       ],
       receiver: [
         {
           talent: :talent_token
-        },
-        :investor
+        }
       ]
     )
 

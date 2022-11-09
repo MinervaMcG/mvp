@@ -5,9 +5,9 @@ class Comment < ApplicationRecord
   def to_json
     {
       id: id,
-      username: user.display_name.blank? ? user.username : user.display_name,
+      username: user.name,
       ticker: user.talent&.talent_token&.ticker,
-      profilePictureUrl: user.talent&.profile_picture_url || user.investor&.profile_picture_url,
+      profilePictureUrl: user.profile_picture_url,
       text: text,
       created_at: created_at.to_s
     }

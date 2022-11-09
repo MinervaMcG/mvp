@@ -4,4 +4,8 @@ class Erc20Token < ApplicationRecord
   def erc_20?
     true
   end
+
+  def erc_721?
+    false
+  end
 end

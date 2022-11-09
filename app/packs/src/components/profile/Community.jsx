@@ -11,7 +11,6 @@ import debounce from "lodash/debounce";
 import {
   H4,
   H5,
-  P1,
   P2,
   P3,
   Caption,
@@ -254,7 +253,6 @@ const Community = ({ userId, talent, canUpdate }) => {
       (response) => {
         if (response.error) {
           toast.error(<ToastBody heading="Error!" body={response.error} />);
-          console.log(response.error);
         } else {
           setPagination(response.pagination);
           setConnections(response.connections);

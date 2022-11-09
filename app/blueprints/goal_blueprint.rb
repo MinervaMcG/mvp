@@ -3,5 +3,6 @@ class GoalBlueprint < Blueprinter::Base
 
   view :normal do
     fields :title, :due_date, :description, :link
+    association :goal_images, blueprint: GoalImageBlueprint, view: :normal, name: :images
   end
 end

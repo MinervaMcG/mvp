@@ -3,6 +3,34 @@ require "rails_helper"
 RSpec.describe "Talent", type: :request do
   let(:current_user) { create :user }
 
+  describe "#index" do
+    let(:talents_search_class) { Talents::Search }
+    let(:talents_search) { instance_double(talents_search_class, call: Talent.all) }
+
+    before do
+      allow(talents_search_class).to receive(:new).and_return(talents_search)
+    end
+
+    subject(:get_talents) do
+      get api_v1_talent_index_path(status: "Pending approval", as: current_user)
+    end
+
+    it "initialises and calls the talents search with the correct a" do
+      get_talents
+
+      aggregate_failures do
+        expect(talents_search_class).to have_received(:new)
+          .with(
+            admin_or_moderator: false,
+            discovery_row: nil,
+            filter_params: {"status" => "Pending approval"}
+          )
+
+        expect(talents_search).to have_received(:call)
+      end
+    end
+  end
+
   describe "#update" do
     let!(:talent) { create :talent, user: current_user }
     subject(:update_talent_request) { put api_v1_talent_path(id: talent.id, params: params, as: current_user) }
@@ -34,7 +62,8 @@ RSpec.describe "Talent", type: :request do
     end
 
     context "when the current user does not match the talent id passed" do
-      let(:another_user) { create :user }
+      let(:another_user) { create :user, role: role }
+      let(:role) { "basic" }
 
       it "returns an authorization error" do
         put api_v1_talent_path(id: talent.id, params: params, as: another_user)
@@ -50,6 +79,26 @@ RSpec.describe "Talent", type: :request do
             error: "You don't have access to perform that action"
           }
         )
+      end
+
+      context "when the current user is an admin" do
+        let(:role) { "admin" }
+
+        it "returns a successful response" do
+          put api_v1_talent_path(id: talent.id, params: params, as: another_user)
+
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "when the current user is a moderator" do
+        let(:role) { "moderator" }
+
+        it "returns a successful response" do
+          put api_v1_talent_path(id: talent.id, params: params, as: another_user)
+
+          expect(response).to have_http_status(:ok)
+        end
       end
     end
 

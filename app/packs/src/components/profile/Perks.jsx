@@ -39,7 +39,6 @@ const Perks = ({ talent, canUpdate }) => {
     get(`/api/v1/users/${userId}/profile/perks`).then((response) => {
       if (response.error) {
         toast.error(<ToastBody heading="Error!" body={response.error} />);
-        console.log(response.error);
       } else {
         setPerks(response.perks);
       }
@@ -175,7 +174,7 @@ const Perks = ({ talent, canUpdate }) => {
                   <div className="header d-flex flex-column justify-content-between p-3">
                     <div className="d-flex align-items-center">
                       <TalentProfilePicture
-                        src={user.profilePictureUrl}
+                        src={talent.profilePictureUrl}
                         height={24}
                       />
                       <P2

@@ -88,6 +88,14 @@ class OnChain {
     }
   }
 
+  async disconnect() {
+    const web3Modal = await this.initializeWeb3Modal();
+
+    if (web3Modal.cachedProvider) {
+      web3Modal.clearCachedProvider();
+    }
+  }
+
   async getChainID() {
     const web3ModalInstance = await this.web3ModalConnect();
 

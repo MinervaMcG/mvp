@@ -2,31 +2,7 @@
   <div class="container-grid">
     <%= react_component("Discovery",
       props: {
-        discoveryRows: @discovery_rows.map { |row| {
-          badge: row["badge"],
-          badge_link: row["badge_link"],
-          slug: row["slug"],
-          title: row["title"],
-          talents: row["talents"].map { |talent| {
-            id: talent["id"],
-            profilePictureUrl: talent["profile_picture_url"],
-            contractId: talent["token"]["contract_id"],
-            occupation: talent["occupation"],
-            headline: talent["headline"],
-            ticker: talent["token"]["ticker"],
-            isFollowing: talent["is_following"],
-            isVerified: talent["verified"],
-            name: talent["user"]["name"],
-            username: talent["user"]["username"],
-            userId: talent["user_id"],
-            supportersCount: talent["supporters_count"],
-            profileType: talent["user"]["profile_type"],
-            supporterCounter: talent["supporters_count"],
-            totalSupply: talent["total_supply"],
-            marketCap: talent["market_cap"],
-            chainId: talent["token"]["chain_id"],
-          }}
-        }},
+        discoveryRows: @discovery_rows,
         marketingArticles: @marketing_articles.map { |article| {
           id: article["id"],
           link: article["link"],
@@ -36,12 +12,12 @@
         }},
         user: {
           id: current_user.id,
-          investorId: current_user.investor&.id,
           username: current_user.username,
           beginnerQuestId: current_user.quests.find_by(type: "Quests::User").id,
           supporterQuestId: current_user.quests.find_by(type: "Quests::Supporter").id,
           walletId: current_user.wallet_id,
           profileType: current_user.profile_type,
+          talent_id: current_user.talent.id,
           talent: current_user.talent.present?,
           tokenLaunched: current_user.talent&.talent_token&.deployed,
           activeSupporter: current_user.active_supporter?

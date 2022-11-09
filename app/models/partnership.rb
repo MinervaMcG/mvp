@@ -2,7 +2,9 @@ class Partnership < ApplicationRecord
   include ::BannerUploader::Attachment(:banner)
   include ::ProfilePictureUploader::Attachment(:logo)
 
-  belongs_to :invite, optional: true
+  belongs_to :invited, class_name: "Invite", foreign_key: "invite_id", optional: true
+
+  has_many :invites
 
   has_one :discovery_row
 

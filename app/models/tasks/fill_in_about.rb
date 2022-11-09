@@ -15,7 +15,7 @@ module Tasks
     end
 
     def link
-      "/u/#{quest.user.username}/edit_profile?tab=About"
+      "/u/#{quest.user.username}#about"
     end
   end
 end

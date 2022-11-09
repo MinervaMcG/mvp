@@ -2,7 +2,6 @@ require "rails_helper"
 
 RSpec.describe User, type: :model do
   describe "associations" do
-    it { is_expected.to have_one(:investor) }
     it { is_expected.to have_one(:talent) }
 
     # Chat
@@ -63,7 +62,7 @@ RSpec.describe User, type: :model do
 
       expect {
         create(:user, email: "john.doe@talentprotocol.com")
-      }.to raise_error(ActiveRecord::RecordNotUnique)
+      }.to raise_error(ActiveRecord::RecordInvalid)
     end
 
     it "does not allow multiple users with same username" do
@@ -71,7 +70,7 @@ RSpec.describe User, type: :model do
 
       expect {
         create(:user, username: "frank")
-      }.to raise_error(ActiveRecord::RecordNotUnique)
+      }.to raise_error(ActiveRecord::RecordInvalid)
     end
 
     it "does not allow multiple users with same wallet_id" do
@@ -79,7 +78,7 @@ RSpec.describe User, type: :model do
 
       expect {
         create(:user, wallet_id: "1")
-      }.to raise_error(ActiveRecord::RecordNotUnique)
+      }.to raise_error(ActiveRecord::RecordInvalid)
     end
 
     it "does not allow non supported roles" do
@@ -364,6 +363,109 @@ RSpec.describe User, type: :model do
 
       expect(user1.has_unread_messages?).to be_truthy
       expect(user2.has_unread_messages?).to be_falsey
+    end
+  end
+
+  describe "#moderator?" do
+    let(:user) { create :user, role: role }
+
+    context "when the user's role is 'admin'" do
+      let(:role) { "admin" }
+
+      it "returns false" do
+        expect(user.moderator?).to be_falsey
+      end
+    end
+
+    context "when the user's role is 'basic'" do
+      let(:role) { "basic" }
+
+      it "returns false" do
+        expect(user.moderator?).to be_falsey
+      end
+    end
+
+    context "when the user's role is 'moderator'" do
+      let(:role) { "moderator" }
+
+      it "returns true" do
+        expect(user.moderator?).to be_truthy
+      end
+    end
+  end
+
+  describe "#admin_or_moderator?" do
+    let(:user) { create :user, role: role }
+
+    context "when the user's role is 'admin'" do
+      let(:role) { "admin" }
+
+      it "returns false" do
+        expect(user.admin_or_moderator?).to be_truthy
+      end
+    end
+
+    context "when the user's role is 'basic'" do
+      let(:role) { "basic" }
+
+      it "returns false" do
+        expect(user.admin_or_moderator?).to be_falsey
+      end
+    end
+
+    context "when the user's role is 'moderator'" do
+      let(:role) { "moderator" }
+
+      it "returns true" do
+        expect(user.admin_or_moderator?).to be_truthy
+      end
+    end
+  end
+
+  describe "#approved_by" do
+    let(:user) { create :user, profile_type: profile_type }
+    let(:who_dunnit) { create :user, role: "admin" }
+
+    context "when the user's profile type is 'approved'" do
+      let(:profile_type) { "approved" }
+
+      context "when there is a profile type change log for the change" do
+        before do
+          UserProfileTypeChange.create!(
+            previous_profile_type: "waiting_for_approval",
+            new_profile_type: "approved",
+            user: user,
+            who_dunnit: who_dunnit
+          )
+        end
+
+        it "returns the user who approved it" do
+          expect(user.approved_by).to eq(who_dunnit)
+        end
+      end
+
+      context "when there is not a profile type change log for the change" do
+        before do
+          UserProfileTypeChange.create!(
+            previous_profile_type: "supporter",
+            new_profile_type: "talent",
+            user: user,
+            who_dunnit: who_dunnit
+          )
+        end
+
+        it "returns nil" do
+          expect(user.approved_by).to be_nil
+        end
+      end
+    end
+
+    context "when the user's profile type is not 'approved'" do
+      let(:profile_type) { "rejected" }
+
+      it "returns nil" do
+        expect(user.approved_by).to be_nil
+      end
     end
   end
 end

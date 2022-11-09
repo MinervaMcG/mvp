@@ -7,9 +7,9 @@ class User < ApplicationRecord
   validate :email_and_credentials
   validate :validate_notification_preferences
   validate :username_is_valid
+  validates :username, :email, :wallet_id, uniqueness: true
 
   has_one :talent
-  has_one :investor
   has_many :invites
   belongs_to :invited, class_name: "Invite", foreign_key: "invite_id", optional: true
   belongs_to :race, optional: true
@@ -42,10 +42,10 @@ class User < ApplicationRecord
 
   # Elasticsearch index update
   update_index("talents") { talent }
-  
+
   after_save :touch_talent
 
-  VALID_ROLES = ["admin", "basic"].freeze
+  VALID_ROLES = ["admin", "basic", "moderator"].freeze
 
   enum profile_type: {
     supporter: "supporter",
@@ -107,6 +107,14 @@ class User < ApplicationRecord
     role == "admin"
   end
 
+  def moderator?
+    role == "moderator"
+  end
+
+  def admin_or_moderator?
+    role.in?(%w[admin moderator])
+  end
+
   def as_json(options = {})
     options[:except] ||= [:remember_token, :encrypted_password, :confirmation_token, :last_sign_in_at, :nounce, :email_confirmation_token]
     super(options)
@@ -127,10 +135,6 @@ class User < ApplicationRecord
 
   def has_unread_messages?
     messagee.unread.any?
-  end
-
-  def investor?
-    investor.present?
   end
 
   def last_message_with(chat_user)
@@ -168,7 +172,7 @@ class User < ApplicationRecord
   end
 
   def profile_picture_url
-    talent&.profile_picture_url || investor&.profile_picture_url
+    talent&.profile_picture_url
   end
 
   def public_displayable?
@@ -225,6 +229,15 @@ class User < ApplicationRecord
     delete_account_token == token && delete_account_token_expires_at > Time.current
   end
 
+  def approved_by
+    return unless profile_type == "approved"
+
+    profile_type_change = UserProfileTypeChange.find_by(new_profile_type: "approved", user: self)
+    return unless profile_type_change
+
+    profile_type_change.who_dunnit
+  end
+
   private
 
   def email_and_password
@@ -248,9 +261,7 @@ class User < ApplicationRecord
   end
 
   def username_is_valid
-    unless username.match?(/^[a-z0-9]*$/)
-      errors.add(:base, "The username has invalid characters.")
-    end
+    errors.add(:base, "The username has invalid characters.") unless username.match?(/^[a-z0-9]*$/)
   end
 
   def email_and_credentials
@@ -276,5 +287,4 @@ class User < ApplicationRecord
   def touch_talent
     talent.touch if talent.present?
   end
-
 end

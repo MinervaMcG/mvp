@@ -7,11 +7,11 @@ module Tasks
     end
 
     def description
-      "Schedule an 1:1 onboarding call with a team member and get your profile reviewed and verified."
+      "Schedule a call with a member of Talent Protocol’s core team. Get verified and earn your badge. Currently unavailable."
     end
 
     def link
-      "https://talentprotocol.typeform.com/onboarding-call"
+      nil
     end
   end
 end

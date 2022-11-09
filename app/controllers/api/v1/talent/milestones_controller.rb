@@ -3,44 +3,48 @@ class API::V1::Talent::MilestonesController < ApplicationController
   after_action :notify_of_change
 
   def update
-    milestone.assign_attributes(milestone_params)
-    parsed_date = milestone_params[:start_date].split("-").map(&:to_i)
-    milestone.start_date = Date.new(parsed_date[2], parsed_date[1], parsed_date[0])
-    if milestone_params[:end_date].length > 0
-      parsed_date = milestone_params[:end_date].split("-").map(&:to_i)
-      milestone.end_date = Date.new(parsed_date[2], parsed_date[1], parsed_date[0])
-    end
+    service = Milestones::Update.new(
+      milestone: milestone,
+      current_user: current_acting_user,
+      params: milestone_params
+    )
+    updated_milestone = service.call
 
-    if milestone.save!
-      render json: milestone, status: :ok
-    else
-      render json: {error: "Unable to update milestone"}, status: :unprocessable_entity
-    end
+    render json: MilestoneBlueprint.render(updated_milestone, view: :normal), status: :ok
+  rescue => e
+    Rollbar.error(
+      e,
+      "Unable to update milestone",
+      milestone_id: updated_milestone.id,
+      talent_id: talent.id
+    )
+
+    render json: {error: "Unable to update milestone"}, status: :unprocessable_entity
   end
 
   def create
-    @milestone = Milestone.new(milestone_params)
+    service = Milestones::Create.new(
+      talent: talent,
+      current_user: current_acting_user,
+      params: milestone_params
+    )
+    milestone = service.call
 
-    parsed_date = milestone_params[:start_date].split("-").map(&:to_i)
-    @milestone.start_date = Date.new(parsed_date[2], parsed_date[1], parsed_date[0])
-    if milestone_params[:end_date].length > 0
-      parsed_date = milestone_params[:end_date].split("-").map(&:to_i)
-      @milestone.end_date = Date.new(parsed_date[2], parsed_date[1], parsed_date[0])
-    end
+    render json: MilestoneBlueprint.render(milestone, view: :normal), status: :created
+  rescue => e
+    Rollbar.error(
+      e,
+      "Unable to create milestone",
+      milestone_id: milestone.id,
+      talent_id: talent.id
+    )
 
-    @milestone.talent = talent
-
-    if @milestone.save!
-      UpdateTasksJob.perform_later(type: "Tasks::Highlights", user_id: current_user.id) if talent.milestones.length >= 1
-      render json: @milestone, status: :created
-    else
-      render json: {error: "Unable to create milestone"}, status: :unprocessable_entity
-    end
+    render json: {error: "Unable to create milestone"}, status: :unprocessable_entity
   end
 
   def destroy
     if milestone.destroy
-      render json: milestone, status: :ok
+      render json: MilestoneBlueprint.render(milestone, view: :normal), status: :ok
     else
       render json: {error: "Unable to delete requested milestone."}, status: :unprocessable_entity
     end
@@ -74,7 +78,11 @@ class API::V1::Talent::MilestonesController < ApplicationController
       :description,
       :link,
       :category,
-      :in_progress
+      :in_progress,
+      images: [
+        :id,
+        image_data: {}
+      ]
     )
   end
 

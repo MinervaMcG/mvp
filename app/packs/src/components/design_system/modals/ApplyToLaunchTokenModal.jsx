@@ -7,14 +7,27 @@ import { patch } from "src/utils/requests";
 import { H5, P2 } from "src/components/design_system/typography";
 import { Alert } from "src/components/icons";
 
-const ApplyToLaunchTokenModal = ({ show, hide, investorId, username }) => {
+const ApplyToLaunchTokenModal = ({
+  show,
+  hide,
+  userId,
+  talentId,
+  username,
+}) => {
   const [loading, setLoading] = useState(false);
   const { mobile } = useWindowDimensionsHook();
 
-  const upgradeToTalent = () => {
+  const apply = () => {
     setLoading(true);
-    patch(`/api/v1/supporters/${investorId}/upgrade_profile_to_talent`)
-      .then(() => window.location.replace(`/u/${username}/edit_profile`))
+    let params = {
+      user: {
+        id: userId,
+        profile_type: "waiting_for_approval",
+      },
+    };
+
+    patch(`/api/v1/talent/${talentId}`, params)
+      .then(() => window.location.replace(`/u/${username}`))
       .catch((e) => console.log("error", e))
       .finally(() => setLoading(false));
   };
@@ -43,7 +56,7 @@ const ApplyToLaunchTokenModal = ({ show, hide, investorId, username }) => {
             className="text-primary-03 text-center"
             text="Launching your token requires an application and validation by the community.
             It's important that all talents are a good fit with the platform and motivated to participate.
-            By clicking “Let's do this” your profile will have additional information you'll need to fill out to apply."
+            By clicking “Let's do this” you confirm that your profile is complete and ready to be verified."
           />
         </div>
         <div className="d-flex mt-6 w-100">
@@ -56,7 +69,7 @@ const ApplyToLaunchTokenModal = ({ show, hide, investorId, username }) => {
           />
           <LoadingButton
             className="w-100"
-            onClick={upgradeToTalent}
+            onClick={apply}
             type="primary-default"
             size="big"
             loading={loading}

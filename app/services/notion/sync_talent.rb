@@ -118,7 +118,7 @@ class Notion::SyncTalent
           rich_text: [
             {
               text: {
-                content: talent.user&.invited&.user&.email || ""
+                content: referred_by(talent)
               }
             }
           ]
@@ -161,6 +161,13 @@ class Notion::SyncTalent
         }
       }
     }.to_json
+  end
+
+  def referred_by(talent)
+    invite = talent.user&.invited
+    return "" unless invite
+
+    invite.user ? invite.user.email : invite.partnership.name
   end
 
   def engaged?(talent)

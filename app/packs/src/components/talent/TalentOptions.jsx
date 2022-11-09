@@ -24,7 +24,7 @@ const TalentOptions = ({
   setLocalPagination,
   setSelectedSort,
   setSortDirection,
-  isAdmin,
+  isAdminOrModerator
 }) => {
   const { mobile } = useWindowDimensionsHook();
   const { mode } = useTheme();
@@ -93,7 +93,7 @@ const TalentOptions = ({
             status={status}
             setStatus={setStatus}
             filter={filter}
-            isAdmin={isAdmin}
+            isAdminOrModerator={isAdminOrModerator}
           />
         </div>
         <Button

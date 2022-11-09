@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { get } from "src/utils/requests";
 import { P1, P3, H3, H5, P2 } from "src/components/design_system/typography";
-import { Edit } from "src/components/icons";
 import ThemedButton from "src/components/design_system/button";
 import { getNftData } from "src/onchain/utils";
 import { ToastBody } from "src/components/design_system/toasts";
@@ -46,7 +45,6 @@ const Nfts = ({
       (response) => {
         if (response.error) {
           toast.error(<ToastBody heading="Error!" body={response.error} />);
-          console.log(response.error);
         } else {
           setPagination(response.pagination);
           mergeNfts(response.tokens);
@@ -64,14 +62,14 @@ const Nfts = ({
   const mergeNfts = (newNfts) => {
     newNfts.map((nft) => {
       // Query blockchain when the local image is not defined
-      if (nft.name && nft.local_image_url) {
+      if (nft.name && nft.image_url) {
         setNfts((prev) => [...prev, nft]);
       } else {
         getNftData(nft).then((result) => {
           if (result?.name && result?.image && result?.imageType == "image") {
             const newNft = {
               ...nft,
-              local_image_url: result.image,
+              image_url: result.image,
             };
             setNfts((prev) => [...prev, newNft]);
           }
@@ -132,12 +130,24 @@ const Nfts = ({
         />
       )}
       <div className="container">
-        <div className="d-flex w-100 mb-3">
+        <div
+          className={cx(
+            "d-flex w-100 mb-3 position-relative",
+            mobile && "flex-column"
+          )}
+        >
           <H3 className="w-100 text-center mb-0">NFTs</H3>
           {canUpdate && walletConnected && (
-            <a onClick={() => setEditShow(true)} className="ml-auto">
-              <Edit />
-            </a>
+            <ThemedButton
+              type="primary-default"
+              size="big"
+              text="Edit NFTs"
+              onClick={() => setEditShow(true)}
+              className={cx(
+                mobile ? "mx-auto mt-3" : "ml-auto position-absolute"
+              )}
+              style={{ width: "190px", right: 0 }}
+            />
           )}
         </div>
         <P1 className="text-center pb-3 mb-4">
@@ -190,7 +200,7 @@ const Nfts = ({
                       )}
                     />
                     <img
-                      src={nft.local_image_url}
+                      src={nft.image_url}
                       onLoad={() => loadedImage(nft)}
                       className={cx(
                         "nft-img mb-4",

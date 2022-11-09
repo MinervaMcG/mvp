@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_21_122846) do
+ActiveRecord::Schema.define(version: 2022_11_06_130542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -199,8 +199,8 @@ ActiveRecord::Schema.define(version: 2022_10_21_122846) do
     t.datetime "last_sync_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.text "token_image_data"
     t.text "description"
+    t.string "external_image_url"
     t.index ["user_id"], name: "index_erc721_tokens_on_user_id"
   end
 
@@ -262,27 +262,16 @@ ActiveRecord::Schema.define(version: 2022_10_21_122846) do
     t.index ["ip_bidx"], name: "index_impersonations_on_ip_bidx"
   end
 
-  create_table "investors", force: :cascade do |t|
-    t.string "description"
-    t.string "public_key"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "user_id"
-    t.text "profile_picture_data"
-    t.text "banner_data"
-    t.jsonb "profile", default: {}
-    t.index ["public_key"], name: "index_investors_on_public_key", unique: true
-    t.index ["user_id"], name: "index_investors_on_user_id"
-  end
-
   create_table "invites", force: :cascade do |t|
     t.string "code", null: false
     t.integer "uses", default: 0
     t.integer "max_uses", default: 2
     t.boolean "talent_invite", default: false
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "partnership_id"
+    t.index ["partnership_id"], name: "index_invites_on_partnership_id"
     t.index ["user_id"], name: "index_invites_on_user_id"
   end
 
@@ -415,6 +404,11 @@ ActiveRecord::Schema.define(version: 2022_10_21_122846) do
     t.bigint "amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "creator_id"
+    t.boolean "imported", default: false
+    t.string "identifier"
+    t.index ["creator_id"], name: "index_rewards_on_creator_id"
+    t.index ["identifier"], name: "index_rewards_on_identifier", unique: true
     t.index ["user_id"], name: "index_rewards_on_user_id"
   end
 
@@ -625,6 +619,7 @@ ActiveRecord::Schema.define(version: 2022_10_21_122846) do
   add_foreign_key "goals", "career_goals"
   add_foreign_key "impersonations", "users", column: "impersonated_id"
   add_foreign_key "impersonations", "users", column: "impersonator_id"
+  add_foreign_key "invites", "partnerships"
   add_foreign_key "invites", "users"
   add_foreign_key "marketing_articles", "users"
   add_foreign_key "messages", "chats"
@@ -636,6 +631,7 @@ ActiveRecord::Schema.define(version: 2022_10_21_122846) do
   add_foreign_key "profile_page_visitors", "users"
   add_foreign_key "quests", "users"
   add_foreign_key "rewards", "users"
+  add_foreign_key "rewards", "users", column: "creator_id"
   add_foreign_key "tags", "discovery_rows"
   add_foreign_key "talent_tokens", "talent"
   add_foreign_key "tasks", "quests"

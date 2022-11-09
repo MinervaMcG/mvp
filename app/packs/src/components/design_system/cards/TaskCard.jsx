@@ -63,7 +63,7 @@ const TaskCard = ({ title, type, link, status, userId, user }) => {
       return (
         <Button
           className="w-100"
-          disabled={user.profile_type !== "supporter"}
+          disabled={user.profile_type == "waiting_for_approval"}
           size="extra-big"
           type={buttonType}
           text={buttonText}
@@ -126,7 +126,8 @@ const TaskCard = ({ title, type, link, status, userId, user }) => {
       <ApplyToLaunchTokenModal
         show={showApplyToLaunchTokenModal}
         hide={() => setShowApplyToLaunchTokenModal(false)}
-        investorId={user.investorId}
+        userId={user.id}
+        talentId={user.talent_id}
         username={user.username}
       />
     </div>

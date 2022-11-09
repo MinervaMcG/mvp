@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+import { get } from "src/utils/requests";
 
 import { Dropdown } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
@@ -50,13 +52,41 @@ const Notification = ({ notification, mode }) => {
   );
 };
 
-const Notifications = ({ notifications, mode, hideBackground = false }) => {
+const Notifications = ({ mode }) => {
   const { width } = useWindowDimensionsHook();
-  const [currentNotifications, setCurrentNotifications] =
-    useState(notifications);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [pagination, setPagination] = useState({});
 
-  const notificationsUnread = currentNotifications.some(
+  const loadNotifications = () => {
+    get("/api/v1/notifications").then((response) => {
+      if (response.error) {
+        console.log("Error loading notifications");
+      } else {
+        setNotifications(response.notifications);
+        setPagination(response.pagination);
+      }
+    });
+  };
+
+  const loadMoreNotifications = () => {
+    const nextPage = pagination.currentPage + 1;
+
+    get(`/api/v1/notifications?page=${nextPage}`).then((response) => {
+      setNotifications((prev) => [...prev, ...response.notifications]);
+      setPagination(response.pagination);
+    });
+  };
+
+  const showLoadMoreNotifications = () => {
+    return pagination.currentPage < pagination.lastPage;
+  };
+
+  useEffect(() => {
+    loadNotifications();
+  }, []);
+
+  const notificationsUnread = notifications.some(
     (notif) => notif.read === false
   );
 
@@ -73,7 +103,7 @@ const Notifications = ({ notifications, mode, hideBackground = false }) => {
     const request = await post("/api/v1/clear_notifications");
     if (request.success) {
       const newNotifications = notifications.map((n) => ({ ...n, read: true }));
-      setCurrentNotifications(newNotifications);
+      setNotifications(newNotifications);
     }
   };
 
@@ -111,29 +141,40 @@ const Notifications = ({ notifications, mode, hideBackground = false }) => {
               onClick={() => markAllAsRead()}
               type="white-ghost"
               className="d-flex align-items-center text-primary ml-auto"
-              disabled={currentNotifications.length == 0}
+              disabled={notifications.length == 0}
             >
               Mark all as read
             </Button>
           </Modal.Header>
           <Modal.Body className="d-flex flex-column p-0">
-            {currentNotifications.length == 0 && (
+            {notifications.length == 0 && (
               <small className="w-100 text-center">No notifications</small>
             )}
-            {currentNotifications.map((notification) => (
+            {notifications.map((notification) => (
               <div key={`notifications-menu-${notification.id}`}>
                 <Divider />
                 <Button
                   onClick={() => notificationRead(notification)}
                   type="white-ghost"
-                  size="icon"
                   mode={mode}
-                  className="text-left text-black p-0"
+                  className="text-left text-black p-0 w-100"
                 >
                   <Notification notification={notification} mode={mode} />
                 </Button>
               </div>
             ))}
+            {showLoadMoreNotifications() && (
+              <>
+                <Divider />
+                <a
+                  className="p-0 my-3 notifications-menu-dropdown-item text-center"
+                  onClick={() => loadMoreNotifications()}
+                  href="#"
+                >
+                  <P2 bold text="Load More" className="text-black" />
+                </a>
+              </>
+            )}
           </Modal.Body>
         </Modal>
       </>
@@ -166,21 +207,24 @@ const Notifications = ({ notifications, mode, hideBackground = false }) => {
           style={width < 400 ? { width: width - 50 } : {}}
         >
           <div className="d-flex flex-row justify-content-between">
-            <P1 bold>Notifications</P1>
+            <P1 bold className="ml-3">
+              Notifications
+            </P1>
             <Link
-              disabled={currentNotifications.length == 0}
+              disabled={notifications.length == 0}
               text="Mark all as read"
               onClick={markAllAsRead}
+              className="mr-3"
             />
           </div>
-          {currentNotifications.length == 0 && (
+          {notifications.length == 0 && (
             <Dropdown.ItemText key="no-notifications">
               <small className="w-100 text-center no-notifications-item">
                 No notifications
               </small>
             </Dropdown.ItemText>
           )}
-          {currentNotifications.map((notification) => (
+          {notifications.map((notification) => (
             <Dropdown.Item
               key={`${notification.id}-notification`}
               className="p-0 notifications-menu-dropdown-item"
@@ -189,6 +233,18 @@ const Notifications = ({ notifications, mode, hideBackground = false }) => {
               <Notification notification={notification} mode={mode} />
             </Dropdown.Item>
           ))}
+          {showLoadMoreNotifications() && (
+            <>
+              <Divider className="mb-3" />
+              <a
+                className="p-0 mb-3 notifications-menu-dropdown-item text-center"
+                onClick={() => loadMoreNotifications()}
+                href="#"
+              >
+                <P2 bold text="Load More" className="text-black" />
+              </a>
+            </>
+          )}
         </Dropdown.Menu>
       </Dropdown>
     </>

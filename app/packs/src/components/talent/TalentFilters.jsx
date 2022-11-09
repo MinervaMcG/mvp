@@ -4,9 +4,9 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { P2, P3 } from "src/components/design_system/typography";
 import { OrderBy } from "src/components/icons";
 
-const TalentFilters = ({ status, setStatus, filter, isAdmin = false }) => {
+const TalentFilters = ({ status, setStatus, filter, isAdminOrModerator = false }) => {
   const options = useMemo(() => {
-    if (isAdmin) {
+    if (isAdminOrModerator) {
       return [
         "All",
         "Trending",

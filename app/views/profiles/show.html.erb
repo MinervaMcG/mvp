@@ -17,10 +17,19 @@
         }, prerender: false)
       %>
     <% end %>
+
     <% if @talent.present? %>
-      <%= react_component("ProfileShow", props:
-        {talent: @talent, currentUserId: current_acting_user&.id, currentUserAdmin: current_user&.admin?}, prerender: false)
-      %>
+      <%= react_component(
+        "ProfileShow",
+        props: {
+          talent: @talent,
+          currentUserId: current_acting_user&.id,
+          currentUserAdmin: current_user&.admin?,
+          currentUserModerator: current_user&.moderator?,
+          isCurrentUserImpersonated: is_user_impersonated?
+        },
+        prerender: false
+      ) %>
     <% end %>
   </div>
 </main>

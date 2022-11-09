@@ -12,7 +12,7 @@ RSpec.describe EmailReminders::SendTokenPurchaseReminderJob, type: :job do
 
   context "supporter created 8 days ago" do
     before do
-      @investor = create :investor, created_at: 8.days.ago, user: user
+      @talent = create :talent, created_at: 8.days.ago, user: user
     end
 
     it "should send email if no token is purchased" do
@@ -25,7 +25,7 @@ RSpec.describe EmailReminders::SendTokenPurchaseReminderJob, type: :job do
 
     it "should not send email if token is purchased" do
       talent_token = create :talent_token
-      create :talent_supporter, supporter_wallet_id: @investor.wallet_id, talent_contract_id: talent_token.contract_id
+      create :talent_supporter, supporter_wallet_id: @talent.wallet_id, talent_contract_id: talent_token.contract_id
 
       Sidekiq::Testing.inline! do
         token_purchase_reminder
@@ -36,7 +36,7 @@ RSpec.describe EmailReminders::SendTokenPurchaseReminderJob, type: :job do
   end
 
   it "should not send email supporters created before 7 days" do
-    create :investor, user: user
+    create :talent, user: user
 
     Sidekiq::Testing.inline! do
       token_purchase_reminder

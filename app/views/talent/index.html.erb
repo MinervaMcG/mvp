@@ -3,7 +3,7 @@
     <div class="secondary-content">
       <%= react_component("TalentPage",
         props: {
-           talents: @talents.map { |talent|
+          talents: @talents.map { |talent|
             {
               id: talent["id"],
               profilePictureUrl: talent["profile_picture_url"],
@@ -32,8 +32,8 @@
               isVerified: talent["verified"]
             }
           },
-          isAdmin: current_user.admin?,
           pagination: @paging
+          isAdminOrModerator: current_user.admin? || current_user.moderator?
         },
         prerender: false) %>
     </div>

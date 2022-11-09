@@ -140,24 +140,6 @@ RSpec.describe "Users", type: :request do
       end
     end
 
-    context "when the password is incorrect" do
-      let(:params) do
-        {
-          user: {
-            username: "johndoe",
-            email: "john.doe@talent.com",
-            messaging_disabled: true
-          }
-        }
-      end
-
-      it "returns a conflict error" do
-        update_user_request
-
-        expect(response).to have_http_status(:conflict)
-      end
-    end
-
     context "when the password is correct" do
       let(:current_user) { create :user, password: "Password1" }
 

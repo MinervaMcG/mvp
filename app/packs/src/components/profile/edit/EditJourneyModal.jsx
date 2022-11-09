@@ -5,18 +5,24 @@ import { toast } from "react-toastify";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 
-import { post, patch, destroy } from "src/utils/requests";
+import Uppy from "@uppy/core";
+import { FileInput } from "@uppy/react";
+import AwsS3Multipart from "@uppy/aws-s3-multipart";
+
+import { post, patch, destroy, getAuthToken } from "src/utils/requests";
 import { snakeCaseObject, camelCaseObject } from "src/utils/transformObjects";
 import { useTheme } from "src/contexts/ThemeContext";
 
+import TalentProfilePicture from "src/components/talent/TalentProfilePicture";
 import Checkbox from "src/components/design_system/checkbox";
 import TextInput from "src/components/design_system/fields/textinput";
 import TextArea from "src/components/design_system/fields/textarea";
 import Divider from "src/components/design_system/other/Divider";
 import Button from "src/components/design_system/button";
 import { ToastBody } from "src/components/design_system/toasts";
-import { Rocket, Toolbox, Bulb, Learn } from "src/components/icons";
-import { H5, P2, P3 } from "src/components/design_system/typography";
+import { Rocket, Toolbox, Bulb, Learn, Delete } from "src/components/icons";
+import { H5, P2 } from "src/components/design_system/typography";
+import { lightTextPrimary01, darkTextPrimary01 } from "src/utils/colors";
 
 import { useWindowDimensionsHook } from "src/utils/window";
 
@@ -113,6 +119,8 @@ const MilestoneExperience = ({
   mode,
   editType,
   validationErrors,
+  uppyBanner,
+  deleteImage,
 }) => {
   const [startMonth, setStartMonth] = useState(
     returnMonth(currentJourneyItem.startDate)
@@ -337,6 +345,53 @@ const MilestoneExperience = ({
             value={currentJourneyItem.link}
           />
         </div>
+        <div className="w-100 mb-5">
+          <P2 className="mb-2 text-primary-01" bold text="Media" />
+          <FileInput
+            uppy={uppyBanner}
+            pretty
+            inputName="profiles[]"
+            locale={{
+              strings: {
+                chooseFiles: "Add media",
+              },
+            }}
+          />
+          <div
+            className={cx(
+              "d-flex",
+              "flex-wrap",
+              mobile ? "justify-content-center" : "justify-content-between"
+            )}
+          >
+            {currentJourneyItem.images?.map((image) => (
+              <div className="position-relative" key={`${image.imageUrl}`}>
+                <TalentProfilePicture
+                  className="position-relative mt-2"
+                  style={{ borderRadius: "24px" }}
+                  src={image.imageUrl}
+                  straight
+                  height={213}
+                  width={272}
+                />
+                <Button
+                  className="position-absolute"
+                  style={{ top: "16px", right: "8px" }}
+                  type="white-subtle"
+                  size="icon"
+                  onClick={() => deleteImage(image.imageUrl)}
+                >
+                  <Delete
+                    color={
+                      mode() == "light" ? lightTextPrimary01 : darkTextPrimary01
+                    }
+                    size={16}
+                  />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
       </Modal.Body>
       <Divider />
       <Modal.Footer
@@ -386,6 +441,8 @@ const GoalExperience = ({
   mode,
   editType,
   validationErrors,
+  uppyBanner,
+  deleteImage,
 }) => {
   const [dueMonth, setDueMonth] = useState(
     returnMonth(currentJourneyItem.dueDate)
@@ -509,6 +566,53 @@ const GoalExperience = ({
             value={currentJourneyItem.link}
           />
         </div>
+        <div className="w-100 mb-5">
+          <P2 className="mb-2 text-primary-01" bold text="Media" />
+          <FileInput
+            uppy={uppyBanner}
+            pretty
+            inputName="profiles[]"
+            locale={{
+              strings: {
+                chooseFiles: "Add media",
+              },
+            }}
+          />
+          <div
+            className={cx(
+              "d-flex",
+              "flex-wrap",
+              mobile ? "justify-content-center" : "justify-content-between"
+            )}
+          >
+            {currentJourneyItem.images?.map((image) => (
+              <div className="position-relative" key={`${image.imageUrl}`}>
+                <TalentProfilePicture
+                  className="position-relative mt-2"
+                  style={{ borderRadius: "24px" }}
+                  src={image.imageUrl}
+                  straight
+                  height={213}
+                  width={272}
+                />
+                <Button
+                  className="position-absolute"
+                  style={{ top: "16px", right: "8px" }}
+                  type="white-subtle"
+                  size="icon"
+                  onClick={() => deleteImage(image.imageUrl)}
+                >
+                  <Delete
+                    color={
+                      mode() == "light" ? lightTextPrimary01 : darkTextPrimary01
+                    }
+                    size={16}
+                  />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
       </Modal.Body>
       <Divider />
       <Modal.Footer
@@ -575,6 +679,7 @@ const EditJourneyModal = ({
     institution: journeyItem?.institution || "",
     inProgress: journeyItem?.inProgress || false,
     category: journeyItem?.category || "",
+    images: journeyItem?.images || [],
   });
 
   const [validationErrors, setValidationErrors] = useState({
@@ -617,6 +722,24 @@ const EditJourneyModal = ({
 
     return errors;
   };
+
+  const uppyBanner = new Uppy({
+    meta: { type: "avatar" },
+    restrictions: {
+      maxFileSize: 5120000,
+      allowedFileTypes: [".jpg", ".png", ".jpeg", ".gif"],
+      maxNumberOfFiles: 10,
+    },
+    autoProceed: true,
+  });
+
+  uppyBanner.use(AwsS3Multipart, {
+    limit: 4,
+    companionUrl: "/",
+    companionHeaders: {
+      "X-CSRF-Token": getAuthToken(),
+    },
+  });
 
   const saveMilestone = async () => {
     const errors = milestoneErrors();
@@ -671,7 +794,7 @@ const EditJourneyModal = ({
     if (response && !response.error) {
       const newMilestones = talent.milestones.map((milestone) => {
         if (milestone.id === response.id) {
-          return { ...milestone, ...response };
+          return { ...camelCaseObject(response) };
         }
         return { ...milestone };
       });
@@ -787,7 +910,7 @@ const EditJourneyModal = ({
     if (response && !response.error) {
       const newGoals = talent.careerGoal.goals.map((goal) => {
         if (goal.id === response.id) {
-          return { ...goal, ...response };
+          return { ...camelCaseObject(response) };
         }
         return { ...goal };
       });
@@ -852,6 +975,22 @@ const EditJourneyModal = ({
     exitModal();
   };
 
+  const deleteImage = (imageUrl) => {
+    const index = currentJourneyItem.images.findIndex(
+      (image) => image.imageUrl === imageUrl
+    );
+
+    const newImages = [
+      ...currentJourneyItem.images.slice(0, index),
+      ...currentJourneyItem.images.slice(index + 1),
+    ];
+
+    setCurrentJourneyItem((prev) => ({
+      ...prev,
+      images: newImages,
+    }));
+  };
+
   const goToNextStep = (newExperienceType) => {
     setCurrentJourneyItem((prev) => ({ ...prev, category: newExperienceType }));
     setCurrentStep(2);
@@ -869,6 +1008,7 @@ const EditJourneyModal = ({
       institution: "",
       inProgress: false,
       category: "",
+      images: [],
     });
     setCurrentStep(1);
   };
@@ -894,6 +1034,33 @@ const EditJourneyModal = ({
     setJourneyItem(null);
     hide();
   };
+
+  useEffect(() => {
+    uppyBanner.on("restriction-failed", () => {
+      uppyBanner.reset();
+    });
+    uppyBanner.on("upload-success", (file, response) => {
+      setCurrentJourneyItem((prev) => ({
+        ...prev,
+        images: [
+          ...prev.images,
+          {
+            imageUrl: response.uploadURL,
+            imageData: {
+              id: response.uploadURL.match(/\/cache\/([^\?]+)/)[1], // extract key without prefix
+              storage: "cache",
+              metadata: {
+                size: file.size,
+                filename: file.name,
+                mime_type: file.type,
+              },
+            },
+          },
+        ],
+      }));
+    });
+    uppyBanner.on("upload", () => {});
+  }, [uppyBanner]);
 
   const debouncedSaveMilestone = debounce(() => saveMilestone(), 400);
   const debouncedUpdateMilestone = debounce(() => updateMilestone(), 400);
@@ -930,6 +1097,8 @@ const EditJourneyModal = ({
                 mode={mode}
                 editType={editType}
                 validationErrors={validationErrors}
+                uppyBanner={uppyBanner}
+                deleteImage={deleteImage}
               />
             )}
           {currentStep === 2 &&
@@ -944,6 +1113,8 @@ const EditJourneyModal = ({
                 mode={mode}
                 editType={editType}
                 validationErrors={validationErrors}
+                uppyBanner={uppyBanner}
+                deleteImage={deleteImage}
               />
             )}
         </>
@@ -962,6 +1133,8 @@ const EditJourneyModal = ({
               mode={mode}
               editType={editType}
               validationErrors={validationErrors}
+              uppyBanner={uppyBanner}
+              deleteImage={deleteImage}
             />
           ) : (
             <GoalExperience
@@ -976,6 +1149,8 @@ const EditJourneyModal = ({
               mode={mode}
               editType={editType}
               validationErrors={validationErrors}
+              uppyBanner={uppyBanner}
+              deleteImage={deleteImage}
             />
           )}
         </>

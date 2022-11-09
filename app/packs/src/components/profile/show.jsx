@@ -18,7 +18,14 @@ import LaunchToken from "./LaunchToken";
 import ApplyToLaunchToken from "./ApplyToLaunchToken";
 import Perks from "./Perks";
 
-const Show = ({ talent, railsContext, currentUserId, currentUserAdmin }) => {
+const Show = ({
+  talent,
+  railsContext,
+  currentUserId,
+  currentUserAdmin,
+  currentUserModerator,
+  isCurrentUserImpersonated,
+}) => {
   const [localTalent, setLocalTalent] = useState(camelCaseObject(talent));
   const user = localTalent.user;
   const token = localTalent.token;
@@ -91,12 +98,14 @@ const Show = ({ talent, railsContext, currentUserId, currentUserAdmin }) => {
         setTalent={setLocalTalent}
         currentUserId={currentUserId}
         currentUserAdmin={currentUserAdmin}
+        currentUserModerator={currentUserModerator}
         railsContext={railsContext}
         changeSection={changeSection}
         talentTokenPrice={talentTokenPrice}
         canUpdate={canUpdate}
         previewMode={previewMode}
         setPreviewMode={setPreviewMode}
+        isCurrentUserImpersonated={isCurrentUserImpersonated}
       />
       <Divider className="my-6" />
       <div className="d-flex justify-content-lg-center overflow-x-scroll mx-4">
@@ -156,6 +165,7 @@ const Show = ({ talent, railsContext, currentUserId, currentUserAdmin }) => {
           setLocalTalent={setLocalTalent}
           railsContext={railsContext}
           waitingApproval={user.profileType == "waiting_for_approval"}
+          canUpdate={canUpdate}
         />
       </div>
       <div className="my-7 w-100 col-12" id="#community">

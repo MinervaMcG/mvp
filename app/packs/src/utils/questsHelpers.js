@@ -18,7 +18,7 @@ export const questDescription = (type) => {
     case "Quests::TalentProfile":
       return "Complete the mandatory fields of your profile and share it with your network.";
     case "Quests::VerifiedProfile":
-      return "Schedule a call with a member of Talent Protocol’s core team. Get verified and earn your badge.";
+      return "Schedule a call with a member of Talent Protocol’s core team. Get verified and earn your badge. Currently unavailable.";
     case "Quests::TalentToken":
       return "Complete the mandatory fields of your profile and apply to be verified.";
     default:
@@ -30,10 +30,16 @@ export const taskDescription = (type) => {
   switch (type) {
     case "Tasks::FillInAbout":
       return (
-        <P2
-          className="text-primary-03"
-          text="Go to 'Edit Profile' and add information to the 'About' section."
-        />
+        <>
+          <P2
+            className="text-primary-03"
+            text="Go to your profile and fill in your basic information (first two sections)."
+          />
+          <P2
+            className="text-primary-03"
+            text="You'll need a profile picture, a headline, atleast one tag and filling in your 'About'."
+          />
+        </>
       );
     case "Tasks::ConnectWallet":
       return (
@@ -76,12 +82,15 @@ export const taskDescription = (type) => {
       return (
         <P2
           className="text-primary-03"
-          text="Add highlights to your profile."
+          text="Fill in your journey with highlights and positions."
         />
       );
     case "Tasks::Goals":
       return (
-        <P2 className="text-primary-03" text="Add goals to your profile." />
+        <P2
+          className="text-primary-03"
+          text="Add career goals to your profile."
+        />
       );
     case "Tasks::ApplyTokenLaunch":
       return (

@@ -11,7 +11,12 @@ import { white, lightTextPrimary01 } from "src/utils/colors.js";
 
 import cx from "classnames";
 
-const ApplyToLaunchToken = ({ talent, waitingApproval, setLocalTalent }) => {
+const ApplyToLaunchToken = ({
+  talent,
+  waitingApproval,
+  setLocalTalent,
+  canUpdate,
+}) => {
   const { mobile } = useWindowDimensionsHook();
   const { mode } = useTheme();
 
@@ -38,6 +43,10 @@ const ApplyToLaunchToken = ({ talent, waitingApproval, setLocalTalent }) => {
       return true;
     }
   };
+
+  if (!canUpdate) {
+    return <></>;
+  }
 
   return (
     <>

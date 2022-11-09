@@ -4,7 +4,7 @@
 .notification-container {
   border: 1px solid #ededef;
   box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.06);
-  border-radius: 4px;
+  border-radius: 0;
   background-color: $dark-text-primary-01;
 
   &.dark {
@@ -27,6 +27,7 @@
 }
 
 .notification-description {
+  max-width: 300px;
   margin-top: 4px;
 }
 
@@ -34,7 +35,7 @@
   width: 365px;
   max-height: 425px;
   overflow-y: auto;
-  padding: 12px 12px !important;
+  padding: 12px 0px !important;
   overflow-y: overlay;
 }
 
@@ -78,6 +79,10 @@
 
 .notifications-menu-dropdown-item {
   color: $light-text-primary-01 !important;
+
+  &:hover {
+    border-radius: 0;
+  }
 }
 
 .dark-body .notifications-menu-dropdown-item {
@@ -87,5 +92,9 @@
 @media (max-width: 992px) {
   .notification {
     padding: 16px 24px;
+  }
+
+  .notification-description {
+    max-width: 85vw;
   }
 }

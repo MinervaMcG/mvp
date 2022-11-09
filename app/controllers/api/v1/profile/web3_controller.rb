@@ -173,7 +173,7 @@ class API::V1::Profile::Web3Controller < ApplicationController
   end
 
   def update_params
-    params.permit(:show, :chain_id, :address, :token_id, :image_url, :description, :name)
+    params.permit(:show, :chain_id, :address, :token_id, :external_image_url, :description, :name)
   end
 
   def refresh_params

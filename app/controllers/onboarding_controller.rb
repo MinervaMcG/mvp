@@ -2,7 +2,9 @@ class OnboardingController < ApplicationController
   def index
     @user = {
       legalFirstName: current_user.legal_first_name,
-      legalLastName: current_user.legal_last_name
+      legalLastName: current_user.legal_last_name,
+      username: current_user.username,
+      id: current_user.id
     }
     @talent = {
       occupation: current_user.talent.occupation,
@@ -46,9 +48,16 @@ class OnboardingController < ApplicationController
       milestone.save!
     end
 
-    current_user.update!(legal_first_name: params[:legal_first_name], legal_last_name: params[:legal_last_name], onboarding_complete: true)
+    current_user.update!(legal_first_name: params[:legal_first_name], legal_last_name: params[:legal_last_name], username: params[:username], onboarding_complete: true)
 
     render json: {success: true}, status: :created
+  rescue => e
+    Rollbar.error(
+      e,
+      "Unable to onboard user",
+      params
+    )
+    render json: {error: e.message}, status: :bad_request
   end
 
   private
