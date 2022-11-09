@@ -33,7 +33,10 @@
               isVerified: talent["verified"]
             }
           },
-          pagination: @paging,
+          pagination: {
+            currentPage: @paging.current_page,
+            lastPage: @paging.last_page,
+          },
           isAdminOrModerator: current_user.admin? || current_user.moderator?
         },
         prerender: false) %>
