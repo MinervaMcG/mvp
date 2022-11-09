@@ -56,7 +56,7 @@ module Talents
             }
           }
         }])'
-      elsif filter_params[:status] == "Pending approval" && admin
+      elsif filter_params[:status] == "Pending approval" && admin_or_moderator
         'query({match: {"user.profile_type": "waiting_for_approval"}})'
       elsif filter_params[:status] == "Verified"
         "query({term: {verified: true}})"
