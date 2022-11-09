@@ -4,9 +4,9 @@ module Talents
   class ChewySearch
     PAGE_NEUTRALIZER = 1
 
-    def initialize(filter_params: {}, admin: false, size: 40, from: 1, current_user_watchlist: [])
+    def initialize(filter_params: {}, admin_or_moderator: false, size: 40, from: 1, current_user_watchlist: [])
       @filter_params = filter_params
-      @admin = admin
+      @admin_or_moderator = admin_or_moderator
       @size = size
       @from = from
       @current_user_watchlist = current_user_watchlist
@@ -29,7 +29,7 @@ module Talents
 
     private
 
-    attr_reader :filter_params, :admin, :size, :from, :current_user_watchlist
+    attr_reader :filter_params, :admin_or_moderator, :size, :from, :current_user_watchlist
 
     def query_for_keyword
       unless keyword.blank?
