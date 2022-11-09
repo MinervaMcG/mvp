@@ -147,9 +147,9 @@ const TalentPage = ({ isAdminOrModerator, env }) => {
       let responseTalents = response.talents.map((talent) => ({
         ...camelCaseObject(talent),
       }));
-      const newTalents = [...talents, ...responseTalents];
-      setTalents(newTalents);
-      setPagination(response.pagination);
+      const newTalents = [...localTalents, ...responseTalents];
+      setLocalTalents(newTalents);
+      setLocalPagination(camelCaseObject(response.pagination));
 
       window.history.replaceState(
         {},
