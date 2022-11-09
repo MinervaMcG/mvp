@@ -18,8 +18,8 @@ module Talents
       total_count = talents.count
       talents = talents.limit(size).offset(from)
       [{
-        currentPage: ((from + PAGE_NEUTRALIZER) / size.to_f).ceil,
-        lastPage: (total_count / size.to_f).ceil
+        current_page: ((from + PAGE_NEUTRALIZER) / size.to_f).ceil,
+        last_page: (total_count / size.to_f).ceil
       }, talents.entries.map do |talent|
         attributes = talent.attributes.deep_stringify_keys
         attributes["is_following"] = current_user_watchlist&.include?(attributes["user_id"])
@@ -32,13 +32,15 @@ module Talents
     attr_reader :filter_params, :admin, :size, :from, :current_user_watchlist
 
     def query_for_keyword
-      {
-        query_string: {
-          query: "*#{keyword}*",
-          fields: ["*"],
-          allow_leading_wildcard: true
+      unless keyword.blank?
+        {
+          query_string: {
+            query: "*#{keyword}*",
+            fields: ["*"],
+            allow_leading_wildcard: true
+          }
         }
-      }
+      end
     end
 
     def query_for_status
@@ -77,7 +79,7 @@ module Talents
 
     def sort_query
       if filter_params[:status] == "Latest added" || filter_params[:status] == "Trending"
-        {"talent_token.deployed_at": {order: :asc}}
+        {"talent_token.deployed_at": {order: :asc, unmapped_type: "date"}}
       end
     end
 

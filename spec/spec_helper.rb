@@ -1,5 +1,7 @@
 require "active_support/testing/time_helpers"
 require "webmock/rspec"
+require "chewy"
+require "chewy/rspec"
 
 RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
@@ -14,6 +16,8 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
+  WebMock.disable_net_connect!(allow: "localhost:9200")
+
   config.shared_context_metadata_behavior = :apply_to_host_groups
   config.order = :random
   config.filter_run_when_matching :focus
@@ -22,6 +26,10 @@ RSpec.configure do |config|
 
   if config.files_to_run.one?
     config.default_formatter = "doc"
+  end
+
+  config.before(:suite) do
+    Chewy.strategy(:bypass)
   end
 
   config.profile_examples = 5

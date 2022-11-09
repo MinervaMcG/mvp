@@ -1,8 +1,9 @@
 class TalentsIndex < Chewy::Index
-  index_scope Talent
+  index_scope Talent.joins(:user).includes(:talent_token, :milestones, career_goal: [:goals, :career_needs], user: [:tags])
   field :verified, type: "boolean"
   field :created_at, type: "date"
   field :market_cap, :user_id, :supporters_count
+  field :id, type: "integer"
 
   field :user do
     field :username, :display_name, :profile_type, :legal_first_name, :legal_last_name
