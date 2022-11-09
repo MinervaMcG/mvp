@@ -42,5 +42,4 @@ class TalentToken < ApplicationRecord
   def touch_talent
     talent.touch
   end
-
 end
