@@ -10,5 +10,4 @@ class CareerNeed < ApplicationRecord
   def touch_talent
     career_goal.talent.touch
   end
-
 end

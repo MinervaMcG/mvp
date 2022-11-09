@@ -18,5 +18,4 @@ class Milestone < ApplicationRecord
   def touch_talent
     talent.touch
   end
-
 end
