@@ -32,7 +32,7 @@
               isVerified: talent["verified"]
             }
           },
-          pagination: @paging
+          pagination: @paging,
           isAdminOrModerator: current_user.admin? || current_user.moderator?
         },
         prerender: false) %>
