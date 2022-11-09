@@ -34,8 +34,8 @@
             }
           },
           pagination: {
-            currentPage: @paging.current_page,
-            lastPage: @paging.last_page,
+            currentPage: @paging[:current_page],
+            lastPage: @paging[:last_page],
           },
           isAdminOrModerator: current_user.admin? || current_user.moderator?
         },
