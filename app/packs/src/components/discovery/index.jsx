@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { post, destroy } from "src/utils/requests";
 import { useWindowDimensionsHook } from "src/utils/window";
 
 import HighlightsCard from "src/components/design_system/highlights_card";
@@ -18,7 +17,6 @@ const Discovery = ({
   railsContext,
 }) => {
   const { mobile } = useWindowDimensionsHook();
-  const [localDiscoveryRows, setLocalDiscoveryRows] = useState(discoveryRows);
 
   return (
     <div className="d-flex flex-column">
@@ -45,7 +43,7 @@ const Discovery = ({
           link="/talent?status=Launching+soon"
         />
       </div>
-      {localDiscoveryRows.map((discoveryRow) => (
+      {discoveryRows.map((discoveryRow) => (
         <DiscoveryRow
           discoveryRow={discoveryRow}
           env={railsContext.contractsEnv}

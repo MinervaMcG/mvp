@@ -3,8 +3,19 @@ class API::V1::TalentController < ApplicationController
   PAGE_NEUTRALIZER = 1
 
   def index
-    paging, talents = Talents::ChewySearch.new(filter_params: filter_params.to_h, admin_or_moderator: current_user.admin_or_moderator?, size: per_page, from: ((params[:page] || PAGE_NEUTRALIZER).to_i - PAGE_NEUTRALIZER) * per_page, current_user_watchlist: current_user_watchlist).call
-    render json: {talents: talents, pagination: paging}, status: :ok
+    paging, talents = Talents::ChewySearch.new(
+      filter_params: filter_params.to_h,
+      admin_or_moderator: current_user.admin_or_moderator?,
+      size: per_page, from: ((params[:page] || PAGE_NEUTRALIZER).to_i - PAGE_NEUTRALIZER) * per_page,
+      searching_user: current_user
+    ).call
+    render json: {
+      talents: talents,
+      pagination: {
+        currentPage: paging[:current_page],
+        lastPage: paging[:last_page]
+      }
+    }, status: :ok
   end
 
   # public /
@@ -62,7 +73,7 @@ class API::V1::TalentController < ApplicationController
   end
 
   def filter_params
-    params.permit(:keyword, :status, :discovery_row_id)
+    params.permit(:keyword, :status, :discovery_row_id, :watchlist_only)
   end
 
   def discovery_row

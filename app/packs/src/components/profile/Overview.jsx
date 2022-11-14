@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 
 import { ethers } from "ethers";
-import { patch, getAuthToken, post } from "src/utils/requests";
+import { patch, getAuthToken, post, destroy } from "src/utils/requests";
 import { toast } from "react-toastify";
 
 import Uppy from "@uppy/core";
@@ -295,6 +295,32 @@ const Overview = ({
     }
   };
 
+  const updateFollow = async () => {
+    let response;
+    if (talent.isFollowing) {
+      response = await destroy(`/api/v1/follows?user_id=${talent.user.id}`);
+    } else {
+      response = await post(`/api/v1/follows`, {
+        user_id: talent.user.id,
+      });
+    }
+
+    if (response.success) {
+      setTalent((prev) => ({
+        ...prev,
+        isFollowing: !talent.isFollowing,
+      }));
+    } else {
+      toast.error(
+        <ToastBody heading="Unable to update follow" body={response?.error} />
+      );
+    }
+  };
+
+  const showFollowButton = () => {
+    return currentUserId && talent.user.id != currentUserId;
+  };
+
   const headlineArray = useMemo(() => {
     return talent.profile.headline?.split(" ");
   }, [talent.profile.headline]);
@@ -507,6 +533,15 @@ const Overview = ({
                             />
                           </Button>
                         </a>
+                        {showFollowButton() && (
+                          <Button
+                            className="mr-2"
+                            type="white-outline"
+                            size="big"
+                            text={talent.isFollowing ? "Unfollow" : "Follow"}
+                            onClick={() => updateFollow()}
+                          />
+                        )}
                         {talent.token.contractId && (
                           <Button
                             type="primary-default"
@@ -834,6 +869,15 @@ const Overview = ({
                         />
                       </Button>
                     </a>
+                    {showFollowButton() && (
+                      <Button
+                        className="mr-2"
+                        type="white-outline"
+                        size="big"
+                        text={talent.isFollowing ? "Unfollow" : "Follow"}
+                        onClick={() => updateFollow()}
+                      />
+                    )}
                     {talent.token.contractId && (
                       <Button
                         type="primary-default"

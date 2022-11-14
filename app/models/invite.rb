@@ -4,8 +4,6 @@ class Invite < ApplicationRecord
 
   has_many :invitees, class_name: "User", inverse_of: :invited
 
-  has_one :partnership_invitee, class_name: "Partnership", inverse_of: :invited
-
   validate :partnership_or_user
   validates :code, presence: true
 

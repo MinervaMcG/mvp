@@ -23,7 +23,8 @@ RSpec.describe "Talent", type: :request do
           .with(
             admin_or_moderator: false,
             discovery_row: nil,
-            filter_params: {"status" => "Pending approval"}
+            filter_params: {"status" => "Pending approval"},
+            searching_user: current_user
           )
 
         expect(talents_search).to have_received(:call)

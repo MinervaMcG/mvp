@@ -19,7 +19,6 @@
     <%= javascript_pack_tag 'application' %>
     <%= stylesheet_pack_tag "application", media: 'all' %>
     <link rel="shortcut icon" href="/favicon.ico">
-    <%= render partial: "services/hotjar" %>
   </head>
 
   <% if current_user.present? && current_user.onboarding_complete? %>
@@ -41,5 +40,8 @@
   <% unless Rails.env.development? || Rails.env.test? %>
     <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
     <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript>
+    <script type="text/javascript">!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});</script>
+    <script type="text/javascript">window.Beacon('init', "<%= ENV['HELPSCOUT_KEY'] %>")</script>
+    <script type="text/javascript">window.Beacon('identify', {name: "<%= current_user&.name %>", email: "<%= current_user&.email %>"})</script>
   <% end %>
 </html>

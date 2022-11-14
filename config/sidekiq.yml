@@ -45,7 +45,7 @@
     cron: "1 0 * * *" # runs once every day at 8am
     class: DailyMetricsJob
   setup_next_race:
-    cron: "1 0 * * 3" # Runs every Wednesday at 00:01
+    cron: "1 0 1 * *" # Runs every month at 00:01
     class: SetupNextRaceJob
   update_chewy_index:
     cron: "0 * * * *" # Runs every hour

@@ -5,12 +5,14 @@ RSpec.describe Talents::Search do
     described_class.new(
       filter_params: filter_params,
       sort_params: sort_params,
-      discovery_row: discovery_row
+      discovery_row: discovery_row,
+      searching_user: searching_user
     ).call
   end
 
   let(:sort_params) { {} }
   let(:discovery_row) { nil }
+  let(:searching_user) { create :user }
 
   let!(:user_1) { create :user, talent: talent_1, username: "jonas" }
   let(:talent_1) { create :talent, :with_token, public: true }
@@ -51,6 +53,23 @@ RSpec.describe Talents::Search do
 
     it "returns all talent users" do
       expect(search_talents).to match_array([talent_1, talent_2, talent_3, talent_4, talent_5, talent_without_launched_token, verified_talent, celo_talent, polygon_talent])
+    end
+  end
+
+  context "when the watchlist_only filter is passed" do
+    let(:filter_params) do
+      {
+        watchlist_only: "true"
+      }
+    end
+
+    before do
+      create :follow, user: user_1, follower: searching_user
+      create :follow, user: user_4, follower: searching_user
+    end
+
+    it "returns all talent users that the searching user follows" do
+      expect(search_talents).to match_array([talent_1, talent_4])
     end
   end
 

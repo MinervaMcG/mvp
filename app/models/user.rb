@@ -7,7 +7,8 @@ class User < ApplicationRecord
   validate :email_and_credentials
   validate :validate_notification_preferences
   validate :username_is_valid
-  validates :username, :email, :wallet_id, uniqueness: true
+  validates :username, :email, uniqueness: true
+  validates :wallet_id, uniqueness: true, if: -> { wallet_id.present? }
 
   has_one :talent
   has_many :invites

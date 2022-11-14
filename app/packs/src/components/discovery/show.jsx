@@ -244,7 +244,7 @@ const DiscoveryShow = ({ discoveryRow, talents, env }) => {
                 <P1
                   bold
                   className="text-primary-03 d-inline"
-                  text={`${discoveryRow.title} Talents`}
+                  text={`${discoveryRow.title} Talent List`}
                 />
                 <P1
                   bold

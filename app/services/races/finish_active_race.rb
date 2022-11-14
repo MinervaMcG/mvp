@@ -14,13 +14,13 @@ module Races
 
     attr_reader :race
 
-    # Create the race for the week after the current
+    # Create the race for the month after the current
     def create_next
       last_race = Race.last
       race = Race.new
       start_date = (last_race.ends_at + 1.day).beginning_of_day
       race.started_at = start_date.beginning_of_day
-      race.ends_at = start_date + 1.week - 1.second
+      race.ends_at = start_date.end_of_month
       race.save!
     end
 

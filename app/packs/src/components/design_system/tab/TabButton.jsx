@@ -8,10 +8,11 @@ import cx from "classnames";
 const TabButton = ({
   textTabPrimary,
   textTabSecondary,
+  textActiveTab,
   onClick,
   className,
 }) => {
-  const [activeTab, setActiveTab] = useState(textTabPrimary);
+  const [activeTab, setActiveTab] = useState(textActiveTab || textTabPrimary);
 
   const changeActiveTab = (tab) => {
     setActiveTab(tab);
@@ -53,6 +54,7 @@ const TabButton = ({
 TabButton.defaultProps = {
   textTabPrimary: null,
   textTabSecondary: null,
+  textActiveTab: null,
   onClick: null,
   className: "",
   active: false,
@@ -61,6 +63,7 @@ TabButton.defaultProps = {
 TabButton.propTypes = {
   textTabPrimary: string,
   textTabSecondary: string,
+  textActiveTab: string,
   onClick: func,
   className: string,
   active: bool,

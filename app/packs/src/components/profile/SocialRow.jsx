@@ -50,7 +50,7 @@ const SocialRow = ({ profile, className }) => {
           <Button
             type="white-outline"
             size="big-icon"
-            className="d-flex justify-content-center align-items-center mr-4"
+            className="d-flex justify-content-center align-items-center mr-2"
           >
             <FontAwesomeIcon icon={faGlobeEurope} />
           </Button>
@@ -61,7 +61,7 @@ const SocialRow = ({ profile, className }) => {
           <Button
             type="white-outline"
             size="big-icon"
-            className="d-flex justify-content-center align-items-center mr-4"
+            className="d-flex justify-content-center align-items-center mr-2"
           >
             <FontAwesomeIcon icon={faGithub} />
           </Button>
@@ -72,7 +72,7 @@ const SocialRow = ({ profile, className }) => {
           <Button
             type="white-outline"
             size="big-icon"
-            className="d-flex justify-content-center align-items-center mr-4"
+            className="d-flex justify-content-center align-items-center mr-2"
           >
             <FontAwesomeIcon icon={faLinkedin} />
           </Button>
@@ -83,7 +83,7 @@ const SocialRow = ({ profile, className }) => {
           <Button
             type="white-outline"
             size="big-icon"
-            className="d-flex justify-content-center align-items-center mr-4"
+            className="d-flex justify-content-center align-items-center mr-2"
           >
             <FontAwesomeIcon icon={faTwitter} />
           </Button>
@@ -94,7 +94,7 @@ const SocialRow = ({ profile, className }) => {
           <Button
             type="white-outline"
             size="big-icon"
-            className="d-flex justify-content-center align-items-center mr-4"
+            className="d-flex justify-content-center align-items-center mr-2"
           >
             <FontAwesomeIcon icon={faTelegram} />
           </Button>
@@ -105,7 +105,7 @@ const SocialRow = ({ profile, className }) => {
           <Button
             type="white-outline"
             size="big-icon"
-            className="d-flex justify-content-center align-items-center mr-4"
+            className="d-flex justify-content-center align-items-center mr-2"
           >
             <FontAwesomeIcon icon={faDiscord} />
           </Button>

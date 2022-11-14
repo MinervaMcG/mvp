@@ -118,8 +118,8 @@ RSpec.describe Users::Create do
     end
 
     context "when the talent invite passed is associated with a partnership" do
-      let!(:invite) { create :invite, user: create(:user), code: "core-team", talent_invite: true }
-      let!(:partnership) { create :partnership, invited: invite, name: "Talent Protocol Core Team", description: "Team building Talent Protocol." }
+      let!(:invite) { create :invite, partnership: partnership, code: "core-team", talent_invite: true, user: nil }
+      let!(:partnership) { create :partnership, name: "Talent Protocol Core Team", description: "Team building Talent Protocol." }
 
       it "creates a new discovery row" do
         create_user

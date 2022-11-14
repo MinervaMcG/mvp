@@ -20,7 +20,7 @@ module Users
 
         if invite&.talent_invite?
           update_profile_type(user, invite)
-          upsert_discovery_row(invite, user) if invite.partnership_invitee.present?
+          upsert_discovery_row(invite, user) if invite.partnership.present?
         end
 
         create_invite(user)
@@ -92,7 +92,7 @@ module Users
     end
 
     def upsert_discovery_row(invite, user)
-      partnership = invite.partnership_invitee
+      partnership = invite.partnership
 
       discovery_row = partnership.discovery_row
 

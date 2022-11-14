@@ -2,17 +2,24 @@ require "web3_api/api_proxy"
 
 module Talents
   class Search
-    def initialize(filter_params: {}, sort_params: {}, discovery_row: nil, admin_or_moderator: false)
+    ADMIN_FILTER_STATUS = [
+      "Admin all",
+      "Pending approval"
+    ].freeze
+
+    def initialize(filter_params: {}, sort_params: {}, discovery_row: nil, admin_or_moderator: false, searching_user: nil)
       @filter_params = filter_params
       @sort_params = sort_params
       @discovery_row = discovery_row
       @admin_or_moderator = admin_or_moderator
+      @searching_user = searching_user
     end
 
     def call
-      talents = admin_or_moderator ? Talent.joins(:user, :talent_token) : Talent.base.joins(:user, :talent_token)
+      talents = talent_scope.joins(:user, :talent_token)
 
       talents = talents.where.not(user: {profile_type: "applying"})
+      talents = filter_by_watchlist(talents) if watchlist_only == "true"
       talents = filter_by_discovery_row(talents) if discovery_row
       talents = filter_by_keyword(talents) if keyword
       talents = filter_by_status(talents)
@@ -22,7 +29,15 @@ module Talents
 
     private
 
-    attr_reader :discovery_row, :filter_params, :sort_params, :admin_or_moderator
+    attr_reader :discovery_row, :filter_params, :sort_params, :admin_or_moderator, :searching_user
+
+    def talent_scope
+      if admin_or_moderator && ADMIN_FILTER_STATUS.include?(filter_params[:status])
+        Talent.all
+      else
+        Talent.base
+      end
+    end
 
     def filter_by_discovery_row(talents)
       users = User.joins(tags: :discovery_row)
@@ -45,8 +60,16 @@ module Talents
       talents.where(user: users.distinct.select(:id))
     end
 
+    def filter_by_watchlist(talents)
+      talents.where(user_id: searching_user.following.pluck(:user_id))
+    end
+
     def keyword
       @keyword ||= filter_params[:keyword]
+    end
+
+    def watchlist_only
+      @watchlist_only ||= filter_params[:watchlist_only]
     end
 
     def filter_by_status(talents)
@@ -66,7 +89,9 @@ module Talents
       elsif filter_params[:status] == "By Polygon Network"
         talents.where(talent_token: {chain_id: chain_id("polygon")})
       else
-        talents
+        # We're doing it this way to avoid duplicates
+        random_talents = talents.select("setseed(0.#{Date.today.jd}), talent.id").order("random()")
+        Talent.distinct.where(id: random_talents.pluck(:id))
       end
     end
 

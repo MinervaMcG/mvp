@@ -6,7 +6,6 @@ import { H5, P2, P3 } from "src/components/design_system/typography";
 import TextInput from "src/components/design_system/fields/textinput";
 import Checkbox from "src/components/design_system/checkbox";
 import Link from "src/components/design_system/link";
-import debounce from "lodash/debounce";
 import { passwordMatchesRequirements } from "src/utils/passwordRequirements";
 import Tag from "src/components/design_system/tag";
 
@@ -39,6 +38,7 @@ const Welcome = ({
   const [localCode, setCode] = useState(inviteCode || "");
   const [localUsername, setUsername] = useState(username);
   const [requestingUsername, setRequestingUsername] = useState(false);
+  const [usernameValidated, setUsernameValidated] = useState(false);
   const [usernameError, setUsernameError] = useState("");
   const [localPassword, setLocalPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
@@ -71,20 +71,29 @@ const Welcome = ({
     }
   };
 
-  const updateUsername = (newUsername) => {
+  useEffect(() => {
     setRequestingUsername(true);
-    get(`api/v1/username/valid?username=${newUsername}`).then((response) => {
-      setUsernameError(response.error);
+    const validateUsername = setTimeout(() => {
+      if (localUsername == "") {
+        setRequestingUsername(false);
+        return;
+      }
 
-      setUsername(newUsername);
-      setRequestingUsername(false);
-    });
-  };
+      get(`api/v1/username/valid?username=${localUsername}`).then(
+        (response) => {
+          if (response.error == "") {
+            setUsernameValidated(true);
+          } else {
+            setUsernameValidated(false);
+          }
+          setUsernameError(response.error);
+          setRequestingUsername(false);
+        }
+      );
+    }, 300);
 
-  const debouncedUpdateUsername = debounce(
-    (newUsername) => updateUsername(newUsername),
-    200
-  );
+    return () => clearTimeout(validateUsername);
+  }, [localUsername]);
 
   useEffect(() => {
     if (localPassword.length > 7 && passwordConfirmation.length > 7) {
@@ -142,7 +151,7 @@ const Welcome = ({
             type="text"
             id="inputUsername"
             value={localUsername}
-            onChange={(e) => debouncedUpdateUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
             error={usernameError}
           />
           <P2
@@ -157,7 +166,7 @@ const Welcome = ({
               style={{ top: 48, right: 10 }}
             />
           )}
-          {!usernameError && (
+          {usernameValidated && (
             <FontAwesomeIcon
               icon={faCheck}
               className="position-absolute text-success"

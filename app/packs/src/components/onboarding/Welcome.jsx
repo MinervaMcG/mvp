@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import debounce from "lodash/debounce";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 
@@ -23,6 +22,7 @@ const Welcome = ({
   const [localUsername, setLocalUsername] = useState(username);
   const [usernameError, setUsernameError] = useState("");
   const [validatingUsername, setValidatingUsername] = useState("");
+  const [usernameValidated, setUsernameValidated] = useState(false);
 
   const submitWelcomeForm = (e) => {
     e.preventDefault();
@@ -36,19 +36,30 @@ const Welcome = ({
     changeStep(2);
   };
 
-  const updateUsername = (newUsername) => {
+  useEffect(() => {
     setValidatingUsername(true);
-    get(`api/v1/username/valid?username=${newUsername}`).then((response) => {
-      setUsernameError(response.error);
-      setLocalUsername(newUsername);
-      setValidatingUsername(false);
-    });
-  };
+    setUsernameValidated(false);
+    const validateUsername = setTimeout(() => {
+      if (localUsername == "") {
+        setValidatingUsername(false);
+        return;
+      }
 
-  const debouncedUpdateUsername = debounce(
-    (newUsername) => updateUsername(newUsername),
-    200
-  );
+      get(`api/v1/username/valid?username=${localUsername}`).then(
+        (response) => {
+          if (response.error == "") {
+            setUsernameValidated(true);
+          } else {
+            setUsernameValidated(false);
+          }
+          setUsernameError(response.error);
+          setValidatingUsername(false);
+        }
+      );
+    }, 300);
+
+    return () => clearTimeout(validateUsername);
+  }, [localUsername]);
 
   const invalidForm =
     localFirstName == "" || localLastName == "" || localUsername == "";
@@ -75,7 +86,7 @@ const Welcome = ({
             type="text"
             id="inputUsername"
             value={localUsername}
-            onChange={(e) => debouncedUpdateUsername(e.target.value)}
+            onChange={(e) => setLocalUsername(e.target.value)}
             shortCaption={
               !usernameError && `Your Talent Protocol URL: /u/${localUsername}`
             }
@@ -89,7 +100,7 @@ const Welcome = ({
               style={{ top: 48, right: 10 }}
             />
           )}
-          {!usernameError && (
+          {usernameValidated && (
             <FontAwesomeIcon
               icon={faCheck}
               className="position-absolute text-success"
