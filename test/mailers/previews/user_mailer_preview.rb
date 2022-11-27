@@ -91,6 +91,22 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.with(goal: goal(user), user: user).send_goal_halfway_reminder_email
   end
 
+  def send_opportunities_open_roles_email
+    UserMailer.with(user: User.first).send_opportunities_open_roles_email
+  end
+
+  def send_opportunities_hiring_email
+    UserMailer.with(user: User.first).send_opportunities_hiring_email
+  end
+
+  def send_opportunities_role_landed_email
+    UserMailer.with(user: User.first).send_opportunities_role_landed_email
+  end
+
+  def send_opportunities_talent_found_email
+    UserMailer.with(user: User.first).send_opportunities_talent_found_email
+  end
+
   private
 
   def goal(user)

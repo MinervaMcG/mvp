@@ -30,7 +30,10 @@ class API::UpdateTalent
         new_profile_type: params[:profile_type],
         note: params[:note]
       )
-      Tasks::Update.new.call(type: "Tasks::ApplyTokenLaunch", user: talent_user) if params[:profile_type] == "waiting_for_approval"
+
+      if params[:profile_type] == "waiting_for_approval"
+        Tasks::Update.new.call(type: "Tasks::ApplyTokenLaunch", user: talent_user)
+      end
 
       if params[:profile_type] == "approved"
         talent.update!(public: true)
@@ -129,14 +132,6 @@ class API::UpdateTalent
   end
 
   def update_career_needs(career_needs)
-    talent
-      .career_goal
-      .career_needs
-      .where.not(title: career_needs)
-      .delete_all
-
-    career_needs.each do |title|
-      CareerNeed.find_or_create_by!(title: title, career_goal: talent.career_goal)
-    end
+    CareerNeeds::Upsert.new(career_goal: talent.career_goal, titles: career_needs).call
   end
 end

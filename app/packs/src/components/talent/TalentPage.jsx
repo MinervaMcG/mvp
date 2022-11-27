@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useMemo } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import { useWindowDimensionsHook } from "src/utils/window";
 import { get } from "src/utils/requests";

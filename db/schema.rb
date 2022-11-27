@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_06_130542) do
-
+ActiveRecord::Schema.define(version: 2022_11_21_140053) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -498,6 +497,26 @@ ActiveRecord::Schema.define(version: 2022_11_06_130542) do
     t.index ["wallet_id"], name: "index_transfers_on_wallet_id"
   end
 
+  create_table "user_domains", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "domain", null: false
+    t.integer "chain_id", null: false
+    t.string "wallet", null: false
+    t.string "provider", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "domain", "chain_id", "wallet"], name: "unique_user_domain_fields_index", unique: true
+    t.index ["user_id"], name: "index_user_domains_on_user_id"
+  end
+
+  create_table "user_email_logs", force: :cascade do |t|
+    t.jsonb "sent_at_data", default: {}
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_user_email_logs_on_user_id", unique: true
+  end
+
   create_table "user_profile_type_changes", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "who_dunnit_id", null: false
@@ -636,6 +655,8 @@ ActiveRecord::Schema.define(version: 2022_11_06_130542) do
   add_foreign_key "talent_tokens", "talent"
   add_foreign_key "tasks", "quests"
   add_foreign_key "transfers", "users"
+  add_foreign_key "user_domains", "users"
+  add_foreign_key "user_email_logs", "users"
   add_foreign_key "user_profile_type_changes", "users"
   add_foreign_key "user_profile_type_changes", "users", column: "who_dunnit_id"
   add_foreign_key "user_tags", "tags"

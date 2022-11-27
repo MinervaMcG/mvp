@@ -2,10 +2,11 @@ import { ethers } from "ethers";
 import { faGlobeEurope } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { camelCaseObject } from "src/utils/transformObjects";
 import cx from "classnames";
-import React, { useState, useContext, useMemo } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
-import { ArrowLeft, Help } from "src/components/icons";
+import { ArrowLeft, Help, Spinner } from "src/components/icons";
 
 import {
   compareName,
@@ -15,7 +16,7 @@ import {
   compareMarketCapVariance,
 } from "src/components/talent/utils/talent";
 
-import { destroy, post } from "src/utils/requests";
+import { destroy, post, get } from "src/utils/requests";
 import { H3, P1, P2 } from "src/components/design_system/typography";
 import { lightTextPrimary03 } from "src/utils/colors";
 import { parseAndCommify } from "src/onchain/utils";
@@ -27,13 +28,20 @@ import TalentTableListMode from "src/components/talent/TalentTableListMode";
 import ThemeContainer, { ThemeContext } from "src/contexts/ThemeContext";
 import Tooltip from "src/components/design_system/tooltip";
 
-const DiscoveryShow = ({ discoveryRow, talents, env }) => {
+const DiscoveryShow = ({ isAdminOrModerator, discoveryRow, env }) => {
   const theme = useContext(ThemeContext);
   const { mobile } = useWindowDimensionsHook();
-  const [localTalents, setLocalTalents] = useState(talents);
+  const url = new URL(document.location);
+
+  const [talents, setTalents] = useState([]);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    lastPage: null,
+  });
   const [listModeOnly, setListModeOnly] = useState(false);
   const [selectedSort, setSelectedSort] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
+  const [loading, setLoading] = useState(false);
   const partnership = discoveryRow.partnership;
   const partnershipSocialLinks =
     partnership && (partnership.website_url || partnership.twitter_url);
@@ -47,36 +55,15 @@ const DiscoveryShow = ({ discoveryRow, talents, env }) => {
     return parseAndCommify(formattedNumber);
   };
 
-  const updateFollow = async (talent) => {
-    const newLocalTalents = localTalents.map((currTalent) => {
-      if (currTalent.id === talent.id) {
-        return { ...currTalent, isFollowing: !talent.isFollowing };
-      } else {
-        return { ...currTalent };
-      }
-    });
+  useEffect(() => {
+    const params = new URLSearchParams(document.location.search);
+    params.set("page", 1);
+    params.set("discovery_row_id", discoveryRow.id);
+    loadTalents(params);
+  }, [discoveryRow]);
 
-    if (talent.isFollowing) {
-      const response = await destroy(
-        `/api/v1/follows?user_id=${talent.userId}`
-      );
-
-      if (response.success) {
-        setLocalTalents([...newLocalTalents]);
-      }
-    } else {
-      const response = await post(`/api/v1/follows`, {
-        user_id: talent.userId,
-      });
-
-      if (response.success) {
-        setLocalTalents([...newLocalTalents]);
-      }
-    }
-  };
-
-  const filteredTalents = useMemo(() => {
-    let desiredTalent = [...localTalents];
+  useEffect(() => {
+    let sortedTalent = [...talents];
 
     let comparisonFunction;
 
@@ -99,13 +86,92 @@ const DiscoveryShow = ({ discoveryRow, talents, env }) => {
     }
 
     if (sortDirection === "asc") {
-      desiredTalent.sort(comparisonFunction).reverse();
+      sortedTalent.sort(comparisonFunction).reverse();
     } else if (sortDirection === "desc") {
-      desiredTalent.sort(comparisonFunction);
+      sortedTalent.sort(comparisonFunction);
     }
 
-    return desiredTalent;
-  }, [localTalents, selectedSort, sortDirection]);
+    setTalents(sortedTalent);
+  }, [selectedSort, sortDirection]);
+
+  const updateFollow = async (talent) => {
+    const newTalents = talents.map((currTalent) => {
+      if (currTalent.id === talent.id) {
+        return { ...currTalent, isFollowing: !talent.isFollowing };
+      } else {
+        return { ...currTalent };
+      }
+    });
+
+    if (talent.isFollowing) {
+      const response = await destroy(
+        `/api/v1/follows?user_id=${talent.userId}`
+      );
+
+      if (response.success) {
+        setTalents([...newTalents]);
+      }
+    } else {
+      const response = await post(`/api/v1/follows`, {
+        user_id: talent.userId,
+      });
+
+      if (response.success) {
+        setTalents([...newTalents]);
+      }
+    }
+  };
+
+  const loadTalents = (params) => {
+    setLoading(true);
+    get(`/api/v1/talent?${params.toString()}`).then((response) => {
+      if (response.error) {
+        toast.error(<ToastBody heading="Error!" body={response.error} />);
+      } else {
+        setPagination(response.pagination);
+        let responseTalents = response.talents.map((talent) => ({
+          ...camelCaseObject(talent),
+        }));
+        setTalents(responseTalents);
+
+        params.delete("discovery_row_id");
+        window.history.replaceState(
+          {},
+          document.title,
+          `${url.pathname}?${params.toString()}`
+        );
+        setLoading(false);
+      }
+    });
+  };
+
+  const loadMoreTalents = () => {
+    setLoading(true);
+    const nextPage = pagination.currentPage + 1;
+
+    const params = new URLSearchParams(document.location.search);
+    params.set("page", nextPage);
+    params.set("discovery_row_id", discoveryRow.id);
+
+    get(`/api/v1/talent?${params.toString()}`).then((response) => {
+      let responseTalents = response.talents.map((talent) => ({
+        ...camelCaseObject(talent),
+      }));
+      const newTalents = [...talents, ...responseTalents];
+      setTalents(newTalents);
+      setPagination(response.pagination);
+
+      params.delete("discovery_row_id");
+      window.history.replaceState(
+        {},
+        document.title,
+        `${url.pathname}?${params.toString()}`
+      );
+      setLoading(false);
+    });
+  };
+
+  const showLoadMoreTalents = pagination.currentPage < pagination.lastPage;
 
   return (
     <div className={cx(mobile && "p-4")}>
@@ -259,13 +325,16 @@ const DiscoveryShow = ({ discoveryRow, talents, env }) => {
       <TalentOptions
         headerDescription={`${discoveryRow.title} Talent List`}
         listModeOnly={listModeOnly}
-        searchUrl={`/discovery/${discoveryRow.slug}`}
+        searchUrl="/api/v1/talent"
+        discoveryRowId={discoveryRow.id}
+        setTalents={setTalents}
+        setPagination={setPagination}
         setListModeOnly={setListModeOnly}
-        setLocalTalents={setLocalTalents}
         setSelectedSort={setSelectedSort}
         setSortDirection={setSortDirection}
+        isAdminOrModerator={isAdminOrModerator}
       />
-      {localTalents.length === 0 && (
+      {talents.length === 0 && !loading && (
         <div className="d-flex justify-content-center mt-6">
           <P2
             className="text-black"
@@ -277,7 +346,7 @@ const DiscoveryShow = ({ discoveryRow, talents, env }) => {
       {listModeOnly ? (
         <TalentTableListMode
           theme={theme}
-          talents={filteredTalents}
+          talents={talents}
           selectedSort={selectedSort}
           setSelectedSort={setSelectedSort}
           sortDirection={sortDirection}
@@ -287,10 +356,24 @@ const DiscoveryShow = ({ discoveryRow, talents, env }) => {
         />
       ) : (
         <TalentTableCardMode
-          talents={filteredTalents}
+          talents={talents}
           updateFollow={updateFollow}
           env={env}
         />
+      )}
+      {loading && (
+        <div className="w-100 d-flex flex-row my-2 justify-content-center">
+          <Spinner />
+        </div>
+      )}
+      {showLoadMoreTalents && (
+        <Button
+          onClick={() => loadMoreTalents()}
+          type="white-subtle"
+          className="d-flex mt-4 mx-auto"
+        >
+          Load more
+        </Button>
       )}
     </div>
   );

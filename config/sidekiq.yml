@@ -9,6 +9,9 @@
 :limits:
   low: 1
 :schedule:
+  send_career_need_opportunity_emails:
+    cron: "0 11 * * *" # runs once every day at 11:00
+    class: SendCareerNeedOpportunityEmailsJob
   send_goal_deadline_reminder:
     cron: "0 12 L * *" # Runs on the last day of the month at 12:00
     class: EmailReminders::SendGoalDeadlineReminderJob

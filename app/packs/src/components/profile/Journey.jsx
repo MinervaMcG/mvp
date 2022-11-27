@@ -307,10 +307,12 @@ const Journey = ({ className, talent, setTalent, canUpdate }) => {
                       />
                     )}
                   </div>
-                  <P2
-                    className="text-primary-01 mb-3"
-                    text={journeyItem.institution}
-                  />
+                  <a target="_blank" href={journeyItem.link}>
+                    <P2
+                      className="text-primary-01 mb-3"
+                      text={journeyItem.institution}
+                    />
+                  </a>
                   <P2
                     className="text-primary-03"
                     text={journeyItem.description}

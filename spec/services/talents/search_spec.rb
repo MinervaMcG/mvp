@@ -14,45 +14,70 @@ RSpec.describe Talents::Search do
   let(:discovery_row) { nil }
   let(:searching_user) { create :user }
 
-  let!(:user_1) { create :user, talent: talent_1, username: "jonas" }
+  let!(:user_1) { create :user, :with_profile_complete, talent: talent_1, username: "jonas" }
   let(:talent_1) { create :talent, :with_token, public: true }
-  let!(:user_2) { create :user, profile_type: "talent", talent: talent_2, display_name: "Alexander" }
+  let!(:user_2) { create :user, :with_profile_complete, profile_type: "talent", talent: talent_2, display_name: "Alexander" }
   let(:talent_2) { create :talent, :with_token, public: true }
-  let!(:user_3) { create :user, profile_type: "talent", talent: talent_3, username: "jonathan" }
+  let!(:user_3) { create :user, :with_profile_complete, profile_type: "talent", talent: talent_3, username: "jonathan" }
   let(:talent_3) { create :talent, :with_token, public: true }
-  let!(:user_4) { create :user, profile_type: "talent", talent: talent_4, display_name: "Alex" }
+  let!(:user_4) { create :user, :with_profile_complete, profile_type: "talent", talent: talent_4, display_name: "Alex" }
   let(:talent_4) { create :talent, :with_token, public: true }
 
-  let!(:private_user) { create :user, talent: private_talent, display_name: "Alexandrina", profile_type: "waiting_for_approval" }
+  let!(:private_user) { create :user, :with_profile_complete, talent: private_talent, display_name: "Alexandrina", profile_type: "waiting_for_approval" }
   let(:private_talent) { create :talent, :with_token, public: false }
 
-  let!(:user_without_token) { create :user, talent: talent_without_token, username: "jona" }
+  let!(:user_without_token) { create :user, :with_profile_complete, talent: talent_without_token, username: "jona" }
   let(:talent_without_token) { create :talent, public: true }
 
-  let!(:user_5) { create :user, talent: talent_5, username: "john" }
+  let!(:user_5) { create :user, :with_profile_complete, talent: talent_5, username: "john" }
   let(:talent_5) { create :talent, talent_token: token_5, public: true }
   let(:token_5) { create :talent_token, deployed_at: Time.now }
 
-  let!(:user_without_launched_token) { create :user, talent: talent_without_launched_token, username: "alexa" }
+  let!(:incomplete_profile_user) { create :user, talent: incomplete_profile_talent, profile_type: "waiting_for_approval" }
+  let(:incomplete_profile_talent) { create :talent, :with_token, public: true }
+
+  let!(:user_without_launched_token) { create :user, :with_profile_complete, talent: talent_without_launched_token, username: "alexa" }
   let(:talent_without_launched_token) { create :talent, talent_token: token_without_launch, public: true }
   let(:token_without_launch) { create :talent_token, contract_id: nil }
 
-  let!(:verfied_talent_user) { create :user, talent: verified_talent, username: "verfied" }
+  let!(:verfied_talent_user) { create :user, :with_profile_complete, talent: verified_talent, username: "verfied" }
   let(:verified_talent) { create :talent, :with_token, verified: true, public: true }
 
-  let!(:celo_talent_user) { create :user, talent: celo_talent, username: "will" }
+  let!(:celo_talent_user) { create :user, :with_profile_complete, talent: celo_talent, username: "will" }
   let(:celo_talent) { create :talent, talent_token: celo_talent_token, public: true }
   let(:celo_talent_token) { create :talent_token, chain_id: 44787 }
 
-  let!(:polygon_talent_user) { create :user, talent: polygon_talent, username: "ryan" }
+  let!(:polygon_talent_user) { create :user, :with_profile_complete, talent: polygon_talent, username: "ryan" }
   let(:polygon_talent) { create :talent, talent_token: polygon_talent_token, public: true }
   let(:polygon_talent_token) { create :talent_token, chain_id: 80001 }
+
+  let!(:user_looking_for_mentor) { create :user, :with_profile_complete, profile_type: "talent", talent: talent_looking_for_mentor }
+  let(:talent_looking_for_mentor) { create :talent, :with_token, :with_career_goal, public: true }
+  let!(:looking_for_mentor_career_need) { create :career_need, career_goal: talent_looking_for_mentor.career_goal, title: CareerNeed::LOOKING_MENTORSHIP }
+
+  let!(:user_looking_to_mentor_others) { create :user, :with_profile_complete, profile_type: "talent", talent: talent_looking_to_mentor_others }
+  let(:talent_looking_to_mentor_others) { create :talent, :with_token, :with_career_goal, public: true }
+  let!(:looking_to_mentor_others_career_need) { create :career_need, career_goal: talent_looking_to_mentor_others.career_goal, title: CareerNeed::MENTORING_OTHERS }
 
   context "when filter params are empty" do
     let(:filter_params) { {} }
 
     it "returns all talent users" do
-      expect(search_talents).to match_array([talent_1, talent_2, talent_3, talent_4, talent_5, talent_without_launched_token, verified_talent, celo_talent, polygon_talent])
+      expect(search_talents).to match_array(
+        [
+          talent_1,
+          talent_2,
+          talent_3,
+          talent_4,
+          talent_5,
+          talent_without_launched_token,
+          verified_talent,
+          celo_talent,
+          polygon_talent,
+          talent_looking_for_mentor,
+          talent_looking_to_mentor_others
+        ]
+      )
     end
   end
 
@@ -229,19 +254,43 @@ RSpec.describe Talents::Search do
         expect(search_talents).to match_array([polygon_talent])
       end
     end
+
+    context "when the status filter is Looking Mentorship" do
+      let(:filter_params) do
+        {
+          status: "Looking for a mentor"
+        }
+      end
+
+      it "returns all latest talents looking for a mentor" do
+        expect(search_talents).to match_array([talent_looking_for_mentor])
+      end
+    end
+
+    context "when the status filter is Looking to mentor others" do
+      let(:filter_params) do
+        {
+          status: "Looking to mentor others"
+        }
+      end
+
+      it "returns all latest talents looking to mentor" do
+        expect(search_talents).to match_array([talent_looking_to_mentor_others])
+      end
+    end
   end
 
   context "when the user is an admin or a moderator" do
-    context "when the status filter is passed" do
-      subject(:search_talents) do
-        described_class.new(
-          admin_or_moderator: true,
-          discovery_row: discovery_row,
-          filter_params: filter_params,
-          sort_params: sort_params
-        ).call
-      end
+    subject(:search_talents) do
+      described_class.new(
+        admin_or_moderator: true,
+        discovery_row: discovery_row,
+        filter_params: filter_params,
+        sort_params: sort_params
+      ).call
+    end
 
+    context "when the status filter is passed" do
       context "when the status filter is Pending approval" do
         let(:filter_params) do
           {
@@ -250,7 +299,7 @@ RSpec.describe Talents::Search do
         end
 
         it "returns talents that are pending approval" do
-          expect(search_talents).to include(private_talent)
+          expect(search_talents).to include(private_talent, incomplete_profile_talent)
         end
       end
     end

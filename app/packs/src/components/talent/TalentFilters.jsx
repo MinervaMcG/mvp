@@ -22,6 +22,8 @@ const TalentFilters = ({
         "Verified",
         "By Celo Network",
         "By Polygon Network",
+        "Looking for a mentor",
+        "Looking to mentor others",
       ];
     }
 
@@ -33,6 +35,8 @@ const TalentFilters = ({
       "Verified",
       "By Celo Network",
       "By Polygon Network",
+      "Looking for a mentor",
+      "Looking to mentor others",
     ];
   }, []);
 

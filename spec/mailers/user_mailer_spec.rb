@@ -155,4 +155,48 @@ RSpec.describe UserMailer, type: :mailer do
       expect(mail.to).to eql([user.email])
     end
   end
+
+  describe "send opportunities open roles email" do
+    let(:mail) do
+      described_class.with(user: user).send_opportunities_open_roles_email
+    end
+
+    it "renders the header" do
+      expect(mail.subject).to eql("We have open roles for you!")
+      expect(mail.to).to eql([user.email])
+    end
+  end
+
+  describe "send opportunities hiring email" do
+    let(:mail) do
+      described_class.with(user: user).send_opportunities_hiring_email
+    end
+
+    it "renders the header" do
+      expect(mail.subject).to eql("Looking to hire talent?")
+      expect(mail.to).to eql([user.email])
+    end
+  end
+
+  describe "send opportunities role landed email" do
+    let(:mail) do
+      described_class.with(user: user).send_opportunities_role_landed_email
+    end
+
+    it "renders the header" do
+      expect(mail.subject).to eql("Did you just land a new role?")
+      expect(mail.to).to eql([user.email])
+    end
+  end
+
+  describe "send opportunities talent found email" do
+    let(:mail) do
+      described_class.with(user: user).send_opportunities_talent_found_email
+    end
+
+    it "renders the header" do
+      expect(mail.subject).to eql("Did you meet talented builders?")
+      expect(mail.to).to eql([user.email])
+    end
+  end
 end

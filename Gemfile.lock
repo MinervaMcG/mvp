@@ -160,8 +160,6 @@ GEM
     css_parser (1.10.0)
       addressable
     diff-lcs (1.4.4)
-    digest-sha3 (1.1.0)
-    digest-sha3-patched (1.1.1)
     docile (1.4.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -187,15 +185,6 @@ GEM
     erubi (1.11.0)
     et-orbi (1.2.6)
       tzinfo
-    eth (0.4.12)
-      digest-sha3-patched (~> 1.1)
-      ffi (~> 1.0)
-      money-tree (~> 0.10.0)
-      rlp (~> 0.7.3)
-      scrypt (~> 3.0.6)
-    ethereum.rb (2.5)
-      activesupport (>= 4.0)
-      digest-sha3 (~> 1.1)
     execjs (2.8.1)
     factory_bot (6.2.0)
       activesupport (>= 5.0.0)
@@ -291,8 +280,6 @@ GEM
     mini_racer (0.4.0)
       libv8-node (~> 15.14.0.0)
     minitest (5.16.2)
-    money-tree (0.10.0)
-      ffi
     msgpack (1.4.2)
     multi_json (1.15.0)
     multipart-post (2.1.1)
@@ -386,7 +373,6 @@ GEM
     request_store (1.5.1)
       rack (>= 1.4)
     rexml (3.2.5)
-    rlp (0.7.3)
     rmagick (4.2.4)
     roda (3.46.0)
       rack
@@ -442,8 +428,6 @@ GEM
       sprockets-rails
       tilt
     schmooze (0.2.0)
-    scrypt (3.0.7)
-      ffi-compiler (>= 1.0, < 2.0)
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
@@ -541,8 +525,6 @@ DEPENDENCIES
   codecov
   dotenv-rails
   down
-  eth
-  ethereum.rb
   factory_bot_rails (~> 6.2.0)
   faker
   faraday

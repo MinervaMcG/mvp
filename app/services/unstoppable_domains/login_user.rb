@@ -15,6 +15,8 @@ module UnstoppableDomains
       user = upsert_user!
 
       upsert_profile_picture(user)
+      upsert_talent_data(user)
+      refresh_domains(user)
 
       user
     end
@@ -53,9 +55,6 @@ module UnstoppableDomains
       raise UserCreationError, result[:error] unless result[:success]
 
       result[:user].tap do |user|
-        talent = user.talent
-        upsert_talent_data(talent)
-
         user.confirm_email
         AddUsersToMailerliteJob.perform_later(user.id)
       end
@@ -76,7 +75,8 @@ module UnstoppableDomains
       talent.save!
     end
 
-    def upsert_talent_data(talent)
+    def upsert_talent_data(user)
+      talent = user.talent
       talent.twitter = twitter_url if talent.twitter.blank?
       talent.website = ipfs_website if talent.website.blank?
       talent.save!
@@ -104,6 +104,10 @@ module UnstoppableDomains
       return unless params[:name] && params[:name].split(" ")[-1]
 
       params[:name].split(" ")[-1]
+    end
+
+    def refresh_domains(user)
+      Web3::RefreshDomains.new(user: user).call
     end
   end
 end

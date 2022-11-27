@@ -29,8 +29,8 @@ const SocialRow = ({ profile, className }) => {
 
   const discordLink = () => {
     if (
-      profile.telegram.length > 0 &&
-      profile.telegram.includes("discordapp.com")
+      profile.discord.length > 0 &&
+      profile.discord.includes("discordapp.com")
     ) {
       return profile.discord;
     } else {

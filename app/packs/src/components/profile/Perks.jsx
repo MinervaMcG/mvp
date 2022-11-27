@@ -172,7 +172,7 @@ const Perks = ({ talent, canUpdate }) => {
               >
                 <div className="card perk-card p-2">
                   <div className="header d-flex flex-column justify-content-between p-3">
-                    <div className="d-flex align-items-center">
+                    <div className="d-flex align-items-center mb-1">
                       <TalentProfilePicture
                         src={talent.profilePictureUrl}
                         height={24}
@@ -189,12 +189,12 @@ const Perks = ({ talent, canUpdate }) => {
                         }}
                       />
                     </div>
-                    <H4 bold text={perk.title} />
+                    <H4 bold text={perk.title} className="overflow-y-scroll hide-scrollbar"/>
                   </div>
                   <div className="footer d-flex flex-column justify-content-between p-3">
                     <div>
                       <P3 text={"Title"} className="text-primary-04" />
-                      <P2 text={perk.title} bold className="text-primary-01" />
+                      <P2 text={perk.title} bold className="text-primary-01 overflow-y-scroll hide-scrollbar" style={{ maxHeight: "64px" }} />
                     </div>
                     <div className="position-relative">
                       <P3 text={"Hold Amount"} className="text-primary-04" />

@@ -18,5 +18,9 @@ FactoryBot.define do
     trait :full_profile do
       association :talent, :full_profile
     end
+
+    trait :with_profile_complete do
+      after(:create) { |user| create(:quest, user: user, type: "Quests::TalentProfile", status: "done") }
+    end
   end
 end

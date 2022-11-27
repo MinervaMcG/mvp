@@ -14,12 +14,14 @@ import { H4, P1 } from "src/components/design_system/typography";
 import { useWindowDimensionsHook } from "src/utils/window";
 import UserTags from "src/components/talent/UserTags";
 import Button from "src/components/design_system/button";
+import { Spinner } from "src/components/icons";
 import EditAboutwModal from "src/components/profile/edit/EditAboutModal";
 
 import cx from "classnames";
 
 const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
   const { mobile } = useWindowDimensionsHook();
+  const [isUploading, setIsUploading] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [aboutBannerFileInput, setAboutBannerFileInput] = useState(null);
 
@@ -43,6 +45,7 @@ const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
   });
 
   aboutBannerFileInput?.addEventListener("change", (event) => {
+    setIsUploading(true);
     const files = Array.from(event.target.files);
     files.forEach((file) => {
       try {
@@ -53,6 +56,7 @@ const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
           data: file,
         });
       } catch (err) {
+        setIsUploading(false);
         if (err.isRestriction) {
           // handle restrictions
           console.log("Restriction error:", err);
@@ -104,6 +108,7 @@ const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
       uppyBanner.reset();
     });
     uppyBanner.on("upload-success", (file, response) => {
+      setIsUploading(false);
       saveProfile({
         ...talent,
         careerGoal: {
@@ -145,54 +150,65 @@ const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
             style={{ borderRadius: "24px" }}
           />
         ) : (
-          <div className="position-relative mb-3">
-            <TalentProfilePicture
-              className="position-relative cursor-pointer"
-              style={{ borderRadius: "24px" }}
-              src={imageSrc}
-              height={mobile ? 230 : 350}
-              width={mobile ? 328 : 469}
-              straight
-            />
-            <div
-              className="edit-image"
-              style={{
-                borderRadius: "24px",
-                height: mobile ? "230px" : "350px",
-                width: mobile ? "328px" : "469px",
-              }}
-            ></div>
-            <label htmlFor="aboutBannerFileInput">
-              <TalentProfilePicture
-                className="position-absolute cursor-pointer"
+          <div className="h-100 position-relative mb-3">
+            { isUploading ? (
+              <div class="h-100 d-flex justify-content-center align-items-center">
+                <Spinner
+                  className="mx-4"
+                  width={50}
+                />
+              </div>
+            ) : (
+              <>
+                <TalentProfilePicture
+                className="position-relative cursor-pointer"
+                style={{ borderRadius: "24px" }}
+                src={imageSrc}
+                height={mobile ? 230 : 350}
+                width={mobile ? 328 : 469}
+                straight
+              />
+              <div
+                className="edit-image"
+                style={{
+                  borderRadius: "24px",
+                  height: mobile ? "230px" : "350px",
+                  width: mobile ? "328px" : "469px",
+                }}
+              ></div>
+              <label htmlFor="aboutBannerFileInput">
+                <TalentProfilePicture
+                  className="position-absolute cursor-pointer"
+                  style={{
+                    top: mobile ? "100px" : "155px",
+                    left: mobile ? "110px" : "185px",
+                  }}
+                  src={CameraButton}
+                  height={40}
+                />
+              </label>
+              <input
+                id="aboutBannerFileInput"
+                className="d-none"
+                type="file"
+                accept=".jpg,.png,.jpeg,.gif"
+              ></input>
+              <button
+                className="button-link position-absolute"
                 style={{
                   top: mobile ? "100px" : "155px",
-                  left: mobile ? "110px" : "185px",
+                  left: mobile ? "165px" : "240px",
                 }}
-                src={CameraButton}
-                height={40}
-              />
-            </label>
-            <input
-              id="aboutBannerFileInput"
-              className="d-none"
-              type="file"
-              accept=".jpg,.png,.jpeg,.gif"
-            ></input>
-            <button
-              className="button-link position-absolute"
-              style={{
-                top: mobile ? "100px" : "155px",
-                left: mobile ? "165px" : "240px",
-              }}
-              onClick={deleteBannerImg}
-            >
-              <TalentProfilePicture
-                className="cursor-pointer"
-                src={DeleteButton}
-                height={40}
-              />
-            </button>
+                onClick={deleteBannerImg}
+              >
+                <TalentProfilePicture
+                  className="cursor-pointer"
+                  src={DeleteButton}
+                  height={40}
+                />
+              </button>
+              </>
+            )}
           </div>
         )}
       </div>

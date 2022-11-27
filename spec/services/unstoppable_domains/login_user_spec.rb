@@ -33,6 +33,9 @@ RSpec.describe UnstoppableDomains::LoginUser do
   let(:verify_wallet_class) { Web3::VerifyWallet }
   let(:verify_wallet) { instance_double(verify_wallet_class, call: true) }
 
+  let(:refresh_domains_class) { Web3::RefreshDomains }
+  let(:refresh_domains_service) { instance_double(refresh_domains_class, call: true) }
+
   let(:creator_class) { Users::Create }
   let(:creator) { instance_double(creator_class, call: result) }
   let(:result) { {success: true, user: user} }
@@ -45,6 +48,7 @@ RSpec.describe UnstoppableDomains::LoginUser do
 
   before do
     allow(verify_wallet_class).to receive(:new).and_return(verify_wallet)
+    allow(refresh_domains_class).to receive(:new).and_return(refresh_domains_service)
     allow(creator_class).to receive(:new).and_return(creator)
     allow(SecureRandom).to receive(:hex).and_return("314835")
     allow(Down).to receive(:open).and_return(chunked_io)
@@ -64,6 +68,18 @@ RSpec.describe UnstoppableDomains::LoginUser do
         )
 
         expect(verify_wallet).to have_received(:call)
+      end
+    end
+
+    it "initialises and calls the refresh domain service with the correct arguments" do
+      login_unstoppable_user
+
+      aggregate_failures do
+        expect(refresh_domains_class).to have_received(:new).with(
+          user: user
+        )
+
+        expect(refresh_domains_service).to have_received(:call)
       end
     end
 

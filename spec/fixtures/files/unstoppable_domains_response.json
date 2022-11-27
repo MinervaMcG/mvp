@@ -1,0 +1,16 @@
+{
+  "meta": {
+    "domain": "talentprotocol.dao",
+    "blockchain": "MATIC",
+    "networkId": 137,
+    "owner": "0xc925basdasxaiy37e22a7ddebe7asdasfjadsam22",
+    "resolver": "0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f",
+    "registry": "0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f",
+    "reverse": true
+  },
+  "records": {
+    "crypto.ETH.address": "0xc925basdasxaiy37e22a7ddebe7asdasfjadsam22",
+    "crypto.MATIC.version.ERC20.address": "0xc925basdasxaiy37e22a7ddebe7asdasfjadsam22",
+    "crypto.MATIC.version.MATIC.address": "0xc925basdasxaiy37e22a7ddebe7asdasfjadsam22"
+  }
+}

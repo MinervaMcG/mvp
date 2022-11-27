@@ -6,6 +6,7 @@ class OnboardingController < ApplicationController
       username: current_user.username,
       id: current_user.id
     }
+
     @talent = {
       occupation: current_user.talent.occupation,
       experienceLevel: current_user.talent.experience_level,
@@ -22,14 +23,15 @@ class OnboardingController < ApplicationController
       occupation: params[:occupation],
       experience_level: params[:experienceLevel]
     )
+
     current_user.talent.profile["nationality"] = params[:nationality]
     current_user.talent.profile["ethnicity"] = params[:ethnicity]
     current_user.talent.profile["gender"] = params[:gender]
     current_user.talent.save!
 
-    params[:careerNeeds].each do |need|
-      current_user.talent.career_goal.career_needs.create(title: need)
-    end
+    CareerNeeds::Upsert
+      .new(career_goal: current_user.talent.career_goal, titles: params[:careerNeeds])
+      .call
 
     last_milestone = current_user.talent.milestones.where(category: "Position").order(:start_date).last
 

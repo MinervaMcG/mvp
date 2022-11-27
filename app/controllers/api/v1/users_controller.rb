@@ -43,9 +43,7 @@ class API::V1::UsersController < ApplicationController
 
         SendCommunityNFTToUser.perform_later(user_id: @user.id)
         AddUsersToMailerliteJob.perform_later(@user.id)
-
-        service = Web3::TransferCelo.new
-        service.call(user: @user)
+        Web3::RefreshDomains.new(user: @user).call
         UpdateTasksJob.perform_later(type: "Tasks::ConnectWallet", user_id: @user.id)
       elsif params[:first_quest_popup]
         current_user.update!(first_quest_popup: true)

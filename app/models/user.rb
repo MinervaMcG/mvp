@@ -10,12 +10,15 @@ class User < ApplicationRecord
   validates :username, :email, uniqueness: true
   validates :wallet_id, uniqueness: true, if: -> { wallet_id.present? }
 
-  has_one :talent
-  has_many :invites
   belongs_to :invited, class_name: "Invite", foreign_key: "invite_id", optional: true
   belongs_to :race, optional: true
+
+  has_many :invites
   has_many :user_tags
   has_many :tags, through: :user_tags
+
+  has_one :talent
+  has_one :user_email_log
 
   # Chat
   has_many :messagee, foreign_key: :receiver_id, class_name: "Message"
@@ -38,6 +41,7 @@ class User < ApplicationRecord
   has_many :rewards
 
   # web3
+  has_one :user_domain
   has_many :erc20_tokens
   has_many :erc721_tokens
 
@@ -131,6 +135,8 @@ class User < ApplicationRecord
   end
 
   def display_wallet_id
+    return user_domain.domain if user_domain.present?
+
     wallet_id ? "#{wallet_id[0..10]}..." : ""
   end
 
