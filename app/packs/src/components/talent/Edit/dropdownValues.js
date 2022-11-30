@@ -128,6 +128,7 @@ export const nationalityOptions = [
   "New Zealander",
   "Ni-Vanuatu",
   "Nicaraguan",
+  "Nigerian",
   "Nigerien",
   "North Korean",
   "Northern Irish",
