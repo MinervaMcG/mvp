@@ -68,6 +68,10 @@ module Talents
         }, {
           match: {'talent_token.chain_id': #{Web3Api::ApiProxy.chain_id("polygon")}}
         }])"
+      elsif filter_params[:status] == "Looking for a mentor"
+        "query({match: {'career_goal.career_needs.title': '#{CareerNeed::LOOKING_MENTORSHIP}'}})"
+      elsif filter_params[:status] == "Looking to mentor others"
+        "query({match: {'career_goal.career_needs.title': '#{CareerNeed::MENTORING_OTHERS}'}})"
       else
         "query({match_all: {}})"
       end
