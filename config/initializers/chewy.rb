@@ -1,6 +1,6 @@
 require "faraday_middleware/aws_sigv4"
 
-unless Rails.env.test?
+if Rails.env.production?
   Chewy.settings = {
     host: ENV["AWS_ELASTICSEARCH_URL"],
     port: 443, # 443 for https host
@@ -16,6 +16,9 @@ unless Rails.env.test?
     }
   }
 end
+
+Chewy.settings = {host: "localhost:9200"} if Rails.env.development?
+Chewy.settings = {host: "localhost:9250"} if Rails.env.test?
 
 Chewy.root_strategy = :lazy_sidekiq
 Chewy.request_strategy = :lazy_sidekiq
