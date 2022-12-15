@@ -2,16 +2,6 @@ import React from "react";
 
 import { OnChain } from "src/onchain";
 import { chainIdToName } from "src/onchain/utils";
-import { ethers } from "ethers";
-import { H3, P3, P2 } from "src/components/design_system/typography";
-import Button from "src/components/design_system/button";
-import { useWindowDimensionsHook } from "src/utils/window";
-import { useTheme } from "src/contexts/ThemeContext";
-
-import { formatNumberWithSymbol, shortenAddress } from "src/utils/viewHelpers";
-import { parseAndCommify } from "src/onchain/utils";
-
-import cx from "classnames";
 
 const Token = ({ talent, talentTokenPrice, railsContext }) => {
   const { mobile } = useWindowDimensionsHook();
@@ -104,6 +94,23 @@ const Token = ({ talent, talentTokenPrice, railsContext }) => {
           onClick={() => addTokenToMetamask()}
         >
           <P2 bold text={`Add $${token.ticker} to Metamask`} />
+        </Button>
+      </div>
+      <div className="d-flex flex-column justify-content-center mt-6">
+        <Button
+          className="mx-auto inverted-button"
+          mode={mode() == "light" ? "dark" : "light"}
+          type="white-default"
+          onClick={() => console.log("TODO")}
+        >
+          <P2
+            bold
+            text={`Migrate to ${
+              chainIdToName(token.chainId, railsContext.contractsEnv) === "Celo"
+                ? "Polygon"
+                : "Celo"
+            } Network`}
+          />
         </Button>
       </div>
     </section>
