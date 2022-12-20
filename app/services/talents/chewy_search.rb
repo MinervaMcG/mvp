@@ -76,6 +76,10 @@ module Talents
         "query({match: {'career_goal.career_needs.title': '#{CareerNeed::LOOKING_MENTORSHIP}'}})"
       elsif filter_params[:status] == "Looking to mentor others"
         "query({match: {'career_goal.career_needs.title': '#{CareerNeed::MENTORING_OTHERS}'}})"
+      elsif filter_params[:status] == "Looking to hire"
+        "query({match: {'career_goal.career_needs.title': '#{CareerNeed::HIRING_NEEDS}'}})"
+      elsif filter_params[:status] == "Looking for new opportunities"
+        "query({match: {'career_goal.career_needs.title': '#{CareerNeed::ROLE_NEEDS}'}})"
       else
         "query({match_all: {}})"
       end
