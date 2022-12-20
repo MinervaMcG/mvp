@@ -41,7 +41,6 @@ class API::V1::UsersController < ApplicationController
       if params[:wallet_id]
         @user.update!(wallet_id: params[:wallet_id]&.downcase)
 
-        SendCommunityNFTToUser.perform_later(user_id: @user.id)
         AddUsersToMailerliteJob.perform_later(@user.id)
         Web3::RefreshDomains.new(user: @user).call
         UpdateTasksJob.perform_later(type: "Tasks::ConnectWallet", user_id: @user.id)

@@ -11,11 +11,13 @@ class API::V1::Talent::MilestonesController < ApplicationController
     updated_milestone = service.call
 
     render json: MilestoneBlueprint.render(updated_milestone, view: :normal), status: :ok
+  rescue Milestones::Update::StartDateAfterEndDateError => e
+    render json: {error: e.message}, status: :unprocessable_entity
   rescue => e
     Rollbar.error(
       e,
       "Unable to update milestone",
-      milestone_id: updated_milestone.id,
+      milestone_id: milestone&.id,
       talent_id: talent.id
     )
 
@@ -31,11 +33,13 @@ class API::V1::Talent::MilestonesController < ApplicationController
     milestone = service.call
 
     render json: MilestoneBlueprint.render(milestone, view: :normal), status: :created
+  rescue Milestones::Create::StartDateAfterEndDateError => e
+    render json: {error: e.message}, status: :unprocessable_entity
   rescue => e
     Rollbar.error(
       e,
       "Unable to create milestone",
-      milestone_id: milestone.id,
+      milestone_id: milestone&.id,
       talent_id: talent.id
     )
 

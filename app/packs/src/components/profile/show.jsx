@@ -64,7 +64,7 @@ const Show = ({
   }, [selectedSection]);
 
   const onWalletConnect = (account) => {
-    setTalent((prev) => ({
+    setLocalTalent((prev) => ({
       ...prev,
       user: {
         ...prev.user,
@@ -121,23 +121,27 @@ const Show = ({
           text="Journey"
           onClick={() => changeSection("#journey")}
         />
-        <Button
-          className="mr-2"
-          type={buttonType("#token")}
-          text={token.ticker ? `$${token.ticker}` : "Token"}
-          onClick={() => changeSection("#token")}
-        />
+        {(token.contractId || canUpdate) && (
+          <Button
+            className="mr-2"
+            type={buttonType("#token")}
+            text={token.ticker ? `$${token.ticker}` : "Token"}
+            onClick={() => changeSection("#token")}
+          />
+        )}
         <Button
           className="mr-2"
           type={buttonType("#community")}
           text="Community"
           onClick={() => changeSection("#community")}
         />
-        <Button
-          type={buttonType("#digital-collectibles")}
-          text="Digital Collectibles"
-          onClick={() => changeSection("#digital-collectibles")}
-        />
+        {(user.walletId || canUpdate) && (
+          <Button
+            type={buttonType("#digital-collectibles")}
+            text={"Digital Collectibles"}
+            onClick={() => changeSection("#digital-collectibles")}
+          />
+        )}
       </div>
       <div className="my-7 w-100 col-12" id="#about">
         <About

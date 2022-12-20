@@ -299,45 +299,43 @@ const MilestoneExperience = ({
             </Form.Control>
           </div>
         </div>
-        {!currentJourneyItem.inProgress && (
-          <div className="w-100 mb-5">
-            <label htmlFor="inputEndMonth">
-              <P2 className="mb-2 text-primary-01" bold>
-                End Date
-              </P2>
-            </label>
-            <div className="d-flex flex-row justify-content-between">
-              <Form.Control
-                as="select"
-                onChange={(e) => setEndMonth(e.target.value)}
-                value={endMonth}
-                placeholder="Month"
-                className="height-auto mr-2"
-              >
-                <option value=""></option>
-                {monthOptions.map((month) => (
-                  <option value={month} key={`end-${month}`}>
-                    {month}
-                  </option>
-                ))}
-              </Form.Control>
-              <Form.Control
-                as="select"
-                onChange={(e) => setEndYear(e.target.value)}
-                value={endYear}
-                placeholder="Year"
-                className="height-auto ml-2"
-              >
-                <option value=""></option>
-                {yearOptions.map((year) => (
-                  <option value={year} key={`end-${year}`}>
-                    {year}
-                  </option>
-                ))}
-              </Form.Control>
-            </div>
+        <div className="w-100 mb-5">
+          <label htmlFor="inputEndMonth">
+            <P2 className="mb-2 text-primary-01" bold>
+              End Date
+            </P2>
+          </label>
+          <div className="d-flex flex-row justify-content-between">
+            <Form.Control
+              as="select"
+              onChange={(e) => setEndMonth(e.target.value)}
+              value={endMonth}
+              placeholder="Month"
+              className="height-auto mr-2"
+            >
+              <option value=""></option>
+              {monthOptions.map((month) => (
+                <option value={month} key={`end-${month}`}>
+                  {month}
+                </option>
+              ))}
+            </Form.Control>
+            <Form.Control
+              as="select"
+              onChange={(e) => setEndYear(e.target.value)}
+              value={endYear}
+              placeholder="Year"
+              className="height-auto ml-2"
+            >
+              <option value=""></option>
+              {yearOptions.map((year) => (
+                <option value={year} key={`end-${year}`}>
+                  {year}
+                </option>
+              ))}
+            </Form.Control>
           </div>
-        )}
+        </div>
         <div className="w-100 mb-5">
           <P2 className="mb-2 text-primary-01" bold text="Link" />
           <TextInput
@@ -768,13 +766,14 @@ const EditJourneyModal = ({
         />,
         { autoClose: 1500 }
       );
+
+      exitModal();
     } else {
       toast.error(
-        <ToastBody heading="Error!" body={response?.error} mode={mode} />
+        <ToastBody heading="Error!" body={response?.error} mode={mode} />,
+        { autoClose: 5000 }
       );
     }
-
-    exitModal();
   };
 
   const updateMilestone = async () => {
@@ -812,13 +811,13 @@ const EditJourneyModal = ({
         />,
         { autoClose: 1500 }
       );
+      exitModal();
     } else {
       toast.error(
-        <ToastBody heading="Error!" body={response?.error} mode={mode} />
+        <ToastBody heading="Error!" body={response?.error} mode={mode} />,
+        { autoClose: 5000 }
       );
     }
-
-    exitModal();
   };
 
   const deleteMilestone = async () => {

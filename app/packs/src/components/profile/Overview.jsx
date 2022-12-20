@@ -28,6 +28,8 @@ import { lightTextPrimary04 } from "src/utils/colors";
 import { formatNumberWithSymbol, verifiedIcon } from "src/utils/viewHelpers";
 import EditOverviewModal from "src/components/profile/edit/EditOverviewModal";
 import RejectTalentModal from "./RejectTalentModal";
+import ApprovalConfirmationModal from "./ApprovalConfirmationModal";
+import VerificationConfirmationModal from "./VerificationConfirmationModal";
 import SocialRow from "./SocialRow";
 
 import cx from "classnames";
@@ -55,6 +57,12 @@ const Overview = ({
   const { mode } = useTheme();
   const [showStakeModal, setShowStakeModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
+  const [showApprovalConfirmationModal, setShowApprovalConfirmationModal] =
+    useState(false);
+  const [
+    showVerificationConfirmationModal,
+    setShowVerificationConfirmationModal,
+  ] = useState(false);
   const [isUploadingProfile, setIsUploadingProfile] = useState(false);
   const [isUploadingBanner, setIsUploadingBanner] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -121,7 +129,7 @@ const Overview = ({
   });
 
   overviewBannerFileInput?.addEventListener("change", (event) => {
-    setIsUploadingProfile(true);
+    setIsUploadingBanner(true);
     const files = Array.from(event.target.files);
     files.forEach((file) => {
       try {
@@ -132,7 +140,7 @@ const Overview = ({
           data: file,
         });
       } catch (err) {
-        setIsUploadingProfile(false);
+        setIsUploadingBanner(false);
         if (err.isRestriction) {
           // handle restrictions
           console.log("Restriction error:", err);
@@ -176,6 +184,7 @@ const Overview = ({
     });
     uppyProfile.on("upload-success", (file, response) => {
       setIsUploadingProfile(false);
+      setIsUploadingBanner(false);
       saveProfile({
         ...talent,
         profilePictureUrl: response.uploadURL,
@@ -199,6 +208,7 @@ const Overview = ({
     });
     uppyBanner.on("upload-success", (file, response) => {
       setIsUploadingProfile(false);
+      setIsUploadingBanner(false);
       saveProfile({
         ...talent,
         bannerUrl: response.uploadURL,
@@ -224,65 +234,6 @@ const Overview = ({
       document.getElementById("overviewBannerFileInput")
     );
   }, []);
-
-  const approveUser = async () => {
-    const params = {
-      user: {
-        id: talent.user.id,
-        profile_type: "approved",
-      },
-    };
-
-    const response = await patch(`/api/v1/talent/${talent.id}`, params).catch(
-      () => {
-        return false;
-      }
-    );
-
-    if (response && !response.error) {
-      setTalent((prev) => ({
-        ...prev,
-        user: { ...prev.user, profileType: "approved" },
-      }));
-
-      toast.success(
-        <ToastBody heading="Success!" body={"User approved successfully."} />,
-        { autoClose: 1500 }
-      );
-
-      return true;
-    }
-  };
-
-  const verifyTalent = async () => {
-    const params = {
-      talent: {
-        verified: true,
-      },
-      user: {
-        id: talent.user.id,
-      },
-    };
-
-    const response = await patch(`/api/v1/talent/${talent.id}`, params).catch(
-      () => {
-        return false;
-      }
-    );
-
-    if (response && !response.error) {
-      setTalent((prev) => ({
-        ...prev,
-        verified: true,
-      }));
-
-      toast.success(
-        <ToastBody heading="Success!" body={"User verified successfully."} />,
-        { autoClose: 1500 }
-      );
-      return true;
-    }
-  };
 
   const impersonateUser = async () => {
     const params = {
@@ -363,12 +314,9 @@ const Overview = ({
                     className="position-relative pull-bottom-content-70 align-self-end"
                     style={{ width: "272px", height: "213px" }}
                   >
-                    { isUploadingProfile ? (
+                    {isUploadingProfile ? (
                       <div class="h-100 d-flex justify-content-center align-items-center">
-                        <Spinner
-                          className="mx-4"
-                          width={50}
-                        />
+                        <Spinner className="mx-4" width={50} />
                       </div>
                     ) : (
                       <>
@@ -387,14 +335,42 @@ const Overview = ({
                             width: "272px",
                           }}
                         ></div>
+                        <label htmlFor="overviewBannerFileInput">
+                          <TalentProfilePicture
+                            className="position-absolute cursor-pointer"
+                            style={{
+                              top: mobile ? "90px" : "155px",
+                              left: mobile ? "95px" : "185px",
+                            }}
+                            src={CameraButton}
+                            height={40}
+                          />
+                        </label>
+                        <input
+                          id="overviewBannerFileInput"
+                          className="d-none"
+                          type="file"
+                          accept=".jpg,.png,.jpeg,.gif"
+                        ></input>
+                        <button
+                          className="button-link position-absolute"
+                          style={{
+                            top: mobile ? "90px" : "155px",
+                            left: mobile ? "145px" : "240px",
+                          }}
+                          onClick={deleteBannerImg}
+                        >
+                          <TalentProfilePicture
+                            className="cursor-pointer"
+                            src={DeleteButton}
+                            height={40}
+                          />
+                        </button>
                       </>
                     )}
-                    { isUploadingBanner ? (
+                    {isUploadingBanner ? (
                       <div class="h-100 d-flex justify-content-center align-items-center">
-                        <Spinner
-                          className="mx-4"
-                          width={50}
-                        />
+                        <Spinner className="mx-4" width={50} />
                       </div>
                     ) : (
                       <>
@@ -436,26 +412,34 @@ const Overview = ({
                     className="position-relative"
                     style={{ width: "120px", height: "120px" }}
                   >
-                    <TalentProfilePicture
-                      className="position-relative"
-                      src={talent.profilePictureUrl}
-                      height={120}
-                      border
-                    />
-                    <label htmlFor="overviewProfileFileInput">
-                      <TalentProfilePicture
-                        className="position-absolute cursor-pointer"
-                        style={{ top: "40px", left: "40px" }}
-                        src={CameraButton}
-                        height={40}
-                      />
-                    </label>
-                    <input
-                      id="overviewProfileFileInput"
-                      className="d-none"
-                      type="file"
-                      accept=".jpg,.png,.jpeg"
-                    ></input>
+                    {isUploadingProfile ? (
+                      <div class="h-100 d-flex justify-content-center align-items-center">
+                        <Spinner className="mx-4" width={50} />
+                      </div>
+                    ) : (
+                      <>
+                        <TalentProfilePicture
+                          className="position-relative"
+                          src={talent.profilePictureUrl}
+                          height={120}
+                          border
+                        />
+                        <label htmlFor="overviewProfileFileInput">
+                          <TalentProfilePicture
+                            className="position-absolute cursor-pointer"
+                            style={{ top: "40px", left: "40px" }}
+                            src={CameraButton}
+                            height={40}
+                          />
+                        </label>
+                        <input
+                          id="overviewProfileFileInput"
+                          className="d-none"
+                          type="file"
+                          accept=".jpg,.png,.jpeg"
+                        ></input>
+                      </>
+                    )}
                   </div>
                 </>
               )}
@@ -473,26 +457,34 @@ const Overview = ({
                   className="position-relative mb-3"
                   style={{ width: "112px", height: "112px" }}
                 >
-                  <TalentProfilePicture
-                    className="position-relative"
-                    src={talent.profilePictureUrl}
-                    height={112}
-                  />
-                  <div className="rounded-circle edit-image"></div>
-                  <label htmlFor="overviewProfileFileInput">
-                    <TalentProfilePicture
-                      className="position-absolute cursor-pointer"
-                      style={{ top: "36px", left: "36px" }}
-                      src={CameraButton}
-                      height={40}
-                    />
-                  </label>
-                  <input
-                    id="overviewProfileFileInput"
-                    className="d-none"
-                    type="file"
-                    accept=".jpg,.png,.jpeg"
-                  ></input>
+                  {isUploadingProfile ? (
+                    <div class="h-100 d-flex justify-content-center align-items-center">
+                      <Spinner className="mx-4" width={50} />
+                    </div>
+                  ) : (
+                    <>
+                      <TalentProfilePicture
+                        className="position-relative"
+                        src={talent.profilePictureUrl}
+                        height={112}
+                      />
+                      <div className="rounded-circle edit-image"></div>
+                      <label htmlFor="overviewProfileFileInput">
+                        <TalentProfilePicture
+                          className="position-absolute cursor-pointer"
+                          style={{ top: "36px", left: "36px" }}
+                          src={CameraButton}
+                          height={40}
+                        />
+                      </label>
+                      <input
+                        id="overviewProfileFileInput"
+                        className="d-none"
+                        type="file"
+                        accept=".jpg,.png,.jpeg"
+                      ></input>
+                    </>
+                  )}
                 </div>
               )}
             </>
@@ -595,7 +587,7 @@ const Overview = ({
                         type="primary-default"
                         size="big"
                         text={"Approve"}
-                        onClick={() => approveUser(true)}
+                        onClick={() => setShowApprovalConfirmationModal(true)}
                       />
                       <Button
                         onClick={() => setShowRejectModal(true)}
@@ -612,7 +604,7 @@ const Overview = ({
                       type="primary-default"
                       size="big"
                       text="Verify"
-                      onClick={() => verifyTalent()}
+                      onClick={() => setShowVerificationConfirmationModal(true)}
                     />
                   )}
                   {!isCurrentUserImpersonated && (
@@ -749,7 +741,7 @@ const Overview = ({
           <div
             className={cx(
               mobile ? "col-12" : "col-5 p-0",
-              "d-flex flex-column align-items-end justify-content-center"
+              "d-flex flex-column align-items-center justify-content-center"
             )}
           >
             {previewMode || !canUpdate ? (
@@ -760,40 +752,48 @@ const Overview = ({
               />
             ) : (
               <div className="position-relative">
-                <TalentProfilePicture
-                  className="position-relative banner-profile cursor-pointer"
-                  src={talent.bannerUrl || TalentBanner}
-                  straight
-                />
-                <div
-                  className="edit-image banner-profile"
-                  style={{ borderRadius: "24px" }}
-                ></div>
-                <label htmlFor="overviewBannerFileInput">
-                  <TalentProfilePicture
-                    className="position-absolute cursor-pointer"
-                    style={{ top: "145px", left: "160px" }}
-                    src={CameraButton}
-                    height={40}
-                  />
-                </label>
-                <input
-                  id="overviewBannerFileInput"
-                  className="d-none"
-                  type="file"
-                  accept=".jpg,.png,.jpeg,.gif"
-                ></input>
-                <button
-                  className="button-link position-absolute"
-                  style={{ top: "145px", left: "210px" }}
-                  onClick={deleteBannerImg}
-                >
-                  <TalentProfilePicture
-                    className="cursor-pointer"
-                    src={DeleteButton}
-                    height={40}
-                  />
-                </button>
+                {isUploadingBanner ? (
+                  <div class="h-100 d-flex justify-content-center align-items-center">
+                    <Spinner className="mx-4" width={50} />
+                  </div>
+                ) : (
+                  <>
+                    <TalentProfilePicture
+                      className="position-relative banner-profile cursor-pointer"
+                      src={talent.bannerUrl || TalentBanner}
+                      straight
+                    />
+                    <div
+                      className="edit-image banner-profile"
+                      style={{ borderRadius: "24px" }}
+                    ></div>
+                    <label htmlFor="overviewBannerFileInput">
+                      <TalentProfilePicture
+                        className="position-absolute cursor-pointer"
+                        style={{ top: "145px", left: "160px" }}
+                        src={CameraButton}
+                        height={40}
+                      />
+                    </label>
+                    <input
+                      id="overviewBannerFileInput"
+                      className="d-none"
+                      type="file"
+                      accept=".jpg,.png,.jpeg,.gif"
+                    ></input>
+                    <button
+                      className="button-link position-absolute"
+                      style={{ top: "145px", left: "210px" }}
+                      onClick={deleteBannerImg}
+                    >
+                      <TalentProfilePicture
+                        className="cursor-pointer"
+                        src={DeleteButton}
+                        height={40}
+                      />
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -814,7 +814,7 @@ const Overview = ({
                       size="big"
                       type="primary-default"
                       text="Approve"
-                      onClick={() => approveUser(true)}
+                      onClick={() => setShowApprovalConfirmationModal(true)}
                     />
                     <Button
                       onClick={() => setShowRejectModal(true)}
@@ -832,7 +832,7 @@ const Overview = ({
                     size="big"
                     type="primary-default"
                     text="Verify"
-                    onClick={() => verifyTalent()}
+                    onClick={() => setShowVerificationConfirmationModal(true)}
                   />
                 )}
                 {!isCurrentUserImpersonated && (
@@ -937,16 +937,28 @@ const Overview = ({
         talentIsFromCurrentUser={canUpdate}
         railsContext={railsContext}
       />
-      {showRejectModal && (
-        <RejectTalentModal
-          show={showRejectModal}
-          setShow={setShowRejectModal}
-          mobile={mobile}
-          mode={mode()}
-          talent={talent}
-          setTalent={setTalent}
-        />
-      )}
+      <ApprovalConfirmationModal
+        show={showApprovalConfirmationModal}
+        setShow={setShowApprovalConfirmationModal}
+        hide={() => setShowApprovalConfirmationModal(false)}
+        talent={talent}
+        setTalent={setTalent}
+      />
+      <VerificationConfirmationModal
+        show={showVerificationConfirmationModal}
+        setShow={setShowVerificationConfirmationModal}
+        hide={() => setShowVerificationConfirmationModal(false)}
+        talent={talent}
+        setTalent={setTalent}
+      />
+      <RejectTalentModal
+        show={showRejectModal}
+        setShow={setShowRejectModal}
+        mobile={mobile}
+        mode={mode()}
+        talent={talent}
+        setTalent={setTalent}
+      />
       {editMode && (
         <EditOverviewModal
           show={editMode}

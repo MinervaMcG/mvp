@@ -96,6 +96,14 @@ module Talents
         talents
           .joins(career_goal: :career_needs)
           .where(career_needs: {title: CareerNeed::MENTORING_OTHERS})
+      elsif filter_params[:status] == "Looking to hire"
+        talents
+          .joins(career_goal: :career_needs)
+          .where(career_needs: {title: CareerNeed::HIRING_NEEDS})
+      elsif filter_params[:status] == "Looking for new opportunities"
+        talents
+          .joins(career_goal: :career_needs)
+          .where(career_needs: {title: CareerNeed::ROLE_NEEDS})
       else
         # We're doing it this way to avoid duplicates
         random_talents = talents.select("setseed(0.#{Date.today.jd}), talent.id").order("random()")

@@ -141,5 +141,30 @@ RSpec.describe "Talent", type: :request do
         end
       end
     end
+
+    context "when the param is an empty string" do
+      let!(:talent) { create :talent, user: current_user, profile: {github: "https://github.com/talentprotocol"} }
+      subject(:update_talent_request) { put api_v1_talent_path(id: talent.id, params: params, as: current_user) }
+
+      let(:params) do
+        {
+          talent: {
+            profile: {
+              github: ""
+            }
+          },
+          user: {
+            display_name: "John Doe"
+          }
+        }
+      end
+
+      it "removes the param from the talent" do
+        update_talent_request
+
+        talent.reload
+        expect(talent.github).to eq ""
+      end
+    end
   end
 end

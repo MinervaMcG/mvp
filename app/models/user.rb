@@ -237,7 +237,7 @@ class User < ApplicationRecord
   end
 
   def approved_by
-    return unless profile_type == "approved"
+    return unless profile_type == "approved" || profile_type == "talent"
 
     profile_type_change = UserProfileTypeChange.find_by(new_profile_type: "approved", user: self)
     return unless profile_type_change

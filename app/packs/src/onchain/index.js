@@ -16,6 +16,7 @@ import Addresses from "./addresses.json";
 import { ERROR_MESSAGES } from "../utils/constants";
 import { ipfsToURL } from "./utils";
 import { externalGet } from "src/utils/requests";
+import { CHAIN_RPC_URLS } from "src/onchain/utils";
 
 class OnChain {
   constructor(env) {
@@ -32,11 +33,18 @@ class OnChain {
   }
 
   initializeWeb3Modal = () => {
+    const providerOptions = {
+      walletconnect: {
+        package: WalletConnectProvider, // required
+        options: {
+          rpc: CHAIN_RPC_URLS,
+        },
+      },
+    };
+
     return new Web3Modal({
       cacheProvider: true,
-      providerOptions: {
-        package: WalletConnectProvider,
-      },
+      providerOptions,
     });
   };
 

@@ -1,5 +1,5 @@
 class Message < ApplicationRecord
-  encrypts :text
+  has_encrypted :text
 
   # TODO make it mandatory after running migrations
   belongs_to :chat, optional: true

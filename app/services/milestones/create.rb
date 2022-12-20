@@ -1,5 +1,9 @@
 module Milestones
   class Create
+    class Error < StandardError; end
+
+    class StartDateAfterEndDateError < Error; end
+
     def initialize(talent:, current_user:, params:)
       @talent = talent
       @current_user = current_user
@@ -16,6 +20,8 @@ module Milestones
         milestone.end_date = Date.new(parsed_date[2], parsed_date[1], parsed_date[0])
       end
 
+      validate_milestone_dates!(milestone)
+
       create_milestone_images(milestone: milestone) if params[:images].length > 0
       milestone.talent = talent
 
@@ -31,6 +37,12 @@ module Milestones
     private
 
     attr_reader :talent, :current_user, :params
+
+    def validate_milestone_dates!(milestone)
+      return unless milestone.end_date
+
+      raise StartDateAfterEndDateError, "Start date needs to be before the end date" if milestone.start_date > milestone.end_date
+    end
 
     def create_milestone_images(milestone:)
       params[:images].each do |image|

@@ -27,13 +27,7 @@ const returnMonth = (date) => {
 };
 
 const Position = ({ changeStep, position, changePosition, allSteps }) => {
-  const [localPosition, setLocalPosition] = useState({
-    ...position,
-    start_date:
-      position.start_date != ""
-        ? dayjs(position.start_date).format("DD-MM-YYYY")
-        : "",
-  });
+  const [localPosition, setLocalPosition] = useState({ ...position });
   const [localMonth, setLocalMonth] = useState(
     returnMonth(position.start_date)
   );

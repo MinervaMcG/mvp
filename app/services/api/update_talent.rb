@@ -63,7 +63,6 @@ class API::UpdateTalent
         talent.occupation = params[:profile][:occupation]
         talent.location = params[:profile][:location]
         talent.headline = params[:profile][:headline]
-        talent.website = params[:profile][:website]
         talent.video = params[:profile][:video]
         talent.wallet_address = params[:profile][:wallet_address]
         talent.gender = params[:profile][:gender]
@@ -77,11 +76,27 @@ class API::UpdateTalent
         end
       end
 
+      if params[:profile][:website]
+        talent.website = if params[:profile][:website].length > 0 && !params[:profile][:website].include?("http")
+          "http://#{params[:profile][:website]}"
+        else
+          params[:profile][:website]
+        end
+      end
+
       if params[:profile][:discord]
-        talent.discord = params[:profile][:discord]
+        talent.discord = if params[:profile][:discord].length > 0 && !params[:profile][:discord].include?("http")
+          "https://#{params[:profile][:discord]}"
+        else
+          params[:profile][:discord]
+        end
       end
       if params[:profile][:linkedin]
-        talent.linkedin = params[:profile][:linkedin]
+        talent.linkedin = if params[:profile][:linkedin].length > 0 && !params[:profile][:linkedin].include?("http")
+          "https://#{params[:profile][:linkedin]}"
+        else
+          params[:profile][:linkedin]
+        end
       end
 
       if params[:profile][:telegram]
@@ -89,11 +104,19 @@ class API::UpdateTalent
       end
 
       if params[:profile][:github]
-        talent.github = params[:profile][:github]
+        talent.github = if params[:profile][:github].length > 0 && !params[:profile][:github].include?("http")
+          "https://#{params[:profile][:github]}"
+        else
+          params[:profile][:github]
+        end
       end
 
       if params[:profile][:twitter]
-        talent.twitter = params[:profile][:twitter]
+        talent.twitter = if params[:profile][:twitter].length > 0 && !params[:profile][:twitter].include?("http")
+          "https://#{params[:profile][:twitter]}"
+        else
+          params[:profile][:twitter]
+        end
       end
     end
 

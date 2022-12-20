@@ -15,7 +15,7 @@ class API::V1::Talent::TokensController < ApplicationController
         Users::UpdateProfileType.new.call(user: current_user, new_profile_type: "talent")
         AddRewardToInviterJob.perform_later(talent_token.id)
         AddUsersToMailerliteJob.perform_later(current_user.id)
-        SendMemberNFTToUserJob.perform_later(user_id: current_user.id)
+        WhitelistUserJob.perform_later(user_id: current_user.id, level: "talent_token")
         UpdateTasksJob.perform_later(type: "Tasks::LaunchToken", user_id: current_user.id)
         SendTokenNotificationToDiscordJob.perform_later(talent_token.id)
         UserMailer.with(user: current_user).send_token_launched_email.deliver_later(wait: 5.seconds)
