@@ -93,6 +93,10 @@ gem "paper_trail"
 # Data analytics
 gem "blazer"
 
+# Elasticsearch
+gem "chewy", ">= 7.2.7"
+gem "faraday_middleware-aws-sigv4"
+
 group :development, :test do
   gem "awesome_print"
   gem "bundler-audit"
