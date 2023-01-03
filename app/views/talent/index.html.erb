@@ -3,40 +3,6 @@
     <div class="secondary-content">
       <%= react_component("TalentPage",
         props: {
-          isAdminOrModerator: current_user.admin? || current_user.moderator?,
-          talents: @talents.map { |talent|
-            {
-              id: talent["id"],
-              profilePictureUrl: talent["profile_picture_url"],
-              occupation: talent["occupation"],
-              headline: talent["headline"],
-              supportersCount: talent["supporters_count"],
-              supporterCounter: talent["supporters_count"].to_s,
-              totalSupply: talent["total_supply"].to_s,
-              maxSupply: Talent.max_supply.to_s,
-              marketCap: talent["market_cap"],
-              marketCapVariance: talent["market_cap_variance"],
-              supplyProgress: talent["supply_progress"],
-              talentToken: {
-                ticker: talent["talent_token"]["ticker"],
-                contractId: talent["talent_token"]["contract_id"],
-                deployedAt: talent["talent_token"]["deployed_at"],
-                chainId: talent["talent_token"]["chain_id"]
-              },
-              user: {
-                username: talent["user"]["username"],
-                name: talent["user"]["display_name"] || talent["user"]["username"],
-                profileType: talent["user"]["profile_type"]
-              },
-              isFollowing: talent['is_following'],
-              userId: talent["user_id"],
-              isVerified: talent["verified"]
-            }
-          },
-          pagination: {
-            currentPage: @paging[:current_page],
-            lastPage: @paging[:last_page],
-          },
           isAdminOrModerator: current_user.admin? || current_user.moderator?
         },
         prerender: false) %>

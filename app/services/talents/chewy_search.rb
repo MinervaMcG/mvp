@@ -4,32 +4,33 @@ module Talents
   class ChewySearch
     PAGE_NEUTRALIZER = 1
 
-    def initialize(filter_params: {}, admin_or_moderator: false, size: 40, from: 1, current_user_watchlist: [])
+    def initialize(filter_params: {}, admin_or_moderator: false, size: 40, from: 1, searching_user: nil)
       @filter_params = filter_params
       @admin_or_moderator = admin_or_moderator
       @size = size
       @from = from
-      @current_user_watchlist = current_user_watchlist
+      @searching_user = searching_user
     end
 
     def call
       talents = TalentsIndex.class_eval(query_for_status).query(query_for_keyword).query.not({match: {profile_type: "applying"}})
       talents = talents.order(sort_query)
       total_count = talents.count
+      following_user_ids = searching_user&.following&.pluck(:user_id) || []
       talents = talents.limit(size).offset(from)
       [{
         current_page: ((from + PAGE_NEUTRALIZER) / size.to_f).ceil,
         last_page: (total_count / size.to_f).ceil
       }, talents.entries.map do |talent|
         attributes = talent.attributes.deep_stringify_keys
-        attributes["is_following"] = current_user_watchlist&.include?(attributes["user_id"])
+        attributes["is_following"] = following_user_ids.include?(attributes["user_id"])
         attributes
       end]
     end
 
     private
 
-    attr_reader :filter_params, :admin_or_moderator, :size, :from, :current_user_watchlist
+    attr_reader :filter_params, :admin_or_moderator, :size, :from, :current_user_watchlist, :searching_user
 
     def query_for_keyword
       unless keyword.blank?
