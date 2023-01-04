@@ -6,9 +6,11 @@ class API::V1::TalentController < ApplicationController
     paging, talents = Talents::ChewySearch.new(
       filter_params: filter_params.to_h,
       admin_or_moderator: current_user.admin_or_moderator?,
-      size: per_page, from: ((params[:page] || PAGE_NEUTRALIZER).to_i - PAGE_NEUTRALIZER) * per_page,
+      size: per_page,
+      from: ((params[:page] || PAGE_NEUTRALIZER).to_i - PAGE_NEUTRALIZER) * per_page,
       searching_user: current_user
     ).call
+
     render json: {
       talents: talents,
       pagination: {
@@ -86,7 +88,9 @@ class API::V1::TalentController < ApplicationController
       :username,
       :profile_type,
       :note,
-      :ens_domain
+      :ens_domain,
+      :legal_first_name,
+      :legal_last_name
     )
   end
 
@@ -106,6 +110,7 @@ class API::V1::TalentController < ApplicationController
       :disable_messages,
       :open_to_job_offers,
       :verified,
+      :with_persona_id,
       profile: [
         :pronouns,
         :occupation,
@@ -132,6 +137,6 @@ class API::V1::TalentController < ApplicationController
   end
 
   def per_page
-    (params[:per_page] || PER_PAGE).to_i
+    params[:per_page] || PER_PAGE
   end
 end
