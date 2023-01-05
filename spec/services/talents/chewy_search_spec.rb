@@ -7,6 +7,13 @@ RSpec.describe Talents::ChewySearch do
     ).call
   end
 
+  subject(:search_object) do
+    described_class.new(
+      filter_params: filter_params,
+      admin_or_moderator: admin_or_moderator
+    )
+  end
+
   let!(:user_1) { create :user, talent: talent_1, username: "jonas" }
   let(:talent_1) { create :talent, :with_token, public: true }
   let!(:user_2) { create :user, talent: talent_2, display_name: "Alexander" }
@@ -89,6 +96,120 @@ RSpec.describe Talents::ChewySearch do
 
       it "returns all talent users with tags matching the passed keyword" do
         expect(search_talents[1].map { |t| t["id"] }).to match_array([talent_3].pluck(:id))
+      end
+    end
+  end
+
+  describe "#query_for_keyword" do
+    let(:filter_params) do
+      {
+        keyword: "on"
+      }
+    end
+
+    let(:admin_or_moderator) { false }
+
+    it "returns the query" do
+      expect(search_object.send(:query_for_keyword)).to eq({
+        query_string: {
+          query: "*on*",
+          fields: ["*"],
+          allow_leading_wildcard: true
+        }
+      })
+    end
+  end
+
+  describe "#query_for_status" do
+    let(:admin_or_moderator) { false }
+
+    context "when the status is Launching soon" do
+      let(:filter_params) do
+        {
+          status: "Launching soon"
+        }
+      end
+
+      it "returns the query" do
+        expect(search_object.send(:query_for_status)).to eq('query.not({exists: {field: "talent_token.contract_id"}})')
+      end
+    end
+
+    context "when the status is Trending" do
+      let(:filter_params) do
+        {
+          status: "Trending"
+        }
+      end
+
+      it "returns the query" do
+        expect(search_object.send(:query_for_status)).to eq('query([{
+          exists: {field: "talent_token.contract_id"}
+        }, {
+          range: {
+            "talent_token.deployed_at": {
+              gte: 1.month.ago
+            }
+          }
+        }])')
+      end
+    end
+
+    context "when the status is Pending approval" do
+      let(:admin_or_moderator) { true }
+
+      let(:filter_params) do
+        {
+          status: "Pending approval"
+        }
+      end
+
+      it "returns the query" do
+        expect(search_object.send(:query_for_status)).to eq('query({match: {"user.profile_type": "waiting_for_approval"}})')
+      end
+    end
+
+    context "when the status is By Polygon Network" do
+      let(:filter_params) do
+        {
+          status: "By Polygon Network"
+        }
+      end
+
+      it "returns the query" do
+        expect(search_object.send(:query_for_status)).to eq("query([{
+          exists: {field: 'talent_token.contract_id'}
+        }, {
+          match: {'talent_token.chain_id': 80001}
+        }])")
+      end
+    end
+
+    context "when the status is By Celo Network" do
+      let(:filter_params) do
+        {
+          status: "By Celo Network"
+        }
+      end
+
+      it "returns the query" do
+        expect(search_object.send(:query_for_status)).to eq("query([{
+          exists: {field: 'talent_token.contract_id'}
+        }, {
+          match: {'talent_token.chain_id': 44787}
+        }])")
+      end
+    end
+
+    context "when the status is not present" do
+      let(:filter_params) do
+        {
+          status: nil
+        }
+      end
+
+      it "returns the default query" do
+        expect(search_object.send(:query_for_status)).to eq("query({match_all: {}})")
       end
     end
   end
