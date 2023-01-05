@@ -34,4 +34,6 @@ RSpec.configure do |config|
 
   config.profile_examples = 5
   Kernel.srand config.seed
+
+  WebMock.disable_net_connect!(allow: "localhost:9200")
 end

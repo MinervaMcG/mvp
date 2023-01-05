@@ -18,7 +18,7 @@ if Rails.env.production?
 end
 
 Chewy.settings = {host: "localhost:9200"} if Rails.env.development?
-Chewy.settings = {host: "localhost:9250"} if Rails.env.test?
+Chewy.settings = {host: "localhost:9200"} if Rails.env.test?
 
 Chewy.root_strategy = :lazy_sidekiq
 Chewy.request_strategy = :lazy_sidekiq
