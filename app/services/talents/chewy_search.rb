@@ -13,7 +13,7 @@ module Talents
     end
 
     def call
-      talents = TalentsIndex.class_eval(query_for_status).query(query_for_keyword).query.not({match: {profile_type: "applying"}})
+      talents = TalentsIndex.class_eval(query_for_status).query(query_for_keyword).query.not({match: {"user.profile_type": "applying"}})
       talents = talents.order(sort_query)
       total_count = talents.count
       following_user_ids = searching_user&.following&.pluck(:user_id) || []
