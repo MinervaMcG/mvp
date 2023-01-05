@@ -114,6 +114,25 @@ jobs:
           cache: "yarn"
       - run: yarn install
 
+      - name: Configure sysctl limits
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+
+      - name: Runs Elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.5.2
+        env:
+          discovery.type: single-node
+        options: >-
+          --health-cmd "curl http://localhost:9200/_cluster/health"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+        ports:
+          - 9200:9200
+
       - name: Set up Ruby and install gems
         uses: ruby/setup-ruby@v1
         with:
