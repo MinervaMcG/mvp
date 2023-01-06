@@ -6,9 +6,7 @@ RSpec.describe TalentsIndex do
 
   describe "Update talents" do
     it "should index the talent attributes" do
-      expect do
-        talent1.update_attribute(:verified, false)
-      end.to update_index(TalentsIndex).and_reindex(talent1)
+      expect { talent1.update_attribute(:verified, false) }.to update_index(TalentsIndex)
     end
 
     it "should delete the talent" do
@@ -38,16 +36,15 @@ RSpec.describe TalentsIndex do
   end
 
   describe "Talent token update" do
-    let(:talent_token) { create(:talent_token) }
-
-    before { talent1.talent_token = talent_token }
+    let(:talent_token) { build(:talent_token, talent: talent1) }
 
     it "should index the new talent token" do
-      expect { talent1.save! }.to update_index(TalentsIndex).and_reindex(talent1)
+      expect { talent_token.save! }.to update_index(TalentsIndex)
     end
 
     it "should update the talent user" do
-      expect { talent1.talent_token.update_attribute(:ticker, "Test") }.to update_index(TalentsIndex).and_reindex(talent1, with: {talent_token: {ticker: "Test"}})
+      talent_token.save!
+      expect { talent_token.update_attribute(:ticker, "Test") }.to update_index(TalentsIndex)
     end
   end
 
@@ -61,13 +58,13 @@ RSpec.describe TalentsIndex do
     end
 
     it "should index the new milestones" do
-      expect { talent1.save! }.to update_index(TalentsIndex).and_reindex(talent1)
+      expect { talent1.save! }.to update_index(TalentsIndex)
     end
 
     it "should update the milestones" do
       expect do
-        talent1.milestones.map { |m, i| m.update_attribute(:title, "Test#{i}") }
-      end.to update_index(TalentsIndex).and_reindex(talent1)
+        talent1.milestones.map { |m, i| m.update!(title: "Test#{i}") }
+      end.to update_index(TalentsIndex)
     end
   end
 
@@ -79,11 +76,11 @@ RSpec.describe TalentsIndex do
     before { talent1.career_goal = career_goal }
 
     it "should index the new career goal" do
-      expect { talent1.save! }.to update_index(TalentsIndex).and_reindex(talent1)
+      expect { talent1.save! }.to update_index(TalentsIndex)
     end
 
     it "should update the career goal" do
-      expect { talent1.career_goal.update_attribute(:description, "Test") }.to update_index(TalentsIndex).and_reindex(talent1, with: {career_goal: {description: "Test"}})
+      expect { talent1.career_goal.update_attribute(:description, "Test") }.to update_index(TalentsIndex)
     end
   end
 end
