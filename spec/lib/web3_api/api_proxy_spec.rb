@@ -616,4 +616,18 @@ RSpec.describe Web3Api::ApiProxy do
 
     it_behaves_like "a gnosis chain explorer client get tokens request"
   end
+
+  describe "#chain_id" do
+    it "returns the chain id for polygon" do
+      expect(described_class.chain_id("polygon")).to eq(80001)
+    end
+
+    it "returns the chain id for celo" do
+      expect(described_class.chain_id("celo")).to eq(44787)
+    end
+
+    it "returns the chain id for eth" do
+      expect(described_class.chain_id("eth")).to eq(3)
+    end
+  end
 end
