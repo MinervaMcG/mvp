@@ -95,7 +95,7 @@ RSpec.describe Talents::ChewySearch do
       end
 
       it "returns all talent users with tags matching the passed keyword" do
-        expect(search_talents[1].map { |t| t["id"] }).to match_array([talent_1].pluck(:id))
+        expect(search_talents[1].map { |t| t["id"] }).to match_array([talent_3].pluck(:id))
       end
     end
   end
