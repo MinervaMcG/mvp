@@ -50,6 +50,18 @@ RSpec.describe Talents::ChewySearch do
   end
 
   context "when the keyword filter is passed" do
+    context "when it matches the user username" do
+      let(:filter_params) do
+        {
+          keyword: "on"
+        }
+      end
+
+      it "returns all talent users with username matching the passed keyword" do
+        expect(search_talents[1].map { |t| t["id"] }).to match_array([talent_1, talent_3, talent_without_token].pluck(:id))
+      end
+    end
+
     context "when it matches the user display_name" do
       let(:filter_params) do
         {
@@ -58,7 +70,29 @@ RSpec.describe Talents::ChewySearch do
       end
 
       it "returns all talent users with display_name matching the passed keyword" do
-        expect(search_talents[1].map { |t| t["id"] }).to match_array([talent_4, talent_without_launched_token].pluck(:id))
+        expect(search_talents[1].map { |t| t["id"] }).to match_array([talent_2, talent_4, talent_without_launched_token].pluck(:id))
+      end
+    end
+
+    context "when it matches the user tags" do
+      let(:filter_params) do
+        {
+          keyword: "web3"
+        }
+      end
+
+      it "returns all talent users with tags matching the passed keyword" do
+        tag_1 = create :tag, description: "web3"
+        tag_2 = create :tag, description: "design"
+        tag_3 = create :tag, description: "development"
+
+        user_1.tags << [tag_1, tag_3]
+        user_2.tags << [tag_2]
+        user_3.tags << [tag_1, tag_2]
+        user_4.tags << [tag_3]
+
+        TalentsIndex.import!
+        expect(search_talents[1].map { |t| t["id"] }).to match_array([talent_1, talent_3].pluck(:id))
       end
     end
   end

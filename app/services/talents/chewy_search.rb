@@ -4,7 +4,7 @@ module Talents
   class ChewySearch
     PAGE_NEUTRALIZER = 1
 
-    def initialize(filter_params: {}, admin_or_moderator: false, size: 40, from: 1, searching_user: nil)
+    def initialize(filter_params: {}, admin_or_moderator: false, size: 40, from: 0, searching_user: nil)
       @filter_params = filter_params
       @admin_or_moderator = admin_or_moderator
       @size = size
