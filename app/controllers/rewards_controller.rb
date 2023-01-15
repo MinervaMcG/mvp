@@ -43,6 +43,9 @@ class RewardsController < ApplicationController
     quests = Quest.where(user: current_acting_user).order(:id)
     @quests = QuestBlueprint.render_as_json(quests.includes(:user, :tasks), view: :normal)
 
+    with_persona_request = WithPersonaRequest.current_month_persona_request
+    @with_persona_request = WithPersonaRequestBlueprint.render_as_json(with_persona_request)
+
     respond_to do |format|
       format.html
       format.json {

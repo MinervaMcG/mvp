@@ -1,0 +1,76 @@
+{
+  "data": {
+    "type": "event",
+    "id": "evt_XGuYWp7WuDzNxie5z16s7sGJ",
+    "attributes": {
+      "name": "verification.created",
+      "payload": {
+        "data": {
+          "type": "inquiry",
+          "id": "inq_2CVZ4HyVg7qaboXz2PUHknAn",
+          "attributes": {
+            "status": "approved",
+            "reference-id": null,
+            "created-at": "2019-09-09T22:40:56.000Z",
+            "completed-at": "2019-09-09T22:44:51.000Z",
+            "expired-at": null
+          },
+          "relationships": {
+            "reports": {
+              "data": []
+            },
+            "template": {
+              "data": {
+                "id": "blu_biqYXr3aNfHuLeXUdJUNFNET",
+                "type": "template"
+              }
+            },
+            "verifications": {
+              "data": [
+                {
+                  "id": "ver_KnqQRXmxmtquRE65CHTzymhR",
+                  "type": "verification/driver-license"
+                },
+                {
+                  "id": "ver_2aguhcwq66zcmqipmrqjxw68",
+                  "type": "verification/selfie"
+                }
+              ]
+            }
+          }
+        },
+        "included": [
+          {
+            "type": "template",
+            "id": "blu_biqYXr3aNfHuLeXUdJUNFNET",
+            "attributes": {
+              "name": "Acme #1"
+            }
+          },
+          {
+            "type": "verification/driver-license",
+            "id": "ver_KnqQRXmxmtquRE65CHTzymhR",
+            "attributes": {
+              "status": "passed",
+              "front-photo-url": "...",
+              "created-at": "2019-09-09T22:41:29.000Z",
+              "completed-at": "2019-09-09T22:41:40.000Z"
+            }
+          },
+          {
+            "type": "verification/selfie",
+            "id": "ver_2aguhcwq66zcmqipmrqjxw68",
+            "attributes": {
+              "status": "passed",
+              "center-photo-url": "...",
+              "left-photo-url": "...",
+              "right-photo-url": "...",
+              "created-at": "2019-09-09T22:42:43.000Z",
+              "completed-at": "2019-09-09T22:42:46.000Z"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 
-import { H4, H5, P1, P2, P3 } from "src/components/design_system/typography";
+import { H4, P1, P2, P3 } from "src/components/design_system/typography";
+import Tag from "src/components/design_system/tag";
 import { useWindowDimensionsHook } from "src/utils/window";
-import { compareDates, diffDates } from "src/utils/compareHelpers";
+import { compareDates } from "src/utils/compareHelpers";
 import { Rocket, Toolbox, Bulb, Learn } from "src/components/icons";
 import Divider from "src/components/design_system/other/Divider";
 import TalentProfilePicture from "src/components/talent/TalentProfilePicture";
@@ -25,6 +26,14 @@ const Journey = ({ className, talent, setTalent, canUpdate }) => {
   const [editType, setEditType] = useState("");
   const [journeyItemInEditing, setJourneyItemInEditing] = useState(null);
   const [journeyItemSelected, setJourneyItemSelected] = useState(null);
+
+  const progressMap = {
+    planned: "Planned",
+    executing: "Executing",
+    accomplished: "Accomplished",
+    not_accomplished: "Not Accomplished",
+    abandoned: "Abandoned",
+  };
 
   useEffect(() => {
     const allItems = mergeAndSortJourney(
@@ -216,49 +225,33 @@ const Journey = ({ className, talent, setTalent, canUpdate }) => {
         <div className="d-flex flex-column">
           {filteredJourneyItems.map((journeyItem, index) => (
             <div className="d-flex flex-row" key={`journey-item-${index}`}>
-              <H5
-                className="col-1 text-primary-01"
-                text={
-                  displayYear(index) && !mobile
-                    ? dayjs(journeyItem.startDate).year()
-                    : ""
-                }
-              />
-              <div className="d-flex col-11 pr-0">
+              <div className="d-flex col-12 pr-0">
                 {!mobile && (
-                  <div className="d-flex flex-column col-3 pr-6 pt-1 text-right">
+                  <div className="d-flex flex-column col-2 pr-6 pt-1 text-right">
                     <P3 className="text-primary-04" bold>
                       {dayjs(journeyItem.startDate, "YYYY-MM-DD").format(
                         "MMM YYYY"
                       )}
-                      {journeyItem.inProgress && " - Today"}
-                      {journeyItem.endDate && !journeyItem.inProgress
+                      {journeyItem.inProgress &&
+                        !journeyItem.endDate &&
+                        " - Today"}
+                      {journeyItem.endDate
                         ? ` - ${dayjs(journeyItem.endDate, "YYYY-MM-DD").format(
                             "MMM YYYY"
                           )}`
                         : ""}
                     </P3>
-                    {journeyItem.endDate && (
-                      <P3
-                        className="text-primary-04"
-                        bold
-                        text={diffDates(
-                          dayjs(journeyItem.endDate, "YYYY-MM-DD"),
-                          dayjs(journeyItem.startDate, "YYYY-MM-DD")
-                        )}
-                      />
-                    )}
                   </div>
                 )}
                 <div
                   className={cx(
                     mobile
-                      ? `col-9 pl-6 ${cssForBorder(
+                      ? `col-12 pl-6 ${cssForBorder(
                           journeyItem,
                           index,
                           filteredJourneyItems.length
                         )} position-relative`
-                      : `col-9 pl-7 pr-0 ${cssForBorder(
+                      : `col-10 pl-7 pr-0 ${cssForBorder(
                           journeyItem,
                           index,
                           filteredJourneyItems.length
@@ -278,27 +271,18 @@ const Journey = ({ className, talent, setTalent, canUpdate }) => {
                             ).format("MMM YYYY")}`
                           : ""}
                       </P3>
-                      {journeyItem.endDate && (
-                        <P3
-                          className="text-primary-04"
-                          bold
-                          text={diffDates(
-                            dayjs(journeyItem.endDate, "YYYY-MM-DD"),
-                            dayjs(journeyItem.startDate, "YYYY-MM-DD")
-                          )}
-                        />
-                      )}
                     </div>
                   )}
                   <div className="d-flex justify-content-between">
                     <P1
-                      className="text-primary-01 medium mb-1"
+                      className="text-primary-01 medium mb-3"
                       text={journeyItem.title}
                     />
                     {canUpdate && (
                       <Button
                         type="primary-outline"
                         text="Edit"
+                        style={{ maxHeight: "45px" }}
                         onClick={() => {
                           setJourneyItemInEditing(journeyItem);
                           setEditType("Edit");
@@ -307,14 +291,34 @@ const Journey = ({ className, talent, setTalent, canUpdate }) => {
                       />
                     )}
                   </div>
-                  <P2
-                    className="text-primary-01 mb-3"
-                    text={journeyItem.institution}
-                  />
+                  {journeyItem.link && (
+                    <a target="_blank" href={journeyItem.link}>
+                      <P2
+                        className="text-primary-01 mb-3"
+                        text={journeyItem.institution}
+                      />
+                    </a>
+                  )}
                   <P2
                     className="text-primary-03"
                     text={journeyItem.description}
                   />
+                  {journeyItem.progress && (
+                    <Tag
+                      className={cx(
+                        journeyItem.progress == "accomplished"
+                          ? "positive"
+                          : "secondary",
+                        "mt-3"
+                      )}
+                    >
+                      <P3
+                        className="current-color"
+                        medium
+                        text={progressMap[journeyItem.progress]}
+                      />
+                    </Tag>
+                  )}
                   <div className="d-flex flex-wrap">
                     {journeyItem.images?.length > 3 ? (
                       <>

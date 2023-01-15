@@ -1,27 +1,8 @@
 class TalentController < ApplicationController
   PER_PAGE = 40
+  PAGE_NEUTRALIZER = 1
 
   def index
-    service = Talents::Search.new(filter_params: filter_params.to_h, admin_or_moderator: current_user.admin_or_moderator?)
-    @pagy, talents = pagy(service.call, items: per_page)
-
-    @talents = TalentBlueprint.render_as_json(talents.includes(:talent_token, :user), view: :normal, current_user_watchlist: current_user_watchlist)
-
-    respond_to do |format|
-      format.html
-      format.json {
-        render(
-          json: {
-            talents: @talents,
-            pagination: {
-              currentPage: @pagy.page,
-              lastPage: @pagy.last
-            }
-          },
-          status: :ok
-        )
-      }
-    end
   end
 
   private
@@ -31,6 +12,6 @@ class TalentController < ApplicationController
   end
 
   def per_page
-    params[:per_page] || PER_PAGE
+    (params[:per_page] || PER_PAGE).to_i
   end
 end

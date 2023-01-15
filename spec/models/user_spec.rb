@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe User, type: :model do
   describe "associations" do
     it { is_expected.to have_one(:talent) }
+    it { is_expected.to have_one(:user_email_log) }
 
     # Chat
     it { is_expected.to have_many(:messagee) }
@@ -88,6 +89,39 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "helper methods" do
+    it "calculates the correct chat id" do
+      user1 = create(:user, wallet_id: "0", username: "0")
+      user2 = create(:user, wallet_id: "1", username: "1")
+
+      expect(user1.sender_chat_id(user2)).to eq(user1.id.to_s + user2.id.to_s)
+      expect(user1.receiver_chat_id(user2)).to eq(user1.id.to_s + user2.id.to_s)
+    end
+
+    it "calculates the correct last message sent between two users" do
+      user1 = create(:user, wallet_id: "0", username: "0")
+      user2 = create(:user, wallet_id: "1", username: "1")
+      create(:message, sender: user1, receiver: user2, text: "Hello!")
+      create(:message, sender: user1, receiver: user2, text: "Bye!")
+
+      expect(user1.last_message_with(user2).text).to eq("Bye!")
+    end
+
+    it "checks if user has unread messages" do
+      user1 = build(:user, email: "a@m.com")
+      user2 = build(:user, email: "b@m.com")
+      create(:message, sender: user1, receiver: user2, text: "Hello!",
+                       is_read: true)
+      create(:message, sender: user2, receiver: user1, text: "Hello!",
+                       is_read: false)
+      create(:message, sender: user2, receiver: user1, text: "Bye!", is_read:
+             false)
+
+      expect(user1.has_unread_messages?).to be_truthy
+      expect(user2.has_unread_messages?).to be_falsey
+    end
+  end
+
   describe ".beginner_quest_completed" do
     let(:user_1) { create :user }
     let(:user_2) { create :user }
@@ -101,6 +135,105 @@ RSpec.describe User, type: :model do
 
     it "only returns users with the beginner quest completed" do
       expect(User.beginner_quest_completed).to eq [user_1]
+    end
+  end
+
+  describe "#admin_or_moderator?" do
+    let(:user) { create :user, role: role }
+
+    context "when the user's role is 'admin'" do
+      let(:role) { "admin" }
+
+      it "returns false" do
+        expect(user.admin_or_moderator?).to be_truthy
+      end
+    end
+
+    context "when the user's role is 'basic'" do
+      let(:role) { "basic" }
+
+      it "returns false" do
+        expect(user.admin_or_moderator?).to be_falsey
+      end
+    end
+
+    context "when the user's role is 'moderator'" do
+      let(:role) { "moderator" }
+
+      it "returns true" do
+        expect(user.admin_or_moderator?).to be_truthy
+      end
+    end
+  end
+
+  describe "#amount_invested_in" do
+    let(:user) { create :user }
+
+    let(:other_user) { create :user, talent: talent }
+    let(:talent) { create :talent }
+    let(:talent_token) { create :talent_token, talent: talent, deployed: true }
+
+    context "when the user does not have an investment in the other user" do
+      it "returns 0" do
+        expect(user.amount_invested_in(other_user)).to eq 0
+      end
+    end
+
+    context "when the user has an investment in the other user" do
+      before do
+        create :talent_supporter, supporter_wallet_id: user.wallet_id, talent_contract_id: talent_token.contract_id, amount: "1000000"
+      end
+
+      it "returns the amount invested by the user" do
+        expect(user.amount_invested_in(other_user)).to eq 1000000
+      end
+    end
+  end
+
+  describe "#approved_by" do
+    let(:user) { create :user, profile_type: profile_type }
+    let(:who_dunnit) { create :user, role: "admin" }
+
+    context "when the user's profile type is 'approved'" do
+      let(:profile_type) { "approved" }
+
+      context "when there is a profile type change log for the change" do
+        before do
+          UserProfileTypeChange.create!(
+            previous_profile_type: "waiting_for_approval",
+            new_profile_type: "approved",
+            user: user,
+            who_dunnit: who_dunnit
+          )
+        end
+
+        it "returns the user who approved it" do
+          expect(user.approved_by).to eq(who_dunnit)
+        end
+      end
+
+      context "when there is not a profile type change log for the change" do
+        before do
+          UserProfileTypeChange.create!(
+            previous_profile_type: "supporter",
+            new_profile_type: "talent",
+            user: user,
+            who_dunnit: who_dunnit
+          )
+        end
+
+        it "returns nil" do
+          expect(user.approved_by).to be_nil
+        end
+      end
+    end
+
+    context "when the user's profile type is not 'approved'" do
+      let(:profile_type) { "rejected" }
+
+      it "returns nil" do
+        expect(user.approved_by).to be_nil
+      end
     end
   end
 
@@ -124,6 +257,61 @@ RSpec.describe User, type: :model do
 
       it "returns false" do
         expect(user.beginner_quest_completed?).to eq false
+      end
+    end
+  end
+
+  describe "#display_wallet_id?" do
+    let(:user) { create :user, wallet_id: "0x123456789101234567890" }
+
+    context "when a user domain is associated with the user" do
+      before do
+        create :user_domain, domain: "dinis.blockchain", user: user
+      end
+
+      it "returns the domain" do
+        expect(user.display_wallet_id).to eq("dinis.blockchain")
+      end
+    end
+
+    context "when a user domain is not associated with the user" do
+      it "shortens the wallet id for displaying" do
+        expect(user.display_wallet_id).to eq("0x123456789...")
+      end
+    end
+  end
+
+  describe "#visible_digital_collectibles?" do
+    let(:user) { create :user }
+
+    context "when a user has an erc20 token visible" do
+      before do
+        create :erc20_token, user: user, show: true
+      end
+
+      it "returns true" do
+        expect(user.visible_digital_collectibles?).to eq(true)
+      end
+    end
+
+    context "when a user has an erc721 token visible" do
+      before do
+        create :erc721_token, user: user, show: true
+      end
+
+      it "returns true" do
+        expect(user.visible_digital_collectibles?).to eq(true)
+      end
+    end
+
+    context "when a user does not have a visible token" do
+      before do
+        create :erc20_token, user: user, show: false
+        create :erc721_token, user: user, show: false
+      end
+
+      it "shortens the wallet id for displaying" do
+        expect(user.visible_digital_collectibles?).to eq(false)
       end
     end
   end
@@ -231,30 +419,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#amount_invested_in" do
-    let(:user) { create :user }
-
-    let(:other_user) { create :user, talent: talent }
-    let(:talent) { create :talent }
-    let(:talent_token) { create :talent_token, talent: talent, deployed: true }
-
-    context "when the user does not have an investment in the other user" do
-      it "returns 0" do
-        expect(user.amount_invested_in(other_user)).to eq 0
-      end
-    end
-
-    context "when the user has an investment in the other user" do
-      before do
-        create :talent_supporter, supporter_wallet_id: user.wallet_id, talent_contract_id: talent_token.contract_id, amount: "1000000"
-      end
-
-      it "returns the amount invested by the user" do
-        expect(user.amount_invested_in(other_user)).to eq 1000000
-      end
-    end
-  end
-
   describe "#connected_with_since" do
     let(:user) { create :user }
 
@@ -327,45 +491,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "helper methods" do
-    it "shortens the wallet id for displaying" do
-      user = build(:user, wallet_id: "0x123456789101234567890")
-
-      expect(user.display_wallet_id).to eq("0x123456789...")
-    end
-
-    it "calculates the correct chat id" do
-      user1 = create(:user, wallet_id: "0", username: "0")
-      user2 = create(:user, wallet_id: "1", username: "1")
-
-      expect(user1.sender_chat_id(user2)).to eq(user1.id.to_s + user2.id.to_s)
-      expect(user1.receiver_chat_id(user2)).to eq(user1.id.to_s + user2.id.to_s)
-    end
-
-    it "calculates the correct last message sent between two users" do
-      user1 = create(:user, wallet_id: "0", username: "0")
-      user2 = create(:user, wallet_id: "1", username: "1")
-      create(:message, sender: user1, receiver: user2, text: "Hello!")
-      create(:message, sender: user1, receiver: user2, text: "Bye!")
-
-      expect(user1.last_message_with(user2).text).to eq("Bye!")
-    end
-
-    it "checks if user has unread messages" do
-      user1 = build(:user, email: "a@m.com")
-      user2 = build(:user, email: "b@m.com")
-      create(:message, sender: user1, receiver: user2, text: "Hello!",
-                       is_read: true)
-      create(:message, sender: user2, receiver: user1, text: "Hello!",
-                       is_read: false)
-      create(:message, sender: user2, receiver: user1, text: "Bye!", is_read:
-             false)
-
-      expect(user1.has_unread_messages?).to be_truthy
-      expect(user2.has_unread_messages?).to be_falsey
-    end
-  end
-
   describe "#moderator?" do
     let(:user) { create :user, role: role }
 
@@ -390,81 +515,6 @@ RSpec.describe User, type: :model do
 
       it "returns true" do
         expect(user.moderator?).to be_truthy
-      end
-    end
-  end
-
-  describe "#admin_or_moderator?" do
-    let(:user) { create :user, role: role }
-
-    context "when the user's role is 'admin'" do
-      let(:role) { "admin" }
-
-      it "returns false" do
-        expect(user.admin_or_moderator?).to be_truthy
-      end
-    end
-
-    context "when the user's role is 'basic'" do
-      let(:role) { "basic" }
-
-      it "returns false" do
-        expect(user.admin_or_moderator?).to be_falsey
-      end
-    end
-
-    context "when the user's role is 'moderator'" do
-      let(:role) { "moderator" }
-
-      it "returns true" do
-        expect(user.admin_or_moderator?).to be_truthy
-      end
-    end
-  end
-
-  describe "#approved_by" do
-    let(:user) { create :user, profile_type: profile_type }
-    let(:who_dunnit) { create :user, role: "admin" }
-
-    context "when the user's profile type is 'approved'" do
-      let(:profile_type) { "approved" }
-
-      context "when there is a profile type change log for the change" do
-        before do
-          UserProfileTypeChange.create!(
-            previous_profile_type: "waiting_for_approval",
-            new_profile_type: "approved",
-            user: user,
-            who_dunnit: who_dunnit
-          )
-        end
-
-        it "returns the user who approved it" do
-          expect(user.approved_by).to eq(who_dunnit)
-        end
-      end
-
-      context "when there is not a profile type change log for the change" do
-        before do
-          UserProfileTypeChange.create!(
-            previous_profile_type: "supporter",
-            new_profile_type: "talent",
-            user: user,
-            who_dunnit: who_dunnit
-          )
-        end
-
-        it "returns nil" do
-          expect(user.approved_by).to be_nil
-        end
-      end
-    end
-
-    context "when the user's profile type is not 'approved'" do
-      let(:profile_type) { "rejected" }
-
-      it "returns nil" do
-        expect(user.approved_by).to be_nil
       end
     end
   end

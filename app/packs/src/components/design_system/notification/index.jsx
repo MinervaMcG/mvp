@@ -8,8 +8,10 @@ import {
   Check,
   Globe,
   Reward,
+  Help,
 } from "src/components/icons";
 import { P3 } from "src/components/design_system/typography";
+import { lightTextPrimary03, darkTextPrimary03 } from "src/utils/colors";
 import cx from "classnames";
 
 const Notification = ({
@@ -39,6 +41,15 @@ const Notification = ({
           {type === "globe" && <Globe pathClassName={cx("icon-theme", mode)} />}
           {type === "rewards" && (
             <Reward pathClassName={cx("icon-theme", mode)} />
+          )}
+          {type === "help" && (
+            <>
+              {mode === "light" ? (
+                <Help color={lightTextPrimary03} />
+              ) : (
+                <Help color={darkTextPrimary03} />
+              )}
+            </>
           )}
         </div>
         <div className={cx("d-flex flex-column notification-right-area", mode)}>

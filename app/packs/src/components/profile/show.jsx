@@ -25,10 +25,11 @@ const Show = ({
   currentUserAdmin,
   currentUserModerator,
   isCurrentUserImpersonated,
+  withPersonaRequest,
 }) => {
   const [localTalent, setLocalTalent] = useState(camelCaseObject(talent));
   const user = localTalent.user;
-  const token = localTalent.token;
+  const talentToken = localTalent.talentToken;
   const [selectedSection, setSelectedSection] = useState(window.location.hash);
   const [showLastDivider, setShowLastDivider] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
@@ -64,7 +65,7 @@ const Show = ({
   }, [selectedSection]);
 
   const onWalletConnect = (account) => {
-    setTalent((prev) => ({
+    setLocalTalent((prev) => ({
       ...prev,
       user: {
         ...prev.user,
@@ -76,7 +77,7 @@ const Show = ({
   const getCurrentTokenSection = () => {
     if (
       (user.profileType == "approved" || user.profileType == "talent") &&
-      !token.contractId
+      !talentToken.contractId
     ) {
       return LaunchToken;
     }
@@ -106,6 +107,7 @@ const Show = ({
         previewMode={previewMode}
         setPreviewMode={setPreviewMode}
         isCurrentUserImpersonated={isCurrentUserImpersonated}
+        withPersonaRequest={withPersonaRequest}
       />
       <Divider className="my-6" />
       <div className="d-flex justify-content-lg-center overflow-x-scroll mx-4">
@@ -121,23 +123,28 @@ const Show = ({
           text="Journey"
           onClick={() => changeSection("#journey")}
         />
-        <Button
-          className="mr-2"
-          type={buttonType("#token")}
-          text={token.ticker ? `$${token.ticker}` : "Token"}
-          onClick={() => changeSection("#token")}
-        />
+        {(talentToken.contractId || canUpdate) && (
+          <Button
+            className="mr-2"
+            type={buttonType("#token")}
+            text={talentToken.ticker ? `$${talentToken.ticker}` : "Token"}
+            onClick={() => changeSection("#token")}
+          />
+        )}
         <Button
           className="mr-2"
           type={buttonType("#community")}
           text="Community"
           onClick={() => changeSection("#community")}
         />
-        <Button
-          type={buttonType("#digital-collectibles")}
-          text="Digital Collectibles"
-          onClick={() => changeSection("#digital-collectibles")}
-        />
+        {((user.walletId && user.visible_digital_collectibles) ||
+          canUpdate) && (
+          <Button
+            type={buttonType("#digital-collectibles")}
+            text={"Digital Collectibles"}
+            onClick={() => changeSection("#digital-collectibles")}
+          />
+        )}
       </div>
       <div className="my-7 w-100 col-12" id="#about">
         <About
@@ -156,7 +163,7 @@ const Show = ({
         />
       </div>
       <div className="my-7 w-100" id={"#token"}>
-        {token.contractId && (
+        {talentToken.contractId && (
           <Perks talent={localTalent} canUpdate={canUpdate} />
         )}
         <CurrentTokenSection

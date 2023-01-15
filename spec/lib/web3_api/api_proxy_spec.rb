@@ -247,10 +247,12 @@ RSpec.shared_examples "a tatum client get nfts request" do |expected_chain|
 
   let(:response) do
     OpenStruct.new(
+      status: response_status,
       success?: response_success,
       body: file_fixture("tatum_get_nfts_response.json").read
     )
   end
+  let(:response_status) { 200 }
   let(:response_success) { true }
 
   it "initializes and calls the moralis client with the correct arguments" do
@@ -360,6 +362,18 @@ RSpec.shared_examples "a tatum client get nfts request" do |expected_chain|
 
     it "raises an api client error" do
       expect { request }.to raise_error(described_class::ApiClientRequestError)
+    end
+
+    context "when the status is forbidden" do
+      let(:response_status) { 403 }
+
+      it "does not raise an api client error" do
+        expect { request }.not_to raise_error(described_class::ApiClientRequestError)
+      end
+
+      it "returns an empty json array" do
+        expect(request).to eq([])
+      end
     end
   end
 end

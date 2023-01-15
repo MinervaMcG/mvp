@@ -1,0 +1,18 @@
+<h3 class="mb-6 main-title">Verification failed 💔</h3>
+<p class="w-full lh-lg text-lg mb-6 primary-3 paragraph">
+  We were unable to verify your Talent Protocol account.
+</p>
+<% if @reason == "name" %>
+  <p class="w-full lh-lg text-lg mb-6 primary-3 paragraph">
+    Your name in the app and in the documents you've submitted don't match. Please make sure that you've used the same legal name when you registered.
+  </p>
+<% else %>
+  <p class="w-full lh-lg text-lg mb-6 primary-3 paragraph">
+    This is probably because the documents you've submitted are not legible. Please take another picture, assure that all important fields are perceptible and submit them again.
+  </p>
+<% end %>
+<p class="w-full lh-lg text-lg mb-16 primary-3 paragraph">
+  You're really almost there! Become a verified user and you'll be able to claim your Talent Mate NFT avatar. 💫 
+</p>
+
+<%= link_to "Verify", talent_profile_url(username: @user.username), class: "btn btn-primary fw-800 text-5xl py-4 mb-5 w-full", style: "width: 90%" %>

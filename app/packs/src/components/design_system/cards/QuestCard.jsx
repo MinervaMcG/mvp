@@ -21,6 +21,7 @@ const QuestCard = ({
   completedTasks,
   tasksType,
   status,
+  withPersonaRequest,
 }) => {
   const progress = completedTasks / allTasks || 0;
 
@@ -63,12 +64,11 @@ const QuestCard = ({
   // it's only a temporary change
   const disableButton = () => {
     if (title == "Verify Profile") {
-      return true;
+      return withPersonaRequest.requests_counter > 450;
     } else {
       return false;
     }
   };
-
   return (
     <div className={cx("highlights-card", completed && "disabled")}>
       <div className="p-4 quest-card-title d-flex justify-content-between">

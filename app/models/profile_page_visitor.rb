@@ -1,5 +1,5 @@
 class ProfilePageVisitor < ApplicationRecord
-  encrypts :ip
+  has_encrypted :ip
   blind_index :ip
 
   belongs_to :user

@@ -10,12 +10,15 @@ class User < ApplicationRecord
   validates :username, :email, uniqueness: true
   validates :wallet_id, uniqueness: true, if: -> { wallet_id.present? }
 
-  has_one :talent
-  has_many :invites
   belongs_to :invited, class_name: "Invite", foreign_key: "invite_id", optional: true
   belongs_to :race, optional: true
+
+  has_many :invites
   has_many :user_tags
   has_many :tags, through: :user_tags
+
+  has_one :talent
+  has_one :user_email_log, dependent: :destroy
 
   # Chat
   has_many :messagee, foreign_key: :receiver_id, class_name: "Message"
@@ -32,14 +35,20 @@ class User < ApplicationRecord
   has_many :posts
   has_many :notifications, as: :recipient
   has_many :quests
-  has_many :connections
+  has_many :connections, dependent: :destroy
 
   # Rewards
   has_many :rewards
 
   # web3
-  has_many :erc20_tokens
-  has_many :erc721_tokens
+  has_one :user_domain, dependent: :destroy
+  has_many :erc20_tokens, dependent: :destroy
+  has_many :erc721_tokens, dependent: :destroy
+
+  # Elasticsearch index update
+  update_index("talents", :talent)
+
+  after_save :touch_talent
 
   VALID_ROLES = ["admin", "basic", "moderator"].freeze
 
@@ -120,13 +129,23 @@ class User < ApplicationRecord
     quests.where(type: "Quests::User", status: "done").any?
   end
 
+  def profile_completed?
+    quests.where(type: "Quests::TalentProfile", status: "done").any?
+  end
+
   def confirm_email
     self.email_confirmed_at = Time.current
     save
   end
 
   def display_wallet_id
+    return user_domain.domain if user_domain.present?
+
     wallet_id ? "#{wallet_id[0..10]}..." : ""
+  end
+
+  def visible_digital_collectibles?
+    erc20_tokens.visible.any? || erc721_tokens.visible.any?
   end
 
   def has_unread_messages?
@@ -226,7 +245,7 @@ class User < ApplicationRecord
   end
 
   def approved_by
-    return unless profile_type == "approved"
+    return unless profile_type == "approved" || profile_type == "talent"
 
     profile_type_change = UserProfileTypeChange.find_by(new_profile_type: "approved", user: self)
     return unless profile_type_change
@@ -278,5 +297,9 @@ class User < ApplicationRecord
     if !valid
       errors.add(:notification_preferences, "Invalid notification preferences.")
     end
+  end
+
+  def touch_talent
+    talent.touch if talent.present?
   end
 end

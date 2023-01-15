@@ -9,30 +9,9 @@
     <div class="secondary-content">
       <%= react_component("DiscoveryShow",
         props: {
-          talents: @talents.map { |talent|
-            {
-              id: talent["id"],
-              profilePictureUrl: talent["profile_picture_url"],
-              occupation: talent["occupation"],
-              headline: talent["headline"],
-              marketCap: talent["market_cap"],
-              supplyProgress: talent["supply_progress"],
-              marketCapVariance: talent["market_cap_variance"],
-              supportersCount: talent["supporters_count"],
-              token: {
-                ticker: talent["token"]["ticker"],
-                contractId: talent["token"]["contract_id"],
-                chainId: talent["token"]["chain_id"],
-              },
-              user: {
-                username: talent["user"]["username"],
-                name: talent["user"]["display_name"] || talent["user"]["username"]
-              },
-              isFollowing: talent['is_following'],
-              userId: talent["user_id"]
-            }
-          },
+          isAdminOrModerator: current_user&.admin? || current_user&.moderator?,
           discoveryRow: {
+            id: @discovery_row["id"],
             badge: @discovery_row["badge"],
             badgeLink: @discovery_row["badge_link"],
             description: @discovery_row["description"],

@@ -10,4 +10,14 @@ class CareerGoal < ApplicationRecord
   def to_s
     "#{target_date}: #{description}"
   end
+
+  update_index("talents", :talent)
+
+  after_save :touch_talent
+
+  private
+
+  def touch_talent
+    talent.touch
+  end
 end

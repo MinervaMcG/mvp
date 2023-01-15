@@ -221,6 +221,10 @@
   color: $dark-text-primary-01 !important;
 }
 
+.text-marketing-light-yellow {
+  color: $marketing-light-yellow !important;
+}
+
 .text-ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -704,6 +708,10 @@
 
 .launch-token-banner-background {
   background-image: url(images/launch-token-banner-background.png);
+}
+
+.verify-user-banner-background {
+  background-image: url(images/verify-user-banner-background.png);
 }
 
 .talent-background-text {

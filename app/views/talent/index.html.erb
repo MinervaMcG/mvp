@@ -3,40 +3,7 @@
     <div class="secondary-content">
       <%= react_component("TalentPage",
         props: {
-          talents: @talents.map { |talent|
-            {
-              id: talent["id"],
-              profilePictureUrl: talent["profile_picture_url"],
-              occupation: talent["occupation"],
-              headline: talent["headline"],
-              supportersCount: talent["supporters_count"],
-              supporterCounter: talent["supporters_count"].to_s,
-              totalSupply: talent["total_supply"].to_s,
-              maxSupply: Talent.max_supply.to_s,
-              marketCap: talent["market_cap"],
-              marketCapVariance: talent["market_cap_variance"],
-              supplyProgress: talent["supply_progress"],
-              token: {
-                ticker: talent["token"]["ticker"],
-                contractId: talent["token"]["contract_id"],
-                deployedAt: talent["token"]["deployed_at"],
-                chainId: talent["token"]["chain_id"]
-              },
-              user: {
-                username: talent["user"]["username"],
-                name: talent["user"]["display_name"] || talent["user"]["username"],
-                profileType: talent["user"]["profile_type"]
-              },
-              isFollowing: talent['is_following'],
-              userId: talent["user_id"],
-              isVerified: talent["verified"]
-            }
-          },
-          isAdminOrModerator: current_user.admin? || current_user.moderator?,
-          pagination: {
-            currentPage: @pagy.page,
-            lastPage: @pagy.last
-          },
+          isAdminOrModerator: current_user.admin? || current_user.moderator?
         },
         prerender: false) %>
     </div>

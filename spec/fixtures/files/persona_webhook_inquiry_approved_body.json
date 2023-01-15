@@ -1,0 +1,776 @@
+{
+  "data": {
+    "type": "event",
+    "id": "evt_XGuYWp7WuDzNxie5z16s7sGJ",
+    "attributes": {
+      "name": "inquiry.approved",
+      "payload": {
+        "data": {
+          "type": "inquiry",
+          "id": "inq_de7ZZTn3r7yTecY8Z1ybEBEc",
+          "attributes": {
+            "status": "completed",
+            "reference-id": null,
+            "note": null,
+            "behaviors": {
+              "request-spoof-attempts": 0,
+              "user-agent-spoof-attempts": 0,
+              "distraction-events": 5,
+              "hesitation-baseline": 223792,
+              "hesitation-count": 10,
+              "hesitation-time": 207933,
+              "shortcut-copies": 0,
+              "shortcut-pastes": 0,
+              "autofill-cancels": 0,
+              "autofill-starts": 0,
+              "devtools-open": false,
+              "completion-time": 239.381487541,
+              "hesitation-percentage": 92.91350897261744,
+              "behavior-threat-level": "low"
+            },
+            "tags": [],
+            "creator": "API",
+            "reviewer-comment": null,
+            "created-at": "2022-12-22T01:09:39.000Z",
+            "started-at": "2022-12-22T01:13:15.000Z",
+            "completed-at": "2022-12-22T01:13:38.000Z",
+            "failed-at": null,
+            "marked-for-review-at": null,
+            "decisioned-at": null,
+            "expired-at": null,
+            "redacted-at": null,
+            "previous-step-name": "verification_selfie",
+            "next-step-name": "success",
+            "name-first": "Ruben",
+            "name-middle": null,
+            "name-last": "Dinis",
+            "birthdate": "2000-11-08",
+            "address-street-1": "Random",
+            "address-street-2": null,
+            "address-city": "Brazilia",
+            "address-subdivision": "British Columbia",
+            "address-subdivision-abbr": "BC",
+            "address-postal-code": "7802-396",
+            "address-postal-code-abbr": "7802-396",
+            "social-security-number": null,
+            "identification-number": "2154979",
+            "email-address": null,
+            "phone-number": null,
+            "fields": {
+              "birthdate": {
+                "type": "date",
+                "value": "2000-11-08"
+              },
+              "name-last": {
+                "type": "string",
+                "value": "Dinis"
+              },
+              "name-first": {
+                "type": "string",
+                "value": "Ruben"
+              },
+              "name-middle": {
+                "type": "string",
+                "value": null
+              },
+              "address-city": {
+                "type": "string",
+                "value": "Brazilia"
+              },
+              "phone-number": {
+                "type": "string",
+                "value": null
+              },
+              "email-address": {
+                "type": "string",
+                "value": null
+              },
+              "current-selfie": {
+                "type": "selfie",
+                "value": {
+                  "id": "self_nXxrRNfQphf5hR42mHjbcoUr",
+                  "type": "Selfie::ProfileAndCenter"
+                }
+              },
+              "address-street-1": {
+                "type": "string",
+                "value": "37-12871 JACK BELL DR"
+              },
+              "address-street-2": {
+                "type": "string",
+                "value": null
+              },
+              "selected-id-class": {
+                "type": "string",
+                "value": "dl"
+              },
+              "address-postal-code": {
+                "type": "string",
+                "value": "VefV 2T8"
+              },
+              "address-subdivision": {
+                "type": "string",
+                "value": "BC"
+              },
+              "address-country-code": {
+                "type": "string",
+                "value": "CA"
+              },
+              "identification-class": {
+                "type": "string",
+                "value": "dl"
+              },
+              "current-government-id": {
+                "type": "government_id",
+                "value": {
+                  "id": "doc_cJrGq4jwMAdAVVaxx3ZihzCP",
+                  "type": "Document::GovernmentId"
+                }
+              },
+              "identification-number": {
+                "type": "string",
+                "value": "2154979"
+              },
+              "selected-country-code": {
+                "type": "string",
+                "value": "CA"
+              }
+            }
+          },
+          "relationships": {
+            "account": {
+              "data": {
+                "type": "account",
+                "id": "act_BvRZkVjK7jtsLMzbRSFkfFJw"
+              }
+            },
+            "template": {
+              "data": null
+            },
+            "inquiry-template": {
+              "data": {
+                "type": "inquiry-template",
+                "id": "itmpl_TaV85LsgdT1oV9J4Z6qc99Eh"
+              }
+            },
+            "inquiry-template-version": {
+              "data": {
+                "type": "inquiry-template-version",
+                "id": "itmplv_5Z4xuPSvcof1Vs4ziYfssMfM"
+              }
+            },
+            "reviewer": {
+              "data": null
+            },
+            "reports": {
+              "data": []
+            },
+            "verifications": {
+              "data": [
+                {
+                  "type": "verification/government-id",
+                  "id": "ver_aLNZKypiUmSxNaDSEvkXJyXq"
+                },
+                {
+                  "type": "verification/selfie",
+                  "id": "ver_AbDMAZqYpn8o4AQPVPR3P7AD"
+                }
+              ]
+            },
+            "sessions": {
+              "data": [
+                {
+                  "type": "inquiry-session",
+                  "id": "iqse_6Fg6GGJ7qaka3J4bmQrdW1ri"
+                }
+              ]
+            },
+            "documents": {
+              "data": [
+                {
+                  "type": "document/government-id",
+                  "id": "doc_cJrGq4jwMAdAVVaxx3ZihzCP"
+                }
+              ]
+            },
+            "selfies": {
+              "data": [
+                {
+                  "type": "selfie/profile-and-center",
+                  "id": "self_nXxrRNfQphf5hR42mHjbcoUr"
+                }
+              ]
+            }
+          }
+        },
+        "included": [
+          {
+            "type": "verification/government-id",
+            "id": "ver_aLNZKypiUmSxNaDSEvkXJyXq",
+            "attributes": {
+              "status": "passed",
+              "created-at": "2022-12-22T01:13:07.000Z",
+              "created-at-ts": 1671671587,
+              "submitted-at": "2022-12-22T01:13:07.000Z",
+              "submitted-at-ts": 1671671587,
+              "completed-at": "2022-12-22T01:13:15.000Z",
+              "completed-at-ts": 1671671595,
+              "country-code": "CA",
+              "entity-confidence-score": 97.49863433837892,
+              "entity-confidence-reasons": ["generic"],
+              "front-photo-url": "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2NFeTc1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--630b3bcb9c47f4c006b58601aa8ab8a9d98d7276/20221110_145817.jpg",
+              "back-photo-url": null,
+              "photo-urls": [
+                {
+                  "page": "front",
+                  "url": "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2NFeTc1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--630b3bcb9c47f4c006b58601aa8ab8a9d98d7276/20221110_145817.jpg",
+                  "normalized-url": "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2RJeXI1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--061e20dd4d78e23aad9ba17a4560512b945b23d4/20221110_145817.jpg",
+                  "original-urls": [
+                    "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2NweXI1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--8278d682d8b038b6c69d33779c65c96b4d81154c/20221110_145817.jpeg"
+                  ],
+                  "byte-size": 447975
+                }
+              ],
+              "selfie-photo": {
+                "url": "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2Y1eXI1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--bfa913e8d9b2b7c7551c10c2ace46773fc02f2ee/selfie_photo.jpg",
+                "byte-size": 8362
+              },
+              "selfie-photo-url": "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2Y1eXI1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--bfa913e8d9b2b7c7551c10c2ace46773fc02f2ee/selfie_photo.jpg",
+              "id-class": "dl",
+              "capture-method": "upload",
+              "name-first": "Ruben",
+              "name-middle": null,
+              "name-last": "Dinis",
+              "name-suffix": null,
+              "birthdate": "2001-12-08",
+              "address-street-1": "37-12871 JACK BELL DR",
+              "address-street-2": null,
+              "address-city": "Brazilia",
+              "address-subdivision": "BC",
+              "address-postal-code": "7802-396",
+              "issuing-authority": null,
+              "issuing-subdivision": "BC",
+              "nationality": null,
+              "document-number": null,
+              "visa-status": null,
+              "issue-date": "2021-05-14",
+              "expiration-date": "2023-12-08",
+              "designations": [],
+              "birthplace": null,
+              "endorsements": null,
+              "height": null,
+              "sex": "M",
+              "restrictions": null,
+              "vehicle-class": "5",
+              "identification-number": "2154979",
+              "checks": [
+                {
+                  "name": "id_aamva_database_lookup",
+                  "status": "not_applicable",
+                  "reasons": ["disabled"],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_account_comparison",
+                  "status": "not_applicable",
+                  "reasons": ["missing_properties"],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_age_comparison",
+                  "status": "not_applicable",
+                  "reasons": ["no_configuration"],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_barcode_detection",
+                  "status": "failed",
+                  "reasons": ["back_missing"],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_barcode_inconsistency_detection",
+                  "status": "not_applicable",
+                  "reasons": ["barcode_not_detected"],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_blur_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_color_inconsistency_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_disallowed_country_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_disallowed_type_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_double_side_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_electronic_replica_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_entity_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_expired_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_extraction_inconsistency_detection",
+                  "status": "not_applicable",
+                  "reasons": ["missing_properties"],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_extracted_properties_detection",
+                  "status": "not_applicable",
+                  "reasons": ["no_required_properties"],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_fabrication_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_glare_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_handwriting_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_inquiry_comparison",
+                  "status": "not_applicable",
+                  "reasons": ["missing_properties"],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_mrz_detection",
+                  "status": "not_applicable",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_mrz_inconsistency_detection",
+                  "status": "not_applicable",
+                  "reasons": ["mrz_not_found"],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_po_box_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_portrait_clarity_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_portrait_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_real_id_detection",
+                  "status": "not_applicable",
+                  "reasons": ["invalid_country"],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_tamper_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_unprocessable_submission_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_valid_dates_detection",
+                  "status": "not_applicable",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_age_inconsistency_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_compromised_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_inconsistent_repeat_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_public_figure_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_repeat_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "id_selfie_comparison",
+                  "status": "not_applicable",
+                  "reasons": ["no_selfie"],
+                  "metadata": {}
+                }
+              ]
+            },
+            "relationships": {
+              "inquiry": {
+                "data": {
+                  "type": "inquiry",
+                  "id": "inq_de7ZZTn3r7yTecY8Z1ybEBEc"
+                }
+              },
+              "template": {
+                "data": null
+              },
+              "inquiry-template-version": {
+                "data": {
+                  "type": "inquiry-template-version",
+                  "id": "itmplv_5Z4xuPSvcof1Vs4ziYfssMfM"
+                }
+              },
+              "inquiry-template": {
+                "data": {
+                  "type": "inquiry-template",
+                  "id": "itmpl_TaV85LsgdT1oV9J4Z6qc99Eh"
+                }
+              },
+              "verification-template": {
+                "data": {
+                  "type": "verification-template/government-id",
+                  "id": "vtmpl_PwUE8rw5nfB6isAvGdyB7rBq"
+                }
+              },
+              "verification-template-version": {
+                "data": {
+                  "type": "verification-template-version/government-id",
+                  "id": "vtmplv_G72yUg71TA1BFPySCAmvYRDK"
+                }
+              },
+              "document": {
+                "data": {
+                  "type": "document/government-id",
+                  "id": "doc_cJrGq4jwMAdAVVaxx3ZihzCP"
+                }
+              }
+            }
+          },
+          {
+            "type": "verification/selfie",
+            "id": "ver_AbDMAZqYpn8o4AQPVPR3P7AD",
+            "attributes": {
+              "status": "passed",
+              "created-at": "2022-12-22T01:13:33.000Z",
+              "created-at-ts": 1671671613,
+              "submitted-at": "2022-12-22T01:13:33.000Z",
+              "submitted-at-ts": 1671671613,
+              "completed-at": "2022-12-22T01:13:37.000Z",
+              "completed-at-ts": 1671671617,
+              "country-code": null,
+              "left-photo-url": "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2NyenI1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--e68dffec9d2db5e36da0737c6136db80191fae1b/left_photo_processed.jpg",
+              "center-photo-url": "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2NxenI1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--bd45b5c57ac8f84434c61dfa6636ac584dd4a0fe/center_photo_processed.jpg",
+              "right-photo-url": "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2NzenI1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--97801fc736751ea1ee6b007c09f7469a5fdcf21f/right_photo_processed.jpg",
+              "photo-urls": [
+                {
+                  "page": "left_photo",
+                  "url": "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2NyenI1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--e68dffec9d2db5e36da0737c6136db80191fae1b/left_photo_processed.jpg",
+                  "byte-size": 48980
+                },
+                {
+                  "page": "center_photo",
+                  "url": "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2NxenI1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--bd45b5c57ac8f84434c61dfa6636ac584dd4a0fe/center_photo_processed.jpg",
+                  "byte-size": 51396
+                },
+                {
+                  "page": "right_photo",
+                  "url": "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2NzenI1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--97801fc736751ea1ee6b007c09f7469a5fdcf21f/right_photo_processed.jpg",
+                  "byte-size": 49258
+                }
+              ],
+              "entity-confidence-reasons": ["glasses"],
+              "document-similarity-score": null,
+              "selfie-similarity-score-left": 100,
+              "selfie-similarity-score-right": 99.9999,
+              "checks": [
+                {
+                  "name": "selfie_id_comparison",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "selfie_pose_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "selfie_multiple_faces_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "selfie_pose_repeat_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "selfie_account_comparison",
+                  "status": "not_applicable",
+                  "reasons": ["no_account_selfie_present"],
+                  "metadata": {}
+                },
+                {
+                  "name": "selfie_suspicious_entity_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "selfie_liveness_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "selfie_glasses_detection",
+                  "status": "failed",
+                  "reasons": ["glasses"],
+                  "metadata": {}
+                },
+                {
+                  "name": "selfie_glare_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "selfie_public_figure_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "selfie_age_comparison",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                },
+                {
+                  "name": "selfie_face_covering_detection",
+                  "status": "passed",
+                  "reasons": [],
+                  "metadata": {}
+                }
+              ],
+              "capture-method": "video"
+            },
+            "relationships": {
+              "inquiry": {
+                "data": {
+                  "type": "inquiry",
+                  "id": "inq_de7ZZTn3r7yTecY8Z1ybEBEc"
+                }
+              },
+              "template": {
+                "data": null
+              },
+              "inquiry-template-version": {
+                "data": {
+                  "type": "inquiry-template-version",
+                  "id": "itmplv_5Z4xuPSvcof1Vs4ziYfssMfM"
+                }
+              },
+              "inquiry-template": {
+                "data": {
+                  "type": "inquiry-template",
+                  "id": "itmpl_TaV85LsgdT1oV9J4Z6qc99Eh"
+                }
+              },
+              "verification-template": {
+                "data": {
+                  "type": "verification-template/selfie",
+                  "id": "vtmpl_cGnj195x1t1anM4gcMXPTxEA"
+                }
+              },
+              "verification-template-version": {
+                "data": {
+                  "type": "verification-template-version/selfie",
+                  "id": "vtmplv_6wPRJs1pcoxCmaVnM2pXPupL"
+                }
+              }
+            }
+          },
+          {
+            "type": "inquiry-session",
+            "id": "iqse_6Fg6GGJ7qaka3J4bmQrdW1ri",
+            "attributes": {
+              "status": "active",
+              "created-at": "2022-12-22T01:09:39.000Z",
+              "ip-address": "128.189.150.10",
+              "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36",
+              "os-name": "Mac",
+              "os-full-version": "10.15.7",
+              "device-type": "desktop",
+              "device-name": null,
+              "browser-name": "Chrome",
+              "browser-full-version": "106.0.0.0",
+              "mobile-sdk-name": null,
+              "mobile-sdk-full-version": null,
+              "is-proxy": false,
+              "is-tor": false,
+              "is-datacenter": false,
+              "threat-level": "low",
+              "country-code": "CA",
+              "country-name": "Canada",
+              "region-code": "BC",
+              "region-name": "British Columbia",
+              "latitude": 49.2825,
+              "longitude": -123.1291,
+              "browser-fingerprint": "ac4f8e6eead3c7dd201c8b0e3ddcca6d"
+            },
+            "relationships": {
+              "inquiry": {
+                "data": {
+                  "type": "inquiry",
+                  "id": "inq_de7ZZTn3r7yTecY8Z1ybEBEc"
+                }
+              }
+            }
+          },
+          {
+            "type": "document/government-id",
+            "id": "doc_cJrGq4jwMAdAVVaxx3ZihzCP",
+            "attributes": {
+              "status": "processed",
+              "created-at": "2022-12-22T01:13:06.000Z",
+              "processed-at": "2022-12-22T01:13:13.000Z",
+              "processed-at-ts": 1671671593,
+              "front-photo": {
+                "filename": "20221110_145817.jpg",
+                "url": "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2NFeTc1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--630b3bcb9c47f4c006b58601aa8ab8a9d98d7276/20221110_145817.jpg",
+                "byte-size": 447975
+              },
+              "back-photo": null,
+              "selfie-photo": {
+                "filename": "selfie_photo.jpg",
+                "url": "https://withpersona.com/api/v1/files/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHNLd2Y1eXI1TCIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--bfa913e8d9b2b7c7551c10c2ace46773fc02f2ee/selfie_photo.jpg",
+                "byte-size": 8362
+              },
+              "id-class": "dl",
+              "name-first": "Ruben",
+              "name-middle": null,
+              "name-last": "Dinis",
+              "name-suffix": null,
+              "birthdate": "2001-12-08",
+              "address-street-1": "37-12871 JACK BELL DR",
+              "address-street-2": null,
+              "address-city": "Brazilia",
+              "address-subdivision": "BC",
+              "address-postal-code": "7802-396",
+              "issuing-authority": null,
+              "issuing-subdivision": "BC",
+              "nationality": null,
+              "document-number": null,
+              "visa-status": null,
+              "issue-date": "2021-05-14",
+              "expiration-date": "2023-12-08",
+              "birthplace": null,
+              "height": null,
+              "sex": "M",
+              "endorsements": null,
+              "restrictions": null,
+              "vehicle-class": "5",
+              "identification-number": "2154979"
+            },
+            "relationships": {
+              "inquiry": {
+                "data": {
+                  "type": "inquiry",
+                  "id": "inq_de7ZZTn3r7yTecY8Z1ybEBEc"
+                }
+              },
+              "template": {
+                "data": null
+              },
+              "inquiry-template-version": {
+                "data": {
+                  "type": "inquiry-template-version",
+                  "id": "itmplv_5Z4xuPSvcof1Vs4ziYfssMfM"
+                }
+              },
+              "inquiry-template": {
+                "data": {
+                  "type": "inquiry-template",
+                  "id": "itmpl_TaV85LsgdT1oV9J4Z6qc99Eh"
+                }
+              },
+              "document-files": {
+                "data": []
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

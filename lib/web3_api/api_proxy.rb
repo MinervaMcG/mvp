@@ -154,6 +154,9 @@ module Web3Api
 
     def tatum_nfts(wallet_address, chain)
       response = tatum_nfts_response(wallet_address, chain)
+
+      # When there're no NFTS the API returns 403
+      return [] if response.status == 403
       validate_response!(response)
 
       response_body = JSON.parse(response.body)

@@ -25,8 +25,8 @@ const TalentTableCardMode = ({
         <div key={talent.id} className={cx("mb-3", !mobile && "pr-4")}>
           <NewTalentCard
             name={talent.user.name}
-            ticker={talent.token.ticker}
-            contractId={talent.token.contractId}
+            ticker={talent.talentToken.ticker}
+            contractId={talent.talentToken.contractId}
             occupation={talent.occupation}
             profilePictureUrl={talent.profilePictureUrl}
             headline={talent.headline}
@@ -38,7 +38,7 @@ const TalentTableCardMode = ({
             publicPageViewer={publicPageViewer}
             isVerified={talent.isVerified}
             profileType={talent.user.profileType}
-            chainId={talent.token.chainId}
+            chainId={talent.talentToken.chainId}
             env={env}
           />
         </div>

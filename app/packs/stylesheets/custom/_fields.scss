@@ -51,7 +51,7 @@
 }
 
 .dark-body .form-control {
-  background: none !important;
+  background: $dark-bg-01 !important;
   color: $dark-text-primary-01;
   border: 1px solid $dark-surface-hover-02 !important;
 
@@ -71,10 +71,9 @@
   }
 
   &:disabled {
-    color: $light-text-primary-disable;
+    color: $dark-text-primary-disable;
     background: $dark-surface-disable !important;
     border: 1px solid $dark-surface-disable !important;
-    color: $dark-surface-disable;
   }
 }
 

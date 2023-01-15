@@ -56,6 +56,8 @@ const EditOverviewModal = ({ show, hide, talent, setTalent }) => {
     }))
   );
   const [validationErrors, setValidationErrors] = useState({
+    legalFirstName: false,
+    legalLastName: false,
     displayName: false,
     occupation: false,
     location: false,
@@ -487,8 +489,40 @@ const EditOverviewModal = ({ show, hide, talent, setTalent }) => {
             </div>
           </div>
         )}
-        <div className="w-100 d-flex flex-wrap mb-5">
-          <div className="w-100">
+        <div className="w-100 d-flex flex-wrap">
+          <div className="w-100 mb-5">
+            <TextInput
+              className="mb-2"
+              title="First Name"
+              onChange={(e) =>
+                changeUserAttribute("legalFirstName", e.target.value)
+              }
+              value={editedTalent.user.legalFirstName}
+              error={validationErrors?.legalFirstName}
+              disabled={editedTalent.withPersonaId}
+            />
+            <P2
+              className="text-primary-04"
+              text="Your legal first name that will be used when verifying your account"
+            />
+          </div>
+          <div className="w-100 mb-5">
+            <TextInput
+              className="mb-2"
+              title="Last Name"
+              onChange={(e) =>
+                changeUserAttribute("legalLastName", e.target.value)
+              }
+              value={editedTalent.user.legalLastName}
+              error={validationErrors?.legalLastName}
+              disabled={editedTalent.withPersonaId}
+            />
+            <P2
+              className="text-primary-04"
+              text="Your legal last name that will be used when verifying your account"
+            />
+          </div>
+          <div className="w-100 mb-5">
             <TextInput
               className="mb-2"
               title="Display Name"
@@ -504,7 +538,7 @@ const EditOverviewModal = ({ show, hide, talent, setTalent }) => {
               text="The name that we will generally use"
             />
           </div>
-          <div className="w-100">
+          <div className="w-100 mb-5">
             <TextInput
               title="Location"
               onChange={(e) =>

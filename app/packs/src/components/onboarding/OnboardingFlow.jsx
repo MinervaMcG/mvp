@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import dayjs from "dayjs";
 import cx from "classnames";
 
 import Container from "../registration/RegistrationContainer";
@@ -59,13 +60,20 @@ const OnboardingFlow = (props) => {
     props.talent.careerNeeds
   );
   const [localPosition, setLocalPosition] = useState(
-    props.talent.lastPosition || {
-      title: "",
-      institution: "",
-      description: "",
-      start_date: "",
-      link: "",
-    }
+    props.talent.lastPosition
+      ? {
+          ...props.talent.lastPosition,
+          start_date: props.talent.lastPosition.start_date
+            ? dayjs(props.talent.lastPosition.start_date).format("DD-MM-YYYY")
+            : "",
+        }
+      : {
+          title: "",
+          institution: "",
+          description: "",
+          start_date: "",
+          link: "",
+        }
   );
 
   const [localGender, setLocalGender] = useState(props.talent.gender || "");

@@ -129,11 +129,11 @@ const Supporting = ({
         response.forEach((element) => {
           setTalentProfilePictures((prev) => ({
             ...prev,
-            [element.token.contract_id]: element.profile_picture_url,
+            [element.talent_token.contract_id]: element.profile_picture_url,
           }));
           setTalentProfileUsernames((prev) => ({
             ...prev,
-            [element.token.contract_id]: element.user.username,
+            [element.talent_token.contract_id]: element.user.username,
           }));
         });
       }
@@ -479,7 +479,11 @@ const Supporting = ({
                   onClick={() => onClaim(talent.contract_id)}
                   className="mr-2 button-link remove-background"
                 >
-                  <Link text="Claim rewards" bold disabled={isCurrentUserImpersonated} />
+                  <Link
+                    text="Claim rewards"
+                    bold
+                    disabled={isCurrentUserImpersonated}
+                  />
                 </button>
               </Table.Td>
             </Table.Tr>

@@ -4,8 +4,8 @@ RSpec.describe "Talent", type: :request do
   let(:current_user) { create :user }
 
   describe "#index" do
-    let(:talents_search_class) { Talents::Search }
-    let(:talents_search) { instance_double(talents_search_class, call: Talent.all) }
+    let(:talents_search_class) { Talents::ChewySearch }
+    let(:talents_search) { instance_double(talents_search_class, call: [{current_page: 1, last_page: 1}, Talent.all]) }
 
     before do
       allow(talents_search_class).to receive(:new).and_return(talents_search)
@@ -22,8 +22,11 @@ RSpec.describe "Talent", type: :request do
         expect(talents_search_class).to have_received(:new)
           .with(
             admin_or_moderator: false,
+            filter_params: {"status" => "Pending approval"},
+            searching_user: current_user,
             discovery_row: nil,
-            filter_params: {"status" => "Pending approval"}
+            size: 40,
+            from: 0
           )
 
         expect(talents_search).to have_received(:call)
@@ -138,6 +141,31 @@ RSpec.describe "Talent", type: :request do
           expect(talent.website).to eq "https://www.talentprotocol.com/"
           expect(talent.open_to_job_offers).to eq true
         end
+      end
+    end
+
+    context "when the param is an empty string" do
+      let!(:talent) { create :talent, user: current_user, profile: {github: "https://github.com/talentprotocol"} }
+      subject(:update_talent_request) { put api_v1_talent_path(id: talent.id, params: params, as: current_user) }
+
+      let(:params) do
+        {
+          talent: {
+            profile: {
+              github: ""
+            }
+          },
+          user: {
+            display_name: "John Doe"
+          }
+        }
+      end
+
+      it "removes the param from the talent" do
+        update_talent_request
+
+        talent.reload
+        expect(talent.github).to eq ""
       end
     end
   end

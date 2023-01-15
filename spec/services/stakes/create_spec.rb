@@ -42,7 +42,7 @@ RSpec.describe Stakes::Create do
         job = enqueued_jobs[1]
 
         aggregate_failures do
-          expect(job["job_class"]).to eq("SendMemberNFTToUserJob")
+          expect(job["job_class"]).to eq("WhitelistUserJob")
           expect(job["arguments"][0]["user_id"]).to eq(staking_user.id)
         end
       end

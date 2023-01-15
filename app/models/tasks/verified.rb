@@ -3,15 +3,15 @@
 module Tasks
   class Verified < Task
     def title
-      "Schedule an onboarding call and get your profile verified"
+      "Verify your profile"
     end
 
     def description
-      "Schedule a call with a member of Talent Protocol’s core team. Get verified and earn your badge. Currently unavailable."
+      "Click on the Verify button in your profile and get verified"
     end
 
     def link
-      nil
+      "/u/#{quest.user.username}"
     end
   end
 end

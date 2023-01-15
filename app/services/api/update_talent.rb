@@ -30,14 +30,25 @@ class API::UpdateTalent
         new_profile_type: params[:profile_type],
         note: params[:note]
       )
-      Tasks::Update.new.call(type: "Tasks::ApplyTokenLaunch", user: talent_user) if params[:profile_type] == "waiting_for_approval"
+
+      if params[:profile_type] == "waiting_for_approval"
+        Tasks::Update.new.call(type: "Tasks::ApplyTokenLaunch", user: talent_user)
+      end
 
       if params[:profile_type] == "approved"
         talent.update!(public: true)
       end
     end
 
-    talent_user.update!(params.except(:profile_type, :note))
+    if params.key?(:legal_first_name) && !talent.with_persona_id
+      talent_user.update!(legal_first_name: params[:legal_first_name])
+    end
+
+    if params.key?(:legal_last_name) && !talent.with_persona_id
+      talent_user.update!(legal_last_name: params[:legal_last_name])
+    end
+
+    talent_user.update!(params.except(:profile_type, :note, :legal_first_name, :legal_last_name))
   end
 
   def update_talent(params)
@@ -60,7 +71,6 @@ class API::UpdateTalent
         talent.occupation = params[:profile][:occupation]
         talent.location = params[:profile][:location]
         talent.headline = params[:profile][:headline]
-        talent.website = params[:profile][:website]
         talent.video = params[:profile][:video]
         talent.wallet_address = params[:profile][:wallet_address]
         talent.gender = params[:profile][:gender]
@@ -74,11 +84,27 @@ class API::UpdateTalent
         end
       end
 
+      if params[:profile][:website]
+        talent.website = if params[:profile][:website].length > 0 && !params[:profile][:website].include?("http")
+          "http://#{params[:profile][:website]}"
+        else
+          params[:profile][:website]
+        end
+      end
+
       if params[:profile][:discord]
-        talent.discord = params[:profile][:discord]
+        talent.discord = if params[:profile][:discord].length > 0 && !params[:profile][:discord].include?("http")
+          "https://#{params[:profile][:discord]}"
+        else
+          params[:profile][:discord]
+        end
       end
       if params[:profile][:linkedin]
-        talent.linkedin = params[:profile][:linkedin]
+        talent.linkedin = if params[:profile][:linkedin].length > 0 && !params[:profile][:linkedin].include?("http")
+          "https://#{params[:profile][:linkedin]}"
+        else
+          params[:profile][:linkedin]
+        end
       end
 
       if params[:profile][:telegram]
@@ -86,11 +112,19 @@ class API::UpdateTalent
       end
 
       if params[:profile][:github]
-        talent.github = params[:profile][:github]
+        talent.github = if params[:profile][:github].length > 0 && !params[:profile][:github].include?("http")
+          "https://#{params[:profile][:github]}"
+        else
+          params[:profile][:github]
+        end
       end
 
       if params[:profile][:twitter]
-        talent.twitter = params[:profile][:twitter]
+        talent.twitter = if params[:profile][:twitter].length > 0 && !params[:profile][:twitter].include?("http")
+          "https://#{params[:profile][:twitter]}"
+        else
+          params[:profile][:twitter]
+        end
       end
     end
 
@@ -101,6 +135,10 @@ class API::UpdateTalent
     if params.key?(:verified)
       talent.verified = params[:verified]
       Tasks::Update.new.call(type: "Tasks::Verified", user: talent_user) if talent.verified?
+    end
+
+    if params.key?(:with_persona_id)
+      talent.with_persona_id = params[:with_persona_id]
     end
 
     if params.key?(:banner_data)
@@ -129,14 +167,6 @@ class API::UpdateTalent
   end
 
   def update_career_needs(career_needs)
-    talent
-      .career_goal
-      .career_needs
-      .where.not(title: career_needs)
-      .delete_all
-
-    career_needs.each do |title|
-      CareerNeed.find_or_create_by!(title: title, career_goal: talent.career_goal)
-    end
+    CareerNeeds::Upsert.new(career_goal: talent.career_goal, titles: career_needs).call
   end
 end

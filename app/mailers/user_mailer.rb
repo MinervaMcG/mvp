@@ -66,6 +66,18 @@ class UserMailer < ApplicationMailer
     bootstrap_mail(to: @user.email, subject: "You can now apply to launch a Talent Token! 👏")
   end
 
+  def send_verified_profile_email
+    @user = User.find(indifferent_access_params[:source_id])
+    bootstrap_mail(to: @user.email, subject: "You're verified! ✅")
+  end
+
+  def send_verification_failed_email
+    @user = User.find(indifferent_access_params[:source_id])
+    @reason = indifferent_access_params[:reason]
+
+    bootstrap_mail(to: @user.email, subject: "Verification failed 💔")
+  end
+
   def send_digest_email
     @user = indifferent_access_params[:user]
     @without_container = true
@@ -145,6 +157,30 @@ class UserMailer < ApplicationMailer
     @user = indifferent_access_params[:user]
 
     bootstrap_mail(to: @user.email, subject: "Your goal's half-way there!")
+  end
+
+  def send_opportunities_open_roles_email
+    @user = indifferent_access_params[:user]
+
+    bootstrap_mail(to: @user.email, subject: "We have open roles for you!")
+  end
+
+  def send_opportunities_hiring_email
+    @user = indifferent_access_params[:user]
+
+    bootstrap_mail(to: @user.email, subject: "Looking to hire talent?")
+  end
+
+  def send_opportunities_role_landed_email
+    @user = indifferent_access_params[:user]
+
+    bootstrap_mail(to: @user.email, subject: "Did you just land a new role?")
+  end
+
+  def send_opportunities_talent_found_email
+    @user = indifferent_access_params[:user]
+
+    bootstrap_mail(to: @user.email, subject: "Did you meet talented builders?")
   end
 
   private

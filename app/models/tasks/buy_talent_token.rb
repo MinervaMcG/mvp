@@ -11,7 +11,7 @@ module Tasks
     end
 
     def reward
-      "Member NFT"
+      "Talent Mate 'Token Holder' skin unlock"
     end
 
     def link

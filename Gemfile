@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "2.7.6"
 
-gem "rails", "~> 6.1.6"
+gem "rails", "7.0.3.1"
 gem "pg", "~> 1.1"
 gem "puma", "~> 5.6"
 
@@ -24,8 +24,6 @@ gem "clearance"
 gem "rack-attack"
 
 # Web 3
-gem "eth"
-gem "ethereum.rb"
 gem "schmooze"
 
 # Crypto
@@ -70,6 +68,10 @@ gem "sidekiq-status"
 gem "faraday"
 gem "down"
 
+# Prevent boot time warnings
+gem "net-http"
+gem "uri", "0.10.0"
+
 # GraphQL
 gem "graphql-client"
 
@@ -90,6 +92,10 @@ gem "paper_trail"
 
 # Data analytics
 gem "blazer"
+
+# Elasticsearch
+gem "chewy", ">= 7.2.7"
+gem "faraday_middleware-aws-sigv4"
 
 group :development, :test do
   gem "awesome_print"

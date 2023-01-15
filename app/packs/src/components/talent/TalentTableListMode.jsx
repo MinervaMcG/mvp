@@ -151,7 +151,7 @@ const TalentTableListMode = ({
 
   const varianceClassNames = (talent) => {
     if (
-      !talent.token.contractId ||
+      !talent.talentToken.contractId ||
       !talent.marketCapVariance ||
       Math.abs(talent.marketCapVariance) < 0.01
     )
@@ -161,7 +161,7 @@ const TalentTableListMode = ({
   };
 
   const getSelectedOptionValue = (talent) => {
-    const contractId = talent.token.contractId;
+    const contractId = talent.talentToken.contractId;
     switch (selectedSort) {
       case "Supporters":
         return contractId ? talent.supportersCount : "-";
@@ -341,9 +341,9 @@ const TalentTableListMode = ({
                   height="24"
                 />
                 <P2 text={talent.user.name} bold className="ml-2" />
-                {talent.token.contractId ? (
+                {talent.talentToken.contractId ? (
                   <P2
-                    text={`$${talent.token.ticker}`}
+                    text={`$${talent.talentToken.ticker}`}
                     bold
                     className="text-primary-03 ml-2"
                   />
@@ -376,46 +376,47 @@ const TalentTableListMode = ({
             >
               <P2
                 text={
-                  talent.token.contractId
+                  talent.talentToken.contractId
                     ? `${talent.supportersCount || 0}`
                     : "-"
                 }
               />
             </Table.Td>
             <Table.Td
-              className={cx(
-                "pr-3",
-                talent.token.contractId ? "" : "d-flex justify-content-center"
-              )}
+              className="pr-3"
               onClick={() =>
                 (window.location.href = `/u/${talent.user.username}`)
               }
             >
               <P2
+                className={cx(
+                  talent.talentToken.contractId
+                    ? ""
+                    : "d-flex justify-content-center"
+                )}
                 text={
-                  talent.token.contractId
+                  talent.talentToken.contractId
                     ? `${currency(
                         displayableAmount(talent.marketCap)
                       ).format()}`
                     : "-"
                 }
               />
-              <div className="progress" style={{ height: 6 }}>
-                <div
-                  className="progress-bar bg-secondary"
-                  role="progressbar"
-                  aria-valuenow={talent.supplyProgress || 0}
-                  style={{ width: `${talent.supplyProgress || 0}%` }}
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
+              {talent.talentToken.contractId && (
+                <div className="progress" style={{ height: 6 }}>
+                  <div
+                    className="progress-bar bg-secondary"
+                    role="progressbar"
+                    aria-valuenow={talent.supplyProgress || 0}
+                    style={{ width: `${talent.supplyProgress || 0}%` }}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              )}
             </Table.Td>
             <Table.Td
-              className={cx(
-                "pr-5",
-                talent.token.contractId ? "" : "d-flex justify-content-center"
-              )}
+              className="pr-5"
               onClick={() =>
                 (window.location.href = `/u/${talent.user.username}`)
               }
@@ -423,7 +424,7 @@ const TalentTableListMode = ({
               <P2
                 className={varianceClassNames(talent)}
                 text={
-                  talent.token.contractId
+                  talent.talentToken.contractId
                     ? `${parsedVariance(talent.marketCapVariance)}`
                     : "-"
                 }

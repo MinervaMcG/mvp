@@ -88,6 +88,33 @@ RSpec.describe UserMailer, type: :mailer do
     end
   end
 
+  describe "send verified profile email" do
+    let(:mail) { described_class.with(source_id: user.id).send_verified_profile_email }
+
+    it "renders the header" do
+      expect(mail.subject).to eql("You're verified! ✅")
+      expect(mail.to).to eql([user.email])
+    end
+  end
+
+  describe "send name verification failed profile email" do
+    let(:mail) { described_class.with(source_id: user.id, reason: "name").send_verification_failed_email }
+
+    it "renders the header" do
+      expect(mail.subject).to eql("Verification failed 💔")
+      expect(mail.to).to eql([user.email])
+    end
+  end
+
+  describe "send persona verification failed profile email" do
+    let(:mail) { described_class.with(source_id: user.id, reason: "with_persona").send_verification_failed_email }
+
+    it "renders the header" do
+      expect(mail.subject).to eql("Verification failed 💔")
+      expect(mail.to).to eql([user.email])
+    end
+  end
+
   describe "send message received email" do
     let(:sender) { create :user }
     let(:notification) { create :notification, type: "MessageReceivedNotification", recipient: user }
@@ -152,6 +179,50 @@ RSpec.describe UserMailer, type: :mailer do
 
     it "renders the header" do
       expect(mail.subject).to eql("Your goal's half-way there!")
+      expect(mail.to).to eql([user.email])
+    end
+  end
+
+  describe "send opportunities open roles email" do
+    let(:mail) do
+      described_class.with(user: user).send_opportunities_open_roles_email
+    end
+
+    it "renders the header" do
+      expect(mail.subject).to eql("We have open roles for you!")
+      expect(mail.to).to eql([user.email])
+    end
+  end
+
+  describe "send opportunities hiring email" do
+    let(:mail) do
+      described_class.with(user: user).send_opportunities_hiring_email
+    end
+
+    it "renders the header" do
+      expect(mail.subject).to eql("Looking to hire talent?")
+      expect(mail.to).to eql([user.email])
+    end
+  end
+
+  describe "send opportunities role landed email" do
+    let(:mail) do
+      described_class.with(user: user).send_opportunities_role_landed_email
+    end
+
+    it "renders the header" do
+      expect(mail.subject).to eql("Did you just land a new role?")
+      expect(mail.to).to eql([user.email])
+    end
+  end
+
+  describe "send opportunities talent found email" do
+    let(:mail) do
+      described_class.with(user: user).send_opportunities_talent_found_email
+    end
+
+    it "renders the header" do
+      expect(mail.subject).to eql("Did you meet talented builders?")
       expect(mail.to).to eql([user.email])
     end
   end

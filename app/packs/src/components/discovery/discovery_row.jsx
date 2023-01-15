@@ -181,8 +181,8 @@ const DiscoveryRow = ({ discoveryRow, env }) => {
               >
                 <NewTalentCard
                   name={talent.user.name}
-                  ticker={talent.token.ticker}
-                  contractId={talent.token.contract_id}
+                  ticker={talent.talent_token.ticker}
+                  contractId={talent.talent_token.contract_id}
                   occupation={talent.occupation}
                   profilePictureUrl={talent.profile_picture_url}
                   headline={talent.headline}
@@ -193,7 +193,7 @@ const DiscoveryRow = ({ discoveryRow, env }) => {
                   profileType={talent.profile_type}
                   marketCap={displayableAmount(talent.market_cap)}
                   supporterCount={talent.supporters_count?.toString()}
-                  chainId={talent.token.chain_id}
+                  chainId={talent.talent_token.chain_id}
                   env={env}
                 />
               </div>

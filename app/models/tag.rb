@@ -5,6 +5,9 @@ class Tag < ApplicationRecord
 
   validates :description, presence: true
 
+  # Elasticsearch index update
+  update_index("talents", :talents)
+
   scope :visible, -> { where(hidden: false) }
 
   def to_s

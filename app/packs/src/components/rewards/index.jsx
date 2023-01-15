@@ -36,6 +36,7 @@ const Rewards = ({
   userRewards,
   raceRewards,
   quests,
+  withPersonaRequest,
   race,
   invitedUsers,
   leaderboardResults,
@@ -116,6 +117,7 @@ const Rewards = ({
           setQuestId={setQuestId}
           userId={user.id}
           username={user.username}
+          withPersonaRequest={withPersonaRequest}
         />
       )}
     </>

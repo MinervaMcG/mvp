@@ -26,7 +26,8 @@
           currentUserId: current_acting_user&.id,
           currentUserAdmin: current_user&.admin?,
           currentUserModerator: current_user&.moderator?,
-          isCurrentUserImpersonated: is_user_impersonated?
+          isCurrentUserImpersonated: is_user_impersonated?,
+          withPersonaRequest: @with_persona_request
         },
         prerender: false
       ) %>

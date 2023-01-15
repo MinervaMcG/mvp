@@ -151,7 +151,7 @@ const MilestoneExperience = ({
   ];
 
   const yearOptions = (() => {
-    const max = new Date().getFullYear();
+    const max = new Date().getFullYear() + 20;
     const min = 1970;
 
     const years = [];
@@ -178,6 +178,8 @@ const MilestoneExperience = ({
         "endDate",
         dayjs(`${endMonth}-${endYear}`, "MMMM-YYYY").format("DD-MM-YYYY")
       );
+    } else {
+      changeAttribute("endDate", "");
     }
   }, [endMonth, endYear]);
 
@@ -299,45 +301,43 @@ const MilestoneExperience = ({
             </Form.Control>
           </div>
         </div>
-        {!currentJourneyItem.inProgress && (
-          <div className="w-100 mb-5">
-            <label htmlFor="inputEndMonth">
-              <P2 className="mb-2 text-primary-01" bold>
-                End Date
-              </P2>
-            </label>
-            <div className="d-flex flex-row justify-content-between">
-              <Form.Control
-                as="select"
-                onChange={(e) => setEndMonth(e.target.value)}
-                value={endMonth}
-                placeholder="Month"
-                className="height-auto mr-2"
-              >
-                <option value=""></option>
-                {monthOptions.map((month) => (
-                  <option value={month} key={`end-${month}`}>
-                    {month}
-                  </option>
-                ))}
-              </Form.Control>
-              <Form.Control
-                as="select"
-                onChange={(e) => setEndYear(e.target.value)}
-                value={endYear}
-                placeholder="Year"
-                className="height-auto ml-2"
-              >
-                <option value=""></option>
-                {yearOptions.map((year) => (
-                  <option value={year} key={`end-${year}`}>
-                    {year}
-                  </option>
-                ))}
-              </Form.Control>
-            </div>
+        <div className="w-100 mb-5">
+          <label htmlFor="inputEndMonth">
+            <P2 className="mb-2 text-primary-01" bold>
+              End Date
+            </P2>
+          </label>
+          <div className="d-flex flex-row justify-content-between">
+            <Form.Control
+              as="select"
+              onChange={(e) => setEndMonth(e.target.value)}
+              value={endMonth}
+              placeholder="Month"
+              className="height-auto mr-2"
+            >
+              <option value=""></option>
+              {monthOptions.map((month) => (
+                <option value={month} key={`end-${month}`}>
+                  {month}
+                </option>
+              ))}
+            </Form.Control>
+            <Form.Control
+              as="select"
+              onChange={(e) => setEndYear(e.target.value)}
+              value={endYear}
+              placeholder="Year"
+              className="height-auto ml-2"
+            >
+              <option value=""></option>
+              {yearOptions.map((year) => (
+                <option value={year} key={`end-${year}`}>
+                  {year}
+                </option>
+              ))}
+            </Form.Control>
           </div>
-        )}
+        </div>
         <div className="w-100 mb-5">
           <P2 className="mb-2 text-primary-01" bold text="Link" />
           <TextInput
@@ -451,6 +451,14 @@ const GoalExperience = ({
     returnYear(currentJourneyItem.dueDate)
   );
 
+  const progressOptions = [
+    { value: "planned", title: "Planned" },
+    { value: "executing", title: "Executing" },
+    { value: "accomplished", title: "Accomplished" },
+    { value: "not_accomplished", title: "Not Accomplished" },
+    { value: "abandoned", title: "Abandoned" },
+  ];
+
   const monthOptions = [
     "January",
     "February",
@@ -511,6 +519,27 @@ const GoalExperience = ({
             required={true}
             error={validationErrors?.title}
           />
+        </div>
+        <div className="w-100 mb-5">
+          <label htmlFor="inputProgress">
+            <P2 className="mb-2 text-primary-01" bold>
+              Career Goal Status
+            </P2>
+          </label>
+          <Form.Control
+            as="select"
+            onChange={(e) => changeAttribute("progress", e.target.value)}
+            value={currentJourneyItem.progress}
+            placeholder="Please Select"
+            className="height-auto mr-2"
+          >
+            <option value=""></option>
+            {progressOptions.map((item) => (
+              <option value={item.value} key={`progress-${item.value}`}>
+                {item.title}
+              </option>
+            ))}
+          </Form.Control>
         </div>
         <div className="w-100 mb-5">
           <TextArea
@@ -678,6 +707,7 @@ const EditJourneyModal = ({
     link: journeyItem?.link || "",
     institution: journeyItem?.institution || "",
     inProgress: journeyItem?.inProgress || false,
+    progress: journeyItem?.progress || "",
     category: journeyItem?.category || "",
     images: journeyItem?.images || [],
   });
@@ -686,6 +716,7 @@ const EditJourneyModal = ({
     title: false,
     startDate: false,
     dueDate: false,
+    progress: false,
     description: false,
     institution: false,
   });
@@ -768,13 +799,14 @@ const EditJourneyModal = ({
         />,
         { autoClose: 1500 }
       );
+
+      exitModal();
     } else {
       toast.error(
-        <ToastBody heading="Error!" body={response?.error} mode={mode} />
+        <ToastBody heading="Error!" body={response?.error} mode={mode} />,
+        { autoClose: 5000 }
       );
     }
-
-    exitModal();
   };
 
   const updateMilestone = async () => {
@@ -812,13 +844,13 @@ const EditJourneyModal = ({
         />,
         { autoClose: 1500 }
       );
+      exitModal();
     } else {
       toast.error(
-        <ToastBody heading="Error!" body={response?.error} mode={mode} />
+        <ToastBody heading="Error!" body={response?.error} mode={mode} />,
+        { autoClose: 5000 }
       );
     }
-
-    exitModal();
   };
 
   const deleteMilestone = async () => {
@@ -1029,6 +1061,7 @@ const EditJourneyModal = ({
       link: "",
       institution: "",
       inProgress: false,
+      progress: "",
       category: "",
     });
     setJourneyItem(null);

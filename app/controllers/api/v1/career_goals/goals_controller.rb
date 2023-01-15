@@ -62,6 +62,7 @@ class API::V1::CareerGoals::GoalsController < ApplicationController
       :due_date,
       :description,
       :link,
+      :progress,
       images: [
         :id,
         image_data: {}

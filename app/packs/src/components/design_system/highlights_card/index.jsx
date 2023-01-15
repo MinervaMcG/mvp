@@ -2,8 +2,8 @@ import React from "react";
 import { string } from "prop-types";
 
 import Link from "src/components/design_system/link";
-import { P1, P2, P3 } from "src/components/design_system/typography";
-import { ArrowForward, Spinner } from "src/components/icons";
+import { P1 } from "src/components/design_system/typography";
+import { ArrowForward } from "src/components/icons";
 
 import cx from "classnames";
 import { Celo, Polygon } from "../../icons";

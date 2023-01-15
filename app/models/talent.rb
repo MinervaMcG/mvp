@@ -37,8 +37,11 @@ class Talent < ApplicationRecord
   scope :base, -> { where(public: true, hide_profile: false) }
   scope :active, -> { joins(:talent_token).where.not(talent_tokens: {contract_id: nil}) }
   scope :upcoming, -> { joins(:talent_token).where(talent_tokens: {contract_id: nil}) }
+  scope :profile_complete, -> { joins(user: :quests).where(quests: {type: "Quests::TalentProfile", status: "done"}) }
 
   delegate :wallet_id, :username, to: :user
+
+  update_index("talents", :self)
 
   def self.base_supply
     2000000000000000000000

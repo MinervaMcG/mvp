@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { H3, Caption } from "src/components/design_system/typography";
+import { H3, P1, Caption } from "src/components/design_system/typography";
 import Button from "src/components/design_system/button";
 import ApplyToLaunchTokenModal from "src/components/design_system/modals/ApplyToLaunchTokenModal";
 import { TALENT_PROTOCOL_DISCORD } from "src/utils/constants";
@@ -180,10 +180,39 @@ const InviteTalentBanner = () => (
   </div>
 );
 
+const VerifiyUserBanner = ({ username }) => (
+  <div className="talent-background verify-user-banner-background">
+    <div className="talent-background-text">
+      <div className="col-1"></div>
+      <div style={{ width: "450px" }}>
+        <H3
+          className="pb-2 text-marketing-light-yellow"
+          text="Verified Badge."
+          bold
+        />
+        <P1
+          className="pb-4 text-marketing-light-yellow"
+          text="By verifying your identity, you can increase your profile strength and unlock your Talent Mate!"
+        />
+        <a className="button-link" href={`/u/${username}`}>
+          <Button
+            type="white-default"
+            size="big"
+            onClick={() => null}
+            text="Verify your identity"
+          />
+        </a>
+      </div>
+    </div>
+  </div>
+);
+
 const DiscoveryBanners = ({ user }) => {
   const currentBanner = () => {
     if (!user.walletId) {
       return <ConnectWalletBanner beginnerQuestId={user.beginnerQuestId} />;
+    } else if (!user.verified) {
+      return <VerifiyUserBanner username={user.username} />;
     } else if (user.profileType === "approved") {
       return <LaunchMyTokenBanner username={user.username} />;
     } else if (user.profileType == "talent" && user.tokenLaunched) {

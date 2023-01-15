@@ -9,7 +9,7 @@ module Stakes
       if !staking_user.tokens_purchased
         staking_user.update!(tokens_purchased: true)
         AddUsersToMailerliteJob.perform_later(staking_user.id)
-        SendMemberNFTToUserJob.perform_later(user_id: staking_user.id)
+        WhitelistUserJob.perform_later(user_id: staking_user.id, level: "token_holder")
         UpdateTasksJob.perform_later(type: "Tasks::BuyTalentToken", user_id: staking_user.id)
       end
 
@@ -22,7 +22,8 @@ module Stakes
         )
       end
 
-      TalentSupportersRefreshJob.perform_later(talent_token.contract_id)
+      # Wait for blockchain transaction to settle
+      TalentSupportersRefreshJob.set(wait: 5.minutes).perform_later(talent_token.contract_id)
     end
 
     private

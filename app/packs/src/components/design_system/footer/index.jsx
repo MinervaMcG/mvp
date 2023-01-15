@@ -113,7 +113,7 @@ const Footer = () => {
           <div className="mt-4 d-flex flex-lg-row flex-column">
             <P2
               className="text-primary-03 mb-3 mb-lg-0 mr-4"
-              text="Talent Protocol MTU © 2022"
+              text={`Talent Protocol MTU © ${new Date().getFullYear()}`}
             />
             <P2 className="text-primary-03 mr-4 d-lg-block d-none" text="|" />
             <a

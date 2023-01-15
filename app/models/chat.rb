@@ -1,5 +1,5 @@
 class Chat < ApplicationRecord
-  encrypts :last_message_text
+  has_encrypted :last_message_text
 
   # User who initiated the conversation
   belongs_to :sender, class_name: "User"

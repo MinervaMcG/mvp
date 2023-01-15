@@ -14,6 +14,8 @@ class ProfilesController < ApplicationController
       current_user_watchlist: current_user_watchlist,
       tags: user.tags.where(hidden: false)
     )
+
+    @with_persona_request = WithPersonaRequestBlueprint.render_as_json(WithPersonaRequest.current_month_persona_request)
   end
 
   private

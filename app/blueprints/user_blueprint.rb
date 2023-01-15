@@ -2,7 +2,7 @@ class UserBlueprint < Blueprinter::Base
   fields :id
 
   view :normal do
-    fields :username, :display_name, :profile_type, :created_at
+    fields :username, :display_name, :profile_type, :created_at, :legal_first_name, :legal_last_name
 
     field :talent_id do |user, _options|
       user.talent.id
@@ -11,8 +11,13 @@ class UserBlueprint < Blueprinter::Base
     field :name do |user, _options|
       user.name
     end
+
     field :is_talent do |user, _options|
       user.talent.present?
+    end
+
+    field :visible_digital_collectibles do |user, _options|
+      user.visible_digital_collectibles?
     end
   end
 
@@ -36,6 +41,10 @@ class UserBlueprint < Blueprinter::Base
           profile_picture_url: user.invited.profile_picture_url
         }
       end
+    end
+
+    field :profile_completed do |user, _options|
+      user.profile_completed?
     end
   end
 

@@ -8,6 +8,6 @@ class ImageUploader < Shrine
 
     # Validate that the image format is an expected one
     validate_extension %w[jpg jpeg png gif] unless context[:omniauth] || context[:url]
-    validate_mime_type %w[image/jpeg image/png image/gif]
+    validate_mime_type %w[image/jpeg image/png image/gif image/svg+xml]
   end
 end

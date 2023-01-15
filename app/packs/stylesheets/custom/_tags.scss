@@ -12,6 +12,10 @@
 
 .dark-body .tag-container {
   border: 1px solid $dark-surface-hover-02;
+
+  &.positive {
+    border: 1px solid $light-positive;
+  }
 }
 
 .optional-tag-container {
@@ -85,4 +89,9 @@
 
 .dark-body .tag-selected {
   background-color: $dark-text-primary-01;
+}
+
+.positive {
+  color: $light-positive;
+  border: 1px solid $light-positive;
 }

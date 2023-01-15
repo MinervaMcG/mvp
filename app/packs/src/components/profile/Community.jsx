@@ -388,7 +388,7 @@ const Community = ({ userId, talent, canUpdate }) => {
           <CommunityTable
             connections={connections}
             mode={mode()}
-            ticker={talent.token.ticker}
+            ticker={talent.talentToken.ticker}
             mobile={mobile}
           />
         </>

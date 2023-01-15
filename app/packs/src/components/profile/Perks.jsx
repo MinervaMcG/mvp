@@ -31,7 +31,7 @@ const Perks = ({ talent, canUpdate }) => {
   const [editingPerk, setEditingPerk] = useState({});
   const { mobile } = useWindowDimensionsHook();
   const { mode } = useTheme();
-  const token = talent.token;
+  const talentToken = talent.talentToken;
   const user = talent.user;
   const userId = user.id;
 
@@ -96,7 +96,7 @@ const Perks = ({ talent, canUpdate }) => {
       {canUpdate && editShow && (
         <EditPerkModal
           talentId={talent.id}
-          token={token}
+          talentToken={talentToken}
           perk={editingPerk}
           mergePerk={mergePerk}
           removePerk={removePerk}
@@ -109,7 +109,7 @@ const Perks = ({ talent, canUpdate }) => {
       {canUpdate && createShow && (
         <CreatePerkModal
           talentId={talent.id}
-          token={token}
+          talentToken={talentToken}
           show={createShow && canUpdate}
           appendPerk={appendPerk}
           closeModal={setCreateShow}
@@ -125,7 +125,7 @@ const Perks = ({ talent, canUpdate }) => {
               mobile && "flex-column"
             )}
           >
-            <H3 className="w-100 text-center mb-0">{`$${token.ticker}`}</H3>
+            <H3 className="w-100 text-center mb-0">{`$${talentToken.ticker}`}</H3>
             {perks.length != 0 && canUpdate && (
               <ThemedButton
                 type="primary-default"
@@ -140,7 +140,7 @@ const Perks = ({ talent, canUpdate }) => {
             )}
           </div>
           <P1 className="text-center pb-3">
-            {`Perks that $${token.ticker} holders can claim and use whenever they want!`}
+            {`Perks that $${talentToken.ticker} holders can claim and use whenever they want!`}
           </P1>
           {perks.length == 0 && canUpdate && (
             <div className="mt-7">
@@ -150,7 +150,7 @@ const Perks = ({ talent, canUpdate }) => {
                 className="text-primary-01 text-center mb-2"
               />
               <P2
-                text={`Now that $${token.ticker} is launched, create some utility by giving benefits for your supporters.`}
+                text={`Now that $${talentToken.ticker} is launched, create some utility by giving benefits for your supporters.`}
                 className="text-primary-03 text-center"
               />
               <div className="d-flex flex-column justify-content-center my-5">
@@ -172,13 +172,13 @@ const Perks = ({ talent, canUpdate }) => {
               >
                 <div className="card perk-card p-2">
                   <div className="header d-flex flex-column justify-content-between p-3">
-                    <div className="d-flex align-items-center">
+                    <div className="d-flex align-items-center mb-1">
                       <TalentProfilePicture
                         src={talent.profilePictureUrl}
                         height={24}
                       />
                       <P2
-                        text={`$${token.ticker}`}
+                        text={`$${talentToken.ticker}`}
                         className="ml-2 text-uppercase"
                         bold
                         style={{
@@ -189,17 +189,26 @@ const Perks = ({ talent, canUpdate }) => {
                         }}
                       />
                     </div>
-                    <H4 bold text={perk.title} />
+                    <H4
+                      bold
+                      text={perk.title}
+                      className="overflow-y-scroll hide-scrollbar"
+                    />
                   </div>
                   <div className="footer d-flex flex-column justify-content-between p-3">
                     <div>
                       <P3 text={"Title"} className="text-primary-04" />
-                      <P2 text={perk.title} bold className="text-primary-01" />
+                      <P2
+                        text={perk.title}
+                        bold
+                        className="text-primary-01 overflow-y-scroll hide-scrollbar"
+                        style={{ maxHeight: "64px" }}
+                      />
                     </div>
                     <div className="position-relative">
                       <P3 text={"Hold Amount"} className="text-primary-04" />
                       <P2
-                        text={`${perk.price} $${token.ticker}`}
+                        text={`${perk.price} $${talentToken.ticker}`}
                         bold
                         className="text-primary-01"
                       />

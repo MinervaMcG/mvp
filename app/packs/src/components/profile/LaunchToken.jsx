@@ -17,9 +17,9 @@ import LaunchTokenModals from "../talent/Edit/LaunchTokenModals";
 const LaunchToken = ({ talent, railsContext, setLocalTalent, canUpdate }) => {
   const { mobile } = useWindowDimensionsHook();
   const { mode } = useTheme();
-  const token = talent.token;
+  const talentToken = talent.talentToken;
   const user = talent.user;
-  const [ticker, setTicker] = useState(token.ticker || "");
+  const [ticker, setTicker] = useState(talentToken.ticker || "");
   const [show, setShow] = useState(false);
   const requiredFields = missingFields({
     talent: talent,
@@ -40,7 +40,7 @@ const LaunchToken = ({ talent, railsContext, setLocalTalent, canUpdate }) => {
           changeSharedState={setLocalTalent}
           mode={mode()}
           talent={talent}
-          token={token}
+          talentToken={talentToken}
           user={user}
           railsContext={railsContext}
           setContractId={() => {}}

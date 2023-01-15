@@ -7,11 +7,7 @@ module Tasks
     end
 
     def description
-      "Add information to your profile to be eligible to receive 0.001 CELO when you connect your wallet"
-    end
-
-    def reward
-      "0.001 CELO"
+      "Add information to your profile to be eligible to compete in the Talent Hunt"
     end
 
     def link

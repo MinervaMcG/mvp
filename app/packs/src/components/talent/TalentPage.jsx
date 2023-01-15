@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useMemo } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import { useWindowDimensionsHook } from "src/utils/window";
 import { get } from "src/utils/requests";
@@ -13,6 +13,8 @@ import TalentTableListMode from "./TalentTableListMode";
 import TalentTableCardMode from "./TalentTableCardMode";
 import TalentOptions from "./TalentOptions";
 
+import { Spinner } from "src/components/icons";
+
 import {
   compareName,
   compareOccupation,
@@ -23,24 +25,37 @@ import {
 
 import cx from "classnames";
 
-const TalentPage = ({ talents, pagination, isAdminOrModerator, env }) => {
+const TalentPage = ({ isAdminOrModerator, env }) => {
   const theme = useContext(ThemeContext);
   const { mobile } = useWindowDimensionsHook();
   const url = new URL(document.location);
 
-  const [localTalents, setLocalTalents] = useState(talents);
-  const [watchlistOnly, setWatchlistOnly] = useState(false);
+  const [talents, setTalents] = useState([]);
+  const [watchlistOnly, setWatchlistOnly] = useState(
+    url.searchParams.get("watchlist_only") == "true" || false
+  );
   const [listModeOnly, setListModeOnly] = useState(false);
   const [selectedSort, setSelectedSort] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
-  const [localPagination, setLocalPagination] = useState(pagination);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    lastPage: null,
+  });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(document.location.search);
+    params.set("page", 1);
+    params.set("watchlist_only", watchlistOnly);
+    loadTalents(params);
+  }, [watchlistOnly]);
 
   const changeTab = (tab) => {
     setWatchlistOnly(tab === "Watchlist" ? true : false);
   };
 
   const updateFollow = async (talent) => {
-    const newLocalTalents = localTalents.map((currTalent) => {
+    const newtalents = talents.map((currTalent) => {
       if (currTalent.id === talent.id) {
         return { ...currTalent, isFollowing: !talent.isFollowing };
       } else {
@@ -54,7 +69,7 @@ const TalentPage = ({ talents, pagination, isAdminOrModerator, env }) => {
       );
 
       if (response.success) {
-        setLocalTalents([...newLocalTalents]);
+        setTalents([...newtalents]);
       }
     } else {
       const response = await post(`/api/v1/follows`, {
@@ -62,16 +77,14 @@ const TalentPage = ({ talents, pagination, isAdminOrModerator, env }) => {
       });
 
       if (response.success) {
-        setLocalTalents([...newLocalTalents]);
+        setTalents([...newtalents]);
       }
     }
   };
 
-  const filteredTalents = useMemo(() => {
-    let desiredTalent = [...localTalents];
-    if (watchlistOnly) {
-      desiredTalent = localTalents.filter((talent) => talent.isFollowing);
-    }
+  useEffect(() => {
+    let sortedTalent = [...talents];
+
     let comparisonFunction;
 
     switch (selectedSort) {
@@ -93,38 +106,61 @@ const TalentPage = ({ talents, pagination, isAdminOrModerator, env }) => {
     }
 
     if (sortDirection === "asc") {
-      desiredTalent.sort(comparisonFunction).reverse();
+      sortedTalent.sort(comparisonFunction).reverse();
     } else if (sortDirection === "desc") {
-      desiredTalent.sort(comparisonFunction);
+      sortedTalent.sort(comparisonFunction);
     }
 
-    return desiredTalent;
-  }, [localTalents, watchlistOnly, selectedSort, sortDirection]);
+    setTalents(sortedTalent);
+  }, [selectedSort, sortDirection]);
+
+  const loadTalents = (params) => {
+    setLoading(true);
+    get(`/api/v1/talent?${params.toString()}`).then((response) => {
+      if (response.error) {
+        toast.error(<ToastBody heading="Error!" body={response.error} />);
+      } else {
+        setPagination(response.pagination);
+        let responseTalents = response.talents.map((talent) => ({
+          ...camelCaseObject(talent),
+        }));
+        setTalents(responseTalents);
+
+        window.history.replaceState(
+          {},
+          document.title,
+          `${url.pathname}?${params.toString()}`
+        );
+        setLoading(false);
+      }
+    });
+  };
 
   const loadMoreTalents = () => {
-    const nextPage = localPagination.currentPage + 1;
+    setLoading(true);
+    const nextPage = pagination.currentPage + 1;
 
     const params = new URLSearchParams(document.location.search);
     params.set("page", nextPage);
 
-    get(`talent?${params.toString()}`).then((response) => {
+    get(`/api/v1/talent?${params.toString()}`).then((response) => {
       let responseTalents = response.talents.map((talent) => ({
         ...camelCaseObject(talent),
       }));
-      const newTalents = [...localTalents, ...responseTalents];
-      setLocalTalents(newTalents);
-      setLocalPagination(response.pagination);
+      const newTalents = [...talents, ...responseTalents];
+      setTalents(newTalents);
+      setPagination(camelCaseObject(response.pagination));
 
       window.history.replaceState(
         {},
         document.title,
         `${url.pathname}?${params.toString()}`
       );
+      setLoading(false);
     });
   };
 
-  const showLoadMoreTalents =
-    localPagination.currentPage < localPagination.lastPage;
+  const showLoadMoreTalents = pagination.currentPage < pagination.lastPage;
 
   return (
     <div className={cx("pb-6", mobile && "p-4")}>
@@ -137,16 +173,17 @@ const TalentPage = ({ talents, pagination, isAdminOrModerator, env }) => {
       </div>
       <TalentOptions
         changeTab={changeTab}
+        watchlistOnly={watchlistOnly}
         listModeOnly={listModeOnly}
         searchUrl="/api/v1/talent"
         setListModeOnly={setListModeOnly}
-        setLocalTalents={setLocalTalents}
-        setLocalPagination={setLocalPagination}
+        setTalents={setTalents}
+        setPagination={setPagination}
         setSelectedSort={setSelectedSort}
         setSortDirection={setSortDirection}
         isAdminOrModerator={isAdminOrModerator}
       />
-      {localTalents.length === 0 && (
+      {talents.length === 0 && !loading && (
         <div className="d-flex justify-content-center mt-6">
           <P2
             className="text-black"
@@ -158,7 +195,7 @@ const TalentPage = ({ talents, pagination, isAdminOrModerator, env }) => {
       {listModeOnly ? (
         <TalentTableListMode
           theme={theme}
-          talents={filteredTalents}
+          talents={talents}
           updateFollow={updateFollow}
           selectedSort={selectedSort}
           setSelectedSort={setSelectedSort}
@@ -168,10 +205,15 @@ const TalentPage = ({ talents, pagination, isAdminOrModerator, env }) => {
         />
       ) : (
         <TalentTableCardMode
-          talents={filteredTalents}
+          talents={talents}
           updateFollow={updateFollow}
           env={env}
         />
+      )}
+      {loading && (
+        <div className="w-100 d-flex flex-row my-2 justify-content-center">
+          <Spinner />
+        </div>
       )}
       {showLoadMoreTalents && (
         <Button

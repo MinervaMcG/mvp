@@ -11,22 +11,7 @@ class DiscoveryController < ApplicationController
 
   def show
     discovery_row = DiscoveryRow.find_by!(slug: params[:slug])
-
-    service = Talents::Search.new(filter_params: filter_params.to_h, discovery_row: discovery_row)
-    talents = service.call
-
     @discovery_row = DiscoveryRowBlueprint.render_as_json(discovery_row, view: :normal)
-    @talents = TalentBlueprint.render_as_json(talents.includes(:user, :talent_token), view: :normal, current_user_watchlist: current_user_watchlist)
-
-    respond_to do |format|
-      format.html
-      format.json {
-        render(
-          json: @talents,
-          status: :ok
-        )
-      }
-    end
   end
 
   private

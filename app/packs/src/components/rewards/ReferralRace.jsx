@@ -121,7 +121,7 @@ const RaceHeader = ({ isEligible, race }) => {
             Talent Hunt
           </H4>
           <P1>
-            Every week the 3 users who invite the most{" "}
+            Every month the 3 users who invite the most{" "}
             <a
               href="https://talentprotocol.notion.site/Community-Segments-3b64f6506bdb419ebe48441e7830e97b"
               target="_blank"

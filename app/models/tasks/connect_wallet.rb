@@ -10,10 +10,6 @@ module Tasks
       "Connect your wallet in the top menu"
     end
 
-    def reward
-      "User NFT"
-    end
-
     def link
       nil
     end

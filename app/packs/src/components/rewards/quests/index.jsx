@@ -6,7 +6,7 @@ import QuestShow from "./show";
 
 import cx from "classnames";
 
-const Quests = ({ quests, questId, setQuestId }) => {
+const Quests = ({ quests, questId, setQuestId, withPersonaRequest }) => {
   const url = new URL(window.location);
   const searchParams = new URLSearchParams(url.search);
   const { mobile } = useWindowDimensionsHook();
@@ -56,6 +56,7 @@ const Quests = ({ quests, questId, setQuestId }) => {
                   tasksType={quest.tasks.map((task) => task.type)}
                   status={quest.status}
                   user={quest.user}
+                  withPersonaRequest={withPersonaRequest}
                 />
               </div>
             ))}

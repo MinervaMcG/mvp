@@ -27,6 +27,5 @@ class SessionsController < Clearance::SessionsController
   def destroy
     cookies.delete :impersonated
     sign_out
-    redirect_to url_after_destroy
   end
 end

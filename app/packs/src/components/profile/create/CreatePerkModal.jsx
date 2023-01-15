@@ -8,7 +8,7 @@ import { ToastBody } from "src/components/design_system/toasts";
 
 const CreatePerkModal = ({
   talentId,
-  token,
+  talentToken,
   show,
   closeModal,
   appendPerk,
@@ -105,7 +105,7 @@ const CreatePerkModal = ({
         />
         <div className="d-flex flex-row justify-content-between mt-4 flex-wrap">
           <TextInput
-            title={`Amount ${token.ticker || ""}`}
+            title={`Amount ${talentToken.ticker || ""}`}
             type="number"
             mode={mode}
             placeholder={"0,000.00"}

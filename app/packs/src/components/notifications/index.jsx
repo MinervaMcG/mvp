@@ -35,6 +35,11 @@ const Notification = ({ notification, mode }) => {
       case "InviteUsedNotification":
       case "QuestCompletedNotification":
         return "rewards";
+      case "Quests::VerifiedProfileNotification":
+        return "check";
+      case "UserPersonaVerificationFailedNotification":
+      case "UserNamesVerificationFailedNotification":
+        return "help";
       default:
         return "globe";
     }

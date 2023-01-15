@@ -20,7 +20,8 @@
           talent_id: current_user.talent.id,
           talent: current_user.talent.present?,
           tokenLaunched: current_user.talent&.talent_token&.deployed,
-          activeSupporter: current_user.active_supporter?
+          activeSupporter: current_user.active_supporter?,
+          verified: current_user.talent.verified?
         }
       },
       prerender: false) %>
