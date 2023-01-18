@@ -313,14 +313,14 @@ class OnChain {
     }
   }
 
-  async createTalent(name, symbol) {
+  async createTalent(name, symbol, isMigrated = false) {
     if (!this.talentFactory) {
       return;
     }
 
     const tx = await this.talentFactory
       .connect(this.signer)
-      .createTalent(this.account, name, symbol)
+      .createTalent(this.account, name, symbol, isMigrated)
       .catch((e) => {
         if (e.data?.message.includes(ERROR_MESSAGES.ticker_reserved)) {
           return { error: "Ticker is already in use" };
@@ -548,6 +548,30 @@ class OnChain {
     const imageUrl = ipfsToURL(result.image);
 
     return imageUrl;
+  }
+
+  async migrateTalentNetwork(contract_id, new_chain_id) {
+    if (!this.staking) {
+      return;
+    }
+
+    const tx = await this.staking
+      .connect(this.signer)
+      .transferToNetwork(contract_id, new_chain_id)
+      .catch((e) => {
+        if (e.data.message) {
+          return { error: e.data.message };
+        }
+        return { error: e };
+      });
+
+    if (tx.error || tx.canceled) {
+      return tx;
+    }
+
+    const receipt = await tx.wait();
+
+    return receipt;
   }
 }
 

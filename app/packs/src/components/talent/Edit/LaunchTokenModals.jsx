@@ -279,7 +279,6 @@ const LaunchTokenModals = (props) => {
     if (factory) {
       setDeploying(true);
       const result = await factory.createTalent(user.username, ticker);
-
       if (result.error) {
         setError((prev) => ({ ...prev, tickerTaken: true }));
         setDeploying(false);
@@ -315,7 +314,7 @@ const LaunchTokenModals = (props) => {
               ...prev.talentToken,
               contract_id: contractAddress.toLowerCase(),
               contractId: contractAddress.toLowerCase(),
-              chainId: response.token.chain_id,
+              chainId: response.talent_token.chain_id,
               deployed: true,
             },
           }));

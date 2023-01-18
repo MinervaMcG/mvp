@@ -9,6 +9,7 @@ class TalentToken < ApplicationRecord
   update_index("talents", :talent)
 
   after_save :touch_talent
+  before_update :migrate_supporters, if: -> { disabled_changed?(from: true, to: false) }
 
   TAL_VALUE = 2
   TAL_DECIMALS = 10**18
@@ -41,5 +42,9 @@ class TalentToken < ApplicationRecord
 
   def touch_talent
     talent.touch
+  end
+
+  def migrate_supporters
+    MigrateTalentSupportersJob.perform_later(chain_id_was, contract_id_was, id)
   end
 end

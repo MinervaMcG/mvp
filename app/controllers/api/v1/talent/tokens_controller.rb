@@ -59,7 +59,8 @@ class API::V1::Talent::TokensController < ApplicationController
       :ticker,
       :contract_id,
       :deployed,
-      :chain_id
+      :chain_id,
+      :disabled
     )
   end
 
