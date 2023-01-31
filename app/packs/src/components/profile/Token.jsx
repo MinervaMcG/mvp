@@ -17,7 +17,13 @@ import { toast } from "react-toastify";
 import { ToastBody } from "src/components/design_system/toasts";
 import { patch } from "src/utils/requests";
 
-const Token = ({ talent, talentTokenPrice, railsContext, setLocalTalent }) => {
+const Token = ({
+  talent,
+  talentTokenPrice,
+  railsContext,
+  setLocalTalent,
+  canUpdate,
+}) => {
   const { mobile } = useWindowDimensionsHook();
   const { mode } = useTheme();
   const [staking, setStaking] = useState(null);
@@ -252,16 +258,18 @@ const Token = ({ talent, talentTokenPrice, railsContext, setLocalTalent }) => {
           <P2 bold text={`Add $${talentToken.ticker} to Metamask`} />
         </Button>
       </div>
-      <div className="d-flex flex-column justify-content-center mt-6">
-        <Button
-          className="mx-auto inverted-button"
-          mode={mode() == "light" ? "dark" : "light"}
-          type="white-default"
-          onClick={() => migrateNetwork()}
-        >
-          <P2 bold text={`Migrate to ${oppositeChain} Network`} />
-        </Button>
-      </div>
+      {canUpdate && (
+        <div className="d-flex flex-column justify-content-center mt-6">
+          <Button
+            className="mx-auto inverted-button"
+            mode={mode() == "light" ? "dark" : "light"}
+            type="white-default"
+            onClick={() => migrateNetwork()}
+          >
+            <P2 bold text={`Migrate to ${oppositeChain} Network`} />
+          </Button>
+        </div>
+      )}
     </section>
   );
 };

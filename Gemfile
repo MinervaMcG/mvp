@@ -25,6 +25,8 @@ gem "rack-attack"
 
 # Web 3
 gem "schmooze"
+gem "ethereum.rb"
+gem 'eth'
 
 # Crypto
 gem "lockbox" # for application level encryption
