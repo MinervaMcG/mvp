@@ -28,7 +28,7 @@ export const BottomNav = ({
   rewardsPath,
   hasUnreadMessages,
 }) => {
-  const { height, width } = useWindowDimensionsHook();
+  const { width } = useWindowDimensionsHook();
 
   if (width >= 992) {
     return null;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Modal from "react-bootstrap/Modal";
-
+import { toast } from "react-toastify";
+import { ToastBody } from "src/components/design_system/toasts";
 import { patch } from "src/utils/requests";
 import { OnChain } from "src/onchain";
 import {
@@ -8,7 +9,6 @@ import {
   chainNameToId,
   getAllChainOptions,
 } from "src/onchain/utils";
-
 import H5 from "src/components/design_system/typography/h5";
 import P2 from "src/components/design_system/typography/p2";
 import TextInput from "src/components/design_system/fields/textinput";
@@ -347,7 +347,15 @@ const LaunchTokenModals = (props) => {
     if (result) {
       setFactory(newOnChain);
     } else {
-      setDeploy("Unable to deploy token");
+      try {
+        // eslint-disable-next-line no-undef
+        setDeploy("Unable to deploy token");
+      } catch {
+    toast.error(
+        <ToastBody heading="Error!" body={"Unable to deploy token"} mode={mode}/>,  
+        { autoClose: 5000 }
+    );
+      }
       return;
     }
   }, []);
@@ -382,6 +390,11 @@ const LaunchTokenModals = (props) => {
         }));
         return true;
       }
+
+    toast.error(
+      <ToastBody heading="Error!" body={response?.error} mode={mode}/>,
+      { autoClose: 5000 }
+    );
     }
 
     return false;

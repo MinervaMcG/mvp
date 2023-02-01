@@ -1,4 +1,4 @@
-import { compareStrings, compareNumbers } from "src/utils/compareHelpers";
+import { compareStrings, compareNumbers, compareDates } from "src/utils/compareHelpers";
 import { ethers } from "ethers";
 
 export const completeProfile = (args) => {

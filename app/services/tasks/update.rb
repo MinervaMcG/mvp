@@ -32,6 +32,8 @@ module Tasks
     def give_rewards_for_task(type:, user:)
       if type == "Tasks::Watchlist"
         user.invites.where(talent_invite: false).update_all(max_uses: nil)
+      elsif type == "Tasks::Verified"
+        WhitelistUserJob.perform_later(user_id: user.id, level: "verified")
       elsif type == "Quests::VerifiedProfile"
         WhitelistUserJob.perform_later(user_id: user.id, level: "verified")
       elsif type == "Quests::TalentProfile"

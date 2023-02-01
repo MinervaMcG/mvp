@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 import { get } from "src/utils/requests";
 import { ethers } from "ethers";
@@ -76,6 +77,7 @@ const CommunityTable = ({ connections, mode, ticker, mobile }) => {
               <div className="d-flex align-items-center">
                 <TalentProfilePicture
                   src={connection.profile_picture_url}
+                  userId={connection.id}
                   height={24}
                 />
                 <P2 text={connection.name} bold className="ml-2" />

@@ -1,3 +1,5 @@
+/* DEPRECATED */
+
 import React from "react";
 import Table from "src/components/design_system/table";
 import Caption from "src/components/design_system/typography/caption";

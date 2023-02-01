@@ -50,7 +50,7 @@ class OnboardingController < ApplicationController
       milestone.save!
     end
 
-    current_user.update!(legal_first_name: params[:legal_first_name], legal_last_name: params[:legal_last_name], username: params[:username], onboarding_complete: true)
+    current_user.update!(legal_first_name: params[:legal_first_name], legal_last_name: params[:legal_last_name], username: params[:username], onboarded_at: Time.current)
 
     render json: {success: true}, status: :created
   rescue => e

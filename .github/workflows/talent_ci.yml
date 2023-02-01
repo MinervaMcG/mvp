@@ -21,7 +21,7 @@ jobs:
     if: ${{ !github.event.pull_request.draft }} && ${{ github.head_ref == 'master' || github.head_ref == 'dev' }}
     strategy:
       matrix:
-        ruby-version: ["2.7.6"]
+        ruby-version: ["3.1.3"]
         node-version: ["16.4.2"]
 
     steps:
@@ -47,7 +47,7 @@ jobs:
 
     strategy:
       matrix:
-        ruby-version: ["2.7.6"]
+        ruby-version: ["3.1.3"]
 
     steps:
       - name: Checkout code
@@ -111,7 +111,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby-version: ["2.7.6"]
+        ruby-version: ["3.1.3"]
         node-version: ["16.4.2"]
 
     steps:

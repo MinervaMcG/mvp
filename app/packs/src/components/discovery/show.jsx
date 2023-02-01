@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { toast } from "react-toastify";
 import { faGlobeEurope } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

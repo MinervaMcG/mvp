@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
+/* DEPRECATED */
 import { faSpinner, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -35,7 +36,7 @@ const Welcome = ({
   const [localCaptcha, setLocalCaptcha] = useState(null);
 
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [localCode, setCode] = useState(inviteCode || "");
+  const [localCode] = useState(inviteCode || "");
   const [localUsername, setUsername] = useState(username);
   const [requestingUsername, setRequestingUsername] = useState(false);
   const [usernameValidated, setUsernameValidated] = useState(false);

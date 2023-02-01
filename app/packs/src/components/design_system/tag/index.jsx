@@ -1,5 +1,5 @@
 import React from "react";
-import { string, oneOf, node } from "prop-types";
+import { string, node } from "prop-types";
 import P2 from "src/components/design_system/typography/p2";
 import P3 from "src/components/design_system/typography/p3";
 import cx from "classnames";

@@ -28,11 +28,13 @@ const Occupation = ({
     changeStep(3);
   };
 
+  /*
   const goBack = (e) => {
     e.preventDefault();
 
     changeStep(2);
   };
+  */
 
   return (
     <div className="registration-items">

@@ -22,6 +22,6 @@ class Mailerlite::GetSubscribers
         "#{@url}/search?query=#{@search}&offset=#{(@page - 1) * 100}&limit=100"
       end
 
-    Faraday.get(url, {}, {'X-MailerLite-ApiKey': @token})
+    Faraday.get(url, {}, {"X-MailerLite-ApiKey": @token})
   end
 end

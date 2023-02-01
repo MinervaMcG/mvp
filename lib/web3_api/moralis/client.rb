@@ -14,11 +14,31 @@ module Web3Api
         Faraday.get(url, params, headers)
       end
 
-      def retrieve_nfts(wallet_address:, chain:)
+      def retrieve_wallet_nfts(wallet_address:, chain:)
         url = "#{BASE_URI}/#{wallet_address}/#{NFTS_URI_PATH}"
 
         params = {
           chain: chain
+        }
+        Faraday.get(url, params, headers)
+      end
+
+      def retrieve_contract_nfts(contract_address:, chain:)
+        url = "#{BASE_URI}/#{NFTS_URI_PATH}/#{contract_address}"
+
+        params = {
+          chain: chain,
+          format: "decimal"
+        }
+        Faraday.get(url, params, headers)
+      end
+
+      def retrieve_transactions(address:, start_timestamp:, chain:)
+        url = "#{BASE_URI}/#{address}"
+
+        params = {
+          chain: chain,
+          from_date: start_timestamp
         }
         Faraday.get(url, params, headers)
       end

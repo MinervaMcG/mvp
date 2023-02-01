@@ -1,7 +1,4 @@
 class PublishPost
-  def initialize
-  end
-
   def call(post_id:)
     ActiveRecord::Base.transaction do
       post = Post.find(post_id)

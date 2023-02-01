@@ -1,6 +1,6 @@
 import React from "react";
 import ExternalLink from "src/components/icons/ExternalLink";
-import { Caption, P2, P3 } from "src/components/design_system/typography";
+import { P2 } from "src/components/design_system/typography";
 import cx from "classnames";
 
 const ProjectCard = ({

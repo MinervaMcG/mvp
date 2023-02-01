@@ -8,7 +8,7 @@ namespace :rewards do
       raise "Invalid CSV file"
     end
 
-    csv_data = csv_path.starts_with?("http") ? URI.parse(csv_path).read : File.open(csv_path).read
+    csv_data = csv_path.starts_with?("http") ? URI.parse(csv_path).read : File.read(csv_path)
 
     invalid_rewards = {}
     row_line = 1

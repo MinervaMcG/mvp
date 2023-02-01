@@ -1,7 +1,7 @@
 import React from "react";
 import { danger } from "src/utils/colors";
 
-const Icon = (props) => (
+const Icon = () => (
   <svg
     width="16"
     height="16"

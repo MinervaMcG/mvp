@@ -1,4 +1,3 @@
-import { Binding } from "@babel/traverse";
 import React, { createContext, useState, useContext } from "react";
 
 import { patch } from "src/utils/requests";

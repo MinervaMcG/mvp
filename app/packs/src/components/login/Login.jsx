@@ -117,7 +117,7 @@ const Login = (props) => {
   );
 };
 
-export default (props, _railsContext) => {
+export default (props, /*_railsContext*/) => {
   return () => (
     <RegistrationContainer {...props}>
       <Login {...props} />

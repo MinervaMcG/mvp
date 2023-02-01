@@ -1,7 +1,4 @@
 class DeSyncFollowerPosts
-  def initialize
-  end
-
   def call(user_id:, follower_id:)
     user = User.find_by!(id: user_id)
     follower = User.find_by!(id: follower_id)

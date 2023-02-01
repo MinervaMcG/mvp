@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { H5, P1, P2, Caption } from "src/components/design_system/typography";
 import { Reward } from "src/components/icons";
 import ProgressCircle from "src/components/design_system/progress_circle";

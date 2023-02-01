@@ -5,11 +5,12 @@ import { urlStore } from "src/contexts/state";
 import Dropdown from "react-bootstrap/Dropdown";
 import { P2 } from "src/components/design_system/typography";
 import Tab from "src/components/design_system/tab";
-import { ArrowFill, Rocket, Invite, Quest } from "src/components/icons";
+import { ArrowFill, Invite, Quest } from "src/components/icons";
 
 import cx from "classnames";
 
 const EarnMenu = () => {
+  // eslint-disable-next-line no-unused-vars
   const url = urlStore((state) => state.url);
   const changeURL = urlStore((state) => state.changeURL);
 

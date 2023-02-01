@@ -36,6 +36,7 @@ class TalentsIndex < Chewy::Index
 
   field :occupation, value: ->(talent) { talent.profile[:occupation] }
   field :headline, value: ->(talent) { talent.profile[:headline] }
+  field :location, value: ->(talent) { talent.profile[:location] }
 
   field :milestones do
     field :institution, :title, :description

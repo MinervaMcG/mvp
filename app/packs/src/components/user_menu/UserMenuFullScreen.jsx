@@ -3,12 +3,10 @@ import Modal from "react-bootstrap/Modal";
 
 import TalentProfilePicture from "src/components/talent/TalentProfilePicture";
 import Button from "src/components/design_system/button";
-import { ArrowLeft, Sun, Moon, ArrowRight, Copy } from "src/components/icons";
+import { ArrowLeft, Sun, Moon, ArrowRight } from "src/components/icons";
 import { P1, P2 } from "src/components/design_system/typography";
 
 import {
-  SUPPORTER_GUIDE,
-  TALENT_GUIDE,
   TERMS_HREF,
   PRIVACY_HREF,
 } from "src/utils/constants";
@@ -23,9 +21,11 @@ const UserMenuFullScreen = ({
   showConnectButton,
   walletConnectButton,
   onClickTransak,
+  /*
   copyCodeToClipboard,
   inviteNumbers,
   userHasInvitesLeft,
+  */
   signOut,
 }) => (
   <Modal
@@ -51,6 +51,7 @@ const UserMenuFullScreen = ({
       <div className="d-flex flex-row w-100 align-items-center my-2">
         <TalentProfilePicture
           src={user.profilePictureUrl}
+          userId={user.id}
           height={48}
           className="mr-2"
         />
@@ -102,7 +103,7 @@ const UserMenuFullScreen = ({
         mode={mode}
         className="d-flex flex-row justify-content-between mt-3"
       >
-        <P1 className="text-black" bold text="Community" />
+        <P1 className="text-black" bold text="Portfolio" />
         <ArrowRight color="currentColor" />
       </Button>
       <Button
@@ -137,13 +138,13 @@ const UserMenuFullScreen = ({
       </Button>
       <Button
         onClick={() =>
-          window.open(user.isTalent ? TALENT_GUIDE : SUPPORTER_GUIDE, "_blank")
+          (window.location.href = `/u/${user.username}/account_settings`)
         }
         type="white-ghost"
         mode={mode}
         className="d-flex flex-row justify-content-between mb-3 mt-1"
       >
-        <P1 className="text-black" bold text="User guide" />
+        <P1 className="text-black" bold text="Settings" />
         <ArrowRight color="currentColor" />
       </Button>
       <Button

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Users::UpdateProfileType do
-  subject(:update_profile_type) { described_class.new.call(params) }
+  subject(:update_profile_type) { described_class.new.call(**params) }
 
   let(:user) { create :user }
   let(:admin) { create :user, role: "admin" }

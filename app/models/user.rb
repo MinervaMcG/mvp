@@ -165,6 +165,10 @@ class User < ApplicationRecord
     display_name.present? ? display_name : username
   end
 
+  def onboarding_complete?
+    onboarded_at.present?
+  end
+
   def portfolio(including_self: true, invested_after: nil)
     return User.none unless wallet_id
 

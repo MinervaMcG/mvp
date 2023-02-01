@@ -9,7 +9,7 @@ import Button from "src/components/design_system/button";
 import Poaps from "./web3/poaps";
 import Nfts from "./web3/nfts";
 import Tokens from "./web3/tokens";
-import Overview from "./Overview";
+import Overview from "./overview";
 import About from "./About";
 import Journey from "./Journey";
 import Community from "./Community";
@@ -92,7 +92,7 @@ const Show = ({
   const CurrentTokenSection = getCurrentTokenSection();
 
   return (
-    <div className="d-flex flex-column lg-h-100 p-0 mt-7">
+    <div className="d-flex flex-column lg-h-100 p-0 mt-1">
       <Overview
         className="mb-2"
         talent={localTalent}

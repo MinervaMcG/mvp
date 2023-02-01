@@ -22,7 +22,7 @@ const CommunicateFirst = () => {
   );
 };
 
-const ChatHeader = ({ profilePictureUrl, link, lastOnline, username }) => {
+const ChatHeader = ({ profilePictureUrl, link, lastOnline, username, userId }) => {
   const date = dayjs();
   const lastOnlineDay = dayjs(lastOnline);
   const period = date.unix() - lastOnlineDay.unix();
@@ -44,6 +44,7 @@ const ChatHeader = ({ profilePictureUrl, link, lastOnline, username }) => {
         link={link}
         height={48}
         className="ml-3 mr-2"
+        userId={userId}
       />
       <div className="d-flex flex-column">
         <P2 bold className="text-black">
@@ -137,6 +138,7 @@ const MessageExchange = (props) => {
               link={link()}
               height={48}
               className="mr-2"
+              userId={searchParams.get("user")}
             />
             <P2 mode={mode} bold text={props.username} />
           </div>
@@ -149,6 +151,7 @@ const MessageExchange = (props) => {
           profilePictureUrl={props.profilePictureUrl}
           lastOnline={props.lastOnline}
           link={link()}
+          userId={searchParams.get("user")}
         />
       )}
       <div
@@ -171,6 +174,8 @@ const MessageExchange = (props) => {
             profilePictureUrl={props.profilePictureUrl}
             username={props.username}
             user={props.user}
+            // eslint-disable-next-line no-undef
+            userId={mine(message) ? user.id : message.sender_id}
           />
         ))}
       </div>

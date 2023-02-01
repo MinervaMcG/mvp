@@ -56,7 +56,7 @@ module Messages
     end
 
     def broadcast(chat, message)
-      ActionCable.server.broadcast("message_channel_#{chat.id}", message: message.to_json)
+      ActionCable.server.broadcast("message_channel_#{chat.id}", {message: message.to_json})
     end
   end
 end

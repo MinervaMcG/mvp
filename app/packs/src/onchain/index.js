@@ -77,7 +77,7 @@ class OnChain {
 
       if (web3ModalInstance !== undefined) {
         const provider = new ethers.providers.Web3Provider(web3ModalInstance);
-        web3ModalInstance.on("chainChanged", (_chainId) =>
+        web3ModalInstance.on("chainChanged", (/*_chainId*/) =>
           window.location.reload()
         );
 
@@ -158,7 +158,7 @@ class OnChain {
     if (web3ModalInstance !== undefined) {
       const chainId = await this.getChainID();
 
-      if (!!Addresses[this.env][chainId]) {
+      if (Addresses[this.env][chainId]) {
         return true;
       } else {
         return false;
@@ -176,7 +176,7 @@ class OnChain {
         const provider = new ethers.providers.Web3Provider(web3ModalInstance);
         await web3ModalInstance.enable();
 
-        web3ModalInstance.on("chainChanged", (_chainId) =>
+        web3ModalInstance.on("chainChanged", (/*_chainId*/) =>
           window.location.reload()
         );
         const signer = await provider.getSigner();

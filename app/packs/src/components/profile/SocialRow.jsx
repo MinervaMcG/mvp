@@ -42,14 +42,14 @@ const SocialRow = ({ profile, className }) => {
     <div
       className={cx(
         "d-flex flex-row flex-wrap text-primary-03",
-        className ? className : "mt-3 mt-lg-0 ml-lg-4"
+        className ? className : "mt-3 mt-lg-0"
       )}
     >
       {profile.website && (
         <a className="button-link" href={profile.website} target="self">
           <Button
             type="white-outline"
-            size="big-icon"
+            size="icon"
             className="d-flex justify-content-center align-items-center mr-2"
           >
             <FontAwesomeIcon icon={faGlobeEurope} />
@@ -60,7 +60,7 @@ const SocialRow = ({ profile, className }) => {
         <a className="button-link" href={profile.github} target="self">
           <Button
             type="white-outline"
-            size="big-icon"
+            size="icon"
             className="d-flex justify-content-center align-items-center mr-2"
           >
             <FontAwesomeIcon icon={faGithub} />
@@ -71,7 +71,7 @@ const SocialRow = ({ profile, className }) => {
         <a className="button-link" href={profile.linkedin} target="self">
           <Button
             type="white-outline"
-            size="big-icon"
+            size="icon"
             className="d-flex justify-content-center align-items-center mr-2"
           >
             <FontAwesomeIcon icon={faLinkedin} />
@@ -82,7 +82,7 @@ const SocialRow = ({ profile, className }) => {
         <a className="button-link" href={profile.twitter} target="self">
           <Button
             type="white-outline"
-            size="big-icon"
+            size="icon"
             className="d-flex justify-content-center align-items-center mr-2"
           >
             <FontAwesomeIcon icon={faTwitter} />
@@ -93,7 +93,7 @@ const SocialRow = ({ profile, className }) => {
         <a className="button-link" href={telegramLink()} target="self">
           <Button
             type="white-outline"
-            size="big-icon"
+            size="icon"
             className="d-flex justify-content-center align-items-center mr-2"
           >
             <FontAwesomeIcon icon={faTelegram} />
@@ -104,7 +104,7 @@ const SocialRow = ({ profile, className }) => {
         <a className="button-link" href={discordLink()} target="self">
           <Button
             type="white-outline"
-            size="big-icon"
+            size="icon"
             className="d-flex justify-content-center align-items-center mr-2"
           >
             <FontAwesomeIcon icon={faDiscord} />

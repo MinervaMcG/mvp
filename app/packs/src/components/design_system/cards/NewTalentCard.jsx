@@ -32,6 +32,7 @@ const NewTalentCard = ({
   profileType,
   chainId,
   env,
+  userId
 }) => {
   const { mobile } = useWindowDimensionsHook();
   const [showUserDetails, setShowUserDetails] = useState(false);
@@ -75,7 +76,7 @@ const NewTalentCard = ({
         <a className="talent-link" href={talentLink}>
           <div className="talent-card-title">
             <div className="d-flex flex-column align-items-center">
-              <TalentProfilePicture src={profilePictureUrl} height={120} />
+              <TalentProfilePicture src={profilePictureUrl} height={120} userId={userId}/>
               <div className="d-inline-flex align-items-baseline">
                 <H5
                   className="text-black mt-3 talent-card-name mr-2"
@@ -119,7 +120,7 @@ const NewTalentCard = ({
           <div className="talent-card-details">
             <div className="d-flex justify-content-between align-items-start w-100">
               <div className="d-flex align-items-center">
-                <TalentProfilePicture src={profilePictureUrl} height={32} />
+                <TalentProfilePicture src={profilePictureUrl} height={32} userId={userId}/>
                 <div className="d-flex flex-column ml-3">
                   <div className="d-inline-flex align-items-baseline">
                     <P2

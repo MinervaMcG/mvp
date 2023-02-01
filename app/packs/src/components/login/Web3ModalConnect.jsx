@@ -67,7 +67,7 @@ const Web3ModalConnect = ({
     useState(false);
   const [error, setError] = useState(false);
 
-  const connectWallet = async (e) => {
+  const connectWallet = async () => {
     setRequestingWalletConnection(true);
 
     const api = new OnChain(railsContext.contractsEnv);

@@ -5,8 +5,6 @@ import { patch } from "src/utils/requests";
 import { useWindowDimensionsHook } from "src/utils/window";
 import { P1, P2 } from "src/components/design_system/typography";
 
-import cx from "classnames";
-
 const FirstQuestPopup = ({ userId }) => {
   const { mobile } = useWindowDimensionsHook();
 

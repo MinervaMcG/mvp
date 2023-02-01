@@ -1,13 +1,12 @@
 import React from "react";
 import { ethers } from "ethers";
-import currency from "currency.js";
 import Modal from "react-bootstrap/Modal";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { parseAndCommify } from "src/onchain/utils";
 import ClaimRewardsDropdown from "src/components/design_system/dropdowns/claim_rewards_dropdown";
 import Divider from "src/components/design_system/other/Divider";
-import { H3, P1, P2, P3 } from "src/components/design_system/typography";
+import { P1, P2 } from "src/components/design_system/typography";
 import Button from "src/components/design_system/button";
 import { useWindowDimensionsHook } from "../../../utils/window";
 import { ArrowLeft } from "src/components/icons";
@@ -34,6 +33,8 @@ const RewardsModal = ({
     supportedTalents.find(
       (talent) => talent.contract_id == activeContract.toLowerCase()
     ) || {};
+
+  // eslint-disable-next-line no-unused-vars
   const loadAvailableSupply = ethers.utils.formatUnits(
     parseInt(activeTalent.totalSupply) || 0
   );

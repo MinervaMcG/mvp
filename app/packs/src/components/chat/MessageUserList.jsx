@@ -45,6 +45,7 @@ const ChatMessage = ({ chat, activeUserId, onClick }) => {
         <TalentProfilePicture
           src={chat.receiver_profile_picture_url}
           height={48}
+          userId={chat.receiver_id}
         />
         <div className="d-flex flex-column w-100 h-100 pl-2 pb-3 ml-2">
           <div style={{ minHeight: 48 }}>

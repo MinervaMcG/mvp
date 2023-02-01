@@ -2,7 +2,7 @@ import React from "react";
 import NotificationTemplate from "../notification";
 
 const Notification = ({
-  type,
+  /*type,*/
   mode,
   title,
   description,

@@ -18,7 +18,7 @@ RSpec.describe TheGraph::Mumbai::Client do
     end
 
     subject(:get_talent_supporters) do
-      the_graph_client.talent_supporters(params)
+      the_graph_client.talent_supporters(**params)
     end
 
     let(:variance_start_date) { Time.now.utc.to_i }

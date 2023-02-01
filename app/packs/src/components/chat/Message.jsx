@@ -45,7 +45,7 @@ const MessageLinkified = (props) => {
 
   const { message, mine } = props;
 
-  const handleClick = (e, url) => {
+  const handleClick = (e /*, url*/) => {
     if (mine) {
       return;
     }
@@ -86,6 +86,7 @@ const Message = (props) => {
     profileLink,
     previousMessageSameUser,
     user,
+    userId
   } = props;
 
   const sentDate = dayjs(message.created_at).format("MMM D, YYYY, h:mm A");
@@ -95,6 +96,7 @@ const Message = (props) => {
       {!previousMessageSameUser && (
         <TalentProfilePicture
           src={mine ? user.profilePictureUrl : profilePictureUrl}
+          userId={userId}
           link={profileLink}
           height={48}
           className="mb-auto mt-3"

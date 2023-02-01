@@ -111,9 +111,9 @@ RSpec.describe User, type: :model do
       user1 = build(:user, email: "a@m.com")
       user2 = build(:user, email: "b@m.com")
       create(:message, sender: user1, receiver: user2, text: "Hello!",
-                       is_read: true)
+        is_read: true)
       create(:message, sender: user2, receiver: user1, text: "Hello!",
-                       is_read: false)
+        is_read: false)
       create(:message, sender: user2, receiver: user1, text: "Bye!", is_read:
              false)
 
@@ -277,6 +277,26 @@ RSpec.describe User, type: :model do
     context "when a user domain is not associated with the user" do
       it "shortens the wallet id for displaying" do
         expect(user.display_wallet_id).to eq("0x123456789...")
+      end
+    end
+  end
+
+  describe "#onboarding_complete?" do
+    let(:user) { create :user, onboarded_at: onboarded_at }
+
+    context "when the onboarded_at is nil" do
+      let(:onboarded_at) { nil }
+
+      it "returns false" do
+        expect(user.onboarding_complete?).to eq false
+      end
+    end
+
+    context "when the onboarded_at is not nil" do
+      let(:onboarded_at) { Time.current }
+
+      it "returns true" do
+        expect(user.onboarding_complete?).to eq true
       end
     end
   end

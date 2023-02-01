@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { string, bool, func, node } from "prop-types";
+import { string, bool, func } from "prop-types";
 
 import { P2 } from "src/components/design_system/typography";
 

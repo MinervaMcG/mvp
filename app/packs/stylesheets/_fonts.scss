@@ -2,22 +2,26 @@
   font-family: "AcidGrotesk";
   src: url("/app/packs/stylesheets/fonts/AcidGroteskTP-Normal.otf")
     format("woff");
+  font-display: fallback;
 }
 @font-face {
   font-family: 'AcidGrotesk';
   src: url("/app/packs/stylesheets/fonts/AcidGroteskTP-Bold.otf")
     format("woff");
   font-weight: bold;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'AcidGrotesk';
   src: url("/app/packs/stylesheets/fonts/AcidGroteskTP-Medium.otf")
     format("woff");
   font-weight: 500;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'AcidGrotesk';
   src: url("/app/packs/stylesheets/fonts/AcidGroteskTP-Light.otf")
     format("woff");
   font-weight: 300;
+  font-display: fallback;
 }

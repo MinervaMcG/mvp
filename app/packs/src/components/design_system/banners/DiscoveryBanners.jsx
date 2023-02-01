@@ -72,6 +72,7 @@ const ConnectWalletBanner = ({ beginnerQuestId }) => (
   </div>
 );
 
+/*
 const BrowseTalentBanner = ({ supporterQuestId }) => (
   <div className="talent-background browse-talent-banner-background">
     <div className="talent-background-text permanent-text-white">
@@ -99,6 +100,7 @@ const BrowseTalentBanner = ({ supporterQuestId }) => (
     </div>
   </div>
 );
+*/
 
 const JoinCommunityBanner = () => (
   <div className="talent-background join-community-banner-background">

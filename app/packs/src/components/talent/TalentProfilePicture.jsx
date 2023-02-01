@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { string, number, oneOfType, bool } from "prop-types";
 import ThemeContainer, { useTheme } from "src/contexts/ThemeContext";
-import DefaultProfilePicture from "images/default-profile-icon.png";
 import DefaultBannerLight from "images/default-banner-light.png";
 import DefaultBannerDark from "images/default-banner-dark.png";
 
@@ -17,16 +16,16 @@ const TalentProfilePicture = ({
   link,
   style,
   contained,
+  userId
 }) => {
   const { mode } = useTheme();
 
   const imgSrc = () => {
     if (src) {
       return src;
-    } else if (mode() === "light" && !straight) {
-      return DefaultProfilePicture;
-    } else if (mode() === "dark" && !straight) {
-      return DefaultProfilePicture;
+    } else if (!straight) {
+      // eslint-disable-next-line no-undef
+      return require(`images/default-profile-icon-${Math.floor((userId || 0 ) % 5)}.png`);
     } else if (mode() === "light" && straight) {
       return DefaultBannerLight;
     } else if (mode() === "dark" && straight) {
@@ -69,6 +68,7 @@ TalentProfilePicture.defaultProps = {
   blur: null,
   border: null,
   link: null,
+  userId: 0
 };
 
 TalentProfilePicture.propTypes = {
@@ -82,6 +82,8 @@ TalentProfilePicture.propTypes = {
   border: bool,
   link: string,
 };
+
+// eslint-disable-next-line no-unused-vars
 export default (props, _railsContext) => (
   <ThemeContainer>
     <TalentProfilePicture {...props} />

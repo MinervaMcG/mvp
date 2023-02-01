@@ -115,6 +115,7 @@ const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
           ...talent.careerGoal,
           imageUrl: response.uploadURL,
           imageData: {
+            // eslint-disable-next-line no-useless-escape
             id: response.uploadURL.match(/\/cache\/([^\?]+)/)[1], // extract key without prefix
             storage: "cache",
             metadata: {

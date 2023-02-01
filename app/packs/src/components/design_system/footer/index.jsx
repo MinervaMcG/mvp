@@ -130,7 +130,7 @@ const Footer = () => {
   );
 };
 
-export default (props, _railsContext) => {
+export default (props, /*_railsContext*/) => {
   return () => (
     <ThemeContainer {...props}>
       <Footer {...props} />

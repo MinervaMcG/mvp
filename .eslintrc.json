@@ -1,0 +1,21 @@
+{
+  "extends": ["eslint:recommended"],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "plugins": [
+      "react"
+  ],
+  "rules": {
+    "eol-last": "error",
+    "react/jsx-uses-vars": "error",
+    "react/jsx-uses-react": "error",
+    "no-empty-pattern": 0,
+    "no-extra-boolean-cast": 0
+  },
+  "parser": "@babel/eslint-parser",
+  "env": {
+    "es6": true,
+    "browser": true
+  }
+}

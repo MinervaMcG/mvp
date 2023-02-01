@@ -18,7 +18,7 @@ import TextArea from "src/components/design_system/fields/textarea";
 import Divider from "src/components/design_system/other/Divider";
 import Button from "src/components/design_system/button";
 import UserTags from "src/components/talent/UserTags";
-import { H5, P2, P3 } from "src/components/design_system/typography";
+import { H5, P2 } from "src/components/design_system/typography";
 import { ToastBody } from "src/components/design_system/toasts";
 import { CAREER_NEEDS_OPTIONS } from "src/utils/constants";
 
@@ -155,6 +155,7 @@ const EditAboutModal = ({ show, hide, talent, setTalent }) => {
           ...prev.careerGoal,
           imageUrl: response.uploadURL,
           imageData: {
+            // eslint-disable-next-line  no-useless-escape
             id: response.uploadURL.match(/\/cache\/([^\?]+)/)[1], // extract key without prefix
             storage: "cache",
             metadata: {

@@ -77,6 +77,7 @@ module Talents
             "talent_token.ticker",
             "occupation",
             "headline",
+            "location",
             "milestones.*",
             "carrer_goal.*",
             "career_goal.goals.*"
@@ -164,7 +165,7 @@ module Talents
 
     def chain_id(network_name)
       contract_env = ENV["CONTRACTS_ENV"]
-      network = contract_env == "production" ? Web3Api::ApiProxy.const_get("#{network_name.upcase}_CHAIN") : Web3Api::ApiProxy.const_get("TESTNET_#{network_name.upcase}_CHAIN")
+      network = (contract_env == "production") ? Web3Api::ApiProxy.const_get("#{network_name.upcase}_CHAIN") : Web3Api::ApiProxy.const_get("TESTNET_#{network_name.upcase}_CHAIN")
       network[2].to_i
     end
 

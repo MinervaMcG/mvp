@@ -1,5 +1,4 @@
 import React from "react";
-import Icon from "src/components/design_system/icon";
 
 const Help = (props) => (
   <svg

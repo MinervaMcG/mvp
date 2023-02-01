@@ -24,11 +24,11 @@ class Mailerlite::SyncSubscriber
   private
 
   def add_subscriber(user)
-    Faraday.post(@url, {email: user.email, fields: fields(user)}.to_json, {"Content-Type": "application/json", 'X-MailerLite-ApiKey': @token})
+    Faraday.post(@url, {email: user.email, fields: fields(user)}.to_json, {"Content-Type": "application/json", "X-MailerLite-ApiKey": @token})
   end
 
   def update_subscriber(user)
-    Faraday.put("#{@url}/#{user.email}", {fields: fields(user)}.to_json, {"Content-Type": "application/json", 'X-MailerLite-ApiKey': @token})
+    Faraday.put("#{@url}/#{user.email}", {fields: fields(user)}.to_json, {"Content-Type": "application/json", "X-MailerLite-ApiKey": @token})
   end
 
   def fields(user)
@@ -46,7 +46,7 @@ class Mailerlite::SyncSubscriber
   end
 
   def search_for_email_request(user)
-    Faraday.get("#{@url}/search?query=#{user.email}", {}, {'X-MailerLite-ApiKey': @token})
+    Faraday.get("#{@url}/search?query=#{user.email}", {}, {"X-MailerLite-ApiKey": @token})
   end
 
   def account_type(user)

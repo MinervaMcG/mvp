@@ -10,6 +10,16 @@ module Web3Api
         Faraday.get(ENV["CELO_EXPLORER_BASE_URI"], params, headers)
       end
 
+      def retrieve_transactions(address:, start_timestamp:)
+        params = {
+          module: "account",
+          action: "txlist",
+          address: address,
+          start_timestamp: start_timestamp
+        }
+        Faraday.get(ENV["CELO_EXPLORER_BASE_URI"], params, headers)
+      end
+
       private
 
       def headers

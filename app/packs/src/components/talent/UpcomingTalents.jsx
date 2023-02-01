@@ -10,7 +10,7 @@ import Button from "src/components/design_system/button";
 
 const UpcomingTalents = ({ talents }) => {
   const [start, setStart] = useState(0);
-  const { height, width } = useWindowDimensionsHook();
+  const { width } = useWindowDimensionsHook();
   const [mobile, setMobile] = useState(0);
   const theme = useContext(ThemeContext);
 
@@ -104,6 +104,7 @@ const UpcomingTalents = ({ talents }) => {
   );
 };
 
+// eslint-disable-next-line no-unused-vars
 export default (props, railsContext) => {
   return () => (
     <ThemeContainer {...props}>

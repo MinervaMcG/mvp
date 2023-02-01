@@ -3,7 +3,7 @@ import { useWindowDimensionsHook } from "../../utils/window";
 import ThemeContainer, { useTheme } from "../../contexts/ThemeContext";
 import RegistrationStaticScreen from "./RegistrationStaticScreen";
 import Button from "../design_system/button";
-import { Sun, Moon, Padlock, LogoWord } from "../icons";
+import { Sun, Moon, LogoWord } from "../icons";
 import { darkPrimary } from "src/utils/colors";
 import cx from "classnames";
 
@@ -82,6 +82,7 @@ const RegistrationContainer = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line no-unused-vars
 export default (props, _railsContext) => (
   <ThemeContainer {...props}>
     <RegistrationContainer {...props} />

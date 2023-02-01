@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import TalentProfilePicture from "../talent/TalentProfilePicture";
 import Button from "src/components/design_system/button";
@@ -19,7 +19,7 @@ const UserMenu = ({ user, toggleTheme, mode, onClickTransak, signOut }) => {
         bsPrefix=""
         as="div"
       >
-        <TalentProfilePicture src={user.profilePictureUrl} height={20} />
+        <TalentProfilePicture src={user.profilePictureUrl} height={20} userId={user.id} />
       </Dropdown.Toggle>
 
       <Dropdown.Menu className="user-menu-dropdown">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import P2 from "../../typography/p2";
 import { OrderBy } from "src/components/icons";

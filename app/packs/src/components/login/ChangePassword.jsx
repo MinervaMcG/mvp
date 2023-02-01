@@ -179,7 +179,7 @@ const ChangePassword = ({ userId, token }) => {
   );
 };
 
-export default (props, _railsContext) => {
+export default (props, /*_railsContext*/) => {
   return () => (
     <RegistrationContainer {...props}>
       <ChangePassword {...props} />

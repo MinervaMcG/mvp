@@ -42,6 +42,7 @@ import OnboardingFlow from "src/components/onboarding/OnboardingFlow";
 
 import "stylesheets/application.scss";
 
+// eslint-disable-next-line no-undef
 require.context("../images", true);
 
 ReactOnRails.register({
@@ -66,7 +67,6 @@ ReactOnRails.register({
   Rewards,
   TalentKeywordSearch,
   TalentPage,
-  TopBar,
   TopBar,
   UpcomingTalents,
   Web3ModalConnect,

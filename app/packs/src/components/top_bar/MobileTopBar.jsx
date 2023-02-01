@@ -45,7 +45,7 @@ const MobileUserMenu = ({
             className="ml-4"
             size="none"
           >
-            <TalentProfilePicture src={user.profilePictureUrl} height={20} />
+            <TalentProfilePicture src={user.profilePictureUrl} height={20} userId={user.id}/>
           </Button>
           <UserMenuFullScreen
             show={showMenu}

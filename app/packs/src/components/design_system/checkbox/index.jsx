@@ -1,5 +1,5 @@
 import React from "react";
-import { string, bool, func, oneOf, node } from "prop-types";
+import { string, bool, func, node } from "prop-types";
 import cx from "classnames";
 import P3 from "../typography/p3";
 

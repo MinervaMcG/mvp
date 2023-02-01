@@ -50,6 +50,26 @@ module Web3Api
       gnosis_poaps(wallet_address)
     end
 
+    def retrieve_transactions_count(address:, start_timestamp:, chain:)
+      validate_chain!(chain)
+
+      formatted_chain = formatted_chain(chain)
+
+      return celo_explorer_transactions(address, start_timestamp).count if celo?(formatted_chain)
+
+      moralis_transactions_count(address, start_timestamp, formatted_chain)
+    end
+
+    def retrieve_polygon_nfts_count(address:)
+      response = moralis_contract_nfts_response(address, "polygon")
+
+      validate_response!(response)
+
+      response_body = JSON.parse(response.body)
+
+      response_body["total"].to_i
+    end
+
     private
 
     def validate_chain!(chain)
@@ -132,7 +152,7 @@ module Web3Api
     end
 
     def moralis_nfts(wallet_address, chain)
-      response = moralis_nfts_response(wallet_address, chain)
+      response = moralis_wallet_nfts_response(wallet_address, chain)
       validate_response!(response)
 
       response_body = JSON.parse(response.body)
@@ -193,6 +213,24 @@ module Web3Api
       token_ids_and_contract_address.compact
     end
 
+    def celo_explorer_transactions(address, start_timestamp)
+      response = celo_explorer_api_client.retrieve_transactions(address: address, start_timestamp: start_timestamp)
+      validate_response!(response)
+
+      response_body = JSON.parse(response.body)
+
+      response_body["result"]
+    end
+
+    def moralis_transactions_count(address, start_timestamp, chain)
+      response = moralis_api_client.retrieve_transactions(address: address, start_timestamp: start_timestamp, chain: chain)
+
+      validate_response!(response)
+
+      response_body = JSON.parse(response.body)
+      response_body["total"]
+    end
+
     def celo_explorer_tokens_response(wallet_address)
       celo_explorer_api_client.retrieve_tokens(wallet_address: wallet_address)
     end
@@ -201,12 +239,24 @@ module Web3Api
       moralis_api_client.retrieve_tokens(wallet_address: wallet_address, chain: chain)
     end
 
-    def moralis_nfts_response(wallet_address, chain)
-      moralis_api_client.retrieve_nfts(wallet_address: wallet_address, chain: chain)
+    def moralis_wallet_nfts_response(wallet_address, chain)
+      moralis_api_client.retrieve_wallet_nfts(wallet_address: wallet_address, chain: chain)
+    end
+
+    def moralis_contract_nfts_response(contract_address, chain)
+      moralis_api_client.retrieve_contract_nfts(contract_address: contract_address, chain: chain)
     end
 
     def tatum_nfts_response(wallet_address, chain)
       @tatum_nfts_response ||= tatum_api_client.retrieve_nfts(wallet_address: wallet_address, chain: chain)
+    end
+
+    def celo_explorer_transactions_response(wallet_address, start_timestamp)
+      celo_explorer_api_client.retrieve_transactions(address: address, start_timestamp: start_timestamp)
+    end
+
+    def moralis_transactions_response(wallet_address, start_timestamp, chain)
+      moralis_api_client.retrieve_transactions(address: address, start_timestamp: start_timestamp, chain: chain)
     end
 
     def validate_response!(response)

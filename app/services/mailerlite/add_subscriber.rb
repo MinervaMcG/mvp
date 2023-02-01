@@ -22,15 +22,15 @@ class Mailerlite::AddSubscriber
   private
 
   def add_subscriber(email, name, code, talent)
-    Faraday.post(@url, {email: email, name: name, fields: {account_type: talent ? "Talent" : "Supporter", status: "Invited", invite_link: invite_link(code)}}.to_json, {"Content-Type": "application/json", 'X-MailerLite-ApiKey': @token})
+    Faraday.post(@url, {email: email, name: name, fields: {account_type: talent ? "Talent" : "Supporter", status: "Invited", invite_link: invite_link(code)}}.to_json, {"Content-Type": "application/json", "X-MailerLite-ApiKey": @token})
   end
 
   def update_subscriber(email, name, code, talent)
-    Faraday.put("#{@url}/#{email}", {name: name, fields: {account_type: talent ? "Talent" : "Supporter", status: "Invited", invite_link: invite_link(code)}}.to_json, {"Content-Type": "application/json", 'X-MailerLite-ApiKey': @token})
+    Faraday.put("#{@url}/#{email}", {name: name, fields: {account_type: talent ? "Talent" : "Supporter", status: "Invited", invite_link: invite_link(code)}}.to_json, {"Content-Type": "application/json", "X-MailerLite-ApiKey": @token})
   end
 
   def search_for_email_request(email)
-    Faraday.get("#{@url}/search?query=#{email}", {}, {'X-MailerLite-ApiKey': @token})
+    Faraday.get("#{@url}/search?query=#{email}", {}, {"X-MailerLite-ApiKey": @token})
   end
 
   def invite_link(code)

@@ -60,7 +60,7 @@ const TransakDone = ({ show, hide }) => (
   </Modal>
 );
 
-export const LoadingPortfolio = ({ mode }) => {
+export const LoadingPortfolio = () => {
   return (
     <div className="w-100 h-100 d-flex flex-column justify-content-center align-items-center mt-4">
       <Spinner />
@@ -203,7 +203,7 @@ const NewPortfolio = ({
     });
 
     // This will trigger when the user marks payment is made.
-    transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
+    transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (/*orderData*/) => {
       transak.close();
       setTransakDone(true);
     });

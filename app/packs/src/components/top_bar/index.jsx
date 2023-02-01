@@ -117,7 +117,7 @@ export const TopBar = ({
     });
 
     // This will trigger when the user marks payment is made.
-    transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
+    transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (/*orderData*/) => {
       transak.close();
       setTransakDone(true);
     });
@@ -131,7 +131,7 @@ export const TopBar = ({
     });
   };
 
-  const disconnectWallet = async (account) => {
+  const disconnectWallet = async (/*account*/) => {
     const onChain = new OnChain(railsContext.contractsEnv);
 
     onChain.disconnect();
@@ -291,7 +291,7 @@ export const TopBar = ({
           />
           <Tab
             href="/portfolio"
-            text="Community"
+            text="Portfolio"
             type="white"
             active={activeTab === "/portfolio"}
             className="mr-4"

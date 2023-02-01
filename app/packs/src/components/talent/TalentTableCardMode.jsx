@@ -39,6 +39,7 @@ const TalentTableCardMode = ({
             isVerified={talent.isVerified}
             profileType={talent.user.profileType}
             chainId={talent.talentToken.chainId}
+            userId={talent.user.id}
             env={env}
           />
         </div>

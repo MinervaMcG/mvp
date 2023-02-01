@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { toast } from "react-toastify";
 
 import { useWindowDimensionsHook } from "src/utils/window";
 import { get } from "src/utils/requests";

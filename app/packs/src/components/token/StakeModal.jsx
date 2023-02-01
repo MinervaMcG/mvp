@@ -11,7 +11,7 @@ import { post, patch } from "src/utils/requests";
 import { WalletConnectionError } from "../login/Web3ModalConnect";
 
 import LoadingButton from "src/components/button/LoadingButton";
-import { H3, P1, P2 } from "src/components/design_system/typography";
+import { P1, P2 } from "src/components/design_system/typography";
 import TextInput from "src/components/design_system/fields/textinput";
 import Button from "src/components/design_system/button";
 import { useWindowDimensionsHook } from "src/utils/window";
@@ -45,6 +45,7 @@ const StakeModal = ({
   const [approving, setApproving] = useState(false);
   const [didAllowance, setDidAllowance] = useState(false);
   const [validChain, setValidChain] = useState(true);
+  // eslint-disable-next-line no-unused-vars
   const [valueError, setValueError] = useState(false);
   const [showNewMessageModal, setShowNewMessageModal] = useState(false);
   const [chainName, setChainName] = useState("celo");

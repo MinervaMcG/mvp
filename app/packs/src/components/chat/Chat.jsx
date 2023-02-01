@@ -17,7 +17,7 @@ const Chat = ({ chats, user, pagination }) => {
   );
   const [localChats, setLocalChats] = useState(chats);
   const [localPagination, setLocalPagination] = useState(pagination);
-  const [perkId, setPerkId] = useState(url.searchParams.get("perk") || 0);
+  const [perkId] = useState(url.searchParams.get("perk") || 0);
   const [activeChannel, setActiveChannel] = useState(null); // @TODO: Refactor chat
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");

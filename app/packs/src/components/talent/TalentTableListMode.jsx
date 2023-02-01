@@ -232,6 +232,7 @@ const TalentTableListMode = ({
                     >
                       <TalentProfilePicture
                         src={talent.profilePictureUrl}
+                        userId={talent.id}
                         height="24"
                       />
                       <P2 text={talent.user.name} bold className="ml-2" />
@@ -338,6 +339,7 @@ const TalentTableListMode = ({
               <div className="d-flex align-items-center">
                 <TalentProfilePicture
                   src={talent.profilePictureUrl}
+                  userId={talent.id}
                   height="24"
                 />
                 <P2 text={talent.user.name} bold className="ml-2" />

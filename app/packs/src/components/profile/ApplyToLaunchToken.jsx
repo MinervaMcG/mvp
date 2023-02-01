@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { patch } from "src/utils/requests";
 import { H3, P2 } from "src/components/design_system/typography";

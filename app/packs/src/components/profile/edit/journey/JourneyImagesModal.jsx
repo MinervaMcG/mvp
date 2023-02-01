@@ -1,11 +1,9 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 
-import { useTheme } from "src/contexts/ThemeContext";
-
 import TalentProfilePicture from "src/components/talent/TalentProfilePicture";
 import Divider from "src/components/design_system/other/Divider";
-import { H5, P2, P3 } from "src/components/design_system/typography";
+import { H5 } from "src/components/design_system/typography";
 
 import { useWindowDimensionsHook } from "src/utils/window";
 
@@ -13,7 +11,6 @@ import cx from "classnames";
 
 const JourneyImagesModal = ({ show, hide, journeyItem }) => {
   const { mobile } = useWindowDimensionsHook();
-  const { mode } = useTheme();
 
   return (
     <Modal

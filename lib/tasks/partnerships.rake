@@ -14,7 +14,7 @@ namespace :partnerships do
       next
     end
 
-    json_data = json_path.starts_with?("http") ? URI.parse(json_path).read : File.open(json_path).read
+    json_data = json_path.starts_with?("http") ? URI.parse(json_path).read : File.read(json_path)
     data = JSON.parse(json_data)
     params = data.slice(*Partnerships::Create::ATTRIBUTES + %w[banner_url logo_url])
     partnership = Partnerships::Create.new(max_uses: max_uses, params: params).call

@@ -175,6 +175,7 @@ const Perks = ({ talent, canUpdate }) => {
                     <div className="d-flex align-items-center mb-1">
                       <TalentProfilePicture
                         src={talent.profilePictureUrl}
+                        userId={talent.id}
                         height={24}
                       />
                       <P2

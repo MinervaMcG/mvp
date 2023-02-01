@@ -113,6 +113,7 @@ const Journey = ({ className, talent, setTalent, canUpdate }) => {
     }
   };
 
+  /*
   const displayYear = (index) => {
     const currentJourneyItem = journeyItems[index];
     const previousJourneyItem = index == 0 ? null : journeyItems[index - 1];
@@ -126,6 +127,7 @@ const Journey = ({ className, talent, setTalent, canUpdate }) => {
       return true;
     }
   };
+  */
 
   const categoryCount = (category) => {
     return `(${

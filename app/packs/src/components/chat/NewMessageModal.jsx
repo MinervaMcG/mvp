@@ -119,6 +119,7 @@ const NewMessageModal = ({
                 <TalentProfilePicture
                   src={user.profilePictureUrl}
                   height={40}
+                  userId={user.id}
                 />
                 <P2 className="mb-0 ml-3" bold text={user.username} />
               </Link>

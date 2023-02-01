@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "src/components/design_system/button";
 import TextArea from "src/components/design_system/fields/textarea";

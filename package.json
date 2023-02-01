@@ -60,6 +60,7 @@
     "sass-loader": "^11.1.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "styled-components": "^5.3.6",
     "url": "^0.11.0",
     "use-nft": "^0.12.0",
     "web3modal": "^1.9.9",
@@ -70,6 +71,7 @@
   "version": "0.1.0",
   "devDependencies": {
     "@babel/core": "^7.14.3",
+    "@babel/eslint-parser": "^7.19.1",
     "@storybook/addon-actions": "^6.5.13",
     "@storybook/addon-essentials": "^6.5.13",
     "@storybook/addon-links": "^6.5.13",
@@ -79,6 +81,8 @@
     "@webpack-cli/serve": "^1.4.0",
     "babel-loader": "^8.2.2",
     "chromatic": "^6.0.5",
+    "eslint": "^8.32.0",
+    "eslint-plugin-react": "^7.32.2",
     "prettier": "2.3.2",
     "webpack-dev-server": "^4.9.0"
   },
@@ -111,7 +115,9 @@
   ],
   "scripts": {
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "lint": "eslint ./app/packs --ext js,jsx",
+    "pretest": "npm run lint"
   },
   "engines": {
     "node": "16.4.2"

@@ -80,7 +80,7 @@ const ProgressCircle = ({
   );
 };
 
-export default (props, _railsContext) => {
+export default (props, /*_railsContext*/) => {
   return (
     <ThemeContainer>
       <ProgressCircle {...props} />

@@ -19,6 +19,7 @@ const PersonaVerificationConfirmationModal = ({
   talent,
   setTalent,
   railsContext,
+  mode
 }) => {
   const { mobile } = useWindowDimensionsHook();
   const [editedTalent, setEditedTalent] = useState(talent);
@@ -35,6 +36,7 @@ const PersonaVerificationConfirmationModal = ({
   };
 
   const verifyTalent = async () => {
+    // eslint-disable-next-line no-undef
     const client = new Persona.Client({
       templateId: railsContext.withPersonaTemplateId,
       environment: railsContext.withPersonaEnvironment,
@@ -43,7 +45,7 @@ const PersonaVerificationConfirmationModal = ({
         client.open();
         hide();
       },
-      onComplete: ({ inquiryId, status, fields }) => {
+      onComplete: ({ inquiryId, /*status, fields*/ }) => {
         const params = {
           talent: {
             with_persona_id: inquiryId,

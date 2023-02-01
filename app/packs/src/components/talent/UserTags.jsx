@@ -9,7 +9,7 @@ const UserTags = ({
   tags,
   talent_id,
   className,
-  mode,
+  /*mode,*/
   tagsSelected,
   clickable = true,
   onClick = null,

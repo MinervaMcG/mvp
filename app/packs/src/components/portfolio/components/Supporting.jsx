@@ -334,6 +334,7 @@ const Supporting = ({
                     <TalentProfilePicture
                       src={talentProfilePictures[talent.contract_id]}
                       height="24"
+                      userId={talent.id}
                     />
                     <P2
                       text={`${talentProfileUsernames[talent.contract_id]}`}
@@ -423,6 +424,7 @@ const Supporting = ({
                 >
                   <TalentProfilePicture
                     src={talentProfilePictures[talent.contract_id]}
+                    userId={talent.id}
                     height="24"
                   />
                   <P2

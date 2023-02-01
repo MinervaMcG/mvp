@@ -18,8 +18,10 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 
 dayjs.extend(customParseFormat);
 
+// eslint-disable-next-line no-unused-vars
 const sumRewardAmounts = (total, reward) => total + reward.amount;
 
+// eslint-disable-next-line no-unused-vars
 const amountToTal = (amount) => `${currency(amount).dollars()} $TAL`;
 
 dayjs.extend(utc);
@@ -280,6 +282,7 @@ const RaceDropdown = ({ allRaces, race, setRace }) => {
   };
 
   // @TODO: Add other options & load a different race
+  // eslint-disable-next-line no-unused-vars
   const options = allRaces.map((r) => ({
     name: raceName(r),
     value: r.id,
@@ -466,6 +469,7 @@ const RaceTable = ({ leaderboardResults, allRaces, currentRace }) => {
                     "race-table-rewards-cell hide-content-in-mobile py-3"
                   }
                   onClick={() =>
+                    // eslint-disable-next-line no-undef
                     (window.location.href = `/u/${talent.user.username}`)
                   }
                 >
