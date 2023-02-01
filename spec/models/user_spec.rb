@@ -538,4 +538,23 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe "#user_domain" do
+    let(:user) { create :user }
+
+    context "when the user does not have any domain" do
+      it "returns nil" do
+        expect(user.user_domain).to eq nil
+      end
+    end
+
+    context "when the user has a tal domain" do
+      let!(:tal_domain) { create :user_domain, user: user, domain: "dinis.tal.community", chain_id: 1, tal_domain: true, provider: "ens" }
+      let!(:another_domain) { create :user_domain, user: user, domain: "dinis.wallet", chain_id: 137, tal_domain: false, provider: "unstoppable_domains" }
+
+      it "returns the tal domain" do
+        expect(user.user_domain).to eq tal_domain
+      end
+    end
+  end
 end

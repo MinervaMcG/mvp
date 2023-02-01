@@ -1,6 +1,4 @@
 class API::V1::UsersController < ApplicationController
-  before_action :set_user, only: :update
-
   def index
     @users = search_params[:name].present? ? filtered_users : filtered_users.limit(20)
 
@@ -33,62 +31,32 @@ class API::V1::UsersController < ApplicationController
   end
 
   def update
-    if @user.nil? || current_user.nil? || @user.id != current_user.id
+    if user.nil? || current_user.nil? || user.id != current_user.id
       return render json: {error: "You don't have access to perform that action"}, status: :unauthorized
     end
 
-    if @user
-      if params[:wallet_id]
-        @user.update!(wallet_id: params[:wallet_id]&.downcase)
+    render json: {error: "Not found."}, status: :not_found unless user
 
-        AddUsersToMailerliteJob.perform_later(@user.id)
-        Web3::RefreshDomains.new(user: @user).call
-        UpdateTasksJob.perform_later(type: "Tasks::ConnectWallet", user_id: @user.id)
-      elsif params[:first_quest_popup]
-        current_user.update!(first_quest_popup: true)
-      elsif user_params[:email]
-        current_user.update!(user_params)
-        current_user.update!(confirmation_token: Clearance::Token.new)
-      else
-        if password_params[:new_password]&.length&.positive?
-          if current_user.authenticated?(password_params[:current_password])
-            current_user.update!(password: password_params[:new_password])
-          else
-            return render json: {errors: {currentPassword: "Passwords don't match"}}, status: :conflict
-          end
-        elsif !!user_params[:username] && !User.valid_username?(user_params[:username])
-          return render json: {errors: {username: "Username only allows lower case letters and numbers"}}, status: :conflict
-        elsif !!user_params[:email] && !User.valid_email?(user_params[:email])
-          return render json: {errors: {email: "Email is not valid"}}, status: :conflict
-        end
+    result = Users::Update.new(
+      user: user,
+      user_params: user_params.to_h,
+      password_params: password_params.to_h,
+      tal_domain: tal_domain,
+      wallet_id: params[:wallet_id],
+      first_quest_popup: params[:first_quest_popup]
+    ).call
 
-        # username should always match the invite code
-        if !!user_params[:username] && user_params[:username] != current_user.username
-          invite = Invite.find_by(code: current_user.username)
-          invite&.update(code: user_params[:username])
-        end
-
-        current_user.update!(user_params)
-      end
-
-      render json: @user, status: :ok
-    else
-      render json: {error: "Not found."}, status: :not_found
+    unless result[:success]
+      return render json: {errors: result[:errors]}, status: :conflict
     end
-  rescue ActiveRecord::RecordNotUnique => e
-    if e.to_s.include?("username")
-      render json: {errors: {username: "Username is taken"}}, status: :conflict
-    elsif e.to_s.include?("email")
-      render json: {errors: {email: "Email is taken"}}, status: :conflict
-    else
-      render json: {errors: "Wallet already exists in the system"}, status: :conflict
-    end
+
+    render json: result[:user], status: :ok
   end
 
   private
 
-  def set_user
-    @user = User.find_by(id: params[:id])
+  def user
+    @user ||= User.find_by(id: params[:id])
   end
 
   def search_params
@@ -102,12 +70,12 @@ class API::V1::UsersController < ApplicationController
     )
   end
 
-  def password_params
-    params.require(:user).permit(:new_password, :current_password)
+  def tal_domain
+    params.require(:user).permit(:tal_domain)[:tal_domain]
   end
 
-  def tag_params
-    params.permit(tags: [])
+  def password_params
+    params.require(:user).permit(:new_password, :current_password)
   end
 
   def filtered_users

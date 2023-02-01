@@ -12,12 +12,12 @@ const Slider = ({ onChange, checked, className }) => {
 };
 
 Slider.defaultProps = {
-  checked: false,
+  checked: false
 };
 
 Slider.propTypes = {
   onChange: func.isRequired,
-  checked: bool,
+  checked: bool
 };
 
 export default Slider;

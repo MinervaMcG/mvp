@@ -4,12 +4,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { P2, P3 } from "src/components/design_system/typography";
 import { OrderBy } from "src/components/icons";
 
-const TalentFilters = ({
-  status,
-  setStatus,
-  filter,
-  isAdminOrModerator = false,
-}) => {
+const TalentFilters = ({ status, setStatus, filter, isAdminOrModerator = false }) => {
   const options = useMemo(() => {
     if (isAdminOrModerator) {
       return [
@@ -25,7 +20,7 @@ const TalentFilters = ({
         "Looking for a mentor",
         "Looking to mentor others",
         "Looking to hire",
-        "Looking for new opportunities",
+        "Looking for new opportunities"
       ];
     }
 
@@ -40,12 +35,11 @@ const TalentFilters = ({
       "Looking for a mentor",
       "Looking to mentor others",
       "Looking to hire",
-      "Looking for new opportunities",
+      "Looking for new opportunities"
     ];
   }, []);
 
-  const selectedClass = (option) =>
-    option == status ? " text-primary" : "text-black";
+  const selectedClass = option => (option == status ? " text-primary" : "text-black");
 
   const filterOptions = (e, option) => {
     setStatus(option);
@@ -61,20 +55,16 @@ const TalentFilters = ({
         as="div"
         style={{ height: 34, width: 150 }}
       >
-        <P2
-          bold
-          text={status}
-          className="mr-2 align-middle text-black text-ellipsis"
-        />
+        <P2 bold text={status} className="mr-2 align-middle text-black text-ellipsis" />
         <OrderBy black />
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {options.map((option) => (
+        {options.map(option => (
           <Dropdown.Item
             key={`tab-dropdown-${option}`}
             className="d-flex flex-row justify-content-between"
-            onClick={(e) => filterOptions(e, option)}
+            onClick={e => filterOptions(e, option)}
           >
             <P3 bold text={option} className={selectedClass(option)} />
           </Dropdown.Item>

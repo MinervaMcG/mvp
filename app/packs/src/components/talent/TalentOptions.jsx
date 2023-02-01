@@ -26,7 +26,7 @@ const TalentOptions = ({
   setPagination,
   setSelectedSort,
   setSortDirection,
-  isAdminOrModerator,
+  isAdminOrModerator
 }) => {
   const { mobile } = useWindowDimensionsHook();
   const { mode } = useTheme();
@@ -46,11 +46,11 @@ const TalentOptions = ({
       params.set("discovery_row_id", discoveryRowId);
     }
 
-    get(`${searchUrl}?${params.toString()}`).then((response) => {
+    get(`${searchUrl}?${params.toString()}`).then(response => {
       setPagination(response.pagination);
 
-      let talents = response.talents.map((talent) => ({
-        ...camelCaseObject(talent),
+      let talents = response.talents.map(talent => ({
+        ...camelCaseObject(talent)
       }));
 
       if (option === "Trending") {
@@ -62,11 +62,7 @@ const TalentOptions = ({
       setTalents(talents);
 
       params.delete("discovery_row_id");
-      window.history.replaceState(
-        {},
-        document.title,
-        `${url.pathname}?${params.toString()}`
-      );
+      window.history.replaceState({}, document.title, `${url.pathname}?${params.toString()}`);
     });
   };
 
@@ -88,15 +84,11 @@ const TalentOptions = ({
           textActiveTab={watchlistOnly ? "Watchlist" : "All Talent"}
           textTabPrimary="All Talent"
           textTabSecondary="Watchlist"
-          onClick={(tab) => changeTab(tab)}
+          onClick={tab => changeTab(tab)}
         />
       )}
       <div className={cx("d-flex ml-auto", mobile && "mt-3")}>
-        <TalentKeywordSearch
-          keyword={keyword}
-          setKeyword={setKeyword}
-          filter={filter}
-        />
+        <TalentKeywordSearch keyword={keyword} setKeyword={setKeyword} filter={filter} />
         <div className="ml-2">
           <TalentFilters
             status={status}
@@ -111,16 +103,7 @@ const TalentOptions = ({
           type="white-subtle"
           onClick={() => setListModeOnly(false)}
         >
-          <Grid
-            fill={
-              listModeOnly
-                ? "currentColor"
-                : mode() == "dark"
-                ? darkPrimary
-                : lightPrimary
-            }
-            color="inherit"
-          />
+          <Grid fill={listModeOnly ? "currentColor" : mode() == "dark" ? darkPrimary : lightPrimary} color="inherit" />
         </Button>
         <Button
           className="ml-2 d-flex align-items-center justify-content-center"
@@ -128,16 +111,7 @@ const TalentOptions = ({
           type="white-subtle"
           onClick={() => setListModeOnly(true)}
         >
-          <List
-            fill={
-              !listModeOnly
-                ? "currentColor"
-                : mode() == "dark"
-                ? darkPrimary
-                : lightPrimary
-            }
-            color="inherit"
-          />
+          <List fill={!listModeOnly ? "currentColor" : mode() == "dark" ? darkPrimary : lightPrimary} color="inherit" />
         </Button>
       </div>
     </div>

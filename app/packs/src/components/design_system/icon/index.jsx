@@ -2,19 +2,7 @@ import React from "react";
 import { number, string } from "prop-types";
 import { black } from "src/utils/colors";
 
-const Icon = ({
-  path,
-  size,
-  width,
-  height,
-  color,
-  fill,
-  className,
-  pathClassName,
-  style,
-  viewBox,
-  strokeWidth,
-}) => (
+const Icon = ({ path, size, width, height, color, fill, className, pathClassName, style, viewBox, strokeWidth }) => (
   <svg
     className={className}
     viewBox={viewBox}
@@ -45,7 +33,7 @@ Icon.defaultProps = {
   viewBox: "0 0 16 16",
   className: "",
   pathClassName: "",
-  strokeWidth: "",
+  strokeWidth: ""
 };
 
 Icon.propTypes = {
@@ -58,7 +46,7 @@ Icon.propTypes = {
   viewBox: string,
   className: string,
   pathClassName: string,
-  strokeWidth: string,
+  strokeWidth: string
 };
 
 export default Icon;

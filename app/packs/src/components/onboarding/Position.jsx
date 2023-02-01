@@ -10,7 +10,7 @@ import Link from "src/components/design_system/link";
 
 dayjs.extend(customParseFormat);
 
-const returnYear = (date) => {
+const returnYear = date => {
   if (date) {
     return dayjs(date).format("YYYY");
   } else {
@@ -18,7 +18,7 @@ const returnYear = (date) => {
   }
 };
 
-const returnMonth = (date) => {
+const returnMonth = date => {
   if (date) {
     return dayjs(date).format("MMMM");
   } else {
@@ -28,12 +28,10 @@ const returnMonth = (date) => {
 
 const Position = ({ changeStep, position, changePosition, allSteps }) => {
   const [localPosition, setLocalPosition] = useState({ ...position });
-  const [localMonth, setLocalMonth] = useState(
-    returnMonth(position.start_date)
-  );
+  const [localMonth, setLocalMonth] = useState(returnMonth(position.start_date));
   const [localYear, setLocalYear] = useState(returnYear(position.start_date));
 
-  const submitPositionForm = (e) => {
+  const submitPositionForm = e => {
     e.preventDefault();
     if (invalidForm) {
       return;
@@ -42,12 +40,12 @@ const Position = ({ changeStep, position, changePosition, allSteps }) => {
     changeStep(5);
   };
 
-  const goBack = (e) => {
+  const goBack = e => {
     e.preventDefault();
     changeStep(3);
   };
 
-  const skipStep = (e) => {
+  const skipStep = e => {
     e.preventDefault();
     changeStep(5);
   };
@@ -72,7 +70,7 @@ const Position = ({ changeStep, position, changePosition, allSteps }) => {
     "September",
     "October",
     "November",
-    "December",
+    "December"
   ];
 
   const yearOptions = (() => {
@@ -88,11 +86,9 @@ const Position = ({ changeStep, position, changePosition, allSteps }) => {
 
   useEffect(() => {
     if (localYear != "" && localMonth != "") {
-      setLocalPosition((prev) => ({
+      setLocalPosition(prev => ({
         ...prev,
-        start_date: dayjs(`${localMonth}/${localYear}`, "MMMM/YYYY").format(
-          "DD-MM-YYYY"
-        ),
+        start_date: dayjs(`${localMonth}/${localYear}`, "MMMM/YYYY").format("DD-MM-YYYY")
       }));
     }
   }, [localYear, localMonth]);
@@ -110,8 +106,8 @@ const Position = ({ changeStep, position, changePosition, allSteps }) => {
       </div>
       <H5 text="What’s your main position?" bold />
       <P2 className="mb-5 mt-2">
-        Tell us what have you been doing lately. Later on you'll be able to add
-        your education, career goals and past achievements.
+        Tell us what have you been doing lately. Later on you'll be able to add your education, career goals and past
+        achievements.
       </P2>
       <form onSubmit={submitPositionForm} className="d-flex flex-column w-100">
         <div className="form-group position-relative">
@@ -121,9 +117,7 @@ const Position = ({ changeStep, position, changePosition, allSteps }) => {
           <TextInput
             id={"inputTitle"}
             type="text"
-            onChange={(e) =>
-              setLocalPosition((prev) => ({ ...prev, title: e.target.value }))
-            }
+            onChange={e => setLocalPosition(prev => ({ ...prev, title: e.target.value }))}
             value={localPosition.title}
           />
         </div>
@@ -134,10 +128,10 @@ const Position = ({ changeStep, position, changePosition, allSteps }) => {
           <TextInput
             id={"inputinstitution"}
             type="text"
-            onChange={(e) =>
-              setLocalPosition((prev) => ({
+            onChange={e =>
+              setLocalPosition(prev => ({
                 ...prev,
-                institution: e.target.value,
+                institution: e.target.value
               }))
             }
             value={localPosition.institution}
@@ -146,10 +140,10 @@ const Position = ({ changeStep, position, changePosition, allSteps }) => {
         <div className="form-group position-relative">
           <TextArea
             title={"Description"}
-            onChange={(e) =>
-              setLocalPosition((prev) => ({
+            onChange={e =>
+              setLocalPosition(prev => ({
                 ...prev,
-                description: e.target.value,
+                description: e.target.value
               }))
             }
             value={localPosition.description}
@@ -165,9 +159,7 @@ const Position = ({ changeStep, position, changePosition, allSteps }) => {
           <TextInput
             id={"inputlink"}
             type="text"
-            onChange={(e) =>
-              setLocalPosition((prev) => ({ ...prev, link: e.target.value }))
-            }
+            onChange={e => setLocalPosition(prev => ({ ...prev, link: e.target.value }))}
             value={localPosition.link}
           />
         </div>
@@ -178,13 +170,13 @@ const Position = ({ changeStep, position, changePosition, allSteps }) => {
           <div className="d-flex flex-row justify-content-between">
             <Form.Control
               as="select"
-              onChange={(e) => setLocalMonth(e.target.value)}
+              onChange={e => setLocalMonth(e.target.value)}
               value={localMonth}
               placeholder="Month"
               className="height-auto mr-2"
             >
               <option value=""></option>
-              {monthOptions.map((month) => (
+              {monthOptions.map(month => (
                 <option value={month} key={month}>
                   {month}
                 </option>
@@ -192,13 +184,13 @@ const Position = ({ changeStep, position, changePosition, allSteps }) => {
             </Form.Control>
             <Form.Control
               as="select"
-              onChange={(e) => setLocalYear(e.target.value)}
+              onChange={e => setLocalYear(e.target.value)}
               value={localYear}
               placeholder="Year"
               className="height-auto ml-2"
             >
               <option value=""></option>
-              {yearOptions.map((year) => (
+              {yearOptions.map(year => (
                 <option value={year} key={year}>
                   {year}
                 </option>

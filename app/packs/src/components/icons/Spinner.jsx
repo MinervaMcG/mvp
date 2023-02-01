@@ -3,15 +3,7 @@ import { number, string } from "prop-types";
 import { useTheme } from "src/contexts/ThemeContext";
 import { lightPrimary, darkPrimary } from "src/utils/colors";
 
-const Spinner = ({
-  className,
-  pathClassName,
-  style,
-  width,
-  fillPrimary,
-  fillSecondary,
-  opacity,
-}) => {
+const Spinner = ({ className, pathClassName, style, width, fillPrimary, fillSecondary, opacity }) => {
   const { mode } = useTheme();
 
   return (
@@ -50,7 +42,7 @@ Spinner.defaultProps = {
   width: 64,
   fillPrimary: "#686C74",
   fillSecondary: null,
-  opacity: "0.3",
+  opacity: "0.3"
 };
 
 Spinner.propTypes = {
@@ -59,7 +51,7 @@ Spinner.propTypes = {
   width: number,
   fillPrimary: string,
   fillSecondary: string,
-  opacity: string,
+  opacity: string
 };
 
 export default Spinner;

@@ -8,7 +8,7 @@ import { useTheme } from "../../contexts/ThemeContext";
 import { useWindowDimensionsHook } from "../../utils/window";
 import cx from "classnames";
 
-const renderCurrentStep = (currentStep) => {
+const renderCurrentStep = currentStep => {
   switch (currentStep) {
     case 1:
       return Welcome;
@@ -23,7 +23,7 @@ const renderCurrentStep = (currentStep) => {
   }
 };
 
-const RegistrationFlow = (props) => {
+const RegistrationFlow = props => {
   const { width } = useWindowDimensionsHook();
   const mobile = width < 992;
   const { mode } = useTheme();
@@ -34,9 +34,7 @@ const RegistrationFlow = (props) => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState(
-    url.searchParams.get("handle") || ""
-  );
+  const [username, setUsername] = useState(url.searchParams.get("handle") || "");
   const [code, setCode] = useState("");
   const [captcha, setCaptcha] = useState("");
 
@@ -46,9 +44,7 @@ const RegistrationFlow = (props) => {
     <div
       className={cx(
         "d-flex flex-column",
-        mobile
-          ? "align-self-center p-4 justify-content-start w-100 h-100"
-          : "p-0 registration-box w-100",
+        mobile ? "align-self-center p-4 justify-content-start w-100 h-100" : "p-0 registration-box w-100",
         currentStep === 4 && "justify-content-center"
       )}
     >

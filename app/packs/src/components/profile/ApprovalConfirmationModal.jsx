@@ -17,26 +17,21 @@ const ApprovalConfirmationModal = ({ show, hide, talent, setTalent }) => {
     const params = {
       user: {
         id: talent.user.id,
-        profile_type: "approved",
-      },
+        profile_type: "approved"
+      }
     };
 
-    const response = await patch(`/api/v1/talent/${talent.id}`, params).catch(
-      () => {
-        return false;
-      }
-    );
+    const response = await patch(`/api/v1/talent/${talent.id}`, params).catch(() => {
+      return false;
+    });
 
     if (response && !response.error) {
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
-        user: { ...prev.user, profileType: "approved" },
+        user: { ...prev.user, profileType: "approved" }
       }));
 
-      toast.success(
-        <ToastBody heading="Success!" body={"User approved successfully."} />,
-        { autoClose: 1500 }
-      );
+      toast.success(<ToastBody heading="Success!" body={"User approved successfully."} />, { autoClose: 1500 });
 
       hide();
       return true;
@@ -59,19 +54,10 @@ const ApprovalConfirmationModal = ({ show, hide, talent, setTalent }) => {
       </Modal.Header>
       <Divider />
       <Modal.Body>
-        <P2
-          text={`Are you sure you want to approve ${
-            talent.user.name || talent.user.username
-          }?`}
-        />
+        <P2 text={`Are you sure you want to approve ${talent.user.name || talent.user.username}?`} />
       </Modal.Body>
       <Modal.Footer className="px-6 py-3" style={{ borderTop: "none" }}>
-        <Button
-          className="mr-2"
-          type="white-ghost"
-          text="Cancel"
-          onClick={hide}
-        />
+        <Button className="mr-2" type="white-ghost" text="Cancel" onClick={hide} />
         <Button type="primary-default" text="Approve" onClick={approveUser} />
       </Modal.Footer>
     </Modal>

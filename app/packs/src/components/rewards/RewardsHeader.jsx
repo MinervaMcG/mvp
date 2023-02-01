@@ -14,39 +14,32 @@ const RewardsHeader = ({ rewards }) => {
     referral_race: 0,
     talent_invites: 0,
     quests: 0,
-    others: 0,
+    others: 0
   });
 
   useEffect(() => {
     const total = rewards.reduce(sumRewardAmounts, 0);
-    const talent_invites = rewards
-      .filter((item) => item.category == "talent_invite")
-      .reduce(sumRewardAmounts, 0);
-    const quests = rewards
-      .filter((item) => item.category == "quest")
-      .reduce(sumRewardAmounts, 0);
+    const talent_invites = rewards.filter(item => item.category == "talent_invite").reduce(sumRewardAmounts, 0);
+    const quests = rewards.filter(item => item.category == "quest").reduce(sumRewardAmounts, 0);
     const others = rewards
-      .filter((item) => item.category == "other" || item.category == "race")
+      .filter(item => item.category == "other" || item.category == "race")
       .reduce(sumRewardAmounts, 0);
 
     setUserRewards({
       total,
       talent_invites,
       quests,
-      others,
+      others
     });
   }, [rewards]);
 
-  const amountToTal = (amount) => `${currency(amount).dollars()} $TAL`;
+  const amountToTal = amount => `${currency(amount).dollars()} $TAL`;
 
   return (
     <div className="talent-rewards-header-row mb-6">
       <div className="d-flex flex-column col-lg-5 p-4 px-lg-0">
         <H3 bold>Complete tasks. Earn crypto.</H3>
-        <P1>
-          Complete quests and invite your most talented friends to start earning
-          crypto.
-        </P1>
+        <P1>Complete quests and invite your most talented friends to start earning crypto.</P1>
       </div>
       <div className="d-flex flex-column col-lg-5 talent-rewards-header-box px-4 px-lg-0">
         <div className="talent-rewards-highlight p-4">
@@ -70,16 +63,10 @@ const RewardsHeader = ({ rewards }) => {
               <Help color={lightTextPrimary03} />
             </div>
           </Tooltip>
-          <P2 className="text-black">
-            {amountToTal(userRewards.talent_invites)}
-          </P2>
+          <P2 className="text-black">{amountToTal(userRewards.talent_invites)}</P2>
         </div>
         <div className="talent-rewards-header-item px-4 pb-4">
-          <Tooltip
-            body="Referral Races, bounties, etc."
-            popOverAccessibilityId={"others_rewards"}
-            placement="top"
-          >
+          <Tooltip body="Referral Races, bounties, etc." popOverAccessibilityId={"others_rewards"} placement="top">
             <div className="cursor-pointer d-flex align-items-center">
               <P2 className="mr-1">Others</P2>
               <Help color={lightTextPrimary03} />

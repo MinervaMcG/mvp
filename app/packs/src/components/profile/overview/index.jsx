@@ -38,73 +38,65 @@ const Overview = ({
   previewMode,
   setPreviewMode,
   isCurrentUserImpersonated,
-  withPersonaRequest,
+  withPersonaRequest
 }) => {
   const { mobile } = useWindowDimensionsHook();
   const { mode } = useTheme();
   const [showStakeModal, setShowStakeModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
-  const [showApprovalConfirmationModal, setShowApprovalConfirmationModal] =
-    useState(false);
-  const [
-    showAdminVerificationConfirmationModal,
-    setShowAdminVerificationConfirmationModal,
-  ] = useState(false);
-  const [
-    showPersonaVerificationConfirmationModal,
-    setShowPersonaVerificationConfirmationModal,
-  ] = useState(false);
+  const [showApprovalConfirmationModal, setShowApprovalConfirmationModal] = useState(false);
+  const [showAdminVerificationConfirmationModal, setShowAdminVerificationConfirmationModal] = useState(false);
+  const [showPersonaVerificationConfirmationModal, setShowPersonaVerificationConfirmationModal] = useState(false);
   const [isUploadingProfile, setIsUploadingProfile] = useState(false);
   const [isUploadingBanner, setIsUploadingBanner] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [overviewProfileFileInput, setOverviewProfileFileInput] =
-    useState(null);
+  const [overviewProfileFileInput, setOverviewProfileFileInput] = useState(null);
   const [overviewBannerFileInput, setOverviewBannerFileInput] = useState(null);
 
   const uppyProfile = new Uppy({
     meta: { type: "avatar" },
     restrictions: {
       maxFileSize: 5120000,
-      allowedFileTypes: [".jpg", ".png", ".jpeg"],
+      allowedFileTypes: [".jpg", ".png", ".jpeg"]
     },
-    autoProceed: true,
+    autoProceed: true
   });
 
   const uppyBanner = new Uppy({
     meta: { type: "avatar" },
     restrictions: {
       maxFileSize: 5120000,
-      allowedFileTypes: [".jpg", ".png", ".jpeg", ".gif"],
+      allowedFileTypes: [".jpg", ".png", ".jpeg", ".gif"]
     },
-    autoProceed: true,
+    autoProceed: true
   });
 
   uppyProfile.use(AwsS3Multipart, {
     limit: 4,
     companionUrl: "/",
     companionHeaders: {
-      "X-CSRF-Token": getAuthToken(),
-    },
+      "X-CSRF-Token": getAuthToken()
+    }
   });
 
   uppyBanner.use(AwsS3Multipart, {
     limit: 4,
     companionUrl: "/",
     companionHeaders: {
-      "X-CSRF-Token": getAuthToken(),
-    },
+      "X-CSRF-Token": getAuthToken()
+    }
   });
 
-  overviewProfileFileInput?.addEventListener("change", (event) => {
+  overviewProfileFileInput?.addEventListener("change", event => {
     setIsUploadingProfile(true);
     const files = Array.from(event.target.files);
-    files.forEach((file) => {
+    files.forEach(file => {
       try {
         uppyProfile.addFile({
           source: "file input",
           name: file.name,
           type: file.type,
-          data: file,
+          data: file
         });
       } catch (err) {
         setIsUploadingProfile(false);
@@ -119,16 +111,16 @@ const Overview = ({
     });
   });
 
-  overviewBannerFileInput?.addEventListener("change", (event) => {
+  overviewBannerFileInput?.addEventListener("change", event => {
     setIsUploadingBanner(true);
     const files = Array.from(event.target.files);
-    files.forEach((file) => {
+    files.forEach(file => {
       try {
         uppyBanner.addFile({
           source: "file input",
           name: file.name,
           type: file.type,
-          data: file,
+          data: file
         });
       } catch (err) {
         setIsUploadingBanner(false);
@@ -143,20 +135,20 @@ const Overview = ({
     });
   });
 
-  const saveProfile = async (updatedTalent) => {
+  const saveProfile = async updatedTalent => {
     const response = await patch(`/api/v1/talent/${talent.id}`, {
       user: {
-        ...snakeCaseObject(updatedTalent.user),
+        ...snakeCaseObject(updatedTalent.user)
       },
       talent: {
-        ...snakeCaseObject(updatedTalent),
-      },
+        ...snakeCaseObject(updatedTalent)
+      }
     });
 
     if (response) {
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
-        ...camelCaseObject(response),
+        ...camelCaseObject(response)
       }));
     }
   };
@@ -165,7 +157,7 @@ const Overview = ({
     saveProfile({
       ...talent,
       bannerUrl: null,
-      bannerData: null,
+      bannerData: null
     });
   };
 
@@ -186,9 +178,9 @@ const Overview = ({
           metadata: {
             size: file.size,
             filename: file.name,
-            mime_type: file.type,
-          },
-        },
+            mime_type: file.type
+          }
+        }
       });
     });
     uppyProfile.on("upload", () => {});
@@ -211,26 +203,22 @@ const Overview = ({
           metadata: {
             size: file.size,
             filename: file.name,
-            mime_type: file.type,
-          },
-        },
+            mime_type: file.type
+          }
+        }
       });
     });
     uppyBanner.on("upload", () => {});
   }, [uppyBanner]);
 
   useEffect(() => {
-    setOverviewProfileFileInput(
-      document.getElementById("overviewProfileFileInput")
-    );
-    setOverviewBannerFileInput(
-      document.getElementById("overviewBannerFileInput")
-    );
+    setOverviewProfileFileInput(document.getElementById("overviewProfileFileInput"));
+    setOverviewBannerFileInput(document.getElementById("overviewBannerFileInput"));
   }, []);
 
   const impersonateUser = async () => {
     const params = {
-      username: talent.user.username,
+      username: talent.user.username
     };
 
     const response = await post(`/api/v1/impersonations`, params).catch(() => {
@@ -238,12 +226,7 @@ const Overview = ({
     });
 
     if (response && !response.error) {
-      toast.success(
-        <ToastBody
-          heading="Success!"
-          body="Impersonation started successfully!"
-        />
-      );
+      toast.success(<ToastBody heading="Success!" body="Impersonation started successfully!" />);
       window.location.reload();
     }
   };
@@ -254,19 +237,17 @@ const Overview = ({
       response = await destroy(`/api/v1/follows?user_id=${talent.user.id}`);
     } else {
       response = await post(`/api/v1/follows`, {
-        user_id: talent.user.id,
+        user_id: talent.user.id
       });
     }
 
     if (response.success) {
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
-        isFollowing: !talent.isFollowing,
+        isFollowing: !talent.isFollowing
       }));
     } else {
-      toast.error(
-        <ToastBody heading="Unable to update follow" body={response?.error} />
-      );
+      toast.error(<ToastBody heading="Unable to update follow" body={response?.error} />);
     }
   };
 
@@ -282,10 +263,7 @@ const Overview = ({
   const verifyTooltipBody = () => {
     if (talent.withPersonaId) {
       return "Your verification is being processed";
-    } else if (
-      withPersonaRequest.requests_counter >
-      railsContext.withPersonaVerificationsLimit
-    ) {
+    } else if (withPersonaRequest.requests_counter > railsContext.withPersonaVerificationsLimit) {
       return "The number of verifications we can do is limited. Please check back later to verify your account";
     } else {
       return "In order to verify your account your profile must be complete and we must match the legal name you provided with the ID provided";
@@ -305,21 +283,37 @@ const Overview = ({
                     className="mb-3"
                     src={talent.profilePictureUrl}
                     height={120}
-                    style={{ marginTop: "56px", border: `4px solid ${mode() === "dark" ? darkBg01 : lightBg01}`, zIndex: 1}}
+                    style={{
+                      marginTop: "56px",
+                      border: `4px solid ${mode() === "dark" ? darkBg01 : lightBg01}`,
+                      zIndex: 1
+                    }}
                     border
                   />
                 </>
               ) : (
                 <>
-                  <Banner bannerUrl={talent.bannerUrl} deleteBannerCallback={deleteBannerImg} canUpdate isUploading={isUploadingBanner} />
+                  <Banner
+                    bannerUrl={talent.bannerUrl}
+                    deleteBannerCallback={deleteBannerImg}
+                    canUpdate
+                    isUploading={isUploadingBanner}
+                  />
                   <div
                     className="position-relative"
-                    style={{ width: "120px", height: "120px", marginTop: "56px" }}
+                    style={{
+                      width: "120px",
+                      height: "120px",
+                      marginTop: "56px"
+                    }}
                   >
                     <TalentProfilePicture
                       className="position-relative"
                       src={talent.profilePictureUrl}
-                      style={{ border: `4px solid ${mode() === "dark" ? darkBg01 : lightBg01}`, zIndex: 1}}
+                      style={{
+                        border: `4px solid ${mode() === "dark" ? darkBg01 : lightBg01}`,
+                        zIndex: 1
+                      }}
                       height={120}
                       border
                     />
@@ -342,18 +336,18 @@ const Overview = ({
               )}
             </div>
           ) : (
-            <div style={{marginTop: "225px", zIndex: 1}}>
+            <div style={{ marginTop: "225px", zIndex: 1 }}>
               {previewMode || !canUpdate ? (
                 <TalentProfilePicture
                   src={talent.profilePictureUrl}
-                  style={{ border: `4px solid ${mode() === "dark" ? darkBg01 : lightBg01}`, zIndex: 1}}
+                  style={{
+                    border: `4px solid ${mode() === "dark" ? darkBg01 : lightBg01}`,
+                    zIndex: 1
+                  }}
                   height={120}
                 />
               ) : (
-                <div
-                  className="position-relative"
-                  style={{ width: "120px", height: "120px", zIndex: 1}}
-                >
+                <div className="position-relative" style={{ width: "120px", height: "120px", zIndex: 1 }}>
                   {isUploadingProfile ? (
                     <div class="h-100 d-flex justify-content-center align-items-center">
                       <Spinner className="mx-4" width={50} />
@@ -363,14 +357,17 @@ const Overview = ({
                       <TalentProfilePicture
                         className="position-relative"
                         src={talent.profilePictureUrl}
-                        style={{  border: `4px solid ${mode() === "dark" ? darkBg01 : lightBg01 }`, zIndex: 1 }}
+                        style={{
+                          border: `4px solid ${mode() === "dark" ? darkBg01 : lightBg01}`,
+                          zIndex: 1
+                        }}
                         height={120}
                       />
                       <div className="rounded-circle edit-image"></div>
                       <label htmlFor="overviewProfileFileInput">
                         <TalentProfilePicture
                           className="position-absolute cursor-pointer"
-                          style={{ top: "36px", left: "36px", zIndex: 1}}
+                          style={{ top: "36px", left: "36px", zIndex: 1 }}
                           src={CameraButton}
                           height={40}
                         />
@@ -394,28 +391,29 @@ const Overview = ({
             {previewMode || !canUpdate ? (
               <Banner bannerUrl={talent.bannerUrl} deleteBannerCallback={deleteBannerImg} />
             ) : (
-              <Banner bannerUrl={talent.bannerUrl} deleteBannerCallback={deleteBannerImg} canUpdate isUploading={isUploadingBanner} />
+              <Banner
+                bannerUrl={talent.bannerUrl}
+                deleteBannerCallback={deleteBannerImg}
+                canUpdate
+                isUploading={isUploadingBanner}
+              />
             )}
           </>
         )}
       </div>
-      <ProfileCard 
+      <ProfileCard
         talent={talent}
-       changeSection={changeSection}
-       currentUserAdmin={currentUserAdmin}
-       mobile={mobile}
-       talentTokenPrice={talentTokenPrice}
-      > 
+        changeSection={changeSection}
+        currentUserAdmin={currentUserAdmin}
+        mobile={mobile}
+        talentTokenPrice={talentTokenPrice}
+      >
         {mobile ? (
-            <>
+          <>
             <div className="d-flex flex-column">
               <div className="d-flex align-items-center">
                 {previewMode ? (
-                  <Button
-                    type="primary-default"
-                    text="Back to edit profile"
-                    onClick={() => setPreviewMode(false)}
-                  />
+                  <Button type="primary-default" text="Back to edit profile" onClick={() => setPreviewMode(false)} />
                 ) : (
                   <>
                     {canUpdate ? (
@@ -424,14 +422,11 @@ const Overview = ({
                           <Button
                             className="mr-2"
                             type="primary-default"
-                            onClick={() =>
-                              setShowPersonaVerificationConfirmationModal(true)
-                            }
+                            onClick={() => setShowPersonaVerificationConfirmationModal(true)}
                             disabled={
                               !talent.user.profileCompleted ||
                               talent.withPersonaId ||
-                              withPersonaRequest.requests_counter >
-                                railsContext.withPersonaVerificationsLimit
+                              withPersonaRequest.requests_counter > railsContext.withPersonaVerificationsLimit
                             }
                           >
                             <div className="d-flex align-items-center">
@@ -441,20 +436,12 @@ const Overview = ({
                                 popOverAccessibilityId={"verify_tooltip"}
                                 placement="top"
                               >
-                                <Help
-                                  className="cursor-pointer ml-1"
-                                  color={lightTextPrimary03}
-                                />
+                                <Help className="cursor-pointer ml-1" color={lightTextPrimary03} />
                               </Tooltip>
                             </div>
                           </Button>
                         )}
-                        <Button
-                          className="mr-2"
-                          type="primary-default"
-                          text="Edit"
-                          onClick={() => setEditMode(true)}
-                        />
+                        <Button className="mr-2" type="primary-default" text="Edit" onClick={() => setEditMode(true)} />
                         {talent.talentToken.contractId && (
                           <Button
                             className="mr-2"
@@ -472,22 +459,9 @@ const Overview = ({
                       </>
                     ) : (
                       <>
-                        <a
-                          href={`/messages?user=${talent.user.id}`}
-                          className="button-link"
-                        >
-                          <Button
-                            className="mr-2"
-                            type="white-outline"
-                            size="big"
-                            onClick={() => null}
-                          >
-                            <Envelope
-                              className="h-100"
-                              color="currentColor"
-                              size={16}
-                              viewBox="0 0 24 24"
-                            />
+                        <a href={`/messages?user=${talent.user.id}`} className="button-link">
+                          <Button className="mr-2" type="white-outline" size="big" onClick={() => null}>
+                            <Envelope className="h-100" color="currentColor" size={16} viewBox="0 0 24 24" />
                           </Button>
                         </a>
                         {showFollowButton() && (
@@ -519,9 +493,7 @@ const Overview = ({
                       type="primary-default"
                       className="mr-2"
                       text="Verify"
-                      onClick={() =>
-                        setShowAdminVerificationConfirmationModal(true)
-                      }
+                      onClick={() => setShowAdminVerificationConfirmationModal(true)}
                     />
                   )}
                   {talent.user.profileType == "waiting_for_approval" && (
@@ -532,11 +504,7 @@ const Overview = ({
                         text={"Approve"}
                         onClick={() => setShowApprovalConfirmationModal(true)}
                       />
-                      <Button
-                        onClick={() => setShowRejectModal(true)}
-                        className="mr-2"
-                        type="white-subtle"
-                      >
+                      <Button onClick={() => setShowRejectModal(true)} className="mr-2" type="white-subtle">
                         Reject
                       </Button>
                     </>
@@ -551,164 +519,139 @@ const Overview = ({
                   )}
                 </div>
               )}
-              </div>
-            </>)
-            : (
-              <div className="d-flex align-items-center justify-content-between">
-                {!mobile && (
-                  <div className="d-flex align-items-center">
-                    {(currentUserAdmin || currentUserModerator) && (
+            </div>
+          </>
+        ) : (
+          <div className="d-flex align-items-center justify-content-between">
+            {!mobile && (
+              <div className="d-flex align-items-center">
+                {(currentUserAdmin || currentUserModerator) && (
+                  <>
+                    {!talent.verified && (
+                      <Button
+                        className="mr-2"
+                        size="big"
+                        type="primary-default"
+                        text="Verify"
+                        onClick={() => setShowAdminVerificationConfirmationModal(true)}
+                      />
+                    )}
+                    {talent.user.profileType == "waiting_for_approval" && (
+                      <>
+                        <Button
+                          className="mr-2"
+                          size="big"
+                          type="primary-default"
+                          text="Approve"
+                          onClick={() => setShowApprovalConfirmationModal(true)}
+                        />
+                        <Button
+                          onClick={() => setShowRejectModal(true)}
+                          size="big"
+                          type="white-subtle"
+                          className="mr-7"
+                        >
+                          Reject
+                        </Button>
+                      </>
+                    )}
+                    {!isCurrentUserImpersonated && (
+                      <Button
+                        className="mr-2"
+                        type="white-outline"
+                        size="big"
+                        text="Impersonate"
+                        onClick={() => impersonateUser()}
+                      />
+                    )}
+                  </>
+                )}
+                {previewMode ? (
+                  <Button type="white-outline" text="Back to edit profile" onClick={() => setPreviewMode(false)} />
+                ) : (
+                  <>
+                    {canUpdate ? (
                       <>
                         {!talent.verified && (
                           <Button
                             className="mr-2"
-                            size="big"
                             type="primary-default"
-                            text="Verify"
-                            onClick={() =>
-                              setShowAdminVerificationConfirmationModal(true)
+                            size="big"
+                            onClick={() => setShowPersonaVerificationConfirmationModal(true)}
+                            disabled={
+                              !talent.user.profileCompleted ||
+                              talent.withPersonaId ||
+                              withPersonaRequest.requests_counter > railsContext.withPersonaVerificationsLimit
                             }
+                          >
+                            <div className="d-flex align-items-center">
+                              Verify
+                              <Tooltip
+                                body={verifyTooltipBody()}
+                                popOverAccessibilityId={"verify_tooltip"}
+                                placement="top"
+                              >
+                                <Help className="cursor-pointer ml-2" color={lightTextPrimary03} />
+                              </Tooltip>
+                            </div>
+                          </Button>
+                        )}
+                        <Button
+                          className="mr-2"
+                          type="primary-default"
+                          size="big"
+                          text="Edit"
+                          onClick={() => setEditMode(true)}
+                        />
+                        {talent.talentToken.contractId && (
+                          <Button
+                            className="mr-2"
+                            type="primary-default"
+                            size="big"
+                            text={`Buy ${talent.talentToken.ticker}`}
+                            onClick={() => setShowStakeModal(true)}
                           />
                         )}
-                        {talent.user.profileType == "waiting_for_approval" && (
-                          <>
-                            <Button
-                              className="mr-2"
-                              size="big"
-                              type="primary-default"
-                              text="Approve"
-                              onClick={() => setShowApprovalConfirmationModal(true)}
-                            />
-                            <Button
-                              onClick={() => setShowRejectModal(true)}
-                              size="big"
-                              type="white-subtle"
-                              className="mr-7"
-                            >
-                              Reject
-                            </Button>
-                          </>
-                        )}
-                        {!isCurrentUserImpersonated && (
+                        <Button
+                          className="mr-2"
+                          type="white-outline"
+                          size="big"
+                          text="Preview"
+                          onClick={() => setPreviewMode(true)}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <a href={`/messages?user=${talent.user.id}`} className="button-link">
+                          <Button className="mr-2" type="white-outline" size="big" onClick={() => null}>
+                            <Envelope className="h-100" color="currentColor" size={16} viewBox="0 0 24 24" />
+                          </Button>
+                        </a>
+                        {showFollowButton() && (
                           <Button
                             className="mr-2"
                             type="white-outline"
                             size="big"
-                            text="Impersonate"
-                            onClick={() => impersonateUser()}
+                            text={talent.isFollowing ? "Unfollow" : "Follow"}
+                            onClick={() => updateFollow()}
+                          />
+                        )}
+                        {talent.talentToken.contractId && (
+                          <Button
+                            type="primary-default"
+                            size="big"
+                            text="Support"
+                            onClick={() => setShowStakeModal(true)}
                           />
                         )}
                       </>
                     )}
-                    {previewMode ? (
-                      <Button
-                        type="white-outline"
-                        text="Back to edit profile"
-                        onClick={() => setPreviewMode(false)}
-                      />
-                    ) : (
-                      <>
-                        {canUpdate ? (
-                          <>
-                            {!talent.verified && (
-                              <Button
-                                className="mr-2"
-                                type="primary-default"
-                                size="big"
-                                onClick={() =>
-                                  setShowPersonaVerificationConfirmationModal(true)
-                                }
-                                disabled={
-                                  !talent.user.profileCompleted ||
-                                  talent.withPersonaId ||
-                                  withPersonaRequest.requests_counter >
-                                    railsContext.withPersonaVerificationsLimit
-                                }
-                              >
-                                <div className="d-flex align-items-center">
-                                  Verify
-                                  <Tooltip
-                                    body={verifyTooltipBody()}
-                                    popOverAccessibilityId={"verify_tooltip"}
-                                    placement="top"
-                                  >
-                                    <Help
-                                      className="cursor-pointer ml-2"
-                                      color={lightTextPrimary03}
-                                    />
-                                  </Tooltip>
-                                </div>
-                              </Button>
-                            )}
-                            <Button
-                              className="mr-2"
-                              type="primary-default"
-                              size="big"
-                              text="Edit"
-                              onClick={() => setEditMode(true)}
-                            />
-                            {talent.talentToken.contractId && (
-                              <Button
-                                className="mr-2"
-                                type="primary-default"
-                                size="big"
-                                text={`Buy ${talent.talentToken.ticker}`}
-                                onClick={() => setShowStakeModal(true)}
-                              />
-                            )}
-                            <Button
-                              className="mr-2"
-                              type="white-outline"
-                              size="big"
-                              text="Preview"
-                              onClick={() => setPreviewMode(true)}
-                            />
-                          </>
-                        ) : (
-                          <>
-                            <a
-                              href={`/messages?user=${talent.user.id}`}
-                              className="button-link"
-                            >
-                              <Button
-                                className="mr-2"
-                                type="white-outline"
-                                size="big"
-                                onClick={() => null}
-                              >
-                                <Envelope
-                                  className="h-100"
-                                  color="currentColor"
-                                  size={16}
-                                  viewBox="0 0 24 24"
-                                />
-                              </Button>
-                            </a>
-                            {showFollowButton() && (
-                              <Button
-                                className="mr-2"
-                                type="white-outline"
-                                size="big"
-                                text={talent.isFollowing ? "Unfollow" : "Follow"}
-                                onClick={() => updateFollow()}
-                              />
-                            )}
-                            {talent.talentToken.contractId && (
-                              <Button
-                                type="primary-default"
-                                size="big"
-                                text="Support"
-                                onClick={() => setShowStakeModal(true)}
-                              />
-                            )}
-                          </>
-                        )}
-                      </>
-                    )}
-                  </div>
+                  </>
                 )}
               </div>
             )}
+          </div>
+        )}
       </ProfileCard>
       <StakeModal
         show={showStakeModal}
@@ -754,12 +697,7 @@ const Overview = ({
         setTalent={setTalent}
       />
       {editMode && (
-        <EditOverviewModal
-          show={editMode}
-          hide={() => setEditMode(false)}
-          talent={talent}
-          setTalent={setTalent}
-        />
+        <EditOverviewModal show={editMode} hide={() => setEditMode(false)} talent={talent} setTalent={setTalent} />
       )}
     </div>
   );

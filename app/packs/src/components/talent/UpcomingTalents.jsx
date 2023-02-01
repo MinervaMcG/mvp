@@ -30,8 +30,7 @@ const UpcomingTalents = ({ talents }) => {
     return Math.floor(numberOfCards);
   }, [width]);
 
-  const end =
-    talents.length > itemsPerRow ? start + itemsPerRow : talents.length;
+  const end = talents.length > itemsPerRow ? start + itemsPerRow : talents.length;
 
   const sliceInDisplay = talents.slice(start, end);
 
@@ -39,14 +38,14 @@ const UpcomingTalents = ({ talents }) => {
     if (start - itemsPerRow < 0) {
       setStart(0);
     } else {
-      setStart((prev) => prev - itemsPerRow);
+      setStart(prev => prev - itemsPerRow);
     }
   };
   const slideRight = () => {
     if (start + itemsPerRow >= talents.length) {
       setStart(talents.length - 1);
     } else {
-      setStart((prev) => prev + itemsPerRow);
+      setStart(prev => prev + itemsPerRow);
     }
   };
   const disableLeft = start === 0;
@@ -66,21 +65,10 @@ const UpcomingTalents = ({ talents }) => {
         </div>
         {talents.length > itemsPerRow && (
           <div className="d-flex flex-row">
-            <Button
-              onClick={slideLeft}
-              disabled={disableLeft}
-              type="white-ghost"
-              mode={theme.mode()}
-              className="mr-2"
-            >
+            <Button onClick={slideLeft} disabled={disableLeft} type="white-ghost" mode={theme.mode()} className="mr-2">
               <Caret size={16} color="currentColor" className="rotate-90" />
             </Button>
-            <Button
-              onClick={slideRight}
-              disabled={disableRight}
-              type="white-ghost"
-              mode={theme.mode()}
-            >
+            <Button onClick={slideRight} disabled={disableRight} type="white-ghost" mode={theme.mode()}>
               <Caret size={16} color="currentColor" className="rotate-270" />
             </Button>
           </div>

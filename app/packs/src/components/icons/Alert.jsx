@@ -2,18 +2,11 @@ import React from "react";
 import { useTheme } from "src/contexts/ThemeContext";
 import { lightPrimary, darkPrimary, darkTextPrimary01 } from "src/utils/colors";
 
-const Alert = (props) => {
+const Alert = props => {
   const { mode } = useTheme();
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      fill="none"
-      viewBox="0 0 16 16"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16" {...props}>
       <g clipPath="url(#clip0_751_3386)">
         <path
           fill={mode() == "dark" ? darkPrimary : lightPrimary}

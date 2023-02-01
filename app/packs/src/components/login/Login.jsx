@@ -12,13 +12,8 @@ import { post } from "src/utils/requests";
 
 import cx from "classnames";
 
-const Login = (props) => {
-  const {
-    linkedinClientId,
-    linkedinRedirectUri,
-    unstoppableDomainsClientId,
-    unstoppableDomainsRedirectUri,
-  } = props;
+const Login = props => {
+  const { linkedinClientId, linkedinRedirectUri, unstoppableDomainsClientId, unstoppableDomainsRedirectUri } = props;
 
   const { mobile } = useWindowDimensionsHook();
   const { mode } = useTheme();
@@ -27,13 +22,13 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ email: false, password: false });
 
-  const submitLoginForm = (e) => {
+  const submitLoginForm = e => {
     e.preventDefault();
     setErrors({ email: false, password: false });
 
-    post("/session", { session: { email, password } }).then((res) => {
+    post("/session", { session: { email, password } }).then(res => {
       if (res.error) {
-        setErrors((prev) => ({ ...prev, email: true, password: true }));
+        setErrors(prev => ({ ...prev, email: true, password: true }));
       } else {
         window.location.replace("/");
       }
@@ -44,9 +39,7 @@ const Login = (props) => {
     <div
       className={cx(
         "d-flex flex-column",
-        mobile
-          ? "p-4 justify-content-between align-self-center w-100 h-100"
-          : "p-0 registration-box w-100"
+        mobile ? "p-4 justify-content-between align-self-center w-100 h-100" : "p-0 registration-box w-100"
       )}
     >
       <div>
@@ -61,7 +54,7 @@ const Login = (props) => {
             id="inputEmail"
             ariaDescribedBy="emailHelp"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
           />
           <div className="d-flex justify-content-between mt-4">
             <label htmlFor="inputPassword">
@@ -75,11 +68,9 @@ const Login = (props) => {
             id="inputPassword"
             ariaDescribedBy="passwordHelp"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
           />
-          {errors["password"] && (
-            <P3 className="mt-2 text-danger" text="Wrong password or email" />
-          )}
+          {errors["password"] && <P3 className="mt-2 text-danger" text="Wrong password or email" />}
           <button
             type="submit"
             className="btn btn-primary talent-button primary-default-button extra-big-size-button bold w-100 mt-6"
@@ -88,11 +79,7 @@ const Login = (props) => {
           </button>
         </form>
       </div>
-      <LinkedinSignInButton
-        className="mt-3"
-        clientId={linkedinClientId}
-        redirectUri={linkedinRedirectUri}
-      />
+      <LinkedinSignInButton className="mt-3" clientId={linkedinClientId} redirectUri={linkedinRedirectUri} />
       <UnstoppableDomainsSignInButton
         className="mt-3"
         clientId={unstoppableDomainsClientId}
@@ -105,19 +92,15 @@ const Login = (props) => {
         </div>
         <div className="d-flex">
           <P2 className="text-black mr-1" text="Want more info?" />
-          <Link
-            bold
-            href={USER_GUIDE}
-            target="_blank"
-            text="Check our user guide"
-          />
+          <Link bold href={USER_GUIDE} target="_blank" text="Check our user guide" />
         </div>
       </div>
     </div>
   );
 };
 
-export default (props, /*_railsContext*/) => {
+// eslint-disable-next-line no-unused-vars
+export default (props, _railsContext) => {
   return () => (
     <RegistrationContainer {...props}>
       <Login {...props} />

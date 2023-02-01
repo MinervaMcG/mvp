@@ -78,8 +78,7 @@ class OnChain {
       if (web3ModalInstance !== undefined) {
         const provider = new ethers.providers.Web3Provider(web3ModalInstance);
         web3ModalInstance.on("chainChanged", (/*_chainId*/) =>
-          window.location.reload()
-        );
+          window.location.reload());
 
         const signer = await provider.getSigner();
         this.signer = signer;
@@ -177,8 +176,7 @@ class OnChain {
         await web3ModalInstance.enable();
 
         web3ModalInstance.on("chainChanged", (/*_chainId*/) =>
-          window.location.reload()
-        );
+          window.location.reload());
         const signer = await provider.getSigner();
         this.signer = signer;
         const account = await signer.getAddress();

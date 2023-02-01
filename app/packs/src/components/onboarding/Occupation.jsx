@@ -3,21 +3,13 @@ import { P2, H5 } from "../design_system/typography";
 import TextInput from "../design_system/fields/textinput";
 import Form from "react-bootstrap/Form";
 
-const Occupation = ({
-  changeStep,
-  occupation,
-  changeOccupation,
-  experienceLevel,
-  changeExperienceLevel,
-  allSteps,
-}) => {
+const Occupation = ({ changeStep, occupation, changeOccupation, experienceLevel, changeExperienceLevel, allSteps }) => {
   const [localOccupation, setLocalOccupation] = useState(occupation);
-  const [localExperienceLevel, setLocalExperienceLevel] =
-    useState(experienceLevel);
+  const [localExperienceLevel, setLocalExperienceLevel] = useState(experienceLevel);
 
   const invalidForm = localOccupation == "" || localExperienceLevel === 0;
 
-  const submitOccupationForm = (e) => {
+  const submitOccupationForm = e => {
     e.preventDefault();
     if (invalidForm) {
       return;
@@ -46,17 +38,13 @@ const Occupation = ({
       </div>
       <H5 text="What do you do?" bold />
       <P2 className="mt-2">
-        Talent Protocol is a community for builders: those who are passionate,
-        entrepreneurial, tech-savvy and curious.
+        Talent Protocol is a community for builders: those who are passionate, entrepreneurial, tech-savvy and curious.
       </P2>
       <P2 className="mb-5 mt-2">
-        Tell us which type of builder would best fit you (ex: operator, writer,
-        founder, marketer, designer, developer, builder, etc ).
+        Tell us which type of builder would best fit you (ex: operator, writer, founder, marketer, designer, developer,
+        builder, etc ).
       </P2>
-      <form
-        onSubmit={submitOccupationForm}
-        className="d-flex flex-column w-100"
-      >
+      <form onSubmit={submitOccupationForm} className="d-flex flex-column w-100">
         <div className="form-group position-relative">
           <label htmlFor="inputOccupation" className="mt-2">
             <P2 className="text-black" text="Occupation" bold />
@@ -65,7 +53,7 @@ const Occupation = ({
             type="text"
             id="inputOccupation"
             value={localOccupation}
-            onChange={(e) => setLocalOccupation(e.target.value)}
+            onChange={e => setLocalOccupation(e.target.value)}
           />
         </div>
         <div className="d-flex flex-column">

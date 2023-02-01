@@ -1,27 +1,10 @@
 import React from "react";
-import {
-  string,
-  number,
-  bool,
-  oneOfType,
-  oneOf,
-  node,
-  object,
-} from "prop-types";
+import { string, number, bool, oneOfType, oneOf, node, object } from "prop-types";
 import cx from "classnames";
 
 const P2 = ({ bold, medium, mode, text, children, className, style }) => {
   return (
-    <p
-      className={cx(
-        "p2",
-        bold ? "bold" : "",
-        medium ? "medium" : "",
-        mode,
-        className
-      )}
-      style={style}
-    >
+    <p className={cx("p2", bold ? "bold" : "", medium ? "medium" : "", mode, className)} style={style}>
       {text || children}
     </p>
   );
@@ -33,7 +16,7 @@ P2.defaultProps = {
   mode: "light",
   className: "",
   style: {},
-  children: null,
+  children: null
 };
 
 P2.propTypes = {
@@ -43,7 +26,7 @@ P2.propTypes = {
   text: oneOfType([string, number]),
   children: node,
   className: string,
-  style: object,
+  style: object
 };
 
 export default P2;

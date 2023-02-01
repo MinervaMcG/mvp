@@ -6,13 +6,7 @@ import { faSpinner, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { get } from "src/utils/requests";
 
-const RegisterEmail = ({
-  themePreference,
-  email,
-  changeEmail,
-  changeStep,
-  railsContext,
-}) => {
+const RegisterEmail = ({ themePreference, email, changeEmail, changeStep, railsContext }) => {
   const [localEmail, setEmail] = useState(email);
   const [requestingEmail, setRequestingEmail] = useState(false);
   const [emailValidated, setEmailValidated] = useState(null);
@@ -26,7 +20,7 @@ const RegisterEmail = ({
     return emailRegexWithAliases.test(String(localEmail).toLowerCase());
   };
 
-  const submitEmailForm = (e) => {
+  const submitEmailForm = e => {
     e.preventDefault();
     if (localEmail != "" && validEmail()) {
       changeEmail(localEmail);
@@ -60,7 +54,7 @@ const RegisterEmail = ({
     const searchParams = new URLSearchParams({ email: localEmail });
 
     get(`/users?${searchParams}`)
-      .then((response) => {
+      .then(response => {
         if (response.error) {
           setRequestingEmail(false);
           setEmailExists(false);
@@ -81,11 +75,7 @@ const RegisterEmail = ({
   return (
     <div className="registration-items">
       <H5 text="What is your email?" bold />
-      <P2
-        className="text-black mb-5 mt-2"
-        text="We'll need you to confirm your email"
-        bold
-      />
+      <P2 className="text-black mb-5 mt-2" text="We'll need you to confirm your email" bold />
       <form onSubmit={submitEmailForm} className="d-flex flex-column w-100">
         <div className="form-group position-relative">
           <label htmlFor="inputEmail">
@@ -97,29 +87,16 @@ const RegisterEmail = ({
             id="inputEmail"
             ariaDescribedBy="emailHelp"
             value={localEmail}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
           />
           {requestingEmail && (
-            <FontAwesomeIcon
-              icon={faSpinner}
-              spin
-              className="position-absolute"
-              style={{ top: 42, right: 10 }}
-            />
+            <FontAwesomeIcon icon={faSpinner} spin className="position-absolute" style={{ top: 42, right: 10 }} />
           )}
           {emailValidated && (
-            <FontAwesomeIcon
-              icon={faCheck}
-              className="position-absolute text-success"
-              style={{ top: 42, right: 10 }}
-            />
+            <FontAwesomeIcon icon={faCheck} className="position-absolute text-success" style={{ top: 42, right: 10 }} />
           )}
           {emailValidated === false && (
-            <FontAwesomeIcon
-              icon={faTimes}
-              className="position-absolute text-danger"
-              style={{ top: 42, right: 10 }}
-            />
+            <FontAwesomeIcon icon={faTimes} className="position-absolute text-danger" style={{ top: 42, right: 10 }} />
           )}
           {emailValidated === false && (
             <small id="emailErrorHelp" className="form-text text-danger">
@@ -127,11 +104,7 @@ const RegisterEmail = ({
             </small>
           )}
           {emailExists && (
-            <FontAwesomeIcon
-              icon={faTimes}
-              className="position-absolute text-danger"
-              style={{ top: 42, right: 10 }}
-            />
+            <FontAwesomeIcon icon={faTimes} className="position-absolute text-danger" style={{ top: 42, right: 10 }} />
           )}
           {emailExists && (
             <small id="emailErrorHelp" className="form-text text-danger">

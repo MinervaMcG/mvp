@@ -3,7 +3,7 @@ import Icon from "src/components/design_system/icon";
 import { useTheme } from "src/contexts/ThemeContext";
 import { lightPrimary, darkPrimary } from "src/utils/colors";
 
-const Logo = (props) => {
+const Logo = props => {
   const { mode } = useTheme();
 
   return (

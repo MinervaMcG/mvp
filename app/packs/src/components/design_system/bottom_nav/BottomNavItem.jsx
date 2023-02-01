@@ -17,10 +17,7 @@ const BottomNavItem = ({ exact, url, secondaryUrl, Icon, routeName }) => {
   return (
     <a
       href={url}
-      className={cx(
-        "d-flex flex-column justify-content-center align-items-center",
-        urlMatches() && "active"
-      )}
+      className={cx("d-flex flex-column justify-content-center align-items-center", urlMatches() && "active")}
     >
       <div className={cx("mobile-menu-icon", urlMatches() && "text-primary")}>
         <Icon />

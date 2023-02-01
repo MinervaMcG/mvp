@@ -1,4 +1,4 @@
-export const passwordMatchesRequirements = (password) => {
+export const passwordMatchesRequirements = password => {
   const tags = ["Number", "Upper Case", "Lower Case", "8 Characters"];
   const lengthRegex = new RegExp("^.{8,}$");
   const lowercaseRegex = new RegExp("(?=.*[a-z])");

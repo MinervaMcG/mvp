@@ -14,7 +14,7 @@ H4.defaultProps = {
   bold: false,
   mode: "light",
   className: "",
-  children: null,
+  children: null
 };
 
 H4.propTypes = {
@@ -22,7 +22,7 @@ H4.propTypes = {
   mode: oneOf(["light", "dark"]),
   text: oneOfType([string, number]),
   children: node,
-  className: string,
+  className: string
 };
 
 export default H4;

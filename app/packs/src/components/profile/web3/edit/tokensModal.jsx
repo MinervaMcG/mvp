@@ -23,7 +23,7 @@ const DisplayTokensModal = ({
   loadMoreTokens,
   tokenLogo,
   back,
-  closeModal,
+  closeModal
 }) => (
   <>
     <Modal.Header className="py-3 px-4 modal-border mb-4" closeButton>
@@ -36,19 +36,12 @@ const DisplayTokensModal = ({
             <Spinner />
           </div>
         )}
-        {tokens.map((token) => (
+        {tokens.map(token => (
           <div className="col-12 col-md-6 mb-4" key={token.id}>
             <div className="card web3-card web3-card__full_height">
               <div className="mb-4 d-flex align-items-center">
-                <Slider
-                  checked={token.show}
-                  onChange={() => updateToken(token)}
-                  className="d-inline mr-2 mb-0"
-                />
-                <P1
-                  text={"Showcase Token"}
-                  className="text-primary-01 d-inline align-middle"
-                />
+                <Slider checked={token.show} onChange={() => updateToken(token)} className="d-inline mr-2 mb-0" />
+                <P1 text={"Showcase Token"} className="text-primary-01 d-inline align-middle" />
               </div>
               <div className="row">
                 <div className="col-3">{tokenLogo(token)}</div>
@@ -63,45 +56,24 @@ const DisplayTokensModal = ({
       </div>
       {showLoadMoreTokens && (
         <div className="d-flex flex-column align-items-center mt-6 mb-6">
-          <ThemedButton
-            onClick={() => loadMoreTokens()}
-            type="white-subtle"
-            className="mx-6 mt-2"
-          >
+          <ThemedButton onClick={() => loadMoreTokens()} type="white-subtle" className="mx-6 mt-2">
             Show More
           </ThemedButton>
         </div>
       )}
     </Modal.Body>
     <Modal.Footer>
-      <ThemedButton
-        onClick={() => back()}
-        type="primary-outline"
-        className="mr-auto"
-      >
+      <ThemedButton onClick={() => back()} type="primary-outline" className="mr-auto">
         Back
       </ThemedButton>
-      <ThemedButton
-        onClick={() => closeModal()}
-        type="white-ghost"
-        className="mr-3"
-      >
+      <ThemedButton onClick={() => closeModal()} type="white-ghost" className="mr-3">
         Cancel
       </ThemedButton>
     </Modal.Footer>
   </>
 );
 
-const TokensModal = ({
-  userId,
-  show,
-  setShow,
-  mobile,
-  chain,
-  setChain,
-  appendToken,
-  tokenLogo,
-}) => {
+const TokensModal = ({ userId, show, setShow, mobile, chain, setChain, appendToken, tokenLogo }) => {
   const [tokens, setTokens] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({});
@@ -115,8 +87,8 @@ const TokensModal = ({
 
     post(`/api/v1/users/${userId}/profile/web3/refresh_tokens`, {
       per_page: 10,
-      chain_id: chain,
-    }).then((response) => {
+      chain_id: chain
+    }).then(response => {
       if (response.error) {
         toast.error(<ToastBody heading="Error!" body={response.error} />);
       } else {
@@ -131,57 +103,45 @@ const TokensModal = ({
   }, [tokens]);
 
   const updateTokens = (previousTokens, newToken) => {
-    const tokenIndex = previousTokens.findIndex(
-      (token) => token.id === newToken.id
-    );
+    const tokenIndex = previousTokens.findIndex(token => token.id === newToken.id);
 
     const newTokens = [
       ...previousTokens.slice(0, tokenIndex),
       {
         ...previousTokens[tokenIndex],
-        ...newToken,
+        ...newToken
       },
-      ...previousTokens.slice(tokenIndex + 1),
+      ...previousTokens.slice(tokenIndex + 1)
     ];
 
     return newTokens;
   };
 
-  const debouncedUpdateToken = debounce((token) => updateToken(token), 400);
+  const debouncedUpdateToken = debounce(token => updateToken(token), 400);
 
-  const updateToken = (token) => {
+  const updateToken = token => {
     const params = {
       show: !token.show,
       address: token.address,
       token_id: token.token_id,
-      chain_id: token.chain_id,
+      chain_id: token.chain_id
     };
-    put(`/api/v1/users/${userId}/profile/web3/${token.id}`, params).then(
-      (response) => {
-        if (response.error) {
-          toast.error(<ToastBody heading="Error!" body={response.error} />);
-        } else {
-          toast.success(
-            <ToastBody
-              heading="Success"
-              body={"Token updated successfully!"}
-            />,
-            { autoClose: 1500 }
-          );
-          setTokens((previousTokens) => updateTokens(previousTokens, response));
-          appendToken(response);
-        }
+    put(`/api/v1/users/${userId}/profile/web3/${token.id}`, params).then(response => {
+      if (response.error) {
+        toast.error(<ToastBody heading="Error!" body={response.error} />);
+      } else {
+        toast.success(<ToastBody heading="Success" body={"Token updated successfully!"} />, { autoClose: 1500 });
+        setTokens(previousTokens => updateTokens(previousTokens, response));
+        appendToken(response);
       }
-    );
+    });
   };
 
   const loadMoreTokens = () => {
     const nextPage = pagination.currentPage + 1;
 
-    get(
-      `/api/v1/users/${userId}/profile/web3/tokens?per_page=10&page=${nextPage}&chain_id=${chain}`
-    ).then((response) => {
-      setTokens((prev) => [...prev, ...response.tokens]);
+    get(`/api/v1/users/${userId}/profile/web3/tokens?per_page=10&page=${nextPage}&chain_id=${chain}`).then(response => {
+      setTokens(prev => [...prev, ...response.tokens]);
       setPagination(response.pagination);
     });
   };
@@ -219,9 +179,7 @@ const TokensModal = ({
       centered
       show={show}
       onHide={() => closeModal()}
-      dialogClassName={
-        mobile ? "mw-100 mh-100 m-0" : "modal-lg remove-background"
-      }
+      dialogClassName={mobile ? "mw-100 mh-100 m-0" : "modal-lg remove-background"}
       fullscreen={"md-down"}
     >
       <CurrentModal
@@ -239,9 +197,7 @@ const TokensModal = ({
         emptyStateHeader={"No tokens"}
         emptyStateClickAction={back}
         emptyStateActionTitle={"Choose another network"}
-        emptyStateMessage={
-          "Oh no! It seems you don't have any token to showcase. Please, choose another network."
-        }
+        emptyStateMessage={"Oh no! It seems you don't have any token to showcase. Please, choose another network."}
       />
     </Modal>
   );

@@ -351,10 +351,14 @@ const LaunchTokenModals = (props) => {
         // eslint-disable-next-line no-undef
         setDeploy("Unable to deploy token");
       } catch {
-    toast.error(
-        <ToastBody heading="Error!" body={"Unable to deploy token"} mode={mode}/>,  
-        { autoClose: 5000 }
-    );
+        toast.error(
+          <ToastBody
+            heading="Error!"
+            body={"Unable to deploy token"}
+            mode={mode}
+          />,
+          { autoClose: 5000 }
+        );
       }
       return;
     }
@@ -391,10 +395,10 @@ const LaunchTokenModals = (props) => {
         return true;
       }
 
-    toast.error(
-      <ToastBody heading="Error!" body={response?.error} mode={mode}/>,
-      { autoClose: 5000 }
-    );
+      toast.error(
+        <ToastBody heading="Error!" body={response?.error} mode={mode} />,
+        { autoClose: 5000 }
+      );
     }
 
     return false;

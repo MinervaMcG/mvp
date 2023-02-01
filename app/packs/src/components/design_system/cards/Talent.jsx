@@ -2,19 +2,9 @@ import React, { useEffect, useState } from "react";
 import DefaultProfilePictureLight from "images/default-profile-icon-light.png";
 import DefaultProfilePictureDark from "images/default-profile-icon-dark.png";
 
-const Card = ({
-  mode,
-  photo_url,
-  name,
-  title,
-  circ_supply,
-  ticker,
-  href,
-  mobile,
-  coming_soon,
-}) => {
+const Card = ({ mode, photo_url, name, title, circ_supply, ticker, href, mobile, coming_soon }) => {
   const [currentTheme, setCurrentTheme] = useState(
-    document.body.className.split(" ").find((name) => name.includes("body"))
+    document.body.className.split(" ").find(name => name.includes("body"))
   );
   const mobileClass = mobile ? " mobile" : "";
 
@@ -29,21 +19,12 @@ const Card = ({
   };
 
   useEffect(() => {
-    setCurrentTheme(
-      document.body.className.split(" ").find((name) => name.includes("body"))
-    );
+    setCurrentTheme(document.body.className.split(" ").find(name => name.includes("body")));
   }, [document.body.className]);
 
   return (
-    <a
-      className={`card ${mode} card-fixed-width text-reset text-decoration-none ml-4${mobileClass}`}
-      href={href}
-    >
-      <img
-        className="card-img-top card-size"
-        src={imgSrc()}
-        alt="Profile picture"
-      ></img>
+    <a className={`card ${mode} card-fixed-width text-reset text-decoration-none ml-4${mobileClass}`} href={href}>
+      <img className="card-img-top card-size" src={imgSrc()} alt="Profile picture"></img>
 
       <div className="card-body d-flex flex-column">
         <h6>{name}</h6>

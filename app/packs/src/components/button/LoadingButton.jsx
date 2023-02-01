@@ -5,15 +5,7 @@ import { Spinner, Check } from "src/components/icons";
 
 import cx from "classnames";
 
-const LoadingButton = ({
-  loading,
-  success,
-  fillPrimary,
-  fillSecondary,
-  opacity,
-  checkClassName,
-  ...props
-}) => {
+const LoadingButton = ({ loading, success, fillPrimary, fillSecondary, opacity, checkClassName, ...props }) => {
   return (
     <Button {...props}>
       {loading ? (
@@ -26,12 +18,7 @@ const LoadingButton = ({
         />
       ) : (
         <>
-          {success ? (
-            <Check
-              color="currentColor"
-              className={cx("mr-2", checkClassName)}
-            />
-          ) : null}
+          {success ? <Check color="currentColor" className={cx("mr-2", checkClassName)} /> : null}
           {props.children}
         </>
       )}

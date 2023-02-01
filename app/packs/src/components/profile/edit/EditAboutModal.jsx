@@ -32,7 +32,7 @@ const EditAboutModal = ({ show, hide, talent, setTalent }) => {
   const [editedTalent, setEditedTalent] = useState(talent);
   const [aboutBannerFileInput, setAboutBannerFileInput] = useState(null);
   const [selectedCareerNeeds, setSelectedCareerNeeds] = useState(
-    editedTalent.careerGoal.careerNeeds.map((need) => need.title)
+    editedTalent.careerGoal.careerNeeds.map(need => need.title)
   );
   const [validationErrors, setValidationErrors] = useState({ pitch: false });
 
@@ -45,36 +45,34 @@ const EditAboutModal = ({ show, hide, talent, setTalent }) => {
     return errors;
   };
 
-  const imageSrc =
-    editedTalent.careerGoal.imageUrl ||
-    (mode() == "light" ? AboutImageLight : AboutImageDark);
+  const imageSrc = editedTalent.careerGoal.imageUrl || (mode() == "light" ? AboutImageLight : AboutImageDark);
 
   const uppyBanner = new Uppy({
     meta: { type: "avatar" },
     restrictions: {
       maxFileSize: 5120000,
-      allowedFileTypes: [".jpg", ".png", ".jpeg", ".gif"],
+      allowedFileTypes: [".jpg", ".png", ".jpeg", ".gif"]
     },
-    autoProceed: true,
+    autoProceed: true
   });
 
   uppyBanner.use(AwsS3Multipart, {
     limit: 4,
     companionUrl: "/",
     companionHeaders: {
-      "X-CSRF-Token": getAuthToken(),
-    },
+      "X-CSRF-Token": getAuthToken()
+    }
   });
 
-  aboutBannerFileInput?.addEventListener("change", (event) => {
+  aboutBannerFileInput?.addEventListener("change", event => {
     const files = Array.from(event.target.files);
-    files.forEach((file) => {
+    files.forEach(file => {
       try {
         uppyBanner.addFile({
           source: "file input",
           name: file.name,
           type: file.type,
-          data: file,
+          data: file
         });
       } catch (err) {
         if (err.isRestriction) {
@@ -96,50 +94,44 @@ const EditAboutModal = ({ show, hide, talent, setTalent }) => {
 
     const talentResponse = await patch(`/api/v1/talent/${talent.id}`, {
       user: {
-        ...snakeCaseObject(editedTalent.user),
+        ...snakeCaseObject(editedTalent.user)
       },
       talent: {
-        ...snakeCaseObject(editedTalent),
+        ...snakeCaseObject(editedTalent)
       },
-      career_needs: selectedCareerNeeds,
+      career_needs: selectedCareerNeeds
     });
 
     const careerGoalResponse = await patch(
       `/api/v1/talent/${editedTalent.id}/career_goals/${editedTalent.careerGoal.id}`,
       {
         talent: {
-          ...snakeCaseObject(editedTalent),
+          ...snakeCaseObject(editedTalent)
         },
         career_goal: {
-          ...snakeCaseObject(editedTalent.careerGoal),
-        },
+          ...snakeCaseObject(editedTalent.careerGoal)
+        }
       }
     );
 
     if (talentResponse) {
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
-        ...camelCaseObject(talentResponse),
+        ...camelCaseObject(talentResponse)
       }));
     }
 
     if (careerGoalResponse) {
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
         careerGoal: {
           ...prev.careerGoal,
-          ...camelCaseObject(careerGoalResponse),
-        },
+          ...camelCaseObject(careerGoalResponse)
+        }
       }));
     }
 
-    toast.success(
-      <ToastBody
-        heading="Success!"
-        body={"About section created successfully."}
-      />,
-      { autoClose: 1500 }
-    );
+    toast.success(<ToastBody heading="Success!" body={"About section created successfully."} />, { autoClose: 1500 });
 
     hide();
   };
@@ -149,7 +141,7 @@ const EditAboutModal = ({ show, hide, talent, setTalent }) => {
       uppyBanner.reset();
     });
     uppyBanner.on("upload-success", (file, response) => {
-      setEditedTalent((prev) => ({
+      setEditedTalent(prev => ({
         ...prev,
         careerGoal: {
           ...prev.careerGoal,
@@ -161,10 +153,10 @@ const EditAboutModal = ({ show, hide, talent, setTalent }) => {
             metadata: {
               size: file.size,
               filename: file.name,
-              mime_type: file.type,
-            },
-          },
-        },
+              mime_type: file.type
+            }
+          }
+        }
       }));
     });
     uppyBanner.on("upload", () => {});
@@ -179,35 +171,35 @@ const EditAboutModal = ({ show, hide, talent, setTalent }) => {
   }, [show]);
 
   const changeCareerGoalAttribute = (attribute, value) => {
-    setValidationErrors((prev) => ({ ...prev, [attribute]: false }));
-    setEditedTalent((prev) => ({
+    setValidationErrors(prev => ({ ...prev, [attribute]: false }));
+    setEditedTalent(prev => ({
       ...prev,
       careerGoal: {
         ...prev.careerGoal,
-        [attribute]: value,
-      },
+        [attribute]: value
+      }
     }));
   };
 
   const deleteBannerImg = () => {
-    setEditedTalent((prev) => ({
+    setEditedTalent(prev => ({
       ...prev,
       careerGoal: {
         ...prev.careerGoal,
         imageUrl: null,
-        imageData: null,
-      },
+        imageData: null
+      }
     }));
   };
 
-  const changeSelectedCareerNeeds = (tag) => {
+  const changeSelectedCareerNeeds = tag => {
     if (selectedCareerNeeds.includes(tag)) {
       const array = selectedCareerNeeds;
       const index = array.indexOf(tag);
       array.splice(index, 1);
       setSelectedCareerNeeds([...array]);
     } else {
-      setSelectedCareerNeeds((prev) => [...prev, tag]);
+      setSelectedCareerNeeds(prev => [...prev, tag]);
     }
   };
 
@@ -248,31 +240,22 @@ const EditAboutModal = ({ show, hide, talent, setTalent }) => {
               className="position-absolute cursor-pointer"
               style={{
                 top: mobile ? "110px" : "145px",
-                left: mobile ? "115px" : "160px",
+                left: mobile ? "115px" : "160px"
               }}
               src={CameraButton}
               height={40}
             />
           </label>
-          <input
-            id="aboutBannerFileInput"
-            className="d-none"
-            type="file"
-            accept=".jpg,.png,.jpeg,.gif"
-          ></input>
+          <input id="aboutBannerFileInput" className="d-none" type="file" accept=".jpg,.png,.jpeg,.gif"></input>
           <button
             className="button-link position-absolute"
             style={{
               top: mobile ? "110px" : "145px",
-              left: mobile ? "165px" : "210px",
+              left: mobile ? "165px" : "210px"
             }}
             onClick={deleteBannerImg}
           >
-            <TalentProfilePicture
-              className="cursor-pointer"
-              src={DeleteButton}
-              height={40}
-            />
+            <TalentProfilePicture className="cursor-pointer" src={DeleteButton} height={40} />
           </button>
         </div>
         <div className="w-100 mb-5">
@@ -283,7 +266,7 @@ const EditAboutModal = ({ show, hide, talent, setTalent }) => {
           </div>
           <TextArea
             className="mb-2"
-            onChange={(e) => changeCareerGoalAttribute("pitch", e.target.value)}
+            onChange={e => changeCareerGoalAttribute("pitch", e.target.value)}
             value={editedTalent.careerGoal.pitch || ""}
             rows={3}
             required={true}
@@ -299,18 +282,13 @@ const EditAboutModal = ({ show, hide, talent, setTalent }) => {
             className="mr-2 mb-4"
             clickable={false}
             talent_id={`Edit-About`}
-            onClick={(tag) => changeSelectedCareerNeeds(tag)}
+            onClick={tag => changeSelectedCareerNeeds(tag)}
           />
         </div>
       </Modal.Body>
       <Divider />
       <Modal.Footer className="px-6 py-3" style={{ borderTop: "none" }}>
-        <Button
-          className="mr-2"
-          type="white-ghost"
-          text="Cancel"
-          onClick={hide}
-        />
+        <Button className="mr-2" type="white-ghost" text="Cancel" onClick={hide} />
         <Button type="primary-default" text="Save" onClick={saveProfile} />
       </Modal.Footer>
     </Modal>

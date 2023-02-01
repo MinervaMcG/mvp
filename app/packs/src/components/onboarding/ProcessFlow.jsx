@@ -14,8 +14,7 @@ const ProcessingUser = () => (
     <Spinner />
     <H5 className="mb-1 mt-6" text="Setting up your profile" bold />
     <P2>
-      Get ready to start building your community. Find supporters and start
-      supporting other high-potential builders.
+      Get ready to start building your community. Find supporters and start supporting other high-potential builders.
     </P2>
   </>
 );
@@ -66,7 +65,7 @@ const ProcessFlow = ({
   gender,
   ethnicity,
   nationality,
-  changeStep,
+  changeStep
 }) => {
   const { mode } = useTheme();
 
@@ -86,9 +85,9 @@ const ProcessFlow = ({
       nationality,
       legal_first_name: firstName,
       legal_last_name: lastName,
-      username: username,
+      username: username
     })
-      .then((response) => {
+      .then(response => {
         if (response.success) {
           setUserSaved(true);
           setRequesting(false);

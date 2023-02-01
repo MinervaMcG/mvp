@@ -20,18 +20,8 @@ const NFTCard = ({ imageUrl, address, tokenId, href, mode }) => {
             <P1 bold className="text-black">
               {shortenAddress(address)}
             </P1>
-            <Tooltip
-              body={"Copied!"}
-              popOverAccessibilityId={"coppy_address_success"}
-              mode={mode}
-              placement="top"
-            >
-              <Button
-                type="white-ghost"
-                size="icon"
-                className="ml-2"
-                onClick={copyAddress}
-              >
+            <Tooltip body={"Copied!"} popOverAccessibilityId={"coppy_address_success"} mode={mode} placement="top">
+              <Button type="white-ghost" size="icon" className="ml-2" onClick={copyAddress}>
                 <Copy color="currentColor" />
               </Button>
             </Tooltip>
@@ -45,13 +35,7 @@ const NFTCard = ({ imageUrl, address, tokenId, href, mode }) => {
             {tokenId}
           </P1>
         </div>
-        <Link
-          className="d-flex align-items-center"
-          bold
-          href={href}
-          target="_blank"
-          text="See Details"
-        >
+        <Link className="d-flex align-items-center" bold href={href} target="_blank" text="See Details">
           <Caret size={12} color="currentColor" className="rotate-270 ml-2" />
         </Link>
       </div>

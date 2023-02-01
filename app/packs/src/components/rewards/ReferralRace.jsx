@@ -22,7 +22,7 @@ dayjs.extend(customParseFormat);
 const sumRewardAmounts = (total, reward) => total + reward.amount;
 
 // eslint-disable-next-line no-unused-vars
-const amountToTal = (amount) => `${currency(amount).dollars()} $TAL`;
+const amountToTal = amount => `${currency(amount).dollars()} $TAL`;
 
 dayjs.extend(utc);
 
@@ -31,7 +31,7 @@ const RaceHeader = ({ isEligible, race }) => {
     days: 7,
     hours: 0,
     minutes: 0,
-    seconds: 0,
+    seconds: 0
   });
   let timeoutPointer;
 
@@ -48,7 +48,7 @@ const RaceHeader = ({ isEligible, race }) => {
         days: 0,
         hours: 0,
         minutes: 0,
-        seconds: 0,
+        seconds: 0
       });
 
       return;
@@ -66,7 +66,7 @@ const RaceHeader = ({ isEligible, race }) => {
       days,
       hours,
       minutes,
-      seconds,
+      seconds
     });
 
     timeoutPointer = setTimeout(() => updateTimeUntilEnd(), 1000);
@@ -93,20 +93,13 @@ const RaceHeader = ({ isEligible, race }) => {
             Talent Hunt
           </H4>
           <P1>
-            To participate in the Talent Hunt you must first complete the
-            Beginner Quest. After that you'll be able to join this ongoing
-            program that rewards members for referring new talent to our
-            community.
+            To participate in the Talent Hunt you must first complete the Beginner Quest. After that you'll be able to
+            join this ongoing program that rewards members for referring new talent to our community.
           </P1>
         </div>
         <div className="d-flex flex-row justify-content-center justify-content-lg-end col-lg-5 px-4 px-lg-0 mt-5 mt-lg-0">
           <a className="button-link" href="/earn?tab=quests">
-            <Button
-              onClick={() => null}
-              type="primary-default"
-              size="extra-big"
-              className="mb-4"
-            >
+            <Button onClick={() => null} type="primary-default" size="extra-big" className="mb-4">
               Complete Beginner Quest
             </Button>
           </a>
@@ -130,9 +123,8 @@ const RaceHeader = ({ isEligible, race }) => {
             >
               builders
             </a>{" "}
-            will win a total of 1000 TAL. The 1st wins 500, the 2nd wins 300 and
-            the 3rd 200 TAL. You will earn an additional 100 TAL for every user
-            you invite that launches their own Talent Token.
+            will win a total of 1000 TAL. The 1st wins 500, the 2nd wins 300 and the 3rd 200 TAL. You will earn an
+            additional 100 TAL for every user you invite that launches their own Talent Token.
           </P1>
         </div>
 
@@ -160,26 +152,18 @@ const RaceHeader = ({ isEligible, race }) => {
             <H3 bold>No active race</H3>
             <P2>
               Stay tunned for the next race!{" "}
-              {race &&
-                `It will start at: ${dayjs(race.started_at).format(
-                  "MMMM D, YYYY"
-                )}`}
+              {race && `It will start at: ${dayjs(race.started_at).format("MMMM D, YYYY")}`}
             </P2>
           </div>
         )}
       </div>
-      {activeRace() && (
-        <Caption
-          className="align-self-end mr-4 mr-lg-0 mt-2"
-          text="TIME LEFT UNTIL THIS RACE ENDS"
-        />
-      )}
+      {activeRace() && <Caption className="align-self-end mr-4 mr-lg-0 mt-2" text="TIME LEFT UNTIL THIS RACE ENDS" />}
     </>
   );
 };
 
 const Overview = ({ totalInvitesCount, raceInvitesCount, username }) => {
-  const getInviteLink = (full) => {
+  const getInviteLink = full => {
     if (full) {
       return `https://beta.talentprotocol.com/join/${username}`;
     } else {
@@ -194,37 +178,20 @@ const Overview = ({ totalInvitesCount, raceInvitesCount, username }) => {
         Overview
       </H4>
       <div className="mx-0 py-6 d-flex flex-column flex-lg-row overview-section">
-        <div
-          className="d-flex flex-column mx-4 mb-4 mb-lg-0"
-          style={{ flex: 1 }}
-        >
+        <div className="d-flex flex-column mx-4 mb-4 mb-lg-0" style={{ flex: 1 }}>
           <P3 className="mb-2">Invite Link</P3>
           <div className="d-flex flex-row align-items-center">
             <P2 className="text-black">{getInviteLink(false)}</P2>
-            <Tooltip
-              body={"Copied!"}
-              popOverAccessibilityId={"copy_link_success"}
-              placement="top"
-            >
-              <Button
-                type="white-ghost"
-                size="icon"
-                className="text-primary"
-                onClick={copyLink}
-              >
+            <Tooltip body={"Copied!"} popOverAccessibilityId={"copy_link_success"} placement="top">
+              <Button type="white-ghost" size="icon" className="text-primary" onClick={copyLink}>
                 <Copy color="currentColor" />
               </Button>
             </Tooltip>
           </div>
         </div>
-        <div
-          className="d-flex flex-column mx-4 mb-4 mb-lg-0"
-          style={{ flex: 1 }}
-        >
+        <div className="d-flex flex-column mx-4 mb-4 mb-lg-0" style={{ flex: 1 }}>
           <Tooltip
-            body={
-              "The total amount of invites since you joined Talent Protocol."
-            }
+            body={"The total amount of invites since you joined Talent Protocol."}
             popOverAccessibilityId={"talent_invites_available"}
             placement="left"
           >
@@ -237,10 +204,7 @@ const Overview = ({ totalInvitesCount, raceInvitesCount, username }) => {
             <P2 className="text-black">{totalInvitesCount || 0}</P2>
           </div>
         </div>
-        <div
-          className="d-flex flex-column mx-4 mb-4 mb-lg-0"
-          style={{ flex: 1 }}
-        >
+        <div className="d-flex flex-column mx-4 mb-4 mb-lg-0" style={{ flex: 1 }}>
           <Tooltip
             body={
               "The number of users that registered with your invite during this race. For an invite to count as used, the new user has to complete the Beginner Quest."
@@ -263,7 +227,7 @@ const Overview = ({ totalInvitesCount, raceInvitesCount, username }) => {
 };
 
 const RaceDropdown = ({ allRaces, race, setRace }) => {
-  const raceName = (race) => {
+  const raceName = race => {
     if (!race) {
       return "No current race is active";
     }
@@ -271,10 +235,7 @@ const RaceDropdown = ({ allRaces, race, setRace }) => {
     const raceEnd = dayjs(race.ends_at).utc();
     const currentTime = dayjs().utc();
 
-    if (
-      (raceStart <= currentTime && raceEnd > currentTime) ||
-      allRaces.length == 1
-    ) {
+    if ((raceStart <= currentTime && raceEnd > currentTime) || allRaces.length == 1) {
       return "Current Race";
     } else {
       return `Race ${raceStart.format("MMMM D")} - ${raceEnd.format("MMMM D")}`;
@@ -283,13 +244,12 @@ const RaceDropdown = ({ allRaces, race, setRace }) => {
 
   // @TODO: Add other options & load a different race
   // eslint-disable-next-line no-unused-vars
-  const options = allRaces.map((r) => ({
+  const options = allRaces.map(r => ({
     name: raceName(r),
-    value: r.id,
+    value: r.id
   }));
 
-  const selectedClass = (selectedRace) =>
-    selectedRace.id == race.id ? " text-primary" : "text-black";
+  const selectedClass = selectedRace => (selectedRace.id == race.id ? " text-primary" : "text-black");
 
   return (
     <Dropdown>
@@ -300,16 +260,12 @@ const RaceDropdown = ({ allRaces, race, setRace }) => {
         as="div"
         style={{ height: 34, width: 225 }}
       >
-        <P2
-          bold
-          text={raceName(race)}
-          className="mr-2 align-middle text-black"
-        />
+        <P2 bold text={raceName(race)} className="mr-2 align-middle text-black" />
         <OrderBy black />
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {allRaces.map((race) => (
+        {allRaces.map(race => (
           <Dropdown.Item
             key={`tab-dropdown-${raceName(race)}`}
             className="d-flex flex-row justify-content-between"
@@ -340,7 +296,7 @@ const RaceTable = ({ leaderboardResults, allRaces, currentRace }) => {
     }
 
     setLoadingResults(true);
-    get(`/api/v1/races/${selectedRace.id}`).then((response) => {
+    get(`/api/v1/races/${selectedRace.id}`).then(response => {
       let topUsers = [...response.top5];
       if (response.userStats?.position > 5) {
         topUsers = [...topUsers, response.userStats];
@@ -351,7 +307,7 @@ const RaceTable = ({ leaderboardResults, allRaces, currentRace }) => {
     });
   }, [selectedRace]);
 
-  const getRewardsForPosition = (position) => {
+  const getRewardsForPosition = position => {
     if (position === 1) {
       return "500 $TAL";
     } else if (position === 2) {
@@ -363,13 +319,10 @@ const RaceTable = ({ leaderboardResults, allRaces, currentRace }) => {
     }
   };
 
-  const getPositionCircle = (position) => {
+  const getPositionCircle = position => {
     if (position <= 3) {
       return (
-        <div
-          style={{ width: 24, height: 24 }}
-          className="bg-primary rounded-circle mr-4 text-center"
-        >
+        <div style={{ width: 24, height: 24 }} className="bg-primary rounded-circle mr-4 text-center">
           <P2 className="permanent-text-white" bold>
             {position}
           </P2>
@@ -386,10 +339,7 @@ const RaceTable = ({ leaderboardResults, allRaces, currentRace }) => {
       );
     } else {
       return (
-        <div
-          style={{ width: 24, height: 24 }}
-          className="text-primary-03 text-center mr-4"
-        >
+        <div style={{ width: 24, height: 24 }} className="text-primary-03 text-center mr-4">
           <P2>{position}</P2>
         </div>
       );
@@ -402,11 +352,7 @@ const RaceTable = ({ leaderboardResults, allRaces, currentRace }) => {
         <H4 className="mb-0" bold>
           Leaderboard
         </H4>
-        <RaceDropdown
-          race={selectedRace}
-          setRace={setSelectedRace}
-          allRaces={allRaces}
-        />
+        <RaceDropdown race={selectedRace} setRace={setSelectedRace} allRaces={allRaces} />
       </div>
       {loadingResults && (
         <div className="w-100 my-6 d-flex flex-row justify-content-center">
@@ -434,49 +380,36 @@ const RaceTable = ({ leaderboardResults, allRaces, currentRace }) => {
                 </td>
               </Table.Tr>
             )}
-            {topInviters.map((inviter) => (
+            {topInviters.map(inviter => (
               <Table.Tr key={`inviter-${inviter.id}`}>
                 <td
                   className="w-100 pl-4 pl-lg-3 py-3"
-                  onClick={() =>
-                    (window.location.href = `/u/${inviter.username}`)
-                  }
+                  onClick={() => (window.location.href = `/u/${inviter.username}`)}
                 >
                   <div className="d-flex align-items-center">
                     {getPositionCircle(inviter.position)}
-                    <TalentProfilePicture
-                      src={inviter.profilePictureUrl}
-                      height="32"
-                    />
+                    <TalentProfilePicture src={inviter.profilePictureUrl} height="32" />
                     <P2 text={inviter.name} bold className="ml-3" />
                   </div>
                 </td>
                 <Table.Td
                   className="race-table-invites-cell py-3"
-                  onClick={() =>
-                    (window.location.href = `/u/${inviter.username}`)
-                  }
+                  onClick={() => (window.location.href = `/u/${inviter.username}`)}
                 >
                   <P2
-                    className={`${
-                      inviter.position <= 3 ? "text-black" : "text-primary-03"
-                    }`}
+                    className={`${inviter.position <= 3 ? "text-black" : "text-primary-03"}`}
                     text={inviter.invites}
                   />
                 </Table.Td>
                 <Table.Td
-                  className={
-                    "race-table-rewards-cell hide-content-in-mobile py-3"
-                  }
+                  className={"race-table-rewards-cell hide-content-in-mobile py-3"}
                   onClick={() =>
                     // eslint-disable-next-line no-undef
                     (window.location.href = `/u/${talent.user.username}`)
                   }
                 >
                   <P2
-                    className={`${
-                      inviter.position <= 3 ? "text-black" : "text-primary-03"
-                    }`}
+                    className={`${inviter.position <= 3 ? "text-black" : "text-primary-03"}`}
                     text={getRewardsForPosition(inviter.position)}
                   />
                 </Table.Td>
@@ -489,11 +422,7 @@ const RaceTable = ({ leaderboardResults, allRaces, currentRace }) => {
   );
 };
 
-const UserInvitesTable = ({
-  invitedUsers,
-  loadMoreInvitedUsers,
-  showLoadMoreInvitedUsers,
-}) => {
+const UserInvitesTable = ({ invitedUsers, loadMoreInvitedUsers, showLoadMoreInvitedUsers }) => {
   return (
     <>
       <div className="d-flex flex-row justify-content-between align-items-center px-4 px-lg-0 mt-6 mt-lg-7">
@@ -528,27 +457,16 @@ const UserInvitesTable = ({
           </Table.Th>
         </Table.Head>
         <Table.Body>
-          {invitedUsers.map((user) => (
+          {invitedUsers.map(user => (
             <Table.Tr key={`user-${user.id}`}>
-              <td
-                className="pl-4 pl-lg-3 py-3"
-                onClick={() => (window.location.href = `/u/${user.username}`)}
-              >
+              <td className="pl-4 pl-lg-3 py-3" onClick={() => (window.location.href = `/u/${user.username}`)}>
                 <div className="d-flex align-items-center">
-                  <TalentProfilePicture
-                    src={user.profilePictureUrl}
-                    height="32"
-                  />
+                  <TalentProfilePicture src={user.profilePictureUrl} height="32" />
                   <P2 text={user.name} bold className="ml-3" />
-                  {user.ticker && (
-                    <P2 text={user.ticker} bold className="ml-3" />
-                  )}
+                  {user.ticker && <P2 text={user.ticker} bold className="ml-3" />}
                 </div>
               </td>
-              <Table.Td
-                className="py-3"
-                onClick={() => (window.location.href = `/u/${user.username}`)}
-              >
+              <Table.Td className="py-3" onClick={() => (window.location.href = `/u/${user.username}`)}>
                 <P2 text={dayjs(user.created_at).format("MMMM D, YYYY")} />
               </Table.Td>
               <Table.Td
@@ -557,25 +475,15 @@ const UserInvitesTable = ({
               >
                 <P2 text={user.status} />
               </Table.Td>
-              <Table.Td
-                className={"py-3"}
-                onClick={() => (window.location.href = `/u/${user.username}`)}
-              >
-                <P2
-                  text={user.status == "Token Launched" ? "100 TAL" : "-"}
-                  className="mr-2"
-                />
+              <Table.Td className={"py-3"} onClick={() => (window.location.href = `/u/${user.username}`)}>
+                <P2 text={user.status == "Token Launched" ? "100 TAL" : "-"} className="mr-2" />
               </Table.Td>
             </Table.Tr>
           ))}
         </Table.Body>
       </Table>
       {showLoadMoreInvitedUsers && (
-        <Button
-          onClick={() => loadMoreInvitedUsers()}
-          type="white-subtle"
-          className="mt-4 mx-auto"
-        >
+        <Button onClick={() => loadMoreInvitedUsers()} type="white-subtle" className="mt-4 mx-auto">
           Load more
         </Button>
       )}
@@ -592,23 +500,13 @@ const ReferralRace = ({
   invitedUsers,
   loadMoreInvitedUsers,
   showLoadMoreInvitedUsers,
-  raceInvitesCount,
+  raceInvitesCount
 }) => {
   return (
     <div className="mt-6 mt-lg-7 d-flex flex-column">
       <RaceHeader isEligible={isEligible} race={race} />
-      <Overview
-        raceInvitesCount={raceInvitesCount}
-        totalInvitesCount={invitedUsers.length}
-        username={user.username}
-      />
-      {race && (
-        <RaceTable
-          leaderboardResults={leaderboardResults}
-          allRaces={allRaces}
-          currentRace={race}
-        />
-      )}
+      <Overview raceInvitesCount={raceInvitesCount} totalInvitesCount={invitedUsers.length} username={user.username} />
+      {race && <RaceTable leaderboardResults={leaderboardResults} allRaces={allRaces} currentRace={race} />}
       <UserInvitesTable
         invitedUsers={invitedUsers}
         loadMoreInvitedUsers={loadMoreInvitedUsers}

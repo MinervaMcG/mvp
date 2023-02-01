@@ -2,14 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { get } from "src/utils/requests";
 
-import {
-  P1,
-  P3,
-  H3,
-  H4,
-  H5,
-  P2,
-} from "src/components/design_system/typography";
+import { P1, P3, H3, H4, H5, P2 } from "src/components/design_system/typography";
 import ThemedButton from "src/components/design_system/button";
 import TalentProfilePicture from "src/components/talent/TalentProfilePicture";
 
@@ -36,7 +29,7 @@ const Perks = ({ talent, canUpdate }) => {
   const userId = user.id;
 
   useEffect(() => {
-    get(`/api/v1/users/${userId}/profile/perks`).then((response) => {
+    get(`/api/v1/users/${userId}/profile/perks`).then(response => {
       if (response.error) {
         toast.error(<ToastBody heading="Error!" body={response.error} />);
       } else {
@@ -45,38 +38,31 @@ const Perks = ({ talent, canUpdate }) => {
     });
   }, [userId]);
 
-  const removePerk = (deletedPerk) => {
+  const removePerk = deletedPerk => {
     const previousPerks = perks;
 
-    const perkIndex = previousPerks.findIndex(
-      (perk) => perk.id === deletedPerk.id
-    );
+    const perkIndex = previousPerks.findIndex(perk => perk.id === deletedPerk.id);
 
-    const newPerks = [
-      ...previousPerks.slice(0, perkIndex),
-      ...previousPerks.slice(perkIndex + 1),
-    ];
+    const newPerks = [...previousPerks.slice(0, perkIndex), ...previousPerks.slice(perkIndex + 1)];
 
     setPerks(newPerks);
   };
 
-  const appendPerk = (newPerk) => {
-    setPerks((prev) => [...prev, newPerk]);
+  const appendPerk = newPerk => {
+    setPerks(prev => [...prev, newPerk]);
   };
 
-  const mergePerk = (updatedPerk) => {
+  const mergePerk = updatedPerk => {
     const previousPerks = perks;
-    const perkIndex = previousPerks.findIndex(
-      (perk) => perk.id === updatedPerk.id
-    );
+    const perkIndex = previousPerks.findIndex(perk => perk.id === updatedPerk.id);
 
     const newPerks = [
       ...previousPerks.slice(0, perkIndex),
       {
         ...previousPerks[perkIndex],
-        ...updatedPerk,
+        ...updatedPerk
       },
-      ...previousPerks.slice(perkIndex + 1),
+      ...previousPerks.slice(perkIndex + 1)
     ];
 
     setPerks(newPerks);
@@ -86,7 +72,7 @@ const Perks = ({ talent, canUpdate }) => {
     return <></>;
   }
 
-  const startEditing = (perk) => {
+  const startEditing = perk => {
     setEditingPerk(perk);
     setEditShow(true);
   };
@@ -119,20 +105,13 @@ const Perks = ({ talent, canUpdate }) => {
       )}
       <section className="d-flex flex-column align-items-center my-7">
         <div className="container">
-          <div
-            className={cx(
-              "d-flex w-100 mb-3 position-relative",
-              mobile && "flex-column"
-            )}
-          >
+          <div className={cx("d-flex w-100 mb-3 position-relative", mobile && "flex-column")}>
             <H3 className="w-100 text-center mb-0">{`$${talentToken.ticker}`}</H3>
             {perks.length != 0 && canUpdate && (
               <ThemedButton
                 type="primary-default"
                 onClick={() => setCreateShow(true)}
-                className={cx(
-                  mobile ? "mx-auto mt-3" : "ml-auto position-absolute"
-                )}
+                className={cx(mobile ? "mx-auto mt-3" : "ml-auto position-absolute")}
                 style={{ width: "190px", right: 0 }}
               >
                 + Add new Perk
@@ -144,57 +123,35 @@ const Perks = ({ talent, canUpdate }) => {
           </P1>
           {perks.length == 0 && canUpdate && (
             <div className="mt-7">
-              <H5
-                bold
-                text={"You don't have any Perks."}
-                className="text-primary-01 text-center mb-2"
-              />
+              <H5 bold text={"You don't have any Perks."} className="text-primary-01 text-center mb-2" />
               <P2
                 text={`Now that $${talentToken.ticker} is launched, create some utility by giving benefits for your supporters.`}
                 className="text-primary-03 text-center"
               />
               <div className="d-flex flex-column justify-content-center my-5">
-                <ThemedButton
-                  onClick={() => setCreateShow(true)}
-                  type="primary-default"
-                  className="mx-auto"
-                >
+                <ThemedButton onClick={() => setCreateShow(true)} type="primary-default" className="mx-auto">
                   Add Perks
                 </ThemedButton>
               </div>
             </div>
           )}
           <div className="row d-flex flex-row justify-content-center mb-3">
-            {perks.map((perk) => (
-              <div
-                className="col-12 col-md-4 mb-4"
-                key={`perk_list_${perk.id}`}
-              >
+            {perks.map(perk => (
+              <div className="col-12 col-md-4 mb-4" key={`perk_list_${perk.id}`}>
                 <div className="card perk-card p-2">
                   <div className="header d-flex flex-column justify-content-between p-3">
                     <div className="d-flex align-items-center mb-1">
-                      <TalentProfilePicture
-                        src={talent.profilePictureUrl}
-                        userId={talent.id}
-                        height={24}
-                      />
+                      <TalentProfilePicture src={talent.profilePictureUrl} userId={talent.id} height={24} />
                       <P2
                         text={`$${talentToken.ticker}`}
                         className="ml-2 text-uppercase"
                         bold
                         style={{
-                          color:
-                            mode == "light"
-                              ? darkTextPrimary01
-                              : lightTextPrimary01,
+                          color: mode == "light" ? darkTextPrimary01 : lightTextPrimary01
                         }}
                       />
                     </div>
-                    <H4
-                      bold
-                      text={perk.title}
-                      className="overflow-y-scroll hide-scrollbar"
-                    />
+                    <H4 bold text={perk.title} className="overflow-y-scroll hide-scrollbar" />
                   </div>
                   <div className="footer d-flex flex-column justify-content-between p-3">
                     <div>
@@ -208,11 +165,7 @@ const Perks = ({ talent, canUpdate }) => {
                     </div>
                     <div className="position-relative">
                       <P3 text={"Hold Amount"} className="text-primary-04" />
-                      <P2
-                        text={`${perk.price} $${talentToken.ticker}`}
-                        bold
-                        className="text-primary-01"
-                      />
+                      <P2 text={`${perk.price} $${talentToken.ticker}`} bold className="text-primary-01" />
                       {canUpdate && (
                         <ThemedButton
                           onClick={() => startEditing(perk)}

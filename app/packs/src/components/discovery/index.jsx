@@ -13,7 +13,7 @@ const Discovery = ({
   discoveryRows,
   /*marketingArticles,*/
   user,
-  railsContext,
+  railsContext
 }) => {
   const { mobile } = useWindowDimensionsHook();
 
@@ -26,27 +26,12 @@ const Discovery = ({
           mobile ? "justify-content-center" : "justify-content-between"
         )}
       >
-        <HighlightsCard
-          className="mt-2"
-          title="Trending"
-          link="/talent?status=Trending"
-        />
-        <HighlightsCard
-          className="mt-2"
-          title="Latest Added"
-          link="/talent?status=Latest+added"
-        />
-        <HighlightsCard
-          className="mt-2"
-          title="Launching Soon"
-          link="/talent?status=Launching+soon"
-        />
+        <HighlightsCard className="mt-2" title="Trending" link="/talent?status=Trending" />
+        <HighlightsCard className="mt-2" title="Latest Added" link="/talent?status=Latest+added" />
+        <HighlightsCard className="mt-2" title="Launching Soon" link="/talent?status=Launching+soon" />
       </div>
-      {discoveryRows.map((discoveryRow) => (
-        <DiscoveryRow
-          discoveryRow={discoveryRow}
-          env={railsContext.contractsEnv}
-        />
+      {discoveryRows.map(discoveryRow => (
+        <DiscoveryRow discoveryRow={discoveryRow} env={railsContext.contractsEnv} />
       ))}
     </div>
   );

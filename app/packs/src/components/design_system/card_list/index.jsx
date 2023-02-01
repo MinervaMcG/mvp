@@ -31,31 +31,19 @@ const CardList = ({ talents, followerIds, mode }) => (
       </Table.Th>
     </Table.Head>
     <Table.Body>
-      {talents.map((talent) => (
+      {talents.map(talent => (
         <Table.Tr key={talent.id}>
           <Table.Td>
-            <Star
-              pathClassName={
-                followerIds.some((id) => id === talent.id)
-                  ? "star"
-                  : "star-outline"
-              }
-            />
+            <Star pathClassName={followerIds.some(id => id === talent.id) ? "star" : "star-outline"} />
           </Table.Td>
           <Table.Td>
             <P2 text={`${talent.id}`} />
           </Table.Td>
           <Table.Td>
             <div className="d-flex align-items-center">
-              <TalentProfilePicture
-                src={talent.profilePictureUrl}
-                height={24}
-              />
+              <TalentProfilePicture src={talent.profilePictureUrl} height={24} />
               <P2 text={talent.username} bold className="ml-2" />
-              <P2
-                text={talent.ticker}
-                className="ml-2 text-uppercase wallet-id-text"
-              />
+              <P2 text={talent.ticker} className="ml-2 text-uppercase wallet-id-text" />
             </div>
           </Table.Td>
           <Table.Td>

@@ -34,7 +34,7 @@ const JourneyImagesModal = ({ show, hide, journeyItem }) => {
         )}
         style={{ maxHeight: mobile ? "" : "700px", overflowY: "overlay" }}
       >
-        {journeyItem.images.map((image) => (
+        {journeyItem.images.map(image => (
           <div className="d-flex" key={image.imageUrl}>
             <TalentProfilePicture
               className="mr-2 mt-2"

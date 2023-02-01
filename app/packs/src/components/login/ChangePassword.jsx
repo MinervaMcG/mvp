@@ -21,19 +21,13 @@ const ChangePasswordForm = ({
   themePreference,
   invalidForm,
   tags,
-  mobile,
+  mobile
 }) => {
   return (
     <>
       <H5 className="mb-2" text="Set new password" bold />
-      <P2
-        className="mb-6 text-primary-03"
-        text="Your password must satisfy the requests bellow"
-      />
-      <form
-        onSubmit={submitChangePasswordForm}
-        className="d-flex flex-column w-100"
-      >
+      <P2 className="mb-6 text-primary-03" text="Your password must satisfy the requests bellow" />
+      <form onSubmit={submitChangePasswordForm} className="d-flex flex-column w-100">
         <label htmlFor="inputPassword">
           <P2 text="New Password" bold />
         </label>
@@ -43,10 +37,10 @@ const ChangePasswordForm = ({
           id="inputPassword"
           ariaDescribedBy="passwordHelp"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
         />
         <div className="d-flex flex-wrap">
-          {tags.map((tag) => (
+          {tags.map(tag => (
             <Tag className="mr-2 mt-2" key={tag}>
               <P3 mode={themePreference} text={tag} bold />
             </Tag>
@@ -61,15 +55,9 @@ const ChangePasswordForm = ({
           id="inputPasswordConfirmation"
           ariaDescribedBy="passwordConfirmationHelp"
           value={passwordConfirmation}
-          onChange={(e) => setPasswordConfirmation(e.target.value)}
+          onChange={e => setPasswordConfirmation(e.target.value)}
         />
-        {!samePassword && (
-          <P3
-            className="mt-2 text-danger"
-            mode={themePreference}
-            text="The password does not match"
-          />
-        )}
+        {!samePassword && <P3 className="mt-2 text-danger" mode={themePreference} text="The password does not match" />}
         <button
           type="submit"
           disabled={invalidForm}
@@ -78,12 +66,7 @@ const ChangePasswordForm = ({
           Continue
         </button>
       </form>
-      <Link
-        text="Return to Login"
-        href="/"
-        bold
-        className={cx("mt-6", mobile && "align-self-center mb-2")}
-      />
+      <Link text="Return to Login" href="/" bold className={cx("mt-6", mobile && "align-self-center mb-2")} />
     </>
   );
 };
@@ -93,10 +76,7 @@ const PasswordResetConfirmed = () => (
     <Check color={darkPositive} size={64} />
     <H5 className="mt-6" text="Password Reset" bold />
     <P2 className="mt-2" text="Your password has been succesfully reset." />
-    <a
-      className="btn btn-primary talent-button primary-default-button bold big-size-button w-100 mt-6"
-      href="/"
-    >
+    <a className="btn btn-primary talent-button primary-default-button bold big-size-button w-100 mt-6" href="/">
       Return to Login
     </a>
   </div>
@@ -113,17 +93,13 @@ const ChangePassword = ({ userId, token }) => {
   const [samePassword, setSamePassword] = useState(true);
 
   const tags = ["Number", "Upper Case", "Lower Case", "8 Characters"];
-  const invalidForm =
-    password.length < 8 ||
-    passwordConfirmation.length < 8 ||
-    !validPassword ||
-    !samePassword;
+  const invalidForm = password.length < 8 || passwordConfirmation.length < 8 || !validPassword || !samePassword;
 
-  const submitChangePasswordForm = (e) => {
+  const submitChangePasswordForm = e => {
     e.preventDefault();
     put(`/users/${userId}/password`, {
       token,
-      password_reset: { password },
+      password_reset: { password }
     }).then(() => {
       setStep(2);
     });
@@ -155,9 +131,7 @@ const ChangePassword = ({ userId, token }) => {
         "d-flex flex-column align-self-center",
         !mobile && "justify-content-center p-0 registration-box",
         mobile && step === 1 && "p-4 justify-content-between w-100 h-100",
-        mobile &&
-          step === 2 &&
-          "p-4 text-center justify-content-center w-100 h-100"
+        mobile && step === 2 && "p-4 text-center justify-content-center w-100 h-100"
       )}
     >
       {step === 1 && (
@@ -179,7 +153,8 @@ const ChangePassword = ({ userId, token }) => {
   );
 };
 
-export default (props, /*_railsContext*/) => {
+// eslint-disable-next-line no-unused-vars
+export default (props, _railsContext) => {
   return () => (
     <RegistrationContainer {...props}>
       <ChangePassword {...props} />

@@ -4,14 +4,7 @@ import { CheckBold } from "src/components/icons";
 import { lightPrimary, darkPrimary, darkPositive } from "src/utils/colors.js";
 import ThemeContainer, { useTheme } from "src/contexts/ThemeContext";
 
-const ProgressCircle = ({
-  id,
-  width,
-  progress,
-  completedTasks,
-  allTasks,
-  done = false,
-}) => {
+const ProgressCircle = ({ id, width, progress, completedTasks, allTasks, done = false }) => {
   const { mode } = useTheme();
 
   const setProgress = (circle, progress) => {
@@ -23,26 +16,15 @@ const ProgressCircle = ({
   };
 
   useEffect(() => {
-    if (
-      document.getElementById(`circle-${id}`)?.querySelector(".progress-ring")
-    ) {
-      setProgress(
-        document.getElementById(`circle-${id}`).querySelector(".progress-ring"),
-        progress
-      );
+    if (document.getElementById(`circle-${id}`)?.querySelector(".progress-ring")) {
+      setProgress(document.getElementById(`circle-${id}`).querySelector(".progress-ring"), progress);
     }
-  }, [
-    document.getElementById(`circle-${id}`)?.querySelector(".progress-ring"),
-  ]);
+  }, [document.getElementById(`circle-${id}`)?.querySelector(".progress-ring")]);
 
   return (
     <div className="whole-ring" id={`circle-${id}`}>
       {done ? (
-        <CheckBold
-          className="position-absolute"
-          color={darkPositive}
-          size={21}
-        />
+        <CheckBold className="position-absolute" color={darkPositive} size={21} />
       ) : (
         <div className="d-flex position-absolute">
           <P2 className="text-black" bold text={`${completedTasks}`} />
@@ -62,13 +44,7 @@ const ProgressCircle = ({
         />
         <circle
           className="progress-ring"
-          stroke={
-            progress === 1
-              ? darkPositive
-              : mode() == "dark"
-              ? darkPrimary
-              : lightPrimary
-          }
+          stroke={progress === 1 ? darkPositive : mode() == "dark" ? darkPrimary : lightPrimary}
           strokeWidth="3"
           fill="transparent"
           r={width / 2}
@@ -80,7 +56,8 @@ const ProgressCircle = ({
   );
 };
 
-export default (props, /*_railsContext*/) => {
+// eslint-disable-next-line no-unused-vars
+export default (props, _railsContext) => {
   return (
     <ThemeContainer>
       <ProgressCircle {...props} />

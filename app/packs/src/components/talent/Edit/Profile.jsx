@@ -11,6 +11,7 @@ const Profile = (props) => {
   const { mobile } = useWindowDimensionsHook();
   const [sharedState, setSharedState] = useState({ ...props });
 
+  const railsContext = props.railsContext;
   const setRailsContext = railsContextStore((state) => state.setRailsContext);
 
   useEffect(() => {
@@ -25,6 +26,9 @@ const Profile = (props) => {
           mode={theme.mode()}
           mobile={mobile}
           changeSharedState={setSharedState}
+          etherscanApiKey={railsContext.etherscanApiKey}
+          env={railsContext.contractsEnv}
+          talBaseDomain={railsContext.talBaseDomain}
         />
       </div>
     </div>

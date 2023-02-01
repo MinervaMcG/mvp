@@ -9,6 +9,15 @@ Rails.application.routes.draw do
   end
   # end Admin
 
+  # Moderator area
+  constraints Clearance::Constraints::SignedIn.new { |user| user.moderator? || user.admin? } do
+    resource :support, only: [:show] do
+      get :search
+      resources :user, to: "supports#user_page", only: [:show]
+    end
+  end
+  # end Moderator
+
   # Public API
   namespace :api, defaults: {format: :json} do
     namespace :v1 do

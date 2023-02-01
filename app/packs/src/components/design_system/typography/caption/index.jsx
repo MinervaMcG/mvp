@@ -4,10 +4,7 @@ import cx from "classnames";
 
 const Caption = ({ bold, mode, text, children, className, onClick }) => {
   return (
-    <p
-      className={cx("caption", bold ? "bold" : "", mode, className)}
-      onClick={onClick}
-    >
+    <p className={cx("caption", bold ? "bold" : "", mode, className)} onClick={onClick}>
       {text || children}
     </p>
   );
@@ -18,7 +15,7 @@ Caption.defaultProps = {
   mode: "light",
   className: "",
   onClick: () => null,
-  children: null,
+  children: null
 };
 
 Caption.propTypes = {
@@ -27,7 +24,7 @@ Caption.propTypes = {
   text: oneOfType([string, number]),
   className: string,
   onClick: func,
-  children: node,
+  children: node
 };
 
 export default Caption;

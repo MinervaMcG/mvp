@@ -1,10 +1,9 @@
-const getAuthToken = () =>
-  document.querySelector('meta[name="csrf-token"]')?.content;
+const getAuthToken = () => document.querySelector('meta[name="csrf-token"]')?.content;
 
 const defaultHeaders = () => {
   return {
     Accept: "application/json",
-    "Content-Type": "application/json",
+    "Content-Type": "application/json"
   };
 };
 
@@ -21,8 +20,8 @@ const post = (url, content) => {
     credentials: "include",
     method: "POST",
     headers,
-    body,
-  }).then((response) => {
+    body
+  }).then(response => {
     return response.json();
   });
 };
@@ -40,8 +39,8 @@ const put = (url, content) => {
     credentials: "include",
     method: "PUT",
     headers,
-    body,
-  }).then((response) => {
+    body
+  }).then(response => {
     return response.json();
   });
 };
@@ -59,13 +58,13 @@ const patch = (url, content) => {
     credentials: "include",
     method: "PATCH",
     headers,
-    body,
-  }).then((response) => {
+    body
+  }).then(response => {
     return response.json();
   });
 };
 
-const get = (url) => {
+const get = url => {
   const headers = defaultHeaders();
 
   if (getAuthToken) {
@@ -75,14 +74,14 @@ const get = (url) => {
   return fetch(url, {
     credentials: "include",
     method: "GET",
-    headers,
-  }).then((response) => {
+    headers
+  }).then(response => {
     return response.json();
   });
 };
 
 const externalGet = (url, params = {}) => {
-  return fetch(url).then((response) => {
+  return fetch(url).then(response => {
     if (params.ignoreJSON) {
       return response;
     }
@@ -103,8 +102,8 @@ const destroy = (url, content) => {
     credentials: "include",
     method: "DELETE",
     headers,
-    body,
-  }).then((response) => {
+    body
+  }).then(response => {
     if (response) {
       const contentType = response.headers.get("content-type");
 

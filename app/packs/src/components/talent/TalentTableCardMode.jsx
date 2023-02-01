@@ -6,12 +6,7 @@ import { displayableAmount } from "src/utils/viewHelpers";
 
 import cx from "classnames";
 
-const TalentTableCardMode = ({
-  updateFollow,
-  talents,
-  publicPageViewer = false,
-  env,
-}) => {
+const TalentTableCardMode = ({ updateFollow, talents, publicPageViewer = false, env }) => {
   const { mobile } = useWindowDimensionsHook();
 
   return (
@@ -21,7 +16,7 @@ const TalentTableCardMode = ({
         mobile ? "justify-content-center" : "justify-start"
       )}
     >
-      {talents.map((talent) => (
+      {talents.map(talent => (
         <div key={talent.id} className={cx("mb-3", !mobile && "pr-4")}>
           <NewTalentCard
             name={talent.user.name}

@@ -6,36 +6,16 @@ import Tag from "src/components/design_system/tag";
 
 import cx from "classnames";
 
-const Tab = ({
-  Icon,
-  text,
-  type,
-  onClick,
-  href,
-  target,
-  className,
-  children,
-  active,
-  disabled,
-  newTab,
-}) => {
+const Tab = ({ Icon, text, type, onClick, href, target, className, children, active, disabled, newTab }) => {
   if (!!onClick) {
     return (
       <button
-        className={cx(
-          "tab-container",
-          "button-link",
-          type,
-          active && "active",
-          className
-        )}
+        className={cx("tab-container", "button-link", type, active && "active", className)}
         onClick={onClick}
         disabled={disabled}
       >
         {Icon && <Icon pathClassName="tab-icon" color="current-color" />}
-        {text && (
-          <P2 className={cx("tab-text", "current-color")} text={text} medium />
-        )}
+        {text && <P2 className={cx("tab-text", "current-color")} text={text} medium />}
         {children}
         {!!newTab && (
           <Tag className="bg-primary text-white cursor-pointer">
@@ -48,13 +28,7 @@ const Tab = ({
 
   return (
     <a
-      className={cx(
-        "tab-container",
-        "button-link",
-        type,
-        active && "active",
-        className
-      )}
+      className={cx("tab-container", "button-link", type, active && "active", className)}
       href={disabled ? null : href}
       target={target}
     >
@@ -84,7 +58,7 @@ Tab.defaultProps = {
   className: "",
   children: null,
   active: false,
-  disabled: false,
+  disabled: false
 };
 
 Tab.propTypes = {
@@ -97,7 +71,7 @@ Tab.propTypes = {
   className: string,
   children: node,
   active: bool,
-  disabled: bool,
+  disabled: bool
 };
 
 export default Tab;

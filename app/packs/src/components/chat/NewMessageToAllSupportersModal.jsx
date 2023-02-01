@@ -21,42 +21,35 @@ const NewMessageToAllSupportersModal = ({ show, setShow, mode, mobile }) => {
 
     setSendingMessage(true);
 
-    post("/messages/send_to_all_supporters", { message }).then((response) => {
+    post("/messages/send_to_all_supporters", { message }).then(response => {
       if (response.error) {
         console.log(response.error);
       } else {
         retrieveJobProgress(response.job_id);
-        setPollingIntervalId(
-          setInterval(() => retrieveJobProgress(response.job_id), 2000)
-        );
+        setPollingIntervalId(setInterval(() => retrieveJobProgress(response.job_id), 2000));
       }
     });
   };
 
   const debouncedNewMessage = debounce(() => sendMessage(), 200);
 
-  const retrieveJobProgress = (job_id) => {
-    get(`/messages/send_to_all_supporters_status?job_id=${job_id}`).then(
-      (response) => {
-        if (response.error) {
-          console.log(response.error);
-        } else {
-          setMessagesSent(response.messages_sent);
-          setMessagesTotal(response.messages_total);
+  const retrieveJobProgress = job_id => {
+    get(`/messages/send_to_all_supporters_status?job_id=${job_id}`).then(response => {
+      if (response.error) {
+        console.log(response.error);
+      } else {
+        setMessagesSent(response.messages_sent);
+        setMessagesTotal(response.messages_total);
 
-          if (
-            response.messages_sent == response.messages_total &&
-            response.messages_total != 0
-          ) {
-            setSendingMessage(false);
-            clearPollingInterval(response.last_receiver_id);
-          }
+        if (response.messages_sent == response.messages_total && response.messages_total != 0) {
+          setSendingMessage(false);
+          clearPollingInterval(response.last_receiver_id);
         }
       }
-    );
+    });
   };
 
-  const clearPollingInterval = (receiver_id) => {
+  const clearPollingInterval = receiver_id => {
     clearInterval(pollingIntervalId);
     setPollingIntervalId(null);
     setJobFinished(true);
@@ -82,7 +75,7 @@ const NewMessageToAllSupportersModal = ({ show, setShow, mode, mobile }) => {
       <Modal.Body className="show-grid pt-0 pb-4 px-4">
         <TextArea
           mode={mode}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={e => setMessage(e.target.value)}
           placeholder="Share something with your supporters"
           className="w-100"
           rows="5"
@@ -102,9 +95,7 @@ const NewMessageToAllSupportersModal = ({ show, setShow, mode, mobile }) => {
           </P3>
         )}
         {jobFinished && messagesTotal > 0 && (
-          <P3 className="w-100 mt-2">
-            {`We've sent ${messagesSent} messages successfully!`}
-          </P3>
+          <P3 className="w-100 mt-2">{`We've sent ${messagesSent} messages successfully!`}</P3>
         )}
       </Modal.Body>
     </Modal>

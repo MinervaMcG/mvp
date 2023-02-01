@@ -13,8 +13,8 @@ const NFTs = ({ userNFT, memberNFT, chainAPI, mode, chainId }) => {
       return;
     }
 
-    chainAPI.getNFTImg(userNFT.tokenAddress, userNFT.id).then((imageURL) => {
-      setNFTImages((prev) => ({ ...prev, userNFT: imageURL }));
+    chainAPI.getNFTImg(userNFT.tokenAddress, userNFT.id).then(imageURL => {
+      setNFTImages(prev => ({ ...prev, userNFT: imageURL }));
       setLoading(false);
     });
   }, [userNFT]);
@@ -24,15 +24,13 @@ const NFTs = ({ userNFT, memberNFT, chainAPI, mode, chainId }) => {
       return;
     }
 
-    chainAPI
-      .getNFTImg(memberNFT.tokenAddress, memberNFT.id)
-      .then((imageURL) => {
-        setNFTImages((prev) => ({ ...prev, memberNFT: imageURL }));
-        setLoading(false);
-      });
+    chainAPI.getNFTImg(memberNFT.tokenAddress, memberNFT.id).then(imageURL => {
+      setNFTImages(prev => ({ ...prev, memberNFT: imageURL }));
+      setLoading(false);
+    });
   }, [memberNFT]);
 
-  const linkToNFT = (nft) => {
+  const linkToNFT = nft => {
     const baseUrl = chainAPI.getEnvBlockExplorerUrls(chainId);
 
     return `${baseUrl}token/${nft.tokenAddress}/instance/${nft.id}`;

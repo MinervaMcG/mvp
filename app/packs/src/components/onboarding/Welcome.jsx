@@ -15,7 +15,7 @@ const Welcome = ({
   changeLastName,
   username,
   changeUsername,
-  allSteps,
+  allSteps
 }) => {
   const [localFirstName, setLocalFirstName] = useState(firstName);
   const [localLastName, setLocalLastName] = useState(lastName);
@@ -24,7 +24,7 @@ const Welcome = ({
   const [validatingUsername, setValidatingUsername] = useState("");
   const [usernameValidated, setUsernameValidated] = useState(false);
 
-  const submitWelcomeForm = (e) => {
+  const submitWelcomeForm = e => {
     e.preventDefault();
     if (invalidForm) {
       return;
@@ -45,24 +45,21 @@ const Welcome = ({
         return;
       }
 
-      get(`api/v1/username/valid?username=${localUsername}`).then(
-        (response) => {
-          if (response.error == "") {
-            setUsernameValidated(true);
-          } else {
-            setUsernameValidated(false);
-          }
-          setUsernameError(response.error);
-          setValidatingUsername(false);
+      get(`api/v1/username/valid?username=${localUsername}`).then(response => {
+        if (response.error == "") {
+          setUsernameValidated(true);
+        } else {
+          setUsernameValidated(false);
         }
-      );
+        setUsernameError(response.error);
+        setValidatingUsername(false);
+      });
     }, 300);
 
     return () => clearTimeout(validateUsername);
   }, [localUsername]);
 
-  const invalidForm =
-    localFirstName == "" || localLastName == "" || localUsername == "";
+  const invalidForm = localFirstName == "" || localLastName == "" || localUsername == "";
 
   return (
     <div className="registration-items">
@@ -73,9 +70,8 @@ const Welcome = ({
       </div>
       <H5 text={`Welcome back!`} bold />
       <P2 className="mb-5 mt-2">
-        A lot has changed since you last saw us! Take advantage of this quick
-        onboarding to make sure relevant information is up to date and that new
-        information is filled in. Let's get started!
+        A lot has changed since you last saw us! Take advantage of this quick onboarding to make sure relevant
+        information is up to date and that new information is filled in. Let's get started!
       </P2>
       <form onSubmit={submitWelcomeForm} className="d-flex flex-column w-100">
         <div className="form-group position-relative">
@@ -86,37 +82,20 @@ const Welcome = ({
             type="text"
             id="inputUsername"
             value={localUsername}
-            onChange={(e) => setLocalUsername(e.target.value)}
-            shortCaption={
-              !usernameError && `Your Talent Protocol URL: /u/${localUsername}`
-            }
+            onChange={e => setLocalUsername(e.target.value)}
+            shortCaption={!usernameError && `Your Talent Protocol URL: /u/${localUsername}`}
             error={usernameError}
           />
           {validatingUsername && (
-            <FontAwesomeIcon
-              icon={faSpinner}
-              spin
-              className="position-absolute"
-              style={{ top: 48, right: 10 }}
-            />
+            <FontAwesomeIcon icon={faSpinner} spin className="position-absolute" style={{ top: 48, right: 10 }} />
           )}
           {usernameValidated && (
-            <FontAwesomeIcon
-              icon={faCheck}
-              className="position-absolute text-success"
-              style={{ top: 48, right: 10 }}
-            />
+            <FontAwesomeIcon icon={faCheck} className="position-absolute text-success" style={{ top: 48, right: 10 }} />
           )}
           {usernameError && (
-            <FontAwesomeIcon
-              icon={faTimes}
-              className="position-absolute text-danger"
-              style={{ top: 48, right: 10 }}
-            />
+            <FontAwesomeIcon icon={faTimes} className="position-absolute text-danger" style={{ top: 48, right: 10 }} />
           )}
-          {usernameError && (
-            <P3 className="mt-1 text-danger" text={usernameError} />
-          )}
+          {usernameError && <P3 className="mt-1 text-danger" text={usernameError} />}
         </div>
         <div className="form-group position-relative">
           <label htmlFor="inputFirstName" className="mt-2">
@@ -126,7 +105,7 @@ const Welcome = ({
             type="text"
             id="inputFirstName"
             value={localFirstName}
-            onChange={(e) => setLocalFirstName(e.target.value)}
+            onChange={e => setLocalFirstName(e.target.value)}
           />
         </div>
         <div className="form-group position-relative">
@@ -137,7 +116,7 @@ const Welcome = ({
             type="text"
             id="inputLastName"
             value={localLastName}
-            onChange={(e) => setLocalLastName(e.target.value)}
+            onChange={e => setLocalLastName(e.target.value)}
           />
         </div>
         <div className="d-flex flex-row justify-content-end mt-6">

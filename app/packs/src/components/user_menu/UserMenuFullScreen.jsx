@@ -6,10 +6,7 @@ import Button from "src/components/design_system/button";
 import { ArrowLeft, Sun, Moon, ArrowRight } from "src/components/icons";
 import { P1, P2 } from "src/components/design_system/typography";
 
-import {
-  TERMS_HREF,
-  PRIVACY_HREF,
-} from "src/utils/constants";
+import { TERMS_HREF, PRIVACY_HREF } from "src/utils/constants";
 
 const UserMenuFullScreen = ({
   show,
@@ -26,46 +23,26 @@ const UserMenuFullScreen = ({
   inviteNumbers,
   userHasInvitesLeft,
   */
-  signOut,
+  signOut
 }) => (
-  <Modal
-    show={show}
-    fullscreen="true"
-    onHide={hide}
-    dialogClassName={"m-0 mh-100 mw-100"}
-    backdrop={false}
-  >
+  <Modal show={show} fullscreen="true" onHide={hide} dialogClassName={"m-0 mh-100 mw-100"} backdrop={false}>
     <Modal.Body className="d-flex flex-column">
       <div className="d-flex flex-row justify-content-between w-100 pt-2">
         <Button onClick={hide} type="white-ghost" mode={mode}>
           <ArrowLeft color="currentColor" />
         </Button>
         <Button onClick={() => toggleTheme()} type="white-ghost" mode={mode}>
-          {mode == "light" ? (
-            <Moon color="currentColor" />
-          ) : (
-            <Sun color="currentColor" />
-          )}
+          {mode == "light" ? <Moon color="currentColor" /> : <Sun color="currentColor" />}
         </Button>
       </div>
       <div className="d-flex flex-row w-100 align-items-center my-2">
-        <TalentProfilePicture
-          src={user.profilePictureUrl}
-          userId={user.id}
-          height={48}
-          className="mr-2"
-        />
+        <TalentProfilePicture src={user.profilePictureUrl} userId={user.id} height={48} className="mr-2" />
         <P2 className="text-black" bold text={`@${user.username}`} />
       </div>
       <div className="d-flex flex-column w-100 mb-3">
         {!showConnectButton() && connectedButton()}
         {showConnectButton() && walletConnectButton()}
-        <Button
-          onClick={onClickTransak}
-          type="primary-default"
-          mode={mode}
-          className="w-100 my-2"
-        >
+        <Button onClick={onClickTransak} type="primary-default" mode={mode} className="w-100 my-2">
           <P1 className="text-black" text="Get Funds" />
         </Button>
       </div>
@@ -117,9 +94,7 @@ const UserMenuFullScreen = ({
       </Button>
       <div className={`divider ${mode}`}></div>
       <Button
-        onClick={() =>
-          window.open("https://talentprotocol.typeform.com/feedback", "_blank")
-        }
+        onClick={() => window.open("https://talentprotocol.typeform.com/feedback", "_blank")}
         type="white-ghost"
         mode={mode}
         className="d-flex flex-row justify-content-between mt-3 mb-1"
@@ -137,9 +112,7 @@ const UserMenuFullScreen = ({
         <ArrowRight color="currentColor" />
       </Button>
       <Button
-        onClick={() =>
-          (window.location.href = `/u/${user.username}/account_settings`)
-        }
+        onClick={() => (window.location.href = `/u/${user.username}/account_settings`)}
         type="white-ghost"
         mode={mode}
         className="d-flex flex-row justify-content-between mb-3 mt-1"

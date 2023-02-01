@@ -32,14 +32,14 @@ const GreenCheck = ({ className, pathClassName, style, width, mode }) => (
 GreenCheck.defaultProps = {
   className: "",
   pathClassName: "",
-  width: 64,
+  width: 64
 };
 
 GreenCheck.propTypes = {
   className: string,
   pathClassName: string,
   width: number,
-  mode: string.isRequired,
+  mode: string.isRequired
 };
 
 export default GreenCheck;

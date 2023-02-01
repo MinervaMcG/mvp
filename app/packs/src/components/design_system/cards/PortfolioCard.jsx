@@ -7,29 +7,17 @@ const PortfolioCard = ({ mode, title, subtitle, description }) => {
   return (
     <div className={`col-md-3 card ${mode}`}>
       {title ? (
-        <Caption
-          className="portfolio-card-title text-uppercase"
-          mode={`${mode}`}
-          text={`${mode}`}
-        ></Caption>
+        <Caption className="portfolio-card-title text-uppercase" mode={`${mode}`} text={`${mode}`}></Caption>
       ) : null}
 
       {subtitle ? (
-        <H3
-          className="portfolio-card-line-subtitle"
-          mode={`${mode}`}
-          bold="true"
-          text={`${subtitle}`}
-        >
+        <H3 className="portfolio-card-line-subtitle" mode={`${mode}`} bold="true" text={`${subtitle}`}>
           {" "}
         </H3>
       ) : null}
 
       {description ? (
-        <H5
-          className="portfolio-card-line-description"
-          text={`${description} `}
-        >
+        <H5 className="portfolio-card-line-description" text={`${description} `}>
           {" "}
         </H5>
       ) : null}

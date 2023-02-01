@@ -2,24 +2,10 @@ import React from "react";
 import cx from "classnames";
 import { string, bool, node } from "prop-types";
 
-const ParagraphLink = ({
-  text,
-  disabled,
-  bold,
-  href,
-  target,
-  className,
-  children,
-}) => {
+const ParagraphLink = ({ text, disabled, bold, href, target, className, children }) => {
   return (
     <a
-      className={cx(
-        "paragraph-link",
-        disabled && "disabled",
-        text && "p2",
-        bold && "bold",
-        className
-      )}
+      className={cx("paragraph-link", disabled && "disabled", text && "p2", bold && "bold", className)}
       href={disabled ? null : href}
       target={target}
     >
@@ -36,7 +22,7 @@ ParagraphLink.defaultProps = {
   href: null,
   target: null,
   className: "",
-  children: null,
+  children: null
 };
 
 ParagraphLink.propTypes = {
@@ -46,7 +32,7 @@ ParagraphLink.propTypes = {
   href: string,
   target: string,
   className: string,
-  children: node,
+  children: node
 };
 
 export default ParagraphLink;

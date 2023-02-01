@@ -64,7 +64,7 @@ const Notifications = ({ mode }) => {
   const [pagination, setPagination] = useState({});
 
   const loadNotifications = () => {
-    get("/api/v1/notifications").then((response) => {
+    get("/api/v1/notifications").then(response => {
       if (response.error) {
         console.log("Error loading notifications");
       } else {
@@ -77,8 +77,8 @@ const Notifications = ({ mode }) => {
   const loadMoreNotifications = () => {
     const nextPage = pagination.currentPage + 1;
 
-    get(`/api/v1/notifications?page=${nextPage}`).then((response) => {
-      setNotifications((prev) => [...prev, ...response.notifications]);
+    get(`/api/v1/notifications?page=${nextPage}`).then(response => {
+      setNotifications(prev => [...prev, ...response.notifications]);
       setPagination(response.pagination);
     });
   };
@@ -91,11 +91,9 @@ const Notifications = ({ mode }) => {
     loadNotifications();
   }, []);
 
-  const notificationsUnread = notifications.some(
-    (notif) => notif.read === false
-  );
+  const notificationsUnread = notifications.some(notif => notif.read === false);
 
-  const notificationRead = async (notification) => {
+  const notificationRead = async notification => {
     if (!notification.read) {
       await put(`/api/v1/notifications/${notification.id}/mark_as_read`);
     }
@@ -107,7 +105,7 @@ const Notifications = ({ mode }) => {
   const markAllAsRead = async () => {
     const request = await post("/api/v1/clear_notifications");
     if (request.success) {
-      const newNotifications = notifications.map((n) => ({ ...n, read: true }));
+      const newNotifications = notifications.map(n => ({ ...n, read: true }));
       setNotifications(newNotifications);
     }
   };
@@ -115,13 +113,7 @@ const Notifications = ({ mode }) => {
   if (width < 992) {
     return (
       <>
-        <Button
-          onClick={() => setShowNotifications(true)}
-          type="white-ghost"
-          mode={mode}
-          className="ml-2"
-          size="none"
-        >
+        <Button onClick={() => setShowNotifications(true)} type="white-ghost" mode={mode} className="ml-2" size="none">
           <Bell color="currentColor" size={20} />
         </Button>
         <Modal
@@ -152,10 +144,8 @@ const Notifications = ({ mode }) => {
             </Button>
           </Modal.Header>
           <Modal.Body className="d-flex flex-column p-0">
-            {notifications.length == 0 && (
-              <small className="w-100 text-center">No notifications</small>
-            )}
-            {notifications.map((notification) => (
+            {notifications.length == 0 && <small className="w-100 text-center">No notifications</small>}
+            {notifications.map(notification => (
               <div key={`notifications-menu-${notification.id}`}>
                 <Divider />
                 <Button
@@ -199,18 +189,13 @@ const Notifications = ({ mode }) => {
             color="currentColor"
             style={{
               marginRight: notificationsUnread ? -12 : -3,
-              marginTop: -2,
+              marginTop: -2
             }}
           />
-          {notificationsUnread && (
-            <span className="notifications-unread-icon"></span>
-          )}
+          {notificationsUnread && <span className="notifications-unread-icon"></span>}
         </Dropdown.Toggle>
 
-        <Dropdown.Menu
-          className="notifications-menu"
-          style={width < 400 ? { width: width - 50 } : {}}
-        >
+        <Dropdown.Menu className="notifications-menu" style={width < 400 ? { width: width - 50 } : {}}>
           <div className="d-flex flex-row justify-content-between">
             <P1 bold className="ml-3">
               Notifications
@@ -224,12 +209,10 @@ const Notifications = ({ mode }) => {
           </div>
           {notifications.length == 0 && (
             <Dropdown.ItemText key="no-notifications">
-              <small className="w-100 text-center no-notifications-item">
-                No notifications
-              </small>
+              <small className="w-100 text-center no-notifications-item">No notifications</small>
             </Dropdown.ItemText>
           )}
-          {notifications.map((notification) => (
+          {notifications.map(notification => (
             <Dropdown.Item
               key={`${notification.id}-notification`}
               className="p-0 notifications-menu-dropdown-item"

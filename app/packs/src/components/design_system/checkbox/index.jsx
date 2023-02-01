@@ -3,25 +3,9 @@ import { string, bool, func, node } from "prop-types";
 import cx from "classnames";
 import P3 from "../typography/p3";
 
-const Checkbox = ({
-  onChange,
-  checked,
-  disabled,
-  label,
-  id,
-  className,
-  htmlFor,
-  children,
-}) => (
+const Checkbox = ({ onChange, checked, disabled, label, id, className, htmlFor, children }) => (
   <label className="container-checkbox" htmlFor={htmlFor}>
-    <input
-      id={id}
-      type="checkbox"
-      checked={checked}
-      onChange={onChange}
-      disabled={disabled}
-      className={className}
-    />
+    <input id={id} type="checkbox" checked={checked} onChange={onChange} disabled={disabled} className={className} />
     <span className={cx("checkmark")}></span>
     {label && <P3 className="label-checkbox" text={label} />}
     {children}
@@ -36,7 +20,7 @@ Checkbox.propTypes = {
   id: string,
   className: string,
   htmlFor: string,
-  children: node,
+  children: node
 };
 
 Checkbox.defaultProps = {
@@ -46,7 +30,7 @@ Checkbox.defaultProps = {
   id: null,
   className: null,
   htmlFor: null,
-  children: null,
+  children: null
 };
 
 export default Checkbox;

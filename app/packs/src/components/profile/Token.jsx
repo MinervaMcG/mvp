@@ -47,10 +47,7 @@ const Token = ({
       await onChainAPI.switchChain(talentToken.chainId);
     }
 
-    await onChainAPI.addTokenToWallet(
-      talentToken.contractId,
-      talentToken.ticker
-    );
+    await onChainAPI.addTokenToWallet(talentToken.contractId, talentToken.ticker);
   };
 
   const migrateNetwork = async () => {
@@ -186,12 +183,7 @@ const Token = ({
   }, [factory]);
 
   return (
-    <section
-      className={cx(
-        "d-flex flex-column mx-4 token-section",
-        mobile ? "py-6" : "py-7"
-      )}
-    >
+    <section className={cx("d-flex flex-column mx-4 token-section", mobile ? "py-6" : "py-7")}>
       <div className="row">
         <div className={cx("col-12 col-lg-4", mobile && "mb-6")}>
           <H3
@@ -205,9 +197,7 @@ const Token = ({
             text={`${parseAndCommify(totalSupply)} $${talentToken.ticker}`}
             className="text-center inverted-text-primary-01"
           ></H3>
-          <P3 className="text-center inverted-text-primary-03">
-            Circulating Supply
-          </P3>
+          <P3 className="text-center inverted-text-primary-03">Circulating Supply</P3>
         </div>
         <div className={cx("col-12 col-lg-4", mobile && "mb-6")}>
           <H3
@@ -219,31 +209,17 @@ const Token = ({
       </div>
       <div className={cx("row", mobile ? "" : "mt-7")}>
         <div className={cx("col-12 col-lg-4", mobile && "mb-6")}>
-          <H3
-            text={talent.supportersCount || "0"}
-            className="text-center inverted-text-primary-01"
-          ></H3>
+          <H3 text={talent.supportersCount || "0"} className="text-center inverted-text-primary-01"></H3>
           <P3 className="text-center inverted-text-primary-03">Supporters</P3>
         </div>
         <div className={cx("col-12 col-lg-4", mobile && "mb-6")}>
-          <H3
-            text={formatNumberWithSymbol(0.1)}
-            className="text-center inverted-text-primary-01"
-          ></H3>
-          <P3 className="text-center inverted-text-primary-03">
-            Current Price
-          </P3>
+          <H3 text={formatNumberWithSymbol(0.1)} className="text-center inverted-text-primary-01"></H3>
+          <P3 className="text-center inverted-text-primary-03">Current Price</P3>
         </div>
         <div className={cx("col-12 col-lg-4", mobile && "mb-6")}>
-          <H3
-            text={shortenAddress(talentToken.contractId)}
-            className="text-center inverted-text-primary-01"
-          ></H3>
+          <H3 text={shortenAddress(talentToken.contractId)} className="text-center inverted-text-primary-01"></H3>
           <P3
-            text={`${chainIdToName(
-              talentToken.chainId,
-              railsContext.contractsEnv
-            )} Network`}
+            text={`${chainIdToName(talentToken.chainId, railsContext.contractsEnv)} Network`}
             className="text-center inverted-text-primary-03"
           ></P3>
         </div>

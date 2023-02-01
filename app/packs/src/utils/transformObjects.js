@@ -4,7 +4,7 @@ import camelCase from "lodash/camelCase";
 import isArray from "lodash/isArray";
 import isObject from "lodash/isObject";
 
-export const snakeCaseObject = (obj) => {
+export const snakeCaseObject = obj => {
   return transform(obj, (acc, value, key, target) => {
     const snakeCaseKey = isArray(target) ? key : snakeCase(key);
 
@@ -12,7 +12,7 @@ export const snakeCaseObject = (obj) => {
   });
 };
 
-export const camelCaseObject = (obj) => {
+export const camelCaseObject = obj => {
   return transform(obj, (acc, value, key, target) => {
     const camelCaseKey = isArray(target) ? key : camelCase(key);
 

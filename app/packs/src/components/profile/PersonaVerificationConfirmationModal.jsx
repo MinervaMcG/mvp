@@ -13,25 +13,18 @@ import Button from "src/components/design_system/button";
 import TextInput from "src/components/design_system/fields/textinput";
 import { useWindowDimensionsHook } from "src/utils/window";
 
-const PersonaVerificationConfirmationModal = ({
-  show,
-  hide,
-  talent,
-  setTalent,
-  railsContext,
-  mode
-}) => {
+const PersonaVerificationConfirmationModal = ({ show, hide, talent, setTalent, railsContext, mode }) => {
   const { mobile } = useWindowDimensionsHook();
   const [editedTalent, setEditedTalent] = useState(talent);
   const [loading, setLoading] = useState(false);
 
   const changeUserAttribute = (attribute, value) => {
-    setEditedTalent((prev) => ({
+    setEditedTalent(prev => ({
       ...prev,
       user: {
         ...prev.user,
-        [attribute]: value,
-      },
+        [attribute]: value
+      }
     }));
   };
 
@@ -45,35 +38,31 @@ const PersonaVerificationConfirmationModal = ({
         client.open();
         hide();
       },
-      onComplete: ({ inquiryId, /*status, fields*/ }) => {
+      onComplete: ({ inquiryId /*status, fields*/ }) => {
         const params = {
           talent: {
-            with_persona_id: inquiryId,
+            with_persona_id: inquiryId
           },
           user: {
-            id: talent.user.id,
-          },
+            id: talent.user.id
+          }
         };
         patch(`/api/v1/talent/${talent.id}`, params)
-          .then((response) => {
-            setTalent((prev) => ({
+          .then(response => {
+            setTalent(prev => ({
               ...prev,
-              withPersonaId: response.with_persona_id,
+              withPersonaId: response.with_persona_id
             }));
 
-            toast.success(
-              <ToastBody
-                heading="Success!"
-                body={"You're being verified. It can take up to 24 hours"}
-              />,
-              { autoClose: 2500 }
-            );
+            toast.success(<ToastBody heading="Success!" body={"You're being verified. It can take up to 24 hours"} />, {
+              autoClose: 2500
+            });
             return true;
           })
           .catch(() => {
             return false;
           });
-      },
+      }
     });
   };
 
@@ -82,24 +71,22 @@ const PersonaVerificationConfirmationModal = ({
 
     const response = await patch(`/api/v1/talent/${talent.id}`, {
       user: {
-        ...snakeCaseObject(editedTalent.user),
+        ...snakeCaseObject(editedTalent.user)
       },
       talent: {
-        ...snakeCaseObject(editedTalent),
-      },
+        ...snakeCaseObject(editedTalent)
+      }
     });
 
     if (response && !response.error) {
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
-        ...camelCaseObject(response),
+        ...camelCaseObject(response)
       }));
 
       verifyTalent();
     } else {
-      toast.error(
-        <ToastBody heading="Error!" body={response?.error} mode={mode} />
-      );
+      toast.error(<ToastBody heading="Error!" body={response?.error} mode={mode} />);
     }
   };
 
@@ -124,43 +111,24 @@ const PersonaVerificationConfirmationModal = ({
           <TextInput
             className="mb-2"
             title="First Name"
-            onChange={(e) =>
-              changeUserAttribute("legalFirstName", e.target.value)
-            }
+            onChange={e => changeUserAttribute("legalFirstName", e.target.value)}
             value={editedTalent.user.legalFirstName}
           />
-          <P2
-            className="text-primary-04"
-            text="Your legal first name that will be used when verifying your account"
-          />
+          <P2 className="text-primary-04" text="Your legal first name that will be used when verifying your account" />
         </div>
         <div className="w-100 mb-5">
           <TextInput
             className="mb-2"
             title="Last Name"
-            onChange={(e) =>
-              changeUserAttribute("legalLastName", e.target.value)
-            }
+            onChange={e => changeUserAttribute("legalLastName", e.target.value)}
             value={editedTalent.user.legalLastName}
           />
-          <P2
-            className="text-primary-04"
-            text="Your legal last name that will be used when verifying your account"
-          />
+          <P2 className="text-primary-04" text="Your legal last name that will be used when verifying your account" />
         </div>
       </Modal.Body>
       <Modal.Footer className="px-6 py-3" style={{ borderTop: "none" }}>
-        <Button
-          className="mr-2"
-          type="white-ghost"
-          text="Cancel"
-          onClick={hide}
-        />
-        <LoadingButton
-          type="primary-default"
-          loading={loading}
-          onClick={saveProfile}
-        >
+        <Button className="mr-2" type="white-ghost" text="Cancel" onClick={hide} />
+        <LoadingButton type="primary-default" loading={loading} onClick={saveProfile}>
           Continue
         </LoadingButton>
       </Modal.Footer>

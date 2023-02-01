@@ -19,7 +19,7 @@ const NewMessageModal = ({
   setShowMessageToAllSupporters,
   mobile,
   showMessageToAllSupporter,
-  mode,
+  mode
 }) => {
   if (!show) {
     return null;
@@ -35,9 +35,7 @@ const NewMessageModal = ({
 
     setLoading(true);
 
-    const response = await get(
-      `api/v1/users?name=${search}&messaging_disabled=false`
-    ).catch(() => setLoading(false));
+    const response = await get(`api/v1/users?name=${search}&messaging_disabled=false`).catch(() => setLoading(false));
 
     if (response.users) {
       setUsers(response.users);
@@ -67,16 +65,13 @@ const NewMessageModal = ({
         <P1 className="pt-4 pb-3 px-4" text={"New message"} bold />
         <div className="d-flex flex-row mb-3 mx-4 position-relative align-items-center">
           <TextInput
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={e => setSearch(e.target.value)}
             value={search}
             placeholder="Search for people..."
             inputClassName="pl-5"
             className="w-100"
           />
-          <Search
-            color="currentColor"
-            className="position-absolute chat-search-icon"
-          />
+          <Search color="currentColor" className="position-absolute chat-search-icon" />
         </div>
         {showMessageToAllSupporter && (
           <>
@@ -85,16 +80,8 @@ const NewMessageModal = ({
                 className="button-link text-primary w-100 d-flex flex-row align-items-center my-2"
                 onClick={() => setShowMessageToAllSupporters()}
               >
-                {mode == "light" ? (
-                  <ChatLight height="40" width="40" />
-                ) : (
-                  <ChatDark height="40" width="40" />
-                )}
-                <P2
-                  className="text-black d-inline mb-0 ml-3"
-                  text="Send message to all supporters"
-                  bold
-                />
+                {mode == "light" ? <ChatLight height="40" width="40" /> : <ChatDark height="40" width="40" />}
+                <P2 className="text-black d-inline mb-0 ml-3" text="Send message to all supporters" bold />
               </button>
             </div>
             <P2 className="w-100 px-4 mb-3">Supporters</P2>
@@ -106,21 +93,10 @@ const NewMessageModal = ({
               <Spinner />
             </div>
           )}
-          {users.map((user) => (
-            <button
-              key={`new_message_user_${user.id}`}
-              className="button-link"
-              onClick={() => onUserChosen(user)}
-            >
-              <Link
-                className="w-100 d-flex flex-row align-items-center my-2"
-                type="white"
-              >
-                <TalentProfilePicture
-                  src={user.profilePictureUrl}
-                  height={40}
-                  userId={user.id}
-                />
+          {users.map(user => (
+            <button key={`new_message_user_${user.id}`} className="button-link" onClick={() => onUserChosen(user)}>
+              <Link className="w-100 d-flex flex-row align-items-center my-2" type="white">
+                <TalentProfilePicture src={user.profilePictureUrl} height={40} userId={user.id} />
                 <P2 className="mb-0 ml-3" bold text={user.username} />
               </Link>
             </button>

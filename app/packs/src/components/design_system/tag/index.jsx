@@ -21,13 +21,13 @@ const Tag = ({ text, size, children, className }) => {
 Tag.defaultProps = {
   text: null,
   size: "normal",
-  children: null,
+  children: null
 };
 
 Tag.propTypes = {
   text: string,
   size: string,
-  children: node,
+  children: node
 };
 
 export default Tag;

@@ -41,7 +41,7 @@ class User < ApplicationRecord
   has_many :rewards
 
   # web3
-  has_one :user_domain, dependent: :destroy
+  has_many :user_domains, dependent: :destroy
   has_many :erc20_tokens, dependent: :destroy
   has_many :erc721_tokens, dependent: :destroy
 
@@ -240,6 +240,14 @@ class User < ApplicationRecord
 
   def talent?
     talent.present?
+  end
+
+  def user_domain
+    tal_domain || user_domains.first
+  end
+
+  def tal_domain
+    user_domains.find_by(tal_domain: true)
   end
 
   def valid_delete_account_token?(token)

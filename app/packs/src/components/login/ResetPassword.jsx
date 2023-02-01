@@ -9,13 +9,7 @@ import { H5, P2 } from "../design_system/typography";
 import { post } from "../../utils/requests";
 import cx from "classnames";
 
-const ResetPasswordForm = ({
-  email,
-  setEmail,
-  submitResetPasswordForm,
-  themePreference,
-  mobile,
-}) => (
+const ResetPasswordForm = ({ email, setEmail, submitResetPasswordForm, themePreference, mobile }) => (
   <>
     <div>
       <H5 className="mb-2" text="Forgot password?" bold />
@@ -24,10 +18,7 @@ const ResetPasswordForm = ({
         text="Enter the email address associated with your account and
         we'll send you  a link to reset your password."
       />
-      <form
-        onSubmit={submitResetPasswordForm}
-        className="d-flex flex-column w-100"
-      >
+      <form onSubmit={submitResetPasswordForm} className="d-flex flex-column w-100">
         <label htmlFor="inputEmail">
           <P2 className="text-black" text="Email Address" bold />
         </label>
@@ -37,7 +28,7 @@ const ResetPasswordForm = ({
           id="inputEmail"
           ariaDescribedBy="emailHelp"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
         />
         <button
           type="submit"
@@ -47,12 +38,7 @@ const ResetPasswordForm = ({
         </button>
       </form>
     </div>
-    <Link
-      text="Return to Login"
-      href="/"
-      bold
-      className={cx("mt-6", mobile && "align-self-center")}
-    />
+    <Link text="Return to Login" href="/" bold className={cx("mt-6", mobile && "align-self-center")} />
   </>
 );
 
@@ -60,18 +46,12 @@ const CheckEmail = ({ email, mobile }) => (
   <div className="d-flex flex-column align-items-center text-black">
     <Envelope color="currentColor" size={24} viewBox="0 0 24 24" />
     <H5 className="mt-4 mb-2" text="Check your email" bold />
-    <P2
-      className="mb-6 text-primary-03"
-      text={`We sent a password reset link to ${email}`}
-    />
+    <P2 className="mb-6 text-primary-03" text={`We sent a password reset link to ${email}`} />
     <Link
       text="Return to Login"
       href="/"
       bold
-      className={cx(
-        "text-black",
-        mobile && "position-absolute pb-4 fixed-bottom"
-      )}
+      className={cx("text-black", mobile && "position-absolute pb-4 fixed-bottom")}
     />
   </div>
 );
@@ -83,7 +63,7 @@ const ResetPassword = () => {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
 
-  const submitResetPasswordForm = (e) => {
+  const submitResetPasswordForm = e => {
     e.preventDefault();
     post("/passwords", { email }).then(() => {
       setStep(2);
@@ -113,7 +93,8 @@ const ResetPassword = () => {
   );
 };
 
-export default (props, /*_railsContext*/) => {
+// eslint-disable-next-line no-unused-vars
+export default (props, _railsContext) => {
   return () => (
     <RegistrationContainer {...props}>
       <ResetPassword {...props} />

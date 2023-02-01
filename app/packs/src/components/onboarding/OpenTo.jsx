@@ -9,7 +9,7 @@ const OpenTo = ({ changeStep, careerNeeds, changeCareerNeeds, allSteps }) => {
 
   const invalidForm = selectedCareerNeeds.length === 0;
 
-  const submitOpenToForm = (e) => {
+  const submitOpenToForm = e => {
     e.preventDefault();
     if (invalidForm) {
       return;
@@ -19,19 +19,17 @@ const OpenTo = ({ changeStep, careerNeeds, changeCareerNeeds, allSteps }) => {
     changeStep(4);
   };
 
-  const goBack = (e) => {
+  const goBack = e => {
     e.preventDefault();
     changeStep(2);
   };
 
-  const toogleCareerNeedOption = (field) => {
+  const toogleCareerNeedOption = field => {
     if (selectedCareerNeeds.includes(field)) {
-      const newCareerNeeds = selectedCareerNeeds.filter(
-        (item) => item != field
-      );
+      const newCareerNeeds = selectedCareerNeeds.filter(item => item != field);
       setSelectedCareerNeeds(newCareerNeeds);
     } else {
-      setSelectedCareerNeeds((prev) => [...prev, field]);
+      setSelectedCareerNeeds(prev => [...prev, field]);
     }
   };
 
@@ -49,14 +47,14 @@ const OpenTo = ({ changeStep, careerNeeds, changeCareerNeeds, allSteps }) => {
       </div>
       <H5 text="How can the Talent Protocol community help you?" bold />
       <P2 className="mt-2 mb-4">
-        There is a lot we can help you with. Choose the priority categories that
-        are key for you to thrive professionally.
+        There is a lot we can help you with. Choose the priority categories that are key for you to thrive
+        professionally.
       </P2>
       <form onSubmit={submitOpenToForm} className="d-flex flex-column w-100">
         <P2 bold className="mb-2">
           I'm available for:
         </P2>
-        {availableForOptions.map((item) => (
+        {availableForOptions.map(item => (
           <Checkbox
             key={item}
             className="form-check-input mt-4"
@@ -71,7 +69,7 @@ const OpenTo = ({ changeStep, careerNeeds, changeCareerNeeds, allSteps }) => {
         <P2 bold className="mb-2 mt-4">
           I'm interested in:
         </P2>
-        {interestedInOptions.map((item) => (
+        {interestedInOptions.map(item => (
           <Checkbox
             key={item}
             className="form-check-input mt-4"
@@ -86,7 +84,7 @@ const OpenTo = ({ changeStep, careerNeeds, changeCareerNeeds, allSteps }) => {
         <P2 bold className="mb-2 mt-4">
           I can help with:
         </P2>
-        {canHelpWithOptions.map((item) => (
+        {canHelpWithOptions.map(item => (
           <Checkbox
             key={item}
             className="form-check-input mt-4"

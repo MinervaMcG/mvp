@@ -25,7 +25,7 @@ const Show = ({
   currentUserAdmin,
   currentUserModerator,
   isCurrentUserImpersonated,
-  withPersonaRequest,
+  withPersonaRequest
 }) => {
   const [localTalent, setLocalTalent] = useState(camelCaseObject(talent));
   const user = localTalent.user;
@@ -38,11 +38,11 @@ const Show = ({
 
   const { mobile } = useWindowDimensionsHook();
 
-  const changeSection = (newSection) => {
+  const changeSection = newSection => {
     setSelectedSection(newSection);
   };
 
-  const buttonType = (section) => {
+  const buttonType = section => {
     if (section == selectedSection) {
       return "white-default";
     } else if (!selectedSection && section == "#about") {
@@ -56,29 +56,22 @@ const Show = ({
     if (selectedSection) {
       const scrollDiv = document.getElementById(selectedSection).offsetTop;
       window.scrollTo({ top: scrollDiv - 70, behavior: "smooth" });
-      window.history.replaceState(
-        {},
-        document.title,
-        `${localTalent.user.username}${selectedSection}`
-      );
+      window.history.replaceState({}, document.title, `${localTalent.user.username}${selectedSection}`);
     }
   }, [selectedSection]);
 
-  const onWalletConnect = (account) => {
-    setLocalTalent((prev) => ({
+  const onWalletConnect = account => {
+    setLocalTalent(prev => ({
       ...prev,
       user: {
         ...prev.user,
-        walletId: account,
-      },
+        walletId: account
+      }
     }));
   };
 
   const getCurrentTokenSection = () => {
-    if (
-      (user.profileType == "approved" || user.profileType == "talent") &&
-      !talentToken.contractId
-    ) {
+    if ((user.profileType == "approved" || user.profileType == "talent") && !talentToken.contractId) {
       return LaunchToken;
     }
 
@@ -111,12 +104,7 @@ const Show = ({
       />
       <Divider className="my-6" />
       <div className="d-flex justify-content-lg-center overflow-x-scroll mx-4">
-        <Button
-          className="mr-2"
-          type={buttonType("#about")}
-          text="About"
-          onClick={() => changeSection("#about")}
-        />
+        <Button className="mr-2" type={buttonType("#about")} text="About" onClick={() => changeSection("#about")} />
         <Button
           className="mr-2"
           type={buttonType("#journey")}
@@ -137,8 +125,7 @@ const Show = ({
           text="Community"
           onClick={() => changeSection("#community")}
         />
-        {((user.walletId && user.visible_digital_collectibles) ||
-          canUpdate) && (
+        {((user.walletId && user.visible_digital_collectibles) || canUpdate) && (
           <Button
             type={buttonType("#digital-collectibles")}
             text={"Digital Collectibles"}
@@ -147,25 +134,14 @@ const Show = ({
         )}
       </div>
       <div className="my-7 w-100 col-12" id="#about">
-        <About
-          talent={localTalent}
-          setTalent={setLocalTalent}
-          canUpdate={canUpdate}
-          previewMode={previewMode}
-        />
+        <About talent={localTalent} setTalent={setLocalTalent} canUpdate={canUpdate} previewMode={previewMode} />
       </div>
       {mobile && <Divider />}
       <div className="my-7 w-100 col-12" id="#journey">
-        <Journey
-          talent={localTalent}
-          setTalent={setLocalTalent}
-          canUpdate={canUpdate}
-        />
+        <Journey talent={localTalent} setTalent={setLocalTalent} canUpdate={canUpdate} />
       </div>
       <div className="my-7 w-100" id={"#token"}>
-        {talentToken.contractId && (
-          <Perks talent={localTalent} canUpdate={canUpdate} />
-        )}
+        {talentToken.contractId && <Perks talent={localTalent} canUpdate={canUpdate} />}
         <CurrentTokenSection
           talent={localTalent}
           talentTokenPrice={talentTokenPrice}
@@ -176,11 +152,7 @@ const Show = ({
         />
       </div>
       <div className="my-7 w-100 col-12" id="#community">
-        <Community
-          userId={localTalent.user.id}
-          talent={localTalent}
-          canUpdate={canUpdate}
-        />
+        <Community userId={localTalent.user.id} talent={localTalent} canUpdate={canUpdate} />
       </div>
       {(showLastDivider || canUpdate) && <Divider className="my-6" />}
       <div className="mt-7 w-100" id="#digital-collectibles">

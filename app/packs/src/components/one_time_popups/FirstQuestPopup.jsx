@@ -12,7 +12,7 @@ const FirstQuestPopup = ({ userId }) => {
 
   const onClick = () => {
     patch(`/api/v1/users/${userId}`, {
-      first_quest_popup: true,
+      first_quest_popup: true
     }).then(() => {
       window.location.replace("/earn?tab=quests");
     });
@@ -20,7 +20,7 @@ const FirstQuestPopup = ({ userId }) => {
 
   const markAsRead = () => {
     patch(`/api/v1/users/${userId}`, {
-      first_quest_popup: true,
+      first_quest_popup: true
     }).then(() => setShow(false));
   };
 
@@ -46,20 +46,8 @@ const FirstQuestPopup = ({ userId }) => {
           />
         </div>
         <div className="d-flex mt-6 w-100">
-          <Button
-            className="mr-2 w-50"
-            onClick={markAsRead}
-            text="Cancel"
-            type="white-subtle"
-            size="big"
-          />
-          <Button
-            className="w-50"
-            size="big"
-            type="primary-default"
-            text="See all quests"
-            onClick={onClick}
-          />
+          <Button className="mr-2 w-50" onClick={markAsRead} text="Cancel" type="white-subtle" size="big" />
+          <Button className="w-50" size="big" type="primary-default" text="See all quests" onClick={onClick} />
         </div>
       </Modal.Body>
     </Modal>

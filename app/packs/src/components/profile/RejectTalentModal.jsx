@@ -5,14 +5,7 @@ import TextArea from "src/components/design_system/fields/textarea";
 import debounce from "lodash/debounce";
 import { patch } from "src/utils/requests";
 
-const RejectTalentModal = ({
-  show,
-  setShow,
-  mode,
-  mobile,
-  talent,
-  setTalent,
-}) => {
+const RejectTalentModal = ({ show, setShow, mode, mobile, talent, setTalent }) => {
   const [note, setNote] = useState("");
   const [rejectingUser, setRejectingUser] = useState(false);
 
@@ -23,20 +16,18 @@ const RejectTalentModal = ({
       user: {
         id: talent.user.id,
         profile_type: "rejected",
-        note: note,
-      },
+        note: note
+      }
     };
 
-    const response = await patch(`/api/v1/talent/${talent.id}`, params).catch(
-      () => {
-        return false;
-      }
-    );
+    const response = await patch(`/api/v1/talent/${talent.id}`, params).catch(() => {
+      return false;
+    });
 
     if (response && !response.error) {
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
-        user: { ...prev.user, profileType: "rejected" },
+        user: { ...prev.user, profileType: "rejected" }
       }));
 
       setRejectingUser(false);
@@ -62,7 +53,7 @@ const RejectTalentModal = ({
       <Modal.Body className="show-grid pt-0 pb-4 px-4">
         <TextArea
           mode={mode}
-          onChange={(e) => setNote(e.target.value)}
+          onChange={e => setNote(e.target.value)}
           placeholder="Share some feedback with the user"
           className="w-100"
           rows="5"

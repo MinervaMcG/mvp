@@ -29,13 +29,12 @@ const StakeModal = ({
   mode,
   tokenChainId,
   talentIsFromCurrentUser,
-  railsContext,
+  railsContext
 }) => {
   const { mobile } = useWindowDimensionsHook();
 
   const [amount, setAmount] = useState("");
-  const [showWalletConnectionError, setShowWalletConnectionError] =
-    useState(false);
+  const [showWalletConnectionError, setShowWalletConnectionError] = useState(false);
   const [availableAmount, setAvailableAmount] = useState("0");
   const [currentAccount, setCurrentAccount] = useState(null);
   const [maxMinting, setMaxMinting] = useState("0");
@@ -92,10 +91,7 @@ const StakeModal = ({
     setChainName(chainName);
 
     if (_token) {
-      const _tokenAvailability = await newOnChain.getTokenAvailability(
-        _token,
-        true
-      );
+      const _tokenAvailability = await newOnChain.getTokenAvailability(_token, true);
       setMaxMinting(_tokenAvailability);
     }
 
@@ -119,7 +115,7 @@ const StakeModal = ({
     getWalletBalance();
   }, [currentAccount]);
 
-  const onSubmit = async (e) => {
+  const onSubmit = async e => {
     e.preventDefault();
 
     if (!currentAccount) {
@@ -134,26 +130,21 @@ const StakeModal = ({
 
     setStage("Confirm");
 
-    const result = await chainData
-      .createStake(targetToken.address, amount)
-      .catch((error) => {
-        console.error(error);
-        setStage("Error");
-      });
+    const result = await chainData.createStake(targetToken.address, amount).catch(error => {
+      console.error(error);
+      setStage("Error");
+    });
 
     if (result) {
       const _availableAmount = await chainData.getStableBalance(true);
       setAvailableAmount(_availableAmount);
 
-      const _tokenAvailability = await chainData.getTokenAvailability(
-        targetToken,
-        true
-      );
+      const _tokenAvailability = await chainData.getTokenAvailability(targetToken, true);
       setMaxMinting(_tokenAvailability);
 
       await post(`/api/v1/stakes`, {
-        stake: { token_id: tokenId },
-      }).catch((e) => console.log(e));
+        stake: { token_id: tokenId }
+      }).catch(e => console.log(e));
 
       setStage("Verified");
 
@@ -172,7 +163,7 @@ const StakeModal = ({
     }, 1000);
   };
 
-  const approve = async (e) => {
+  const approve = async e => {
     e.preventDefault();
     setApproving(true);
 
@@ -186,7 +177,7 @@ const StakeModal = ({
     setApproving(false);
   };
 
-  const connectWallet = async (e) => {
+  const connectWallet = async e => {
     e.preventDefault();
 
     if (chainData) {
@@ -194,7 +185,7 @@ const StakeModal = ({
 
       if (result) {
         await patch(`/api/v1/users/${userId}`, {
-          wallet_id: chainData.account.toLowerCase(),
+          wallet_id: chainData.account.toLowerCase()
         }).catch(() => null);
         setCurrentAccount(chainData.account);
       }
@@ -220,11 +211,8 @@ const StakeModal = ({
     }
   };
 
-  const setValidAmount = (value) => {
-    if (
-      parseFloat(value) < 0 ||
-      parseFloat(value) > parseFloat(availableAmount)
-    ) {
+  const setValidAmount = value => {
+    if (parseFloat(value) < 0 || parseFloat(value) > parseFloat(availableAmount)) {
       setValueError(true);
     } else {
       setValueError(false);
@@ -255,10 +243,7 @@ const StakeModal = ({
 
   return (
     <>
-      <WalletConnectionError
-        show={showWalletConnectionError}
-        hide={() => setShowWalletConnectionError(false)}
-      />
+      <WalletConnectionError show={showWalletConnectionError} hide={() => setShowWalletConnectionError(false)} />
       <SendMessageModal
         show={showNewMessageModal}
         setShow={setShowNewMessageModal}
@@ -273,19 +258,13 @@ const StakeModal = ({
         show={show}
         centered={mobile ? false : true}
         onHide={() => setShow(false)}
-        dialogClassName={
-          mobile ? "mw-100 mh-100 m-0" : "remove-background rewards-modal"
-        }
+        dialogClassName={mobile ? "mw-100 mh-100 m-0" : "remove-background rewards-modal"}
         fullscreen={"md-down"}
       >
         <>
           <Modal.Header closeButton className="pt-4 px-4 pb-0">
             <P1
-              text={`BUY ${ticker} ${
-                railsContext.disableSmartContracts == "true"
-                  ? "(currently unavailable)"
-                  : ""
-              }`}
+              text={`BUY ${ticker} ${railsContext.disableSmartContracts == "true" ? "(currently unavailable)" : ""}`}
               bold
               className="text-black mb-3"
             />
@@ -322,14 +301,10 @@ const StakeModal = ({
                       type={"number"}
                       disabled={railsContext.disableSmartContracts == "true"}
                       topCaption={
-                        currentAccount
-                          ? `Available amount: ${parseAndCommify(
-                              availableAmount
-                            )} ${stableSymbol()}`
-                          : ""
+                        currentAccount ? `Available amount: ${parseAndCommify(availableAmount)} ${stableSymbol()}` : ""
                       }
                       placeholder={"0.0"}
-                      onChange={(e) => setValidAmount(e.target.value)}
+                      onChange={e => setValidAmount(e.target.value)}
                       value={amount}
                     />
                     <div className={`divider ${mode} my-3`}></div>
@@ -353,22 +328,12 @@ const StakeModal = ({
                     <div className={`divider ${mode} mt-3`}></div>
                     <div className="d-flex flex-row justify-content-between align-items-center mt-6">
                       {step() == "Connect" && (
-                        <Button
-                          className="w-100"
-                          type="primary-default"
-                          size="big"
-                          onClick={connectWallet}
-                        >
+                        <Button className="w-100" type="primary-default" size="big" onClick={connectWallet}>
                           Connect Wallet
                         </Button>
                       )}
                       {step() == "Change network" && (
-                        <Button
-                          className="w-100"
-                          type="primary-default"
-                          size="big"
-                          onClick={changeNetwork}
-                        >
+                        <Button className="w-100" type="primary-default" size="big" onClick={changeNetwork}>
                           Switch Network
                         </Button>
                       )}
@@ -380,11 +345,7 @@ const StakeModal = ({
                             mode={mode}
                             className="w-100 mr-2"
                             loading={approving}
-                            disabled={
-                              approving ||
-                              didAllowance ||
-                              railsContext.disableSmartContracts == "true"
-                            }
+                            disabled={approving || didAllowance || railsContext.disableSmartContracts == "true"}
                             success={didAllowance}
                             fillPrimary={darkTextPrimary01}
                             fillSecondary={black}
@@ -398,9 +359,7 @@ const StakeModal = ({
                             mode={mode}
                             className="w-100 ml-2"
                             disabled={
-                              !didAllowance ||
-                              stage == "Confirm" ||
-                              railsContext.disableSmartContracts == "true"
+                              !didAllowance || stage == "Confirm" || railsContext.disableSmartContracts == "true"
                             }
                             loading={stage == "Confirm"}
                             success={stage == "Verified"}
@@ -416,8 +375,8 @@ const StakeModal = ({
 
                     {stage == "Error" && (
                       <P2 className="text-danger">
-                        There was an issue with the transaction. Check your
-                        metamask and reach out to us if the error persists.
+                        There was an issue with the transaction. Check your metamask and reach out to us if the error
+                        persists.
                       </P2>
                     )}
                   </div>

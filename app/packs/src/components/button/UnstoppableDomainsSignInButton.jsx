@@ -15,17 +15,13 @@ import { ToastBody } from "src/components/design_system/toasts";
 
 import { post } from "src/utils/requests";
 
-const UnstoppableDomainsSignInButton = ({
-  className,
-  clientId,
-  redirectUri,
-}) => {
+const UnstoppableDomainsSignInButton = ({ className, clientId, redirectUri }) => {
   const uauthOptions = {
     clientID: clientId,
     redirectUri: redirectUri,
 
     // Must include both the openid and wallet scopes.
-    scope: "openid wallet email profile social:twitter",
+    scope: "openid wallet email profile social:twitter"
   };
 
   const providerOptions = {
@@ -45,15 +41,15 @@ const UnstoppableDomainsSignInButton = ({
       package: UAuthSPA,
 
       // The SPA libary options
-      options: uauthOptions,
-    },
+      options: uauthOptions
+    }
   };
 
   async function handleLogin() {
     const w3m = new Web3Modal({
       cacheProvider: true,
       disableInjectedProvider: true,
-      providerOptions,
+      providerOptions
     });
 
     const web3Modal = await w3m.connect();
@@ -66,13 +62,11 @@ const UnstoppableDomainsSignInButton = ({
   }
 
   const login = (authData, web3Modal) => {
-    post(`/auth/unstoppable_domains/login`, authData).then((response) => {
+    post(`/auth/unstoppable_domains/login`, authData).then(response => {
       if (response.error) {
         toast.error(<ToastBody heading="Error!" body={response.error} />);
       } else {
-        toast.success(
-          <ToastBody heading="Success" body={"Welcome to Talent Protocol!"} />
-        );
+        toast.success(<ToastBody heading="Success" body={"Welcome to Talent Protocol!"} />);
         web3Modal.clearCachedProvider();
         window.location.href = `/u/${response.username}`;
       }
@@ -81,10 +75,7 @@ const UnstoppableDomainsSignInButton = ({
 
   return (
     <Button
-      className={cx(
-        className,
-        "d-flex align-items-center justify-content-center"
-      )}
+      className={cx(className, "d-flex align-items-center justify-content-center")}
       onClick={handleLogin}
       type="white-outline"
       size="extra-big"

@@ -13,23 +13,13 @@ const PickNetworkModal = ({ setChain }) => (
       <div className="container-fluid">
         <div className="row">
           <div className="col-12 col-md-6 mb-4">
-            <Button
-              type={"white-subtle"}
-              onClick={() => setChain(1)}
-              className="network-button"
-              size="extra-big"
-            >
+            <Button type={"white-subtle"} onClick={() => setChain(1)} className="network-button" size="extra-big">
               <img src={ethLogo} className="token-img mr-3" />
               Ethereum
             </Button>
           </div>
           <div className="col-12 col-md-6 mb-4">
-            <Button
-              type={"white-subtle"}
-              onClick={() => setChain(137)}
-              className="network-button"
-              size="extra-big"
-            >
+            <Button type={"white-subtle"} onClick={() => setChain(137)} className="network-button" size="extra-big">
               <Polygon className="mr-3" width={48} />
               Polygon
             </Button>
@@ -37,12 +27,7 @@ const PickNetworkModal = ({ setChain }) => (
         </div>
         <div className="row justify-content-center">
           <div className="col-12 col-md-6 mb-4">
-            <Button
-              type={"white-subtle"}
-              onClick={() => setChain(42220)}
-              className="network-button"
-              size="extra-big"
-            >
+            <Button type={"white-subtle"} onClick={() => setChain(42220)} className="network-button" size="extra-big">
               <Celo className="mr-3" width={48} />
               Celo
             </Button>

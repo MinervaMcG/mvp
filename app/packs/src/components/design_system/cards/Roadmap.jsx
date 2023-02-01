@@ -12,9 +12,7 @@ const Roadmap = ({ mode, due_date, title, description, className = "" }) => {
     <div className={`card ${mode} disabled ${className}`}>
       <Caption className="text-primary mb-4" text={formatedDueDate} bold />
       {title && <P1 className="text-black mb-3" text={title} bold />}
-      {description && (
-        <P2 className="text-primary-03" text={`${description}`} />
-      )}
+      {description && <P2 className="text-primary-03" text={`${description}`} />}
     </div>
   );
 };

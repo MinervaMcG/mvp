@@ -10,40 +10,30 @@ import Divider from "src/components/design_system/other/Divider";
 import Button from "src/components/design_system/button";
 import { useWindowDimensionsHook } from "src/utils/window";
 
-const AdminVerificationConfirmationModal = ({
-  show,
-  hide,
-  talent,
-  setTalent,
-}) => {
+const AdminVerificationConfirmationModal = ({ show, hide, talent, setTalent }) => {
   const { mobile } = useWindowDimensionsHook();
 
   const verifyTalent = async () => {
     const params = {
       talent: {
-        verified: true,
+        verified: true
       },
       user: {
-        id: talent.user.id,
-      },
+        id: talent.user.id
+      }
     };
 
-    const response = await patch(`/api/v1/talent/${talent.id}`, params).catch(
-      () => {
-        return false;
-      }
-    );
+    const response = await patch(`/api/v1/talent/${talent.id}`, params).catch(() => {
+      return false;
+    });
 
     if (response && !response.error) {
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
-        verified: true,
+        verified: true
       }));
 
-      toast.success(
-        <ToastBody heading="Success!" body={"User verified successfully."} />,
-        { autoClose: 1500 }
-      );
+      toast.success(<ToastBody heading="Success!" body={"User verified successfully."} />, { autoClose: 1500 });
 
       hide();
       return true;
@@ -66,19 +56,10 @@ const AdminVerificationConfirmationModal = ({
       </Modal.Header>
       <Divider />
       <Modal.Body>
-        <P2
-          text={`Are you sure you want to verify ${
-            talent.user.name || talent.user.username
-          }?`}
-        />
+        <P2 text={`Are you sure you want to verify ${talent.user.name || talent.user.username}?`} />
       </Modal.Body>
       <Modal.Footer className="px-6 py-3" style={{ borderTop: "none" }}>
-        <Button
-          className="mr-2"
-          type="white-ghost"
-          text="Cancel"
-          onClick={hide}
-        />
+        <Button className="mr-2" type="white-ghost" text="Cancel" onClick={hide} />
         <Button type="primary-default" text="Verify" onClick={verifyTalent} />
       </Modal.Footer>
     </Modal>

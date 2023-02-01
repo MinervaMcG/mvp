@@ -15,15 +15,15 @@ const customConfig = {
       os: require.resolve("os-browserify/browser"),
       querystring: require.resolve("querystring-es3"),
       fs: false,
-      net: false,
-    },
+      net: false
+    }
   },
   plugins: [
     new webpack.ProvidePlugin({
       Buffer: ["buffer", "Buffer"],
-      process: "process/browser.js",
-    }),
-  ],
+      process: "process/browser.js"
+    })
+  ]
 };
 
 module.exports = merge(webpackConfig, customConfig);

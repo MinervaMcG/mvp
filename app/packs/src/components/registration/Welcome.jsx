@@ -28,7 +28,7 @@ const Welcome = ({
   profilePictureUrl,
   changeUsername,
   username,
-  changePassword,
+  changePassword
 }) => {
   const { width } = useWindowDimensionsHook();
   const mobile = width < 992;
@@ -44,11 +44,7 @@ const Welcome = ({
   const [localPassword, setLocalPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [samePassword, setSamePassword] = useState(true);
-  const {
-    valid: validPassword,
-    errors,
-    tags,
-  } = passwordMatchesRequirements(localPassword);
+  const { valid: validPassword, errors, tags } = passwordMatchesRequirements(localPassword);
 
   const invalidForm =
     !acceptedTerms ||
@@ -59,7 +55,7 @@ const Welcome = ({
     !validPassword ||
     !samePassword;
 
-  const submitWelcomeForm = (e) => {
+  const submitWelcomeForm = e => {
     e.preventDefault();
     if (localCaptcha && localUsername != "" && localPassword != "") {
       if (localCode.length > 0) {
@@ -80,17 +76,15 @@ const Welcome = ({
         return;
       }
 
-      get(`api/v1/username/valid?username=${localUsername}`).then(
-        (response) => {
-          if (response.error == "") {
-            setUsernameValidated(true);
-          } else {
-            setUsernameValidated(false);
-          }
-          setUsernameError(response.error);
-          setRequestingUsername(false);
+      get(`api/v1/username/valid?username=${localUsername}`).then(response => {
+        if (response.error == "") {
+          setUsernameValidated(true);
+        } else {
+          setUsernameValidated(false);
         }
-      );
+        setUsernameError(response.error);
+        setRequestingUsername(false);
+      });
     }, 300);
 
     return () => clearTimeout(validateUsername);
@@ -108,7 +102,7 @@ const Welcome = ({
     }
   }, [localPassword, passwordConfirmation]);
 
-  const recaptchaSubmition = (value) => {
+  const recaptchaSubmition = value => {
     setLocalCaptcha(value);
   };
 
@@ -130,10 +124,7 @@ const Welcome = ({
           <div className="d-flex flex-row align-items-center">
             <TalentProfilePicture src={profilePictureUrl} height={120} />
             <div className="d-flex flex-column ml-3">
-              <H5
-                text={`${name} is inviting you to join Talent Protocol!`}
-                bold
-              />
+              <H5 text={`${name} is inviting you to join Talent Protocol!`} bold />
               <P2
                 className="text-primary-03"
                 text="Sign up to build your web3 on-chain resume that gives you priority access to scholarships, opportunities, mentors and more."
@@ -152,7 +143,7 @@ const Welcome = ({
             type="text"
             id="inputUsername"
             value={localUsername}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={e => setUsername(e.target.value)}
             error={usernameError}
           />
           <P2
@@ -160,26 +151,13 @@ const Welcome = ({
             text="This will be your Talent Protocol handle. We only accept lowercase letters and numbers."
           />
           {requestingUsername && (
-            <FontAwesomeIcon
-              icon={faSpinner}
-              spin
-              className="position-absolute"
-              style={{ top: 48, right: 10 }}
-            />
+            <FontAwesomeIcon icon={faSpinner} spin className="position-absolute" style={{ top: 48, right: 10 }} />
           )}
           {usernameValidated && (
-            <FontAwesomeIcon
-              icon={faCheck}
-              className="position-absolute text-success"
-              style={{ top: 48, right: 10 }}
-            />
+            <FontAwesomeIcon icon={faCheck} className="position-absolute text-success" style={{ top: 48, right: 10 }} />
           )}
           {usernameError && (
-            <FontAwesomeIcon
-              icon={faTimes}
-              className="position-absolute text-danger"
-              style={{ top: 48, right: 10 }}
-            />
+            <FontAwesomeIcon icon={faTimes} className="position-absolute text-danger" style={{ top: 48, right: 10 }} />
           )}
           {usernameError && (
             <small id="usernameErrorHelp" className="form-text text-danger">
@@ -195,20 +173,12 @@ const Welcome = ({
             id="inputPassword"
             ariaDescribedBy="passwordHelp"
             value={localPassword}
-            onChange={(e) => setLocalPassword(e.target.value)}
+            onChange={e => setLocalPassword(e.target.value)}
           />
           <div className="d-flex flex-wrap">
-            {tags.map((tag) => (
-              <Tag
-                className={`mr-2 mt-2${errors[tag] ? "" : " bg-success"}`}
-                key={tag}
-              >
-                <P3
-                  mode={themePreference}
-                  text={tag}
-                  bold
-                  className={errors[tag] ? "" : "permanent-text-white"}
-                />
+            {tags.map(tag => (
+              <Tag className={`mr-2 mt-2${errors[tag] ? "" : " bg-success"}`} key={tag}>
+                <P3 mode={themePreference} text={tag} bold className={errors[tag] ? "" : "permanent-text-white"} />
               </Tag>
             ))}
           </div>
@@ -221,14 +191,10 @@ const Welcome = ({
             id="inputPasswordConfirmation"
             ariaDescribedBy="passwordConfirmationHelp"
             value={passwordConfirmation}
-            onChange={(e) => setPasswordConfirmation(e.target.value)}
+            onChange={e => setPasswordConfirmation(e.target.value)}
           />
           {!samePassword && (
-            <P3
-              className="mt-2 text-danger"
-              mode={themePreference}
-              text="The password does not match"
-            />
+            <P3 className="mt-2 text-danger" mode={themePreference} text="The password does not match" />
           )}
         </div>
         <div className="form-group position-relative">
@@ -241,22 +207,13 @@ const Welcome = ({
               htmlFor="termsAndConditions"
               id="termsAndConditions"
               checked={acceptedTerms}
-              onChange={() => setAcceptedTerms((prev) => !prev)}
+              onChange={() => setAcceptedTerms(prev => !prev)}
             >
               <div className="d-flex flex-wrap">
                 <P2 className="mr-1" text="I have read and agree to the" />
-                <Link
-                  className="mr-1"
-                  text="Terms & Conditions"
-                  href={TERMS_HREF}
-                  target="_blank"
-                />
+                <Link className="mr-1" text="Terms & Conditions" href={TERMS_HREF} target="_blank" />
                 <P2 className="mr-1" text="and " />
-                <Link
-                  text="Privacy Policy"
-                  href={PRIVACY_HREF}
-                  target="_blank"
-                />
+                <Link text="Privacy Policy" href={PRIVACY_HREF} target="_blank" />
                 <P2 text="." />
               </div>
             </Checkbox>
@@ -270,25 +227,13 @@ const Welcome = ({
           Continue
         </button>
       </form>
-      <div
-        className={cx("d-flex w-100 mt-6", mobile && "justify-content-center")}
-      >
+      <div className={cx("d-flex w-100 mt-6", mobile && "justify-content-center")}>
         <P2 className="text-black mr-1" text="Already have an account?" />
         <Link text="Login." href="/" bold />
       </div>
-      <div
-        className={cx(
-          "d-flex w-100 mt-2",
-          mobile && "justify-content-center pb-4"
-        )}
-      >
+      <div className={cx("d-flex w-100 mt-2", mobile && "justify-content-center pb-4")}>
         <P2 className="text-black mr-1" text="Want more info?" />
-        <Link
-          bold
-          href={USER_GUIDE}
-          target="_blank"
-          text="Check the user guide."
-        />
+        <Link bold href={USER_GUIDE} target="_blank" text="Check the user guide." />
       </div>
     </div>
   );

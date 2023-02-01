@@ -1,10 +1,4 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  useQuery,
-  gql,
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, ApolloProvider, useQuery, gql } from "@apollo/client";
 
 import { THE_GRAPH_ENDPOINTS } from "./constants";
 
@@ -13,7 +7,7 @@ const client = (chain = 44787) => {
 
   return new ApolloClient({
     uri,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache()
   });
 };
 
@@ -35,12 +29,7 @@ const GET_TALENT_PORTFOLIO = gql`
       marketCap
       name
       createdAtTimestamp
-      tokenDayData(
-        where: { date_lte: $startDate }
-        orderBy: date
-        orderDirection: desc
-        first: 1
-      ) {
+      tokenDayData(where: { date_lte: $startDate }, orderBy: date, orderDirection: desc, first: 1) {
         id
         date
         dailySupply
@@ -50,22 +39,12 @@ const GET_TALENT_PORTFOLIO = gql`
 `;
 
 const GET_SUPPORTER_PORTFOLIO = gql`
-  query GetSupporterPortfolio(
-    $id: String!
-    $skip: Int!
-    $first: Int!
-    $startDate: Int!
-  ) {
+  query GetSupporterPortfolio($id: String!, $skip: Int!, $first: Int!, $startDate: Int!) {
     supporter(id: $id) {
       id
       totalAmount
       rewardsClaimed
-      talents(
-        skip: $skip
-        first: $first
-        orderBy: amount
-        orderDirection: desc
-      ) {
+      talents(skip: $skip, first: $first, orderBy: amount, orderDirection: desc) {
         id
         amount
         talAmount
@@ -80,12 +59,7 @@ const GET_SUPPORTER_PORTFOLIO = gql`
           supporterCounter
           owner
           createdAtTimestamp
-          tokenDayData(
-            where: { date_lte: $startDate }
-            orderBy: date
-            orderDirection: desc
-            first: 1
-          ) {
+          tokenDayData(where: { date_lte: $startDate }, orderBy: date, orderDirection: desc, first: 1) {
             id
             date
             dailySupply
@@ -118,12 +92,7 @@ const GET_TALENT_PORTFOLIO_FOR_ID = gql`
       marketCap
       rewardsReady
       rewardsClaimed
-      supporters(
-        skip: $skip
-        first: $first
-        orderBy: amount
-        orderDirection: desc
-      ) {
+      supporters(skip: $skip, first: $first, orderBy: amount, orderDirection: desc) {
         id
         amount
         talAmount
@@ -159,5 +128,5 @@ export {
   GET_SUPPORTER_PORTFOLIO,
   GET_TALENT_PORTFOLIO_FOR_ID_SIMPLE,
   GET_DISCOVERY_TALENTS,
-  client,
+  client
 };

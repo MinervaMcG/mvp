@@ -1,7 +1,7 @@
 import React from "react";
 import { lightPrimary, darkBg01 } from "src/utils/colors";
 
-const Icon = (props) => {
+const Icon = props => {
   return (
     <svg
       width={props.width ? props.width : "172"}

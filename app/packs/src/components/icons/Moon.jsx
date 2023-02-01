@@ -2,15 +2,7 @@ import React from "react";
 import { number, string } from "prop-types";
 import { black } from "src/utils/colors";
 
-const Moon = ({
-  size,
-  color,
-  fill,
-  className,
-  pathClassName,
-  style,
-  viewBox,
-}) => (
+const Moon = ({ size, color, fill, className, pathClassName, style, viewBox }) => (
   <svg
     className={className}
     viewBox={viewBox}
@@ -35,27 +27,9 @@ const Moon = ({
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <path
-      className={pathClassName}
-      d="M9.49002 1V4"
-      stroke={color}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      className={pathClassName}
-      d="M12.49 5.5H14.49"
-      stroke={color}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      className={pathClassName}
-      d="M13.49 4.5V6.5"
-      stroke={color}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+    <path className={pathClassName} d="M9.49002 1V4" stroke={color} strokeLinecap="round" strokeLinejoin="round" />
+    <path className={pathClassName} d="M12.49 5.5H14.49" stroke={color} strokeLinecap="round" strokeLinejoin="round" />
+    <path className={pathClassName} d="M13.49 4.5V6.5" stroke={color} strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -65,7 +39,7 @@ Moon.defaultProps = {
   fill: "none",
   viewBox: "0 0 16 16",
   className: "",
-  pathClassName: "",
+  pathClassName: ""
 };
 
 Moon.propTypes = {
@@ -74,7 +48,7 @@ Moon.propTypes = {
   fill: string,
   viewBox: string,
   className: string,
-  pathClassName: string,
+  pathClassName: string
 };
 
 export default Moon;

@@ -4,14 +4,12 @@ const getWindowDimensions = () => {
   const { innerWidth: width, innerHeight: height } = window;
   return {
     width,
-    height,
+    height
   };
 };
 
 const useWindowDimensionsHook = () => {
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
-  );
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
   const mobile = windowDimensions.width < 992;
 

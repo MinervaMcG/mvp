@@ -4,29 +4,13 @@ import { string, oneOf, bool, node } from "prop-types";
 
 import { P2 } from "src/components/design_system/typography";
 
-const Link = ({
-  text,
-  type,
-  disabled,
-  bold,
-  href,
-  target,
-  className,
-  children,
-  onClick,
-}) => {
+const Link = ({ text, type, disabled, bold, href, target, className, children, onClick }) => {
   if (!!onClick) {
     return (
       <button
         disabled={disabled}
         onClick={onClick}
-        className={cx(
-          "link-container",
-          "button-link",
-          type,
-          disabled && "disabled",
-          className
-        )}
+        className={cx("link-container", "button-link", type, disabled && "disabled", className)}
       >
         {text && <P2 text={text} bold={bold} />}
         {children}
@@ -54,7 +38,7 @@ Link.defaultProps = {
   href: null,
   target: null,
   className: "",
-  children: null,
+  children: null
 };
 
 Link.propTypes = {
@@ -65,7 +49,7 @@ Link.propTypes = {
   href: string,
   target: string,
   className: string,
-  children: node,
+  children: node
 };
 
 export default Link;

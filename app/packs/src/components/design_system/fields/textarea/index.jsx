@@ -19,7 +19,7 @@ const TextArea = ({
   onKeyDown,
   limitHeight,
   rows,
-  maxLengthText = false,
+  maxLengthText = false
 }) => {
   const textAreaRef = useRef(null);
   const [textAreaHeight, setTextAreaHeight] = useState("auto");
@@ -35,13 +35,11 @@ const TextArea = ({
       setTextAreaHeight(`${initialHeight}px`);
     } else {
       setTextAreaHeight("inherit");
-      setTextAreaHeight(
-        `${Math.min(textAreaRef.current.scrollHeight, limit) + 6}px`
-      );
+      setTextAreaHeight(`${Math.min(textAreaRef.current.scrollHeight, limit) + 6}px`);
     }
   }, [value]);
 
-  const onChangeHandler = (e) => {
+  const onChangeHandler = e => {
     setTextAreaHeight("auto");
     if (onChange) onChange(e);
   };
@@ -54,9 +52,7 @@ const TextArea = ({
             {title} {required && <span className="text-danger">*</span>}
           </h6>
         ) : null}
-        {maxLengthText ? (
-          <P2 mode={mode} text={`${value.length}/${maxLength}`} />
-        ) : null}
+        {maxLengthText ? <P2 mode={mode} text={`${value.length}/${maxLength}`} /> : null}
       </div>
       <textarea
         ref={textAreaRef}
@@ -71,9 +67,7 @@ const TextArea = ({
         style={{ height: textAreaHeight }}
       ></textarea>
 
-      {shortCaption ? (
-        <p className={`short-caption ${mode}`}>{shortCaption}</p>
-      ) : null}
+      {shortCaption ? <p className={`short-caption ${mode}`}>{shortCaption}</p> : null}
     </div>
   );
 };

@@ -34,33 +34,27 @@ const MobilePortfolio = ({
   currentUserId,
   userNFT,
   memberNFT,
-  chainId,
+  chainId
 }) => {
   return (
     <div className={`d-flex flex-column`}>
       <div className="w-100 talent-table-tabs horizontal-scroll mt-3 hide-scrollbar d-flex flex-row justify-content-center align-items-center">
         <div
           onClick={() => setActiveTab("Overview")}
-          className={`talent-table-tab${
-            activeTab == "Overview" ? " active-talent-table-tab" : ""
-          }`}
+          className={`talent-table-tab${activeTab == "Overview" ? " active-talent-table-tab" : ""}`}
         >
           Overview
         </div>
         <div
           onClick={() => setActiveTab("Supporting")}
-          className={`talent-table-tab${
-            activeTab == "Supporting" ? " active-talent-table-tab" : ""
-          }`}
+          className={`talent-table-tab${activeTab == "Supporting" ? " active-talent-table-tab" : ""}`}
         >
           Supporting
         </div>
         {tokenAddress && (
           <div
             onClick={() => setActiveTab("Supporters")}
-            className={`talent-table-tab${
-              activeTab == "Supporters" ? " active-talent-table-tab" : ""
-            }`}
+            className={`talent-table-tab${activeTab == "Supporters" ? " active-talent-table-tab" : ""}`}
           >
             Supporters
           </div>
@@ -68,9 +62,7 @@ const MobilePortfolio = ({
         {!!userNFT.id && (
           <div
             onClick={() => setActiveTab("NFTs")}
-            className={`talent-table-tab${
-              activeTab == "NFTs" ? " active-talent-table-tab" : ""
-            }`}
+            className={`talent-table-tab${activeTab == "NFTs" ? " active-talent-table-tab" : ""}`}
           >
             NFTs
           </div>
@@ -81,17 +73,8 @@ const MobilePortfolio = ({
           <div className="d-flex flex-column mt-3 px-4 ">
             <P3 mode={mode} text={"Total Balance"} />
             <div className="d-flex flex-row flex-wrap mt-3 align-items-end">
-              <H4
-                mode={mode}
-                text={currency(overallCUSD).format()}
-                bold
-                className="mb-0 mr-2"
-              />
-              <P2
-                mode={mode}
-                text={`${currency(overallTAL).format().substring(1)} $TAL`}
-                bold
-              />
+              <H4 mode={mode} text={currency(overallCUSD).format()} bold className="mb-0 mr-2" />
+              <P2 mode={mode} text={`${currency(overallTAL).format().substring(1)} $TAL`} bold />
             </div>
           </div>
           <div className="d-flex flex-row w-100 align-items-end  px-4 ">
@@ -105,38 +88,21 @@ const MobilePortfolio = ({
               >
                 Withdraw
               </Button>
-              <Button
-                onClick={onClickTransak}
-                type="primary-default"
-                mode={mode}
-                className="mt-2 w-100"
-              >
+              <Button onClick={onClickTransak} type="primary-default" mode={mode} className="mt-2 w-100">
                 Get Funds
               </Button>
             </div>
           </div>
           <div className={`divider ${mode} my-3`}></div>
           <div className="d-flex flex-column pt-3 px-4 w-100">
-            <P1
-              mode={mode}
-              text={"Portfolio"}
-              bold
-              className="w-100 text-black"
-            />
+            <P1 mode={mode} text={"Portfolio"} bold className="w-100 text-black" />
             <div className="d-flex flex-row w-100 justify-content-between align-items-center">
               <P2 mode={mode} text="Wallet Balance" className="mr-2" />
               <div className="d-flex flex-column justify-content-center align-items-end">
+                <P2 mode={mode} text={currency(cUSDBalance).format()} bold className="text-right text-black" />
                 <P2
                   mode={mode}
-                  text={currency(cUSDBalance).format()}
-                  bold
-                  className="text-right text-black"
-                />
-                <P2
-                  mode={mode}
-                  text={`${currency(cUSDBalanceInTAL)
-                    .format()
-                    .substring(1)} $TAL`}
+                  text={`${currency(cUSDBalanceInTAL).format().substring(1)} $TAL`}
                   className="text-right"
                 />
               </div>
@@ -144,17 +110,10 @@ const MobilePortfolio = ({
             <div className="d-flex flex-row w-100 justify-content-between align-items-center mt-3">
               <P2 mode={mode} text="Talent Tokens Balance" className="mr-2" />
               <div className="d-flex flex-column justify-content-center align-items-end">
+                <P2 mode={mode} text={currency(talentTokensInCUSD).format()} bold className="text-right text-black" />
                 <P2
                   mode={mode}
-                  text={currency(talentTokensInCUSD).format()}
-                  bold
-                  className="text-right text-black"
-                />
-                <P2
-                  mode={mode}
-                  text={`${currency(talentTokensInTAL)
-                    .format()
-                    .substring(1)} $TAL`}
+                  text={`${currency(talentTokensInTAL).format().substring(1)} $TAL`}
                   className="text-right"
                 />
               </div>
@@ -162,17 +121,10 @@ const MobilePortfolio = ({
             <div className="d-flex flex-row w-100 justify-content-between align-items-center my-3">
               <P2 mode={mode} text="Talent Tokens Balance" className="mr-2" />
               <div className="d-flex flex-column justify-content-center align-items-end">
+                <P2 mode={mode} text={currency(totalRewardsInCUSD).format()} bold className="text-right text-black" />
                 <P2
                   mode={mode}
-                  text={currency(totalRewardsInCUSD).format()}
-                  bold
-                  className="text-right text-black"
-                />
-                <P2
-                  mode={mode}
-                  text={`${currency(parseFloat(rewardsClaimed()))
-                    .format()
-                    .substring(1)} $TAL`}
+                  text={`${currency(parseFloat(rewardsClaimed())).format().substring(1)} $TAL`}
                   className="text-right"
                 />
               </div>
@@ -203,13 +155,7 @@ const MobilePortfolio = ({
         />
       )}
       {activeTab == "NFTs" && (
-        <NFTs
-          userNFT={userNFT}
-          memberNFT={memberNFT}
-          chainAPI={chainAPI}
-          mode={mode}
-          chainId={chainId}
-        />
+        <NFTs userNFT={userNFT} memberNFT={memberNFT} chainAPI={chainAPI} mode={mode} chainId={chainId} />
       )}
     </div>
   );

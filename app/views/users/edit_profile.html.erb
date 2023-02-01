@@ -21,7 +21,7 @@
           messaging_disabled: current_acting_user.messaging_disabled,
           wallet_id: current_acting_user.wallet_id,
           profile_type: current_acting_user.profile_type,
-          ens_domain: current_acting_user.ens_domain
+          tal_domain: current_acting_user.tal_domain&.domain
         },
         notificationPreferences: User::Delivery::TYPES.map do |type|
           [type, @talent.user.notification_preferences[type].presence || User::Delivery::IMMEDIATE]

@@ -31,16 +31,16 @@ const Cell = ({ children, onClick, header, className }) => {
 };
 
 Table.defaultProps = {
-  mode: "light",
+  mode: "light"
 };
 
 Table.propTypes = {
   children: node.isRequired,
-  mode: string,
+  mode: string
 };
 
-const Th = (props) => <Cell {...props} header />;
-const Td = (props) => <Cell {...props} />;
+const Th = props => <Cell {...props} header />;
+const Td = props => <Cell {...props} />;
 
 Table.Head = Head;
 Table.Body = Body;

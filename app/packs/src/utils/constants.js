@@ -1,13 +1,11 @@
-export const TERMS_HREF =
-  "https://talentprotocol.notion.site/Terms-Conditions-ec060cb6c06e49a98f17d235d0835773";
-export const PRIVACY_HREF =
-  "https://talentprotocol.notion.site/Privacy-Policy-cc2b297006b54b3db1a008592302ccf5";
+export const TERMS_HREF = "https://talentprotocol.notion.site/Terms-Conditions-ec060cb6c06e49a98f17d235d0835773";
+export const PRIVACY_HREF = "https://talentprotocol.notion.site/Privacy-Policy-cc2b297006b54b3db1a008592302ccf5";
 
 export const THE_GRAPH_ENDPOINTS = {
   137: "https://api.thegraph.com/subgraphs/name/talent-protocol/polygon-prod",
   44787: "https://api.thegraph.com/subgraphs/name/talent-protocol/dev",
   42220: "https://api.thegraph.com/subgraphs/name/talent-protocol/prod",
-  80001: "https://api.thegraph.com/subgraphs/name/talent-protocol/mumbai-dev",
+  80001: "https://api.thegraph.com/subgraphs/name/talent-protocol/mumbai-dev"
 };
 
 export const SUPPORTER_GUIDE =
@@ -16,11 +14,9 @@ export const SUPPORTER_GUIDE =
 export const TALENT_GUIDE =
   "https://talentprotocol.notion.site/Talent-Onboarding-Guide-4a7fcc0ede144f8296c418bb173e45ff";
 
-export const USER_GUIDE =
-  "https://talentprotocol.notion.site/User-Guide-ab42205b0294491e98364dec24d5ad5e";
+export const USER_GUIDE = "https://talentprotocol.notion.site/User-Guide-ab42205b0294491e98364dec24d5ad5e";
 
-export const REFERRAL_RACE =
-  "https://medium.com/@talentprotocol/the-talent-protocol-invite-race-438959b01b34";
+export const REFERRAL_RACE = "https://medium.com/@talentprotocol/the-talent-protocol-invite-race-438959b01b34";
 
 export const COMMUNITY_S01_NFT_AIRDROP =
   "https://blog.talentprotocol.com/part-of-season-1-get-ready-for-the-nft-airdrop/";
@@ -34,11 +30,9 @@ export const BUY_TALENT_TOKENS =
 export const PROMOTE_YOUR_TOKENS =
   "https://www.notion.so/talentprotocol/Promote-Your-Token-on-Social-Media-e629939ed41c48a99c4b28006b64bd94";
 
-export const ABOUT =
-  "https://talentprotocol.notion.site/Talent-Protocol-101-26a6c4b9f8284e5e8f55603a38629e76";
+export const ABOUT = "https://talentprotocol.notion.site/Talent-Protocol-101-26a6c4b9f8284e5e8f55603a38629e76";
 
-export const PARTNERSHIPS =
-  "https://talentprotocol.notion.site/Official-Partnerships-8569a066554c41b197e113d977932f9f";
+export const PARTNERSHIPS = "https://talentprotocol.notion.site/Official-Partnerships-8569a066554c41b197e113d977932f9f";
 
 export const BLOG = "https://blog.talentprotocol.com/";
 
@@ -56,7 +50,7 @@ export const TALENT_PROTOCOL_TELEGRAM = "talentprotocol";
 
 export const ERROR_MESSAGES = {
   ticker_reserved: "talent token with this symbol already exists",
-  action_canceled: "User denied transaction signature",
+  action_canceled: "User denied transaction signature"
 };
 
 // This list and order is used to present in the onboarding flow by different categories
@@ -74,5 +68,5 @@ export const CAREER_NEEDS_OPTIONS = [
   "Meeting new people",
   "Mentoring others",
   "Assisting others with their job search",
-  "Investing in talent, projects or startups",
+  "Investing in talent, projects or startups"
 ];

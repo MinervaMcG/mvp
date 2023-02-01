@@ -17,11 +17,11 @@ const MobileUserMenu = ({
   onClickTransak,
   copyCodeToClipboard,
   inviteNumbers,
-  signOut,
+  signOut
 }) => {
   const [showMenu, setShowMenu] = useState(false);
 
-  const openTransak = (e) => {
+  const openTransak = e => {
     setShowMenu(false);
     onClickTransak(e);
   };
@@ -29,23 +29,11 @@ const MobileUserMenu = ({
   return (
     <div className="navbar-container">
       <nav className={`navbar ${mode} justify-content-between`}>
-        <a href="/">
-          {mode == "light" ? (
-            <LogoLight width={128} height={20} />
-          ) : (
-            <LogoDark width={128} height={20} />
-          )}
-        </a>
+        <a href="/">{mode == "light" ? <LogoLight width={128} height={20} /> : <LogoDark width={128} height={20} />}</a>
         <div className="d-flex flex-row" style={{ height: 26 }}>
           <Notifications mode={mode} hideBackground={true} />
-          <Button
-            onClick={() => setShowMenu(true)}
-            type="white-ghost"
-            mode={mode}
-            className="ml-4"
-            size="none"
-          >
-            <TalentProfilePicture src={user.profilePictureUrl} height={20} userId={user.id}/>
+          <Button onClick={() => setShowMenu(true)} type="white-ghost" mode={mode} className="ml-4" size="none">
+            <TalentProfilePicture src={user.profilePictureUrl} height={20} userId={user.id} />
           </Button>
           <UserMenuFullScreen
             show={showMenu}

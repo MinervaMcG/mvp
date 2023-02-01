@@ -2,29 +2,12 @@ import React from "react";
 import { string, func, oneOf, bool, object } from "prop-types";
 import cx from "classnames";
 
-const Button = ({
-  text,
-  onClick,
-  type,
-  mode,
-  size,
-  disabled,
-  className,
-  children,
-  Icon,
-  style,
-}) => {
+const Button = ({ text, onClick, type, mode, size, disabled, className, children, Icon, style }) => {
   const typeClassName = `${type}-button`;
 
   return (
     <button
-      className={cx(
-        "talent-button",
-        typeClassName,
-        mode,
-        `${size}-size-button`,
-        className
-      )}
+      className={cx("talent-button", typeClassName, mode, `${size}-size-button`, className)}
       style={style}
       onClick={onClick}
       disabled={disabled}
@@ -42,7 +25,7 @@ Button.defaultProps = {
   className: "",
   disabled: false,
   type: "",
-  style: {},
+  style: {}
 };
 
 Button.propTypes = {
@@ -66,13 +49,13 @@ Button.propTypes = {
     "white-outline",
     "white-ghost",
     "white-subtle",
-    "dark-mode-static-white-default",
+    "dark-mode-static-white-default"
   ]),
   mode: oneOf(["light", "dark"]),
   size: oneOf(["none", "icon", "normal", "big", "extra-big"]),
   className: string,
   disabled: bool,
-  style: object,
+  style: object
 };
 
 export default Button;

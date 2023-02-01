@@ -33,6 +33,8 @@ import DiscoveryShow from "src/components/discovery/show";
 import TalentPage from "src/components/talent/TalentPage";
 import LoggedOutTopBar from "src/components/top_bar/LoggedOutTopBar";
 import Rewards from "src/components/rewards";
+import Support from "src/components-v2/support";
+import UserSupportPage from "src/components-v2/user-support-page";
 import QuestShow from "src/components/rewards/quests/show";
 import Footer from "src/components/design_system/footer";
 import FirstQuestPopup from "src/components/one_time_popups/FirstQuestPopup";
@@ -71,6 +73,8 @@ ReactOnRails.register({
   UpcomingTalents,
   Web3ModalConnect,
   OnboardingFlow,
+  Support,
+  UserSupportPage
 });
 
 Rails.start();

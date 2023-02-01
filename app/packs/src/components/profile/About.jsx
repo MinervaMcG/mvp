@@ -31,29 +31,29 @@ const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
     meta: { type: "avatar" },
     restrictions: {
       maxFileSize: 5120000,
-      allowedFileTypes: [".jpg", ".png", ".jpeg", ".gif"],
+      allowedFileTypes: [".jpg", ".png", ".jpeg", ".gif"]
     },
-    autoProceed: true,
+    autoProceed: true
   });
 
   uppyBanner.use(AwsS3Multipart, {
     limit: 4,
     companionUrl: "/",
     companionHeaders: {
-      "X-CSRF-Token": getAuthToken(),
-    },
+      "X-CSRF-Token": getAuthToken()
+    }
   });
 
-  aboutBannerFileInput?.addEventListener("change", (event) => {
+  aboutBannerFileInput?.addEventListener("change", event => {
     setIsUploading(true);
     const files = Array.from(event.target.files);
-    files.forEach((file) => {
+    files.forEach(file => {
       try {
         uppyBanner.addFile({
           source: "file input",
           name: file.name,
           type: file.type,
-          data: file,
+          data: file
         });
       } catch (err) {
         setIsUploading(false);
@@ -68,26 +68,23 @@ const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
     });
   });
 
-  const saveProfile = async (updatedTalent) => {
-    const response = await patch(
-      `/api/v1/talent/${talent.id}/career_goals/${talent.careerGoal.id}`,
-      {
-        talent: {
-          ...snakeCaseObject(updatedTalent),
-        },
-        career_goal: {
-          ...snakeCaseObject(updatedTalent.careerGoal),
-        },
+  const saveProfile = async updatedTalent => {
+    const response = await patch(`/api/v1/talent/${talent.id}/career_goals/${talent.careerGoal.id}`, {
+      talent: {
+        ...snakeCaseObject(updatedTalent)
+      },
+      career_goal: {
+        ...snakeCaseObject(updatedTalent.careerGoal)
       }
-    );
+    });
 
     if (response) {
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
         careerGoal: {
           ...prev.careerGoal,
-          ...camelCaseObject(response),
-        },
+          ...camelCaseObject(response)
+        }
       }));
     }
   };
@@ -98,8 +95,8 @@ const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
       careerGoal: {
         ...talent.careerGoal,
         imageUrl: null,
-        imageData: null,
-      },
+        imageData: null
+      }
     });
   };
 
@@ -121,10 +118,10 @@ const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
             metadata: {
               size: file.size,
               filename: file.name,
-              mime_type: file.type,
-            },
-          },
-        },
+              mime_type: file.type
+            }
+          }
+        }
       });
     });
     uppyBanner.on("upload", () => {});
@@ -136,11 +133,7 @@ const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
 
   return (
     <div className={cx(className, mobile ? "" : "d-flex")}>
-      <div
-        className={cx(
-          mobile ? "col-12 d-flex justify-content-center" : "col-6"
-        )}
-      >
+      <div className={cx(mobile ? "col-12 d-flex justify-content-center" : "col-6")}>
         {previewMode || !canUpdate ? (
           <TalentProfilePicture
             className="mb-3"
@@ -152,87 +145,63 @@ const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
           />
         ) : (
           <div className="h-100 position-relative mb-3">
-            { isUploading ? (
+            {isUploading ? (
               <div class="h-100 d-flex justify-content-center align-items-center">
-                <Spinner
-                  className="mx-4"
-                  width={50}
-                />
+                <Spinner className="mx-4" width={50} />
               </div>
             ) : (
               <>
                 <TalentProfilePicture
-                className="position-relative cursor-pointer"
-                style={{ borderRadius: "24px" }}
-                src={imageSrc}
-                height={mobile ? 230 : 350}
-                width={mobile ? 328 : 469}
-                straight
-              />
-              <div
-                className="edit-image"
-                style={{
-                  borderRadius: "24px",
-                  height: mobile ? "230px" : "350px",
-                  width: mobile ? "328px" : "469px",
-                }}
-              ></div>
-              <label htmlFor="aboutBannerFileInput">
-                <TalentProfilePicture
-                  className="position-absolute cursor-pointer"
+                  className="position-relative cursor-pointer"
+                  style={{ borderRadius: "24px" }}
+                  src={imageSrc}
+                  height={mobile ? 230 : 350}
+                  width={mobile ? 328 : 469}
+                  straight
+                />
+                <div
+                  className="edit-image"
+                  style={{
+                    borderRadius: "24px",
+                    height: mobile ? "230px" : "350px",
+                    width: mobile ? "328px" : "469px"
+                  }}
+                ></div>
+                <label htmlFor="aboutBannerFileInput">
+                  <TalentProfilePicture
+                    className="position-absolute cursor-pointer"
+                    style={{
+                      top: mobile ? "100px" : "155px",
+                      left: mobile ? "110px" : "185px"
+                    }}
+                    src={CameraButton}
+                    height={40}
+                  />
+                </label>
+                <input id="aboutBannerFileInput" className="d-none" type="file" accept=".jpg,.png,.jpeg,.gif"></input>
+                <button
+                  className="button-link position-absolute"
                   style={{
                     top: mobile ? "100px" : "155px",
-                    left: mobile ? "110px" : "185px",
+                    left: mobile ? "165px" : "240px"
                   }}
-                  src={CameraButton}
-                  height={40}
-                />
-              </label>
-              <input
-                id="aboutBannerFileInput"
-                className="d-none"
-                type="file"
-                accept=".jpg,.png,.jpeg,.gif"
-              ></input>
-              <button
-                className="button-link position-absolute"
-                style={{
-                  top: mobile ? "100px" : "155px",
-                  left: mobile ? "165px" : "240px",
-                }}
-                onClick={deleteBannerImg}
-              >
-                <TalentProfilePicture
-                  className="cursor-pointer"
-                  src={DeleteButton}
-                  height={40}
-                />
-              </button>
+                  onClick={deleteBannerImg}
+                >
+                  <TalentProfilePicture className="cursor-pointer" src={DeleteButton} height={40} />
+                </button>
               </>
             )}
           </div>
         )}
       </div>
-      <div
-        className={cx(
-          mobile ? "col-12" : "col-6",
-          "d-flex flex-column justify-content-center"
-        )}
-      >
+      <div className={cx(mobile ? "col-12" : "col-6", "d-flex flex-column justify-content-center")}>
         <div>
           <div className="mb-4 d-flex align-items-center">
             <H4 className="mr-4 mb-0" text="I'm open to" />
-            {canUpdate && (
-              <Button
-                type="primary-default"
-                size="big"
-                text="Edit"
-                onClick={() => setEditMode(true)}
-              />
-            )}
+            {canUpdate && <Button type="primary-default" size="big" text="Edit" onClick={() => setEditMode(true)} />}
           </div>
           <UserTags
-            tags={talent.careerGoal.careerNeeds.map((need) => need.title)}
+            tags={talent.careerGoal.careerNeeds.map(need => need.title)}
             className="mr-2 mb-4"
             clickable={false}
             talent_id={"show-about"}
@@ -241,12 +210,7 @@ const About = ({ className, talent, setTalent, canUpdate, previewMode }) => {
         <P1 text={talent.careerGoal.pitch} />
       </div>
       {editMode && (
-        <EditAboutwModal
-          show={editMode}
-          hide={() => setEditMode(false)}
-          talent={talent}
-          setTalent={setTalent}
-        />
+        <EditAboutwModal show={editMode} hide={() => setEditMode(false)} talent={talent} setTalent={setTalent} />
       )}
     </div>
   );

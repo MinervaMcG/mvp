@@ -1,7 +1,7 @@
 import React from "react";
 import { darkPrimary } from "src/utils/colors";
 
-const Icon = (props) => {
+const Icon = props => {
   return (
     <svg
       width={props.width ? props.width : "172"}
@@ -71,12 +71,7 @@ const Icon = (props) => {
       </g>
       <defs>
         <clipPath id="clip0_731_3177">
-          <rect
-            width="250"
-            height="33.8"
-            fill="white"
-            transform="translate(0 0.799988)"
-          />
+          <rect width="250" height="33.8" fill="white" transform="translate(0 0.799988)" />
         </clipPath>
       </defs>
     </svg>

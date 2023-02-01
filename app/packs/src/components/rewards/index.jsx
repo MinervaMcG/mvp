@@ -20,9 +20,7 @@ const Tabs = ({ changeTab, activeTab }) => {
       </div>
       <div
         onClick={() => changeTab("talent")}
-        className={`text-no-wrap talent-table-tab${
-          activeTab == "talent" ? " active-talent-table-tab" : ""
-        }`}
+        className={`text-no-wrap talent-table-tab${activeTab == "talent" ? " active-talent-table-tab" : ""}`}
       >
         Invites
       </div>
@@ -41,9 +39,9 @@ const Rewards = ({
   invitedUsers,
   leaderboardResults,
   raceInvitesCount,
-  pagination,
+  pagination
 }) => {
-  const changeURL = urlStore((state) => state.changeURL);
+  const changeURL = urlStore(state => state.changeURL);
 
   const { isEligible } = user;
   const url = new URL(window.location);
@@ -53,7 +51,7 @@ const Rewards = ({
   const [localInvitedUsers, setLocalInvitedUsers] = useState(invitedUsers);
   const [localPagination, setLocalPagination] = useState(pagination);
 
-  const changeTab = (tab) => {
+  const changeTab = tab => {
     window.history.pushState({}, document.title, `${url.pathname}?tab=${tab}`);
     changeURL(new URL(document.location));
     setTab(tab);
@@ -63,25 +61,20 @@ const Rewards = ({
   const loadMoreInvitedUsers = () => {
     const nextPage = localPagination.currentPage + 1;
 
-    get(`earn?page=${nextPage}`).then((response) => {
+    get(`earn?page=${nextPage}`).then(response => {
       const newInvitedUsers = [...localInvitedUsers, ...response.invitedUsers];
       setLocalInvitedUsers(newInvitedUsers);
       setLocalPagination(response.pagination);
     });
   };
 
-  const showLoadMoreInvitedUsers =
-    localPagination.currentPage < localPagination.lastPage;
+  const showLoadMoreInvitedUsers = localPagination.currentPage < localPagination.lastPage;
 
   useEffect(() => {
     if (searchParams.get("tab")) {
       setTab(searchParams.get("tab"));
     } else {
-      window.history.replaceState(
-        {},
-        document.title,
-        `${url.pathname}?tab=quests`
-      );
+      window.history.replaceState({}, document.title, `${url.pathname}?tab=quests`);
     }
   }, [searchParams]);
 

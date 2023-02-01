@@ -32,14 +32,14 @@ OrderBy.defaultProps = {
   size: 16,
   fill: "none",
   viewBox: "0 0 16 16",
-  className: "",
+  className: ""
 };
 
 OrderBy.propTypes = {
   size: number,
   fill: string,
   viewBox: string,
-  className: string,
+  className: string
 };
 
 export default OrderBy;

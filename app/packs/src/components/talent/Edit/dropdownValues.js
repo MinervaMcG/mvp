@@ -192,7 +192,7 @@ export const nationalityOptions = [
   "Welsh",
   "Yemenite",
   "Zambian",
-  "Zimbabwean",
+  "Zimbabwean"
 ];
 
 export const ethnicityOptions = [
@@ -205,7 +205,7 @@ export const ethnicityOptions = [
   "Native American",
   "White",
   "South Asian",
-  "Other",
+  "Other"
 ];
 
 export const genderOptions = [
@@ -214,5 +214,5 @@ export const genderOptions = [
   "Non-binary",
   "Prefer not to disclose",
   "Prefer to not self-describe",
-  "Other",
+  "Other"
 ];

@@ -2,15 +2,7 @@ import React from "react";
 import { number, string } from "prop-types";
 import { black } from "src/utils/colors";
 
-const ArrowLeft = ({
-  size,
-  color,
-  fill,
-  className,
-  pathClassName,
-  style,
-  viewBox,
-}) => (
+const ArrowLeft = ({ size, color, fill, className, pathClassName, style, viewBox }) => (
   <svg
     className={className}
     viewBox={viewBox}
@@ -21,13 +13,7 @@ const ArrowLeft = ({
     fill={fill}
     style={style}
   >
-    <path
-      className={pathClassName}
-      d="M15.5 8H0.5"
-      stroke={color}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+    <path className={pathClassName} d="M15.5 8H0.5" stroke={color} strokeLinecap="round" strokeLinejoin="round" />
     <path
       className={pathClassName}
       d="M7.5 1L0.5 8L7.5 15"
@@ -44,7 +30,7 @@ ArrowLeft.defaultProps = {
   fill: "none",
   viewBox: "0 0 16 16",
   className: "",
-  pathClassName: "",
+  pathClassName: ""
 };
 
 ArrowLeft.propTypes = {
@@ -53,7 +39,7 @@ ArrowLeft.propTypes = {
   fill: string,
   viewBox: string,
   className: string,
-  pathClassName: string,
+  pathClassName: string
 };
 
 export default ArrowLeft;

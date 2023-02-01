@@ -3,19 +3,7 @@ import { string, number, bool, oneOfType, oneOf, node } from "prop-types";
 import cx from "classnames";
 
 const P3 = ({ bold, mode, text, medium, children, className }) => {
-  return (
-    <p
-      className={cx(
-        "p3",
-        bold ? "bold" : "",
-        medium ? "medium" : "",
-        mode,
-        className
-      )}
-    >
-      {text || children}
-    </p>
-  );
+  return <p className={cx("p3", bold ? "bold" : "", medium ? "medium" : "", mode, className)}>{text || children}</p>;
 };
 
 P3.defaultProps = {
@@ -24,7 +12,7 @@ P3.defaultProps = {
   mode: "light",
   className: "",
   text: "",
-  children: null,
+  children: null
 };
 
 P3.propTypes = {
@@ -33,7 +21,7 @@ P3.propTypes = {
   mode: oneOf(["light", "dark"]),
   text: oneOfType([string, number]),
   children: node,
-  className: string,
+  className: string
 };
 
 export default P3;

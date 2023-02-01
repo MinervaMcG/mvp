@@ -39,7 +39,7 @@ const NewTalentCard = ({
   const { mode } = useTheme();
   const chainName = chainIdToName(chainId, env);
 
-  const updateFollowing = (e) => {
+  const updateFollowing = e => {
     e.preventDefault();
     updateFollow();
   };
@@ -53,14 +53,8 @@ const NewTalentCard = ({
           <P3 className="text-primary-04" text="Supporters" />
         </div>
         <div className="d-flex justify-content-between">
-          <P2
-            className="text-black"
-            text={contractId ? `${currency(marketCap).format()}` : "-"}
-          />
-          <P2
-            className="text-black"
-            text={contractId ? `${supporterCount}` : "-"}
-          />
+          <P2 className="text-black" text={contractId ? `${currency(marketCap).format()}` : "-"} />
+          <P2 className="text-black" text={contractId ? `${supporterCount}` : "-"} />
         </div>
       </div>
     </>
@@ -76,23 +70,12 @@ const NewTalentCard = ({
         <a className="talent-link" href={talentLink}>
           <div className="talent-card-title">
             <div className="d-flex flex-column align-items-center">
-              <TalentProfilePicture src={profilePictureUrl} height={120} userId={userId}/>
+              <TalentProfilePicture src={profilePictureUrl} height={120} userId={userId} />
               <div className="d-inline-flex align-items-baseline">
-                <H5
-                  className="text-black mt-3 talent-card-name mr-2"
-                  bold
-                  text={name}
-                />
-                {isVerified && (
-                  <Verified
-                    fill={mode == "light" ? grayPrimary : darkTextPrimary02}
-                  />
-                )}
+                <H5 className="text-black mt-3 talent-card-name mr-2" bold text={name} />
+                {isVerified && <Verified fill={mode == "light" ? grayPrimary : darkTextPrimary02} />}
               </div>
-              <P2
-                className="text-primary-03 talent-card-occupation"
-                text={occupation}
-              />
+              <P2 className="text-primary-03 talent-card-occupation" text={occupation} />
             </div>
             {contractId ? (
               <div className="d-flex flex-row align-items-center">
@@ -104,11 +87,7 @@ const NewTalentCard = ({
                 <P3
                   className="current-color"
                   bold
-                  text={
-                    profileType == "waiting_for_approval"
-                      ? "Waiting For Approval"
-                      : "Coming Soon"
-                  }
+                  text={profileType == "waiting_for_approval" ? "Waiting For Approval" : "Coming Soon"}
                 />
               </Tag>
             )}
@@ -120,40 +99,22 @@ const NewTalentCard = ({
           <div className="talent-card-details">
             <div className="d-flex justify-content-between align-items-start w-100">
               <div className="d-flex align-items-center">
-                <TalentProfilePicture src={profilePictureUrl} height={32} userId={userId}/>
+                <TalentProfilePicture src={profilePictureUrl} height={32} userId={userId} />
                 <div className="d-flex flex-column ml-3">
                   <div className="d-inline-flex align-items-baseline">
-                    <P2
-                      className="text-black talent-card-details-title mr-2"
-                      bold
-                      text={name}
-                    />
-                    {isVerified && (
-                      <Verified
-                        fill={mode == "light" ? grayPrimary : darkTextPrimary02}
-                      />
-                    )}
+                    <P2 className="text-black talent-card-details-title mr-2" bold text={name} />
+                    {isVerified && <Verified fill={mode == "light" ? grayPrimary : darkTextPrimary02} />}
                   </div>
-                  <P3
-                    className="text-primary-03 talent-card-details-title"
-                    text={occupation}
-                  />
+                  <P3 className="text-primary-03 talent-card-details-title" text={occupation} />
                 </div>
               </div>
               {!publicPageViewer && (
-                <button
-                  className="button-link ml-2"
-                  onClick={(e) => updateFollowing(e)}
-                >
+                <button className="button-link ml-2" onClick={e => updateFollowing(e)}>
                   <Star pathClassName={isFollowing ? "star" : "star-outline"} />
                 </button>
               )}
             </div>
-            <P1
-              className="text-black talent-card-details-headline mt-3"
-              bold
-              text={headline}
-            />
+            <P1 className="text-black talent-card-details-headline mt-3" bold text={headline} />
           </div>
           {talentCardFooter()}
         </a>
@@ -169,7 +130,7 @@ NewTalentCard.defaultProps = {
   profilePictureUrl: "",
   headline: "",
   marketCap: "",
-  supporterCount: "0",
+  supporterCount: "0"
 };
 
 NewTalentCard.propTypes = {
@@ -183,7 +144,7 @@ NewTalentCard.propTypes = {
   updateFollow: func.isRequired,
   talentLink: string.isRequired,
   marketCap: string,
-  supporterCount: string,
+  supporterCount: string
 };
 
 export default NewTalentCard;

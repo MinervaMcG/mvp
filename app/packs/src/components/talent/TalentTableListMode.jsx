@@ -25,17 +25,11 @@ const MobileTalentTableDropdown = ({
   selectedOption,
   order,
   onOptionClick,
-  showFirstBoughtField,
+  showFirstBoughtField
 }) => {
-  const selectedClass = (option) =>
-    option == selectedOption ? " text-primary" : "text-black";
+  const selectedClass = option => (option == selectedOption ? " text-primary" : "text-black");
   return (
-    <Modal
-      show={show}
-      fullscreen="true"
-      onHide={hide}
-      dialogClassName={"m-0 mw-100 table-options-dropdown"}
-    >
+    <Modal show={show} fullscreen="true" onHide={hide} dialogClassName={"m-0 mw-100 table-options-dropdown"}>
       <Modal.Body className="d-flex flex-column p-0 pb-5">
         <P3 bold className="text-primary-04 py-3 px-4" text="View" />
         <div className={`divider mb-2 ${mode}`}></div>
@@ -45,14 +39,8 @@ const MobileTalentTableDropdown = ({
           mode={mode}
           className="d-flex flex-row justify-content-between px-4"
         >
-          <P1
-            className={cx(selectedClass("Supporters"))}
-            bold
-            text="Supporters"
-          />
-          {selectedOption == "Supporters" && (
-            <OrderBy className={order == "asc" ? "" : "rotate-180"} />
-          )}
+          <P1 className={cx(selectedClass("Supporters"))} bold text="Supporters" />
+          {selectedOption == "Supporters" && <OrderBy className={order == "asc" ? "" : "rotate-180"} />}
         </Button>
         <Button
           onClick={() => onOptionClick("Occupation")}
@@ -60,14 +48,8 @@ const MobileTalentTableDropdown = ({
           mode={mode}
           className="d-flex flex-row justify-content-between px-4"
         >
-          <P1
-            className={cx(selectedClass("Occupation"))}
-            bold
-            text="Occupation"
-          />
-          {selectedOption == "Occupation" && (
-            <OrderBy className={order == "asc" ? "" : "rotate-180"} />
-          )}
+          <P1 className={cx(selectedClass("Occupation"))} bold text="Occupation" />
+          {selectedOption == "Occupation" && <OrderBy className={order == "asc" ? "" : "rotate-180"} />}
         </Button>
         <Button
           onClick={() => onOptionClick("Market Cap")}
@@ -75,14 +57,8 @@ const MobileTalentTableDropdown = ({
           mode={mode}
           className="d-flex flex-row justify-content-between px-4"
         >
-          <P1
-            className={cx(selectedClass("Market Cap"))}
-            bold
-            text="Market Cap"
-          />
-          {selectedOption == "Market Cap" && (
-            <OrderBy className={order == "asc" ? "" : "rotate-180"} />
-          )}
+          <P1 className={cx(selectedClass("Market Cap"))} bold text="Market Cap" />
+          {selectedOption == "Market Cap" && <OrderBy className={order == "asc" ? "" : "rotate-180"} />}
         </Button>
         <Button
           onClick={() => onOptionClick("Alphabetical Order")}
@@ -90,14 +66,8 @@ const MobileTalentTableDropdown = ({
           mode={mode}
           className="d-flex flex-row justify-content-between px-4"
         >
-          <P1
-            className={cx(selectedClass("Alphabetical Order"))}
-            bold
-            text="Alphabetical Order"
-          />
-          {selectedOption == "Alphabetical Order" && (
-            <OrderBy className={order == "asc" ? "" : "rotate-180"} />
-          )}
+          <P1 className={cx(selectedClass("Alphabetical Order"))} bold text="Alphabetical Order" />
+          {selectedOption == "Alphabetical Order" && <OrderBy className={order == "asc" ? "" : "rotate-180"} />}
         </Button>
         {showFirstBoughtField && (
           <Button
@@ -107,9 +77,7 @@ const MobileTalentTableDropdown = ({
             className="d-flex flex-row justify-content-between px-4"
           >
             <P1 className={cx(selectedClass("First Buy"))} bold text="Since" />
-            {selectedOption == "First Buy" && (
-              <OrderBy className={order == "asc" ? "" : "rotate-180"} />
-            )}
+            {selectedOption == "First Buy" && <OrderBy className={order == "asc" ? "" : "rotate-180"} />}
           </Button>
         )}
       </Modal.Body>
@@ -126,7 +94,7 @@ const TalentTableListMode = ({
   sortDirection,
   setSortDirection,
   publicPageViewer,
-  showFirstBoughtField = true,
+  showFirstBoughtField = true
 }) => {
   const { mobile } = useWindowDimensionsHook();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -139,7 +107,7 @@ const TalentTableListMode = ({
     }
   };
 
-  const onOptionClick = (option) => {
+  const onOptionClick = option => {
     if (option == selectedSort) {
       toggleDirection();
     } else {
@@ -149,18 +117,14 @@ const TalentTableListMode = ({
     setShowDropdown(false);
   };
 
-  const varianceClassNames = (talent) => {
-    if (
-      !talent.talentToken.contractId ||
-      !talent.marketCapVariance ||
-      Math.abs(talent.marketCapVariance) < 0.01
-    )
+  const varianceClassNames = talent => {
+    if (!talent.talentToken.contractId || !talent.marketCapVariance || Math.abs(talent.marketCapVariance) < 0.01)
       return "";
 
     return talent.marketCapVariance < 0 ? "text-danger" : "text-success";
   };
 
-  const getSelectedOptionValue = (talent) => {
+  const getSelectedOptionValue = talent => {
     const contractId = talent.talentToken.contractId;
     switch (selectedSort) {
       case "Supporters":
@@ -180,7 +144,7 @@ const TalentTableListMode = ({
     }
   };
 
-  const sortIcon = (option) => {
+  const sortIcon = option => {
     if (option == selectedSort) {
       return sortDirection == "asc" ? " ▼" : " ▲";
     } else {
@@ -208,15 +172,12 @@ const TalentTableListMode = ({
         </div>
         <Table mode={theme.mode()}>
           <Table.Body>
-            {talents.map((talent) => (
+            {talents.map(talent => (
               <Table.Tr key={`talent-${talent.id}`}>
                 <Table.Td>
                   <div className="d-flex flex-row align-items-center">
                     {!publicPageViewer && (
-                      <button
-                        className="border-0 text-warning button-link"
-                        onClick={() => updateFollow(talent)}
-                      >
+                      <button className="border-0 text-warning button-link" onClick={() => updateFollow(talent)}>
                         {talent.isFollowing ? (
                           <FontAwesomeIcon icon={faStar} />
                         ) : (
@@ -226,24 +187,16 @@ const TalentTableListMode = ({
                     )}
                     <div
                       className="d-flex flex-row align-items-center"
-                      onClick={() =>
-                        (window.location.href = `/u/${talent.user.username}`)
-                      }
+                      onClick={() => (window.location.href = `/u/${talent.user.username}`)}
                     >
-                      <TalentProfilePicture
-                        src={talent.profilePictureUrl}
-                        userId={talent.id}
-                        height="24"
-                      />
+                      <TalentProfilePicture src={talent.profilePictureUrl} userId={talent.id} height="24" />
                       <P2 text={talent.user.name} bold className="ml-2" />
                     </div>
                   </div>
                 </Table.Td>
                 <Table.Td
                   className="text-right pr-3"
-                  onClick={() =>
-                    (window.location.href = `/u/${talent.user.username}`)
-                  }
+                  onClick={() => (window.location.href = `/u/${talent.user.username}`)}
                 >
                   <P2 text={getSelectedOptionValue(talent)} />
                 </Table.Td>
@@ -315,94 +268,42 @@ const TalentTableListMode = ({
         )}
       </Table.Head>
       <Table.Body>
-        {talents.map((talent) => (
+        {talents.map(talent => (
           <Table.Tr key={`talent-${talent.id}`}>
             {!publicPageViewer && (
               <Table.Td>
-                <button
-                  className="border-0 text-warning button-link"
-                  onClick={() => updateFollow(talent)}
-                >
-                  {talent.isFollowing ? (
-                    <FontAwesomeIcon icon={faStar} />
-                  ) : (
-                    <FontAwesomeIcon icon={faStarOutline} />
-                  )}
+                <button className="border-0 text-warning button-link" onClick={() => updateFollow(talent)}>
+                  {talent.isFollowing ? <FontAwesomeIcon icon={faStar} /> : <FontAwesomeIcon icon={faStarOutline} />}
                 </button>
               </Table.Td>
             )}
-            <Table.Td
-              onClick={() =>
-                (window.location.href = `/u/${talent.user.username}`)
-              }
-            >
+            <Table.Td onClick={() => (window.location.href = `/u/${talent.user.username}`)}>
               <div className="d-flex align-items-center">
-                <TalentProfilePicture
-                  src={talent.profilePictureUrl}
-                  userId={talent.id}
-                  height="24"
-                />
+                <TalentProfilePicture src={talent.profilePictureUrl} userId={talent.id} height="24" />
                 <P2 text={talent.user.name} bold className="ml-2" />
                 {talent.talentToken.contractId ? (
-                  <P2
-                    text={`$${talent.talentToken.ticker}`}
-                    bold
-                    className="text-primary-03 ml-2"
-                  />
+                  <P2 text={`$${talent.talentToken.ticker}`} bold className="text-primary-03 ml-2" />
                 ) : (
                   <Tag className="coming-soon-tag ml-2">
                     <P3
                       className="current-color"
                       bold
-                      text={
-                        talent.user.profileType == "waiting_for_approval"
-                          ? "Waiting For Approval"
-                          : "Coming Soon"
-                      }
+                      text={talent.user.profileType == "waiting_for_approval" ? "Waiting For Approval" : "Coming Soon"}
                     />
                   </Tag>
                 )}
               </div>
             </Table.Td>
-            <Table.Td
-              onClick={() =>
-                (window.location.href = `/u/${talent.user.username}`)
-              }
-            >
+            <Table.Td onClick={() => (window.location.href = `/u/${talent.user.username}`)}>
               <P2 text={talent.occupation} />
             </Table.Td>
-            <Table.Td
-              onClick={() =>
-                (window.location.href = `/u/${talent.user.username}`)
-              }
-            >
-              <P2
-                text={
-                  talent.talentToken.contractId
-                    ? `${talent.supportersCount || 0}`
-                    : "-"
-                }
-              />
+            <Table.Td onClick={() => (window.location.href = `/u/${talent.user.username}`)}>
+              <P2 text={talent.talentToken.contractId ? `${talent.supportersCount || 0}` : "-"} />
             </Table.Td>
-            <Table.Td
-              className="pr-3"
-              onClick={() =>
-                (window.location.href = `/u/${talent.user.username}`)
-              }
-            >
+            <Table.Td className="pr-3" onClick={() => (window.location.href = `/u/${talent.user.username}`)}>
               <P2
-                className={cx(
-                  talent.talentToken.contractId
-                    ? ""
-                    : "d-flex justify-content-center"
-                )}
-                text={
-                  talent.talentToken.contractId
-                    ? `${currency(
-                        displayableAmount(talent.marketCap)
-                      ).format()}`
-                    : "-"
-                }
+                className={cx(talent.talentToken.contractId ? "" : "d-flex justify-content-center")}
+                text={talent.talentToken.contractId ? `${currency(displayableAmount(talent.marketCap)).format()}` : "-"}
               />
               {talent.talentToken.contractId && (
                 <div className="progress" style={{ height: 6 }}>
@@ -417,19 +318,10 @@ const TalentTableListMode = ({
                 </div>
               )}
             </Table.Td>
-            <Table.Td
-              className="pr-5"
-              onClick={() =>
-                (window.location.href = `/u/${talent.user.username}`)
-              }
-            >
+            <Table.Td className="pr-5" onClick={() => (window.location.href = `/u/${talent.user.username}`)}>
               <P2
                 className={varianceClassNames(talent)}
-                text={
-                  talent.talentToken.contractId
-                    ? `${parsedVariance(talent.marketCapVariance)}`
-                    : "-"
-                }
+                text={talent.talentToken.contractId ? `${parsedVariance(talent.marketCapVariance)}` : "-"}
               />
             </Table.Td>
             {showFirstBoughtField && (

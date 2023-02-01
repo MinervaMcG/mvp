@@ -16,7 +16,7 @@ const Tooltip = ({
   popOverAccessibilityId,
   className,
   mode,
-  hide,
+  hide
 }) => {
   if (hide) {
     return children;
@@ -28,10 +28,7 @@ const Tooltip = ({
       trigger={trigger}
       rootClose={rootClose}
       overlay={
-        <Popover
-          id={popOverAccessibilityId}
-          className={cx(className, "talent-tooltip", mode)}
-        >
+        <Popover id={popOverAccessibilityId} className={cx(className, "talent-tooltip", mode)}>
           {popOverContent ? (
             popOverContent
           ) : (
@@ -59,7 +56,7 @@ Tooltip.propTypes = {
   rootClose: bool,
   className: string,
   mode: string,
-  hide: bool,
+  hide: bool
 };
 
 Tooltip.defaultProps = {
@@ -71,7 +68,7 @@ Tooltip.defaultProps = {
   rootClose: true,
   className: "",
   mode: "light",
-  hide: false,
+  hide: false
 };
 
 export default Tooltip;

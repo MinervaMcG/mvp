@@ -27,13 +27,13 @@ const Polygon = ({ className, pathClassName, style, width }) => (
 Polygon.defaultProps = {
   className: "",
   pathClassName: "",
-  width: 16,
+  width: 16
 };
 
 Polygon.propTypes = {
   className: string,
   pathClassName: string,
-  width: number,
+  width: number
 };
 
 export default Polygon;

@@ -10,18 +10,9 @@ const DiscoveryMarketingArticles = ({ marketingArticles }) => {
 
   return (
     <>
-      <P1
-        className={cx("text-black", mobile && "ml-4")}
-        bold
-        text="More from Talent Protocol"
-      />
-      <div
-        className={cx(
-          "d-flex flex-wrap mb-4",
-          mobile ? "justify-content-center" : "justify-content-between"
-        )}
-      >
-        {marketingArticles.map((article) => (
+      <P1 className={cx("text-black", mobile && "ml-4")} bold text="More from Talent Protocol" />
+      <div className={cx("d-flex flex-wrap mb-4", mobile ? "justify-content-center" : "justify-content-between")}>
+        {marketingArticles.map(article => (
           <div key={article.id} className="mt-3">
             <MarketingCard
               link={article.link}

@@ -7,26 +7,26 @@ export const parameters = {
   controls: {
     matchers: {
       color: /(background|color)$/i,
-      date: /Date$/,
-    },
+      date: /Date$/
+    }
   },
   backgrounds: {
     default: "light",
     values: [
       {
         name: "light",
-        value: "#fafafb",
+        value: "#fafafb"
       },
       {
         name: "dark",
-        value: "#131415",
-      },
-    ],
-  },
+        value: "#131415"
+      }
+    ]
+  }
 };
 
 export const decorators = [
-  (Story) => {
+  Story => {
     const theme = Story()._owner.pendingProps.parameters.backgrounds.default;
 
     return (
@@ -34,5 +34,5 @@ export const decorators = [
         <Story />
       </div>
     );
-  },
+  }
 ];

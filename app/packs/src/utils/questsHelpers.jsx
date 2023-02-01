@@ -8,7 +8,7 @@ import { TOP_UP_YOUR_ACCOUNT, BUY_TALENT_TOKENS } from "src/utils/constants";
 
 import cx from "classnames";
 
-export const questDescription = (type) => {
+export const questDescription = type => {
   switch (type) {
     case "Quests::User":
       return "Complete your 'About' section and connect your wallet";
@@ -25,7 +25,7 @@ export const questDescription = (type) => {
   }
 };
 
-export const taskDescription = (type) => {
+export const taskDescription = type => {
   switch (type) {
     case "Tasks::FillInAbout":
       return (
@@ -41,12 +41,7 @@ export const taskDescription = (type) => {
         </>
       );
     case "Tasks::ConnectWallet":
-      return (
-        <P2
-          className="text-primary-03"
-          text="Connect your wallent in the top menu."
-        />
-      );
+      return <P2 className="text-primary-03" text="Connect your wallent in the top menu." />;
     case "Tasks::Watchlist":
       return (
         <P2
@@ -57,51 +52,20 @@ export const taskDescription = (type) => {
     case "Tasks::BuyTalentToken":
       return (
         <P2 className="text-primary-03">
-          <ParagraphLink
-            text="Top up your account"
-            href={TOP_UP_YOUR_ACCOUNT}
-            target="_blank"
-          />{" "}
-          and{" "}
-          <ParagraphLink
-            text="buy at least 1 Talent Token."
-            href={BUY_TALENT_TOKENS}
-            target="_blank"
-          />
+          <ParagraphLink text="Top up your account" href={TOP_UP_YOUR_ACCOUNT} target="_blank" /> and{" "}
+          <ParagraphLink text="buy at least 1 Talent Token." href={BUY_TALENT_TOKENS} target="_blank" />
         </P2>
       );
     case "Tasks::LaunchToken":
-      return (
-        <P2
-          className="text-primary-03"
-          text="Launch your token so people can start investing in you"
-        />
-      );
+      return <P2 className="text-primary-03" text="Launch your token so people can start investing in you" />;
     case "Tasks::Highlights":
-      return (
-        <P2
-          className="text-primary-03"
-          text="Fill in your journey with highlights and positions."
-        />
-      );
+      return <P2 className="text-primary-03" text="Fill in your journey with highlights and positions." />;
     case "Tasks::Goals":
-      return (
-        <P2
-          className="text-primary-03"
-          text="Add career goals to your profile."
-        />
-      );
+      return <P2 className="text-primary-03" text="Add career goals to your profile." />;
     case "Tasks::ApplyTokenLaunch":
-      return (
-        <P2
-          className="text-primary-03"
-          text="Apply to launch your Talent Token"
-        />
-      );
+      return <P2 className="text-primary-03" text="Apply to launch your Talent Token" />;
     case "Tasks::Perks":
-      return (
-        <P2 className="text-primary-03" text="Add perks to your profile." />
-      );
+      return <P2 className="text-primary-03" text="Add perks to your profile." />;
     case "Tasks::Verified":
       return (
         <div className="d-flex align-items-center">
@@ -114,10 +78,7 @@ export const taskDescription = (type) => {
               popOverAccessibilityId={"verify_tooltip"}
               placement="top"
             >
-              <Help
-                className="cursor-pointer ml-1"
-                color={lightTextPrimary03}
-              />
+              <Help className="cursor-pointer ml-1" color={lightTextPrimary03} />
             </Tooltip>
           </P2>
         </div>
@@ -139,12 +100,7 @@ export const taskReward = (type, disabled) => {
         />
       );
     case "Tasks::LaunchToken":
-      return (
-        <P2
-          className={cx(disabled ? "text-primary-04" : "text-black")}
-          text="2,000 Talent Tokens (worth $200)"
-        />
-      );
+      return <P2 className={cx(disabled ? "text-primary-04" : "text-black")} text="2,000 Talent Tokens (worth $200)" />;
     default:
       return "";
   }
@@ -153,27 +109,12 @@ export const taskReward = (type, disabled) => {
 export const questRewards = (type, disabled) => {
   switch (type) {
     case "Quests::User":
-      return [
-        <ParagraphLink
-          text="Talent Hunt"
-          href={"/earn?tab=talent"}
-          disabled={disabled}
-        />,
-      ];
+      return [<ParagraphLink text="Talent Hunt" href={"/earn?tab=talent"} disabled={disabled} />];
     case "Quests::TalentProfile":
       return [
-        <P2
-          className={cx(disabled ? "text-primary-04" : "text-black")}
-          text="50 TAL"
-        />,
-        <P2
-          className={cx(disabled ? "text-primary-04" : "text-black")}
-          text="Unlock verification process"
-        />,
-        <P2
-          className={cx(disabled ? "text-primary-04" : "text-black")}
-          text="Unlock token launch process"
-        />,
+        <P2 className={cx(disabled ? "text-primary-04" : "text-black")} text="50 TAL" />,
+        <P2 className={cx(disabled ? "text-primary-04" : "text-black")} text="Unlock verification process" />,
+        <P2 className={cx(disabled ? "text-primary-04" : "text-black")} text="Unlock token launch process" />
       ];
     case "Quests::TalentToken":
       return [
@@ -182,20 +123,17 @@ export const questRewards = (type, disabled) => {
           href={"https://mates.talentprotocol.com/"}
           target="_blank"
           disabled={disabled}
-        />,
+        />
       ];
     case "Quests::VerifiedProfile":
       return [
-        <P2
-          className={cx(disabled ? "text-primary-04" : "text-black")}
-          text="Verified badge"
-        />,
+        <P2 className={cx(disabled ? "text-primary-04" : "text-black")} text="Verified badge" />,
         <ParagraphLink
           text="Talent Mate basic skin unlock"
           href={"https://mates.talentprotocol.com/"}
           target="_blank"
           disabled={disabled}
-        />,
+        />
       ];
     default:
       return null;

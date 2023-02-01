@@ -2,15 +2,7 @@ import React from "react";
 import { number, string } from "prop-types";
 import { black } from "src/utils/colors";
 
-const ArrowRight = ({
-  size,
-  color,
-  fill,
-  className,
-  pathClassName,
-  style,
-  viewBox,
-}) => (
+const ArrowRight = ({ size, color, fill, className, pathClassName, style, viewBox }) => (
   <svg
     className={className}
     viewBox={viewBox}
@@ -21,13 +13,7 @@ const ArrowRight = ({
     fill={fill}
     style={style}
   >
-    <path
-      className={pathClassName}
-      d="M0.5 8H15.5"
-      stroke={color}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+    <path className={pathClassName} d="M0.5 8H15.5" stroke={color} strokeLinecap="round" strokeLinejoin="round" />
     <path
       className={pathClassName}
       d="M8.5 15L15.5 8L8.5 1"
@@ -44,7 +30,7 @@ ArrowRight.defaultProps = {
   fill: "none",
   viewBox: "0 0 16 16",
   className: "",
-  pathClassName: "",
+  pathClassName: ""
 };
 
 ArrowRight.propTypes = {
@@ -53,7 +39,7 @@ ArrowRight.propTypes = {
   fill: string,
   viewBox: string,
   className: string,
-  pathClassName: string,
+  pathClassName: string
 };
 
 export default ArrowRight;

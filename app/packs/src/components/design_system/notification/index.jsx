@@ -1,55 +1,24 @@
 import React from "react";
-import {
-  Wallet,
-  Rocket,
-  Chat,
-  Talent,
-  Star,
-  Check,
-  Globe,
-  Reward,
-  Help,
-} from "src/components/icons";
+import { Wallet, Rocket, Chat, Talent, Star, Check, Globe, Reward, Help } from "src/components/icons";
 import { P3 } from "src/components/design_system/typography";
 import { lightTextPrimary03, darkTextPrimary03 } from "src/utils/colors";
 import cx from "classnames";
 
-const Notification = ({
-  type,
-  mode,
-  title,
-  description,
-  timeInformation,
-  isNew = false,
-}) => {
+const Notification = ({ type, mode, title, description, timeInformation, isNew = false }) => {
   return (
     <>
       <div className={cx("notification d-flex", mode)}>
         <div className="notification-icon">
-          {type === "wallet" && (
-            <Wallet pathClassName={cx("icon-theme", mode)} />
-          )}
-          {type === "rocket" && (
-            <Rocket pathClassName={cx("icon-theme", mode)} />
-          )}
+          {type === "wallet" && <Wallet pathClassName={cx("icon-theme", mode)} />}
+          {type === "rocket" && <Rocket pathClassName={cx("icon-theme", mode)} />}
           {type === "chat" && <Chat pathClassName={cx("icon-theme", mode)} />}
-          {type === "talent" && (
-            <Talent pathClassName={cx("icon-theme", mode)} />
-          )}
+          {type === "talent" && <Talent pathClassName={cx("icon-theme", mode)} />}
           {type === "star" && <Star pathClassName={cx("icon-theme", mode)} />}
           {type === "check" && <Check pathClassName={cx("icon-theme", mode)} />}
           {type === "globe" && <Globe pathClassName={cx("icon-theme", mode)} />}
-          {type === "rewards" && (
-            <Reward pathClassName={cx("icon-theme", mode)} />
-          )}
+          {type === "rewards" && <Reward pathClassName={cx("icon-theme", mode)} />}
           {type === "help" && (
-            <>
-              {mode === "light" ? (
-                <Help color={lightTextPrimary03} />
-              ) : (
-                <Help color={darkTextPrimary03} />
-              )}
-            </>
+            <>{mode === "light" ? <Help color={lightTextPrimary03} /> : <Help color={darkTextPrimary03} />}</>
           )}
         </div>
         <div className={cx("d-flex flex-column notification-right-area", mode)}>
@@ -58,12 +27,7 @@ const Notification = ({
             {title && <P3 bold text={title} className="text-black" />}
           </div>
           <div className="w-100">
-            {description && (
-              <P3
-                className="notification-description text-truncate"
-                text={description}
-              />
-            )}
+            {description && <P3 className="notification-description text-truncate" text={description} />}
             {timeInformation && <P3 text={timeInformation} />}
           </div>
         </div>

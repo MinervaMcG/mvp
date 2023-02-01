@@ -7,13 +7,7 @@ import { patch } from "src/utils/requests";
 import { H5, P2 } from "src/components/design_system/typography";
 import { Alert } from "src/components/icons";
 
-const ApplyToLaunchTokenModal = ({
-  show,
-  hide,
-  userId,
-  talentId,
-  username,
-}) => {
+const ApplyToLaunchTokenModal = ({ show, hide, userId, talentId, username }) => {
   const [loading, setLoading] = useState(false);
   const { mobile } = useWindowDimensionsHook();
 
@@ -22,13 +16,13 @@ const ApplyToLaunchTokenModal = ({
     let params = {
       user: {
         id: userId,
-        profile_type: "waiting_for_approval",
-      },
+        profile_type: "waiting_for_approval"
+      }
     };
 
     patch(`/api/v1/talent/${talentId}`, params)
       .then(() => window.location.replace(`/u/${username}`))
-      .catch((e) => console.log("error", e))
+      .catch(e => console.log("error", e))
       .finally(() => setLoading(false));
   };
 
@@ -47,11 +41,7 @@ const ApplyToLaunchTokenModal = ({
         {mobile && <div></div>}
         <div className="text-center">
           <Alert width={40} height={40} />
-          <H5
-            className="text-black mt-4 mb-1"
-            bold
-            text="Apply to launch your Talent Token"
-          />
+          <H5 className="text-black mt-4 mb-1" bold text="Apply to launch your Talent Token" />
           <P2
             className="text-primary-03 text-center"
             text="Launching your token requires an application and validation by the community.
@@ -60,20 +50,8 @@ const ApplyToLaunchTokenModal = ({
           />
         </div>
         <div className="d-flex mt-6 w-100">
-          <Button
-            className="mr-2 w-100"
-            onClick={hide}
-            text="Cancel"
-            type="white-subtle"
-            size="big"
-          />
-          <LoadingButton
-            className="w-100"
-            onClick={apply}
-            type="primary-default"
-            size="big"
-            loading={loading}
-          >
+          <Button className="mr-2 w-100" onClick={hide} text="Cancel" type="white-subtle" size="big" />
+          <LoadingButton className="w-100" onClick={apply} type="primary-default" size="big" loading={loading}>
             Let's do this!
           </LoadingButton>
         </div>

@@ -5,12 +5,7 @@ import { OrderBy } from "src/components/icons";
 import cx from "classnames";
 import { Celo, Polygon } from "src/components/icons";
 
-const ChainSelectionDropdown = ({
-  className,
-  mode,
-  selectedNetwork,
-  setSelectedNetwork,
-}) => {
+const ChainSelectionDropdown = ({ className, mode, selectedNetwork, setSelectedNetwork }) => {
   return (
     <Dropdown>
       <Dropdown.Toggle
@@ -26,25 +21,17 @@ const ChainSelectionDropdown = ({
         id="claim-methods-dropdown"
       >
         <div className="d-flex flex-row align-items-center">
-          {selectedNetwork == "Polygon" ? (
-            <Polygon className="mr-2" />
-          ) : (
-            <Celo className="mr-2" />
-          )}
+          {selectedNetwork == "Polygon" ? <Polygon className="mr-2" /> : <Celo className="mr-2" />}
           <P2 className="text-black" mode={mode} text={selectedNetwork} />
         </div>
-        <OrderBy
-          black
-          className="align-self-center"
-          pathClassName={cx("icon-theme", mode)}
-        />
+        <OrderBy black className="align-self-center" pathClassName={cx("icon-theme", mode)} />
       </Dropdown.Toggle>
 
       <Dropdown.Menu className={cx("w-100", mode)}>
         <Dropdown.Item
           key="tab-dropdown-restake"
           className="d-flex flex-row align-items-center"
-          onClick={(e) => setSelectedNetwork(e.target.innerText)}
+          onClick={e => setSelectedNetwork(e.target.innerText)}
         >
           <Polygon className="mr-2" />
           <P2 className="text-black" bold mode={mode} text="Polygon" />
@@ -52,7 +39,7 @@ const ChainSelectionDropdown = ({
         <Dropdown.Item
           key="tab-dropdown-withdrawal"
           className="d-flex flex-row align-items-center"
-          onClick={(e) => setSelectedNetwork(e.target.innerText)}
+          onClick={e => setSelectedNetwork(e.target.innerText)}
         >
           <Celo className="mr-2" />
           <P2 className="text-black" bold mode={mode} text="Celo" />

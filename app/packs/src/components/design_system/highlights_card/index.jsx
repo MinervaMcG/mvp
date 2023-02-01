@@ -34,13 +34,7 @@ const HighlightsCard = ({ title, link, className }) => {
           <P1 className="text-black" bold text={title} />
         </div>
         <div className="d-flex align-items-center text-primary">
-          <Link
-            className="d-flex align-items-center"
-            type="primary"
-            text="Discover All"
-            href={link}
-            bold
-          >
+          <Link className="d-flex align-items-center" type="primary" text="Discover All" href={link} bold>
             <ArrowForward className="ml-2" color="currentColor" size={12} />
           </Link>
         </div>
@@ -50,13 +44,13 @@ const HighlightsCard = ({ title, link, className }) => {
 };
 
 HighlightsCard.defaultProps = {
-  className: "",
+  className: ""
 };
 
 HighlightsCard.propTypes = {
   title: string.isRequired,
   link: string.isRequired,
-  className: string,
+  className: string
 };
 
 export default HighlightsCard;

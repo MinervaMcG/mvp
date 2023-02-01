@@ -4,22 +4,11 @@ import { ethers } from "ethers";
 import currency from "currency.js";
 
 import { parseAndCommify } from "src/onchain/utils";
-import {
-  useQuery,
-  GET_TALENT_PORTFOLIO_FOR_ID,
-  PAGE_SIZE,
-} from "src/utils/thegraph";
+import { useQuery, GET_TALENT_PORTFOLIO_FOR_ID, PAGE_SIZE } from "src/utils/thegraph";
 import { get } from "src/utils/requests";
 import { shortenAddress } from "src/utils/viewHelpers";
 
-import {
-  H4,
-  H5,
-  P1,
-  P2,
-  P3,
-  Caption,
-} from "src/components/design_system/typography";
+import { H4, H5, P1, P2, P3, Caption } from "src/components/design_system/typography";
 import Button from "src/components/design_system/button";
 import TalentProfilePicture from "src/components/talent/TalentProfilePicture";
 import Table from "src/components/design_system/table";
@@ -29,13 +18,12 @@ import { Spinner, OrderBy, ArrowLeft } from "src/components/icons";
 const arrayToObject = (inputArray, key) => {
   const obj = {};
 
-  inputArray.forEach((element) => (obj[element[key]] = element));
+  inputArray.forEach(element => (obj[element[key]] = element));
 
   return obj;
 };
 
-const concatenateSupporterAddresses = (supporters) =>
-  `?supporters[]=${supporters.map((s) => s.id).join("&supporters[]=")}`;
+const concatenateSupporterAddresses = supporters => `?supporters[]=${supporters.map(s => s.id).join("&supporters[]=")}`;
 
 const MobileSupporterAction = ({
   show,
@@ -48,27 +36,16 @@ const MobileSupporterAction = ({
   ticker,
   userId,
   currentUserId,
-  messagingDisabled,
+  messagingDisabled
 }) => {
   return (
-    <Modal
-      show={show}
-      fullscreen="true"
-      onHide={hide}
-      dialogClassName={"m-0 w-100 h-100"}
-      contentClassName={"h-100"}
-    >
+    <Modal show={show} fullscreen="true" onHide={hide} dialogClassName={"m-0 w-100 h-100"} contentClassName={"h-100"}>
       <Modal.Body className="d-flex flex-column h-100 p-0">
         <div className="d-flex flex-row align-items-center w-100 py-4">
-          <Button
-            onClick={hide}
-            type="white-ghost"
-            mode={mode}
-            className="mx-3 p-2"
-          >
+          <Button onClick={hide} type="white-ghost" mode={mode} className="mx-3 p-2">
             <ArrowLeft color="currentColor" />
           </Button>
-          <TalentProfilePicture src={profilePicture} height="24" userId={userId}/>
+          <TalentProfilePicture src={profilePicture} height="24" userId={userId} />
           <P2 className="ml-2 p-0" bold>
             {name}
           </P2>
@@ -101,23 +78,10 @@ const MobileSupporterAction = ({
   );
 };
 
-const MobileSupportersDropdown = ({
-  show,
-  hide,
-  mode,
-  selectedOption,
-  order,
-  onOptionClick,
-}) => {
-  const selectedClass = (option) =>
-    option == selectedOption ? " text-primary" : "";
+const MobileSupportersDropdown = ({ show, hide, mode, selectedOption, order, onOptionClick }) => {
+  const selectedClass = option => (option == selectedOption ? " text-primary" : "");
   return (
-    <Modal
-      show={show}
-      fullscreen="true"
-      onHide={hide}
-      dialogClassName={"m-0 mw-100 table-options-dropdown"}
-    >
+    <Modal show={show} fullscreen="true" onHide={hide} dialogClassName={"m-0 mw-100 table-options-dropdown"}>
       <Modal.Body className="d-flex flex-column p-0">
         <small className="text-muted p-3">View</small>
         <div className={`divider ${mode}`}></div>
@@ -125,57 +89,35 @@ const MobileSupportersDropdown = ({
           onClick={() => onOptionClick("Amount")}
           type="white-ghost"
           mode={mode}
-          className={`d-flex flex-row justify-content-between px-4 my-2${selectedClass(
-            "Supporters"
-          )}`}
+          className={`d-flex flex-row justify-content-between px-4 my-2${selectedClass("Supporters")}`}
         >
-          Amount{" "}
-          {selectedOption == "Amount" && (
-            <OrderBy className={order == "asc" ? "" : "rotate-180"} />
-          )}
+          Amount {selectedOption == "Amount" && <OrderBy className={order == "asc" ? "" : "rotate-180"} />}
         </Button>
         <Button
           onClick={() => onOptionClick("Rewards")}
           type="white-ghost"
           mode={mode}
-          className={`d-flex flex-row justify-content-between px-4 my-2${selectedClass(
-            "Occupation"
-          )}`}
+          className={`d-flex flex-row justify-content-between px-4 my-2${selectedClass("Occupation")}`}
         >
-          Unclaimed Rewards{" "}
-          {selectedOption == "Rewards" && (
-            <OrderBy className={order == "asc" ? "" : "rotate-180"} />
-          )}
+          Unclaimed Rewards {selectedOption == "Rewards" && <OrderBy className={order == "asc" ? "" : "rotate-180"} />}
         </Button>
         <Button
           onClick={() => onOptionClick("Alphabetical Order")}
           type="white-ghost"
           mode={mode}
-          className={`d-flex flex-row justify-content-between px-4 my-2${selectedClass(
-            "Alphabetical Order"
-          )}`}
+          className={`d-flex flex-row justify-content-between px-4 my-2${selectedClass("Alphabetical Order")}`}
         >
           Alphabetical Order
-          {selectedOption == "Alphabetical Order" && (
-            <OrderBy className={order == "asc" ? "" : "rotate-180"} />
-          )}
+          {selectedOption == "Alphabetical Order" && <OrderBy className={order == "asc" ? "" : "rotate-180"} />}
         </Button>
       </Modal.Body>
     </Modal>
   );
 };
 
-const SupporterOverview = ({
-  loading,
-  talentRewards,
-  marketCap,
-  mode,
-  mobile,
-}) => {
+const SupporterOverview = ({ loading, talentRewards, marketCap, mode, mobile }) => {
   const marketCapCUSD = loading ? 0.0 : Number.parseFloat(marketCap) * 0.02;
-  const pendingRewardsCUSD = loading
-    ? 0.0
-    : Number.parseFloat(talentRewards) * 0.02;
+  const pendingRewardsCUSD = loading ? 0.0 : Number.parseFloat(talentRewards) * 0.02;
 
   if (mobile) {
     return (
@@ -183,46 +125,18 @@ const SupporterOverview = ({
         <div className="d-flex flex-column">
           <P3 mode={mode} text={"Market Cap"} />
           <div className="d-flex flex-row flex-wrap mt-3 align-items-end">
-            <H4
-              mode={mode}
-              text={currency(marketCapCUSD).format()}
-              bold
-              className="mb-0 mr-2"
-            />
-            <P2
-              mode={mode}
-              text={`${ethers.utils.commify(
-                Number.parseFloat(marketCap).toFixed(2)
-              )} $TAL`}
-              bold
-            />
+            <H4 mode={mode} text={currency(marketCapCUSD).format()} bold className="mb-0 mr-2" />
+            <P2 mode={mode} text={`${ethers.utils.commify(Number.parseFloat(marketCap).toFixed(2))} $TAL`} bold />
           </div>
         </div>
         <div className="d-flex flex-column">
           <P3 mode={mode} text={"Unclaimed Rewards"} />
           <div className="d-flex flex-row flex-wrap mt-3 align-items-end">
-            <H4
-              mode={mode}
-              text={currency(pendingRewardsCUSD).format()}
-              bold
-              className="mb-0 mr-2"
-            />
-            <P2
-              mode={mode}
-              text={`${ethers.utils.commify(
-                Number.parseFloat(talentRewards).toFixed(2)
-              )} $TAL`}
-              bold
-            />
+            <H4 mode={mode} text={currency(pendingRewardsCUSD).format()} bold className="mb-0 mr-2" />
+            <P2 mode={mode} text={`${ethers.utils.commify(Number.parseFloat(talentRewards).toFixed(2))} $TAL`} bold />
           </div>
         </div>
-        <Button
-          onClick={() => null}
-          type="primary-default"
-          mode={mode}
-          disabled={true}
-          className="my-3 w-100"
-        >
+        <Button onClick={() => null} type="primary-default" mode={mode} disabled={true} className="my-3 w-100">
           Claim Rewards
         </Button>
       </div>
@@ -234,19 +148,8 @@ const SupporterOverview = ({
       <div className="d-flex flex-column portfolio-amounts-overview p-3 w-32">
         <P3 mode={mode} text={"Market Cap"} />
         <div className="d-flex flex-row flex-wrap mt-3 align-items-end">
-          <H4
-            mode={mode}
-            text={currency(marketCapCUSD).format()}
-            bold
-            className="mb-0 mr-2"
-          />
-          <P2
-            mode={mode}
-            text={`${ethers.utils.commify(
-              Number.parseFloat(marketCap).toFixed(2)
-            )} $TAL`}
-            bold
-          />
+          <H4 mode={mode} text={currency(marketCapCUSD).format()} bold className="mb-0 mr-2" />
+          <P2 mode={mode} text={`${ethers.utils.commify(Number.parseFloat(marketCap).toFixed(2))} $TAL`} bold />
         </div>
       </div>
       <div className="d-flex flex-column portfolio-amounts-overview p-3 w-32">
@@ -259,41 +162,22 @@ const SupporterOverview = ({
       <div className="d-flex flex-column portfolio-amounts-overview p-3 w-32">
         <P3 mode={mode} text={"Unclaimed Rewards"} className="text-warning" />
         <div className="d-flex flex-row flex-wrap mt-3 align-items-end">
-          <H4
-            mode={mode}
-            text={currency(pendingRewardsCUSD).format()}
-            bold
-            className="mb-0 mr-2"
-          />
-          <P2
-            mode={mode}
-            text={`${ethers.utils.commify(
-              Number.parseFloat(talentRewards).toFixed(2)
-            )} $TAL`}
-            bold
-          />
+          <H4 mode={mode} text={currency(pendingRewardsCUSD).format()} bold className="mb-0 mr-2" />
+          <P2 mode={mode} text={`${ethers.utils.commify(Number.parseFloat(talentRewards).toFixed(2))} $TAL`} bold />
         </div>
       </div>
     </div>
   );
 };
 
-const Supporters = ({
-  mode,
-  ticker,
-  tokenAddress,
-  chainAPI,
-  mobile,
-  currentUserId,
-  messagingDisabled,
-}) => {
+const Supporters = ({ mode, ticker, tokenAddress, chainAPI, mobile, currentUserId, messagingDisabled }) => {
   const [supporterInfo, setSupporterInfo] = useState({});
   const [talentData, setTalentData] = useState({
     totalValueLocked: 0,
     supporterCounter: 0,
     totalSupply: 0,
     marketCap: 0,
-    rewardsReady: 0,
+    rewardsReady: 0
   });
   const [selectedSort, setSelectedSort] = useState("Alphabetical Order");
   const [sortDirection, setSortDirection] = useState("asc");
@@ -308,8 +192,8 @@ const Supporters = ({
     variables: {
       id: tokenAddress?.toLowerCase(),
       skip: page * PAGE_SIZE,
-      first: PAGE_SIZE,
-    },
+      first: PAGE_SIZE
+    }
   });
 
   const toggleDirection = () => {
@@ -320,7 +204,7 @@ const Supporters = ({
     }
   };
 
-  const onOptionClick = (option) => {
+  const onOptionClick = option => {
     if (option == selectedSort) {
       toggleDirection();
     } else {
@@ -330,12 +214,9 @@ const Supporters = ({
     setShowDropdown(false);
   };
 
-  const loadReturns = async (accountId) => {
+  const loadReturns = async accountId => {
     if (chainAPI && accountId) {
-      const value = await chainAPI.calculateEstimatedReturns(
-        tokenAddress,
-        accountId
-      );
+      const value = await chainAPI.calculateEstimatedReturns(tokenAddress, accountId);
 
       return ethers.utils.formatUnits(value.talentRewards);
     }
@@ -357,24 +238,20 @@ const Supporters = ({
     }
 
     const newTalentData = {
-      totalValueLocked: ethers.utils.formatUnits(
-        data.talentToken.totalValueLocked
-      ),
+      totalValueLocked: ethers.utils.formatUnits(data.talentToken.totalValueLocked),
       supporterCounter: data.talentToken.supporterCounter,
       totalSupply: ethers.utils.formatUnits(data.talentToken.totalSupply),
       marketCap: ethers.utils.formatUnits(data.talentToken.marketCap),
-      rewardsReady: ethers.utils.formatUnits(data.talentToken.rewardsReady),
+      rewardsReady: ethers.utils.formatUnits(data.talentToken.rewardsReady)
     };
 
-    const newSupporters = data.talentToken.supporters.map(
-      ({ amount, supporter }) => ({
-        id: supporter.id,
-        amount: ethers.utils.formatUnits(amount),
-      })
-    );
+    const newSupporters = data.talentToken.supporters.map(({ amount, supporter }) => ({
+      id: supporter.id,
+      amount: ethers.utils.formatUnits(amount)
+    }));
 
-    setTalentData((prev) => ({ ...prev, ...newTalentData }));
-    setSupporters((prev) => [...prev, ...newSupporters]);
+    setTalentData(prev => ({ ...prev, ...newTalentData }));
+    setSupporters(prev => [...prev, ...newSupporters]);
 
     if (data.talentToken.supporters.length == PAGE_SIZE) {
       loadMore();
@@ -383,42 +260,35 @@ const Supporters = ({
     setLocalLoading(false);
   }, [data]);
 
-  const populateNewSupporters = (newSupporters) => {
+  const populateNewSupporters = newSupporters => {
     if (newSupporters.length === 0) {
       return;
     }
 
-    get(
-      `/api/v1/supporters/${concatenateSupporterAddresses(newSupporters)}`
-    ).then((response) => {
+    get(`/api/v1/supporters/${concatenateSupporterAddresses(newSupporters)}`).then(response => {
       if (response.supporters.length > 0) {
-        const supportersTransformed = arrayToObject(
-          response.supporters,
-          "wallet_id"
-        );
+        const supportersTransformed = arrayToObject(response.supporters, "wallet_id");
 
-        setSupporterInfo((prev) => ({
+        setSupporterInfo(prev => ({
           ...prev,
-          ...supportersTransformed,
+          ...supportersTransformed
         }));
       }
     });
   };
 
   useEffect(() => {
-    const supportersWithNoInfo = supporters.filter(
-      (item) => !supporterInfo[item.id]
-    );
+    const supportersWithNoInfo = supporters.filter(item => !supporterInfo[item.id]);
 
     populateNewSupporters(supportersWithNoInfo);
   }, [supporters]);
 
   const updateAll = async () => {
-    supporters.forEach((element) => {
-      loadReturns(element.id).then((returns) => {
-        setReturnValues((prev) => ({
+    supporters.forEach(element => {
+      loadReturns(element.id).then(returns => {
+        setReturnValues(prev => ({
           ...prev,
-          [element.id]: returns,
+          [element.id]: returns
         }));
       });
     });
@@ -448,7 +318,7 @@ const Supporters = ({
     }
   };
 
-  const returns = (walletId) => {
+  const returns = walletId => {
     if (returnValues[walletId]) {
       return parseAndCommify(talToUSD(returnValues[walletId].toString()));
     }
@@ -494,11 +364,11 @@ const Supporters = ({
     return desiredSupporters;
   };
 
-  const talToUSD = (amount) => {
+  const talToUSD = amount => {
     return parseFloat(amount) * 0.02;
   };
 
-  const sortIcon = (option) => {
+  const sortIcon = option => {
     if (option == selectedSort) {
       return sortDirection == "asc" ? " ▼" : " ▲";
     } else {
@@ -523,7 +393,7 @@ const Supporters = ({
     );
   }
 
-  const getSelectedOptionValue = (supporter) => {
+  const getSelectedOptionValue = supporter => {
     switch (selectedSort) {
       case "Amount":
         return `${parseAndCommify(supporter.amount)} ${ticker}`;
@@ -534,7 +404,7 @@ const Supporters = ({
     }
   };
 
-  const getSelectedOptionValueUSD = (supporter) => {
+  const getSelectedOptionValueUSD = supporter => {
     switch (selectedSort) {
       case "Amount":
         return `$${parseAndCommify(supporter.amount * 0.1)}`;
@@ -545,7 +415,7 @@ const Supporters = ({
     }
   };
 
-  const supporterName = (supporter) => {
+  const supporterName = supporter => {
     if (supporterInfo[supporter.id]?.username) {
       return supporterInfo[supporter.id]?.username;
     } else {
@@ -561,21 +431,14 @@ const Supporters = ({
             show={true}
             hide={() => setActiveSupporter(null)}
             mode={mode}
-            profilePicture={
-              supporterInfo[activeSupporter.id]?.profilePictureUrl
-            }
+            profilePicture={supporterInfo[activeSupporter.id]?.profilePictureUrl}
             name={supporterName(activeSupporter)}
             tokensHeld={parseAndCommify(activeSupporter.amount)}
-            unclaimedRewards={parseAndCommify(
-              returnValues[activeSupporter.id] || "0"
-            )}
+            unclaimedRewards={parseAndCommify(returnValues[activeSupporter.id] || "0")}
             ticker={ticker}
             userId={supporterInfo[activeSupporter.id]?.id}
             currentUserId={currentUserId}
-            messagingDisabled={
-              supporterInfo[activeSupporter.id]?.messagingDisabled ||
-              messagingDisabled
-            }
+            messagingDisabled={supporterInfo[activeSupporter.id]?.messagingDisabled || messagingDisabled}
           />
         )}
         <MobileSupportersDropdown
@@ -599,18 +462,14 @@ const Supporters = ({
           <Button onClick={() => null} type="white-ghost" mode={mode}>
             Supporter
           </Button>
-          <Button
-            onClick={() => setShowDropdown(true)}
-            type="white-ghost"
-            mode={mode}
-          >
+          <Button onClick={() => setShowDropdown(true)} type="white-ghost" mode={mode}>
             {selectedSort} <OrderBy black={true} />
           </Button>
         </div>
         <div className={`divider ${mode} my-2`}></div>
         <Table mode={mode} className="horizontal-scroll">
           <Table.Body>
-            {sortedSupporters().map((supporter) => (
+            {sortedSupporters().map(supporter => (
               <Table.Tr
                 key={`supporter-${supporter.id}`}
                 className="px-2"
@@ -627,11 +486,7 @@ const Supporters = ({
                   </div>
                 </Table.Td>
                 <Table.Td className="d-flex flex-column justify-content-center align-items-end pr-4 py-2">
-                  <P2
-                    bold
-                    text={getSelectedOptionValueUSD(supporter)}
-                    className="text-black"
-                  />
+                  <P2 bold text={getSelectedOptionValueUSD(supporter)} className="text-black" />
                   <P2 text={getSelectedOptionValue(supporter)} />
                 </Table.Td>
               </Table.Tr>
@@ -684,11 +539,8 @@ const Supporters = ({
           </Table.Th>
         </Table.Head>
         <Table.Body>
-          {sortedSupporters().map((supporter) => (
-            <Table.Tr
-              key={`supporter-${supporter.id}`}
-              className="reset-cursor"
-            >
+          {sortedSupporters().map(supporter => (
+            <Table.Tr key={`supporter-${supporter.id}`} className="reset-cursor">
               <Table.Td>
                 <div className="d-flex flex-row">
                   <TalentProfilePicture
@@ -697,25 +549,14 @@ const Supporters = ({
                     userId={supporter.id}
                   />
                   {supporterInfo[supporter.id]?.username && (
-                    <P2
-                      text={`${supporterInfo[supporter.id]?.username}`}
-                      bold
-                      className="ml-2"
-                    />
+                    <P2 text={`${supporterInfo[supporter.id]?.username}`} bold className="ml-2" />
                   )}
-                  <P2
-                    text={`(${shortenAddress(supporter.id)})`}
-                    className="ml-2"
-                  />
+                  <P2 text={`(${shortenAddress(supporter.id)})`} className="ml-2" />
                 </div>
               </Table.Td>
               <Table.Td>
                 <div className="d-flex flex-column justify-content-center align-items-start">
-                  <P2
-                    bold
-                    text={`$${parseAndCommify(supporter.amount * 0.1)}`}
-                    className="text-black"
-                  />
+                  <P2 bold text={`$${parseAndCommify(supporter.amount * 0.1)}`} className="text-black" />
                   <P2 text={`${parseAndCommify(supporter.amount)} ${ticker}`} />
                 </div>
               </Table.Td>
@@ -723,16 +564,10 @@ const Supporters = ({
                 <div className="d-flex flex-column justify-content-center align-items-start">
                   <P2
                     bold
-                    text={`$${parseAndCommify(
-                      returnValues[supporter.id] * 0.02 || "0"
-                    )}`}
+                    text={`$${parseAndCommify(returnValues[supporter.id] * 0.02 || "0")}`}
                     className="text-black"
                   />
-                  <P2
-                    text={`${parseAndCommify(
-                      returnValues[supporter.id] || "0"
-                    )} TAL`}
-                  />
+                  <P2 text={`${parseAndCommify(returnValues[supporter.id] || "0")} TAL`} />
                 </div>
               </Table.Td>
               <Table.Td className="pr-3">

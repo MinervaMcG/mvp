@@ -25,6 +25,7 @@
     "@walletconnect/web3-provider": "^1.8.0",
     "assert": "^2.0.0",
     "autoprefixer": "^10.2.6",
+    "axios": "^1.2.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "bootstrap": "4.6.0",
     "buffer": "^6.0.3",
@@ -116,8 +117,9 @@
   "scripts": {
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
+    "pretest": "yarn lint",
     "lint": "eslint ./app/packs --ext js,jsx",
-    "pretest": "npm run lint"
+    "format": "prettier --loglevel warn --write \"**/*.{js,jsx}\""
   },
   "engines": {
     "node": "16.4.2"

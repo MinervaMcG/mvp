@@ -25,8 +25,7 @@ export const WalletConnectionError = ({ show, hide, mode }) => (
         .
       </p>
       <p className={mode}>
-        If you think this is a mistake and you have metamask installed, reach
-        out to us on{" "}
+        If you think this is a mistake and you have metamask installed, reach out to us on{" "}
         <a href={TALENT_PROTOCOL_DISCORD} target="_blank">
           Discord
         </a>
@@ -45,26 +44,17 @@ export const UnableToConnect = ({ show, hide }) => (
     </Modal.Header>
     <Modal.Body>
       <p className="text-danger">
-        We already have the public key you tried to connect in our system. We do
-        not allow multiple users to use the same wallet, please select a
-        different one and try to connect again.
+        We already have the public key you tried to connect in our system. We do not allow multiple users to use the
+        same wallet, please select a different one and try to connect again.
       </p>
     </Modal.Body>
   </Modal>
 );
 
-const Web3ModalConnect = ({
-  user_id,
-  onConnect,
-  railsContext,
-  mode,
-  buttonClassName,
-}) => {
-  const [requestingWalletConnection, setRequestingWalletConnection] =
-    useState(false);
+const Web3ModalConnect = ({ user_id, onConnect, railsContext, mode, buttonClassName }) => {
+  const [requestingWalletConnection, setRequestingWalletConnection] = useState(false);
   const [account, setAccount] = useState("");
-  const [showWalletConnectionError, setShowWalletConnectionError] =
-    useState(false);
+  const [showWalletConnectionError, setShowWalletConnectionError] = useState(false);
   const [error, setError] = useState(false);
 
   const connectWallet = async () => {
@@ -75,8 +65,8 @@ const Web3ModalConnect = ({
 
     if (_account) {
       const result = await patch(`/api/v1/users/${user_id}`, {
-        wallet_id: _account.toLowerCase(),
-      }).catch((error) => {
+        wallet_id: _account.toLowerCase()
+      }).catch(error => {
         console.log(error);
         setError(true);
       });

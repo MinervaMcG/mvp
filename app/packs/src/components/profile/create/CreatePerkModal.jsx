@@ -6,18 +6,10 @@ import { post } from "src/utils/requests";
 import { toast } from "react-toastify";
 import { ToastBody } from "src/components/design_system/toasts";
 
-const CreatePerkModal = ({
-  talentId,
-  talentToken,
-  show,
-  closeModal,
-  appendPerk,
-  mobile,
-  mode,
-}) => {
+const CreatePerkModal = ({ talentId, talentToken, show, closeModal, appendPerk, mobile, mode }) => {
   const [attributes, setAttributes] = useState({
     price: 0,
-    title: "",
+    title: ""
   });
   const [validationErrors, setValidationErrors] = useState({});
 
@@ -26,9 +18,9 @@ const CreatePerkModal = ({
       setValidationErrors({});
     }
 
-    setAttributes((prev) => ({
+    setAttributes(prev => ({
       ...prev,
-      [attribute]: value,
+      [attribute]: value
     }));
   };
 
@@ -50,8 +42,8 @@ const CreatePerkModal = ({
     if (Object.keys(errors).length == 0) {
       const response = await post(`/api/v1/talent/${talentId}/perks`, {
         perk: {
-          ...attributes,
-        },
+          ...attributes
+        }
       });
 
       if (response && !response.error) {
@@ -60,18 +52,11 @@ const CreatePerkModal = ({
 
         closeModal();
 
-        toast.success(
-          <ToastBody
-            heading="Success!"
-            body={"New perk added successfully."}
-            mode={mode}
-          />,
-          { autoClose: 1500 }
-        );
+        toast.success(<ToastBody heading="Success!" body={"New perk added successfully."} mode={mode} />, {
+          autoClose: 1500
+        });
       } else {
-        toast.error(
-          <ToastBody heading="Error!" body={response?.error} mode={mode} />
-        );
+        toast.error(<ToastBody heading="Error!" body={response?.error} mode={mode} />);
       }
     } else {
       setValidationErrors(errors);
@@ -84,9 +69,7 @@ const CreatePerkModal = ({
       centered
       show={show}
       onHide={() => closeModal()}
-      dialogClassName={
-        mobile ? "mw-100 mh-100 m-0" : "modal-lg remove-background"
-      }
+      dialogClassName={mobile ? "mw-100 mh-100 m-0" : "modal-lg remove-background"}
       fullscreen={"md-down"}
     >
       <Modal.Header className="py-3 px-4 modal-border" closeButton>
@@ -97,7 +80,7 @@ const CreatePerkModal = ({
           title={"Title"}
           mode={mode}
           shortCaption="What's your perk"
-          onChange={(e) => changeAttribute("title", e.target.value)}
+          onChange={e => changeAttribute("title", e.target.value)}
           value={attributes.title}
           className="edit-profile-input"
           required={true}
@@ -109,10 +92,8 @@ const CreatePerkModal = ({
             type="number"
             mode={mode}
             placeholder={"0,000.00"}
-            shortCaption={
-              "Amount of talent tokens the supporter must hold to redeem this perk."
-            }
-            onChange={(e) => changeAttribute("price", e.target.value)}
+            shortCaption={"Amount of talent tokens the supporter must hold to redeem this perk."}
+            onChange={e => changeAttribute("price", e.target.value)}
             value={attributes.price}
             className="edit-profile-input"
             required={true}
@@ -121,18 +102,10 @@ const CreatePerkModal = ({
         </div>
       </Modal.Body>
       <Modal.Footer className="px-4 py-3">
-        <ThemedButton
-          onClick={() => closeModal()}
-          type="white-ghost"
-          className="mr-auto"
-        >
+        <ThemedButton onClick={() => closeModal()} type="white-ghost" className="mr-auto">
           Cancel
         </ThemedButton>
-        <ThemedButton
-          onClick={() => createPerk()}
-          type="primary-default"
-          className="ml-2"
-        >
+        <ThemedButton onClick={() => createPerk()} type="primary-default" className="ml-2">
           Save
         </ThemedButton>
       </Modal.Footer>

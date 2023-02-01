@@ -13,7 +13,8 @@ module RenderingExtension
       etherscanApiKey: ENV["ETHERSCAN_API_KEY"],
       withPersonaTemplateId: ENV["WITH_PERSONA_TEMPLATE_ID"],
       withPersonaEnvironment: ENV["WITH_PERSONA_ENVIRONMENT"],
-      withPersonaVerificationsLimit: ENV["WITH_PERSONA_VERIFICATIONS_LIMIT"]
+      withPersonaVerificationsLimit: ENV["WITH_PERSONA_VERIFICATIONS_LIMIT"],
+      talBaseDomain: ENV["TAL_BASE_DOMAIN"]
     }
   end
 end

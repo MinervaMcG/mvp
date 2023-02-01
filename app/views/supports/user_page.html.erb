@@ -1,0 +1,15 @@
+<main class="main-content">
+<div class="container-grid">
+  <div class="secondary-content">
+    <%= react_component("UserSupportPage",
+      props: {
+        user: @user,
+        userData: @user_with_pictures,
+        supportings: @portfolio,
+        supporteds: @supporteds,
+        totalRewards: @total_rewards
+      },
+      prerender: false) %>
+  </div>
+</div>
+</main>

@@ -41,10 +41,9 @@ const TransakDone = ({ show, hide }) => (
     </Modal.Header>
     <Modal.Body>
       <p>
-        You have successfully acquired cUSD on the CELO network. It usually
-        takes a couple minutes to finish processing and for you to receive your
-        funds, you'll get a confirmation email from transak once you do. After
-        that you're ready to start supporting talent!
+        You have successfully acquired cUSD on the CELO network. It usually takes a couple minutes to finish processing
+        and for you to receive your funds, you'll get a confirmation email from transak once you do. After that you're
+        ready to start supporting talent!
       </p>
     </Modal.Body>
   </Modal>
@@ -64,7 +63,7 @@ const newTransak = (width, height, env, apiKey) => {
     widgetHeight: `${height}px`,
     widgetWidth: `${width}px`,
     networks: "celo,polygon",
-    cryptoCurrencyList: "CUSD,USDC",
+    cryptoCurrencyList: "CUSD,USDC"
   });
 };
 
@@ -75,7 +74,7 @@ export const TopBar = ({
   hasUnreadMessages,
   isUserImpersonated,
   impersonatedUsername,
-  stopImpersonationPath,
+  stopImpersonationPath
 }) => {
   const url = new URL(document.location);
   const [walletConnected, setWalletConnected] = useState(false);
@@ -92,27 +91,20 @@ export const TopBar = ({
   };
 
   const copyCodeToClipboard = () => {
-    navigator.clipboard.writeText(
-      `${window.location.origin}${user.sign_up_path}`
-    );
+    navigator.clipboard.writeText(`${window.location.origin}${user.sign_up_path}`);
   };
 
-  const onClickTransak = (e) => {
+  const onClickTransak = e => {
     e.preventDefault();
 
     const _width = width > 450 ? 450 : width;
     const _height = height > 700 ? 700 : height;
 
-    const transak = newTransak(
-      _width,
-      _height,
-      railsContext.contractsEnv,
-      railsContext.transakApiKey
-    );
+    const transak = newTransak(_width, _height, railsContext.contractsEnv, railsContext.transakApiKey);
     transak.init();
 
     // To get all the events
-    transak.on(transak.ALL_EVENTS, (data) => {
+    transak.on(transak.ALL_EVENTS, data => {
       console.log(data);
     });
 
@@ -162,7 +154,7 @@ export const TopBar = ({
     [walletConnected]
   );
 
-  const onWalletConnect = async (account) => {
+  const onWalletConnect = async account => {
     await setupChain(true);
 
     if (account) {
@@ -212,11 +204,7 @@ export const TopBar = ({
   };
 
   const stableCoinIcon = () => {
-    return chainName == "Polygon" ? (
-      <Polygon className="mr-1" />
-    ) : (
-      <Celo className="mr-1" />
-    );
+    return chainName == "Polygon" ? <Polygon className="mr-1" /> : <Celo className="mr-1" />;
   };
 
   const connectedButton = (extraClasses = "") => (
@@ -227,8 +215,7 @@ export const TopBar = ({
       mode={theme.mode()}
       className={`${extraClasses} font-weight-normal p-1 pl-2 navbar-wallet-button-radius`}
     >
-      {parseAndCommify(stableBalance)}{" "}
-      <span className="text-primary-04">{stableCoinName()}</span>{" "}
+      {parseAndCommify(stableBalance)} <span className="text-primary-04">{stableCoinName()}</span>{" "}
       <span className="text-primary-01 background-bg-01 py-1 px-2 navbar-wallet-display-radius medium">
         {stableCoinIcon()} {user.displayWalletId}
       </span>
@@ -238,12 +225,7 @@ export const TopBar = ({
   const userHasInvitesLeft = user.invitesLeft > 0;
 
   const walletConnectButton = () => (
-    <Web3ModalConnect
-      user_id={user.id}
-      onConnect={onWalletConnect}
-      railsContext={railsContext}
-      mode={theme.mode()}
-    />
+    <Web3ModalConnect user_id={user.id} onConnect={onWalletConnect} railsContext={railsContext} mode={theme.mode()} />
   );
 
   const stopImpersonation = () => {
@@ -272,9 +254,7 @@ export const TopBar = ({
 
   return (
     <div className="navbar-container">
-      <nav
-        className={`navbar ${theme.mode()} d-flex justify-content-between align-items-center`}
-      >
+      <nav className={`navbar ${theme.mode()} d-flex justify-content-between align-items-center`}>
         <TransakDone show={transakDone} hide={() => setTransakDone(false)} />
         <a href="/" className="mr-6">
           <H5 bold className="mb-0">
@@ -282,20 +262,8 @@ export const TopBar = ({
           </H5>
         </a>
         <div className="d-flex align-items-center">
-          <Tab
-            href="/talent"
-            text="Explore"
-            type="white"
-            active={activeTab.includes("/talent")}
-            className="mr-4"
-          />
-          <Tab
-            href="/portfolio"
-            text="Portfolio"
-            type="white"
-            active={activeTab === "/portfolio"}
-            className="mr-4"
-          />
+          <Tab href="/talent" text="Explore" type="white" active={activeTab.includes("/talent")} className="mr-4" />
+          <Tab href="/portfolio" text="Portfolio" type="white" active={activeTab === "/portfolio"} className="mr-4" />
           <Tab
             href="/messages"
             text="Messages"
@@ -309,11 +277,7 @@ export const TopBar = ({
         </div>
         <div className="d-flex" style={{ height: 34 }}>
           {isUserImpersonated && (
-            <Button
-              onClick={stopImpersonation}
-              type="white-subtle"
-              className="mr-2"
-            >
+            <Button onClick={stopImpersonation} type="white-subtle" className="mr-2">
               Stop Impersonation {impersonatedUsername}
             </Button>
           )}

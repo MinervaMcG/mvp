@@ -5,9 +5,7 @@ import Button from "src/components/design_system/button";
 import cx from "classnames";
 
 const LinkedinSignInButton = ({ className, clientId, redirectUri }) => {
-
-  const baseAuthorizationUri =
-    "https://www.linkedin.com/oauth/v2/authorization";
+  const baseAuthorizationUri = "https://www.linkedin.com/oauth/v2/authorization";
   const scope = "r_liteprofile%20r_emailaddress";
 
   const onClick = () => {
@@ -16,10 +14,7 @@ const LinkedinSignInButton = ({ className, clientId, redirectUri }) => {
 
   return (
     <Button
-      className={cx(
-        className,
-        "d-flex align-items-center justify-content-center"
-      )}
+      className={cx(className, "d-flex align-items-center justify-content-center")}
       onClick={onClick}
       type="white-outline"
       size="extra-big"

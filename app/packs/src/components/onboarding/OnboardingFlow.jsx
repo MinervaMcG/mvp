@@ -12,7 +12,7 @@ import ProcessFlow from "./ProcessFlow";
 
 import { useWindowDimensionsHook } from "../../utils/window";
 
-const renderCurrentStep = (currentStep) => {
+const renderCurrentStep = currentStep => {
   window.scrollTo(0, 0);
 
   switch (currentStep) {
@@ -33,56 +33,41 @@ const renderCurrentStep = (currentStep) => {
   }
 };
 
-const OnboardingFlow = (props) => {
+const OnboardingFlow = props => {
   const { width } = useWindowDimensionsHook();
   const mobile = width < 992;
-  const nameComplete =
-    !!props.user.legalFirstName && !!props.user.legalLastName;
+  const nameComplete = !!props.user.legalFirstName && !!props.user.legalLastName;
 
   const [currentStep, setCurrentStep] = useState(nameComplete ? 2 : 1);
   const allSteps = nameComplete ? 4 : 5;
 
   const [localUsername, setUsername] = useState(props.user.username);
 
-  const [localFirstName, setLocalFirstName] = useState(
-    props.user.legalFirstName || ""
-  );
-  const [localLastName, setLocalLastName] = useState(
-    props.user.legalLastName || ""
-  );
-  const [localOccupation, setLocalOccupation] = useState(
-    props.talent.occupation || ""
-  );
-  const [localExperienceLevel, setLocalExperienceLevel] = useState(
-    props.talent.experienceLevel || 0
-  );
-  const [localCareerNeeds, setLocalCareerNeeds] = useState(
-    props.talent.careerNeeds
-  );
+  const [localFirstName, setLocalFirstName] = useState(props.user.legalFirstName || "");
+  const [localLastName, setLocalLastName] = useState(props.user.legalLastName || "");
+  const [localOccupation, setLocalOccupation] = useState(props.talent.occupation || "");
+  const [localExperienceLevel, setLocalExperienceLevel] = useState(props.talent.experienceLevel || 0);
+  const [localCareerNeeds, setLocalCareerNeeds] = useState(props.talent.careerNeeds);
   const [localPosition, setLocalPosition] = useState(
     props.talent.lastPosition
       ? {
           ...props.talent.lastPosition,
           start_date: props.talent.lastPosition.start_date
             ? dayjs(props.talent.lastPosition.start_date).format("DD-MM-YYYY")
-            : "",
+            : ""
         }
       : {
           title: "",
           institution: "",
           description: "",
           start_date: "",
-          link: "",
+          link: ""
         }
   );
 
   const [localGender, setLocalGender] = useState(props.talent.gender || "");
-  const [localEthnicity, setLocalEthnicity] = useState(
-    props.talent.ethnicity || ""
-  );
-  const [localNationality, setLocalNationality] = useState(
-    props.talent.nationality || ""
-  );
+  const [localEthnicity, setLocalEthnicity] = useState(props.talent.ethnicity || "");
+  const [localNationality, setLocalNationality] = useState(props.talent.nationality || "");
 
   const Component = renderCurrentStep(currentStep);
 

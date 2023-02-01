@@ -10,14 +10,13 @@ import ApplyToLaunchTokenModal from "src/components/design_system/modals/ApplyTo
 import cx from "classnames";
 
 const TaskCard = ({ title, type, link, status, userId, user }) => {
-  const railsContext = railsContextStore((state) => state.railsContext);
+  const railsContext = railsContextStore(state => state.railsContext);
 
   const completed = status === "done";
   const disabled = completed || !link;
   const prize = taskReward(type, completed);
 
-  const [showApplyToLaunchTokenModal, setShowApplyToLaunchTokenModal] =
-    useState(false);
+  const [showApplyToLaunchTokenModal, setShowApplyToLaunchTokenModal] = useState(false);
 
   const buttonText = useMemo(() => {
     switch (status) {
@@ -87,29 +86,14 @@ const TaskCard = ({ title, type, link, status, userId, user }) => {
   };
 
   return (
-    <div
-      className={cx(
-        "task-card",
-        "p-4",
-        "d-flex flex-column justify-content-between",
-        completed && "disabled"
-      )}
-    >
+    <div className={cx("task-card", "p-4", "d-flex flex-column justify-content-between", completed && "disabled")}>
       <div className="d-flex flex-column justify-content-between">
         <div className="d-flex flex-column justify-content-center">
-          <H5
-            className={cx(completed ? "text-primary-04" : "text-black")}
-            bold
-            text={title}
-          />
+          <H5 className={cx(completed ? "text-primary-04" : "text-black")} bold text={title} />
           {taskDescription(type)}
           {prize && (
             <>
-              <Caption
-                className="text-primary-04 pt-4 pb-2"
-                bold
-                text="Prize"
-              />
+              <Caption className="text-primary-04 pt-4 pb-2" bold text="Prize" />
               <div key={prize} className="pb-2 d-flex align-items-center">
                 <Reward
                   style={{ minWidth: "16px" }}

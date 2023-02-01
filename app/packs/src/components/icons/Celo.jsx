@@ -32,13 +32,13 @@ const Celo = ({ className, pathClassName, style, width }) => (
 Celo.defaultProps = {
   className: "",
   pathClassName: "",
-  width: 16,
+  width: 16
 };
 
 Celo.propTypes = {
   className: string,
   pathClassName: string,
-  width: number,
+  width: number
 };
 
 export default Celo;

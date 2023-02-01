@@ -3,16 +3,7 @@ import ExternalLink from "src/components/icons/ExternalLink";
 import { P2 } from "src/components/design_system/typography";
 import cx from "classnames";
 
-const ProjectCard = ({
-  mode,
-  organization,
-  title,
-  description,
-  location,
-  websiteLink,
-  imageUrl,
-  className,
-}) => {
+const ProjectCard = ({ mode, organization, title, description, location, websiteLink, imageUrl, className }) => {
   return (
     <div className={className}>
       <div className="mb-3">
@@ -27,9 +18,7 @@ const ProjectCard = ({
         {organization && <P2 className="text-black" text={`${organization}`} />}
         {location && <P2 className="text-primary-04" text={`${location}`} />}
       </div>
-      {description && (
-        <P2 className="text-primary-03" text={`${description}`} />
-      )}
+      {description && <P2 className="text-primary-03" text={`${description}`} />}
       {imageUrl && <img className="project-image" src={`${imageUrl}`} />}
     </div>
   );

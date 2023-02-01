@@ -25,7 +25,7 @@ const TalentProfilePicture = ({
       return src;
     } else if (!straight) {
       // eslint-disable-next-line no-undef
-      return require(`images/default-profile-icon-${Math.floor((userId || 0 ) % 5)}.png`);
+      return require(`images/default-profile-icon-${Math.floor((userId || 0) % 5)}.png`);
     } else if (mode() === "light" && straight) {
       return DefaultBannerLight;
     } else if (mode() === "dark" && straight) {
@@ -39,15 +39,12 @@ const TalentProfilePicture = ({
   const borderPhoto = !border ? "" : "border-photo ";
   const imageContained = !contained ? "image-fit" : "image-contain";
 
-  const WithLink = ({ link, children }) =>
-    link ? <a href={link}>{children}</a> : children;
+  const WithLink = ({ link, children }) => (link ? <a href={link}>{children}</a> : children);
 
   return (
     <WithLink link={link}>
       <img
-        className={`${roundPhoto}${grey}${blurPhoto}${borderPhoto} ${
-          className || ""
-        } ${imageContained}`}
+        className={`${roundPhoto}${grey}${blurPhoto}${borderPhoto} ${className || ""} ${imageContained}`}
         src={imgSrc()}
         width={width || height}
         height={height}
@@ -80,7 +77,7 @@ TalentProfilePicture.propTypes = {
   straight: bool,
   blur: bool,
   border: bool,
-  link: string,
+  link: string
 };
 
 // eslint-disable-next-line no-unused-vars

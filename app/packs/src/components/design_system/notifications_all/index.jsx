@@ -7,7 +7,7 @@ const Notification = ({
   title,
   description,
   timeInformation,
-  isNew = false,
+  isNew = false
 }) => {
   return (
     <>

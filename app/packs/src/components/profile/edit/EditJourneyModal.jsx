@@ -44,7 +44,7 @@ const SelectExperienceType = ({ mobile, goToNextStep }) => {
         )}
         style={{
           maxHeight: mobile ? "" : "700px",
-          overflowY: "overlay",
+          overflowY: "overlay"
         }}
       >
         <div className="text-center mb-5">
@@ -91,7 +91,7 @@ const SelectExperienceType = ({ mobile, goToNextStep }) => {
   );
 };
 
-const returnYear = (date) => {
+const returnYear = date => {
   if (date) {
     return dayjs(date).format("YYYY");
   } else {
@@ -99,7 +99,7 @@ const returnYear = (date) => {
   }
 };
 
-const returnMonth = (date) => {
+const returnMonth = date => {
   if (date) {
     return dayjs(date).format("MMMM");
   } else {
@@ -120,20 +120,12 @@ const MilestoneExperience = ({
   editType,
   validationErrors,
   uppyBanner,
-  deleteImage,
+  deleteImage
 }) => {
-  const [startMonth, setStartMonth] = useState(
-    returnMonth(currentJourneyItem.startDate)
-  );
-  const [startYear, setStartYear] = useState(
-    returnYear(currentJourneyItem.startDate)
-  );
-  const [endMonth, setEndMonth] = useState(
-    returnMonth(currentJourneyItem.endDate)
-  );
-  const [endYear, setEndYear] = useState(
-    returnYear(currentJourneyItem.endDate)
-  );
+  const [startMonth, setStartMonth] = useState(returnMonth(currentJourneyItem.startDate));
+  const [startYear, setStartYear] = useState(returnYear(currentJourneyItem.startDate));
+  const [endMonth, setEndMonth] = useState(returnMonth(currentJourneyItem.endDate));
+  const [endYear, setEndYear] = useState(returnYear(currentJourneyItem.endDate));
 
   const monthOptions = [
     "January",
@@ -147,7 +139,7 @@ const MilestoneExperience = ({
     "September",
     "October",
     "November",
-    "December",
+    "December"
   ];
 
   const yearOptions = (() => {
@@ -165,19 +157,13 @@ const MilestoneExperience = ({
 
   useEffect(() => {
     if (startMonth != "" && startYear != "") {
-      changeAttribute(
-        "startDate",
-        dayjs(`${startMonth}-${startYear}`, "MMMM-YYYY").format("DD-MM-YYYY")
-      );
+      changeAttribute("startDate", dayjs(`${startMonth}-${startYear}`, "MMMM-YYYY").format("DD-MM-YYYY"));
     }
   }, [startMonth, startYear]);
 
   useEffect(() => {
     if (endMonth != "" && endYear != "") {
-      changeAttribute(
-        "endDate",
-        dayjs(`${endMonth}-${endYear}`, "MMMM-YYYY").format("DD-MM-YYYY")
-      );
+      changeAttribute("endDate", dayjs(`${endMonth}-${endYear}`, "MMMM-YYYY").format("DD-MM-YYYY"));
     } else {
       changeAttribute("endDate", "");
     }
@@ -196,7 +182,7 @@ const MilestoneExperience = ({
         )}
         style={{
           maxHeight: mobile ? "" : "700px",
-          overflowY: "overlay",
+          overflowY: "overlay"
         }}
       >
         {editType != "Add" && (
@@ -209,12 +195,12 @@ const MilestoneExperience = ({
             <div className="d-flex flex-row justify-content-between">
               <Form.Control
                 as="select"
-                onChange={(e) => changeAttribute("category", e.target.value)}
+                onChange={e => changeAttribute("category", e.target.value)}
                 value={currentJourneyItem.category}
                 placeholder="Category"
                 className="height-auto mr-2"
               >
-                {CategoryOptions.map((category) => (
+                {CategoryOptions.map(category => (
                   <option value={category} key={category}>
                     {category}
                   </option>
@@ -226,7 +212,7 @@ const MilestoneExperience = ({
         <div className="w-100 mb-5">
           <TextInput
             title="Title"
-            onChange={(e) => changeAttribute("title", e.target.value)}
+            onChange={e => changeAttribute("title", e.target.value)}
             value={currentJourneyItem.title}
             placeholder="Ex: Senior Product Designer"
             required={true}
@@ -236,7 +222,7 @@ const MilestoneExperience = ({
         <div className="w-100 mb-5">
           <TextInput
             title="Organization"
-            onChange={(e) => changeAttribute("institution", e.target.value)}
+            onChange={e => changeAttribute("institution", e.target.value)}
             value={currentJourneyItem.institution}
             placeholder="Ex: Talent Protocol"
             required={true}
@@ -246,7 +232,7 @@ const MilestoneExperience = ({
         <div className="w-100 mb-5">
           <TextArea
             title="Description"
-            onChange={(e) => changeAttribute("description", e.target.value)}
+            onChange={e => changeAttribute("description", e.target.value)}
             value={currentJourneyItem.description}
             rows={3}
             required={true}
@@ -257,9 +243,7 @@ const MilestoneExperience = ({
           <Checkbox
             className="form-check-input"
             checked={currentJourneyItem.inProgress}
-            onChange={() =>
-              changeAttribute("inProgress", !currentJourneyItem.inProgress)
-            }
+            onChange={() => changeAttribute("inProgress", !currentJourneyItem.inProgress)}
           >
             <P2 className="mr-1" text="I am currently working on this role" />
           </Checkbox>
@@ -273,13 +257,13 @@ const MilestoneExperience = ({
           <div className="d-flex flex-row justify-content-between">
             <Form.Control
               as="select"
-              onChange={(e) => setStartMonth(e.target.value)}
+              onChange={e => setStartMonth(e.target.value)}
               value={startMonth}
               placeholder="Month"
               className="height-auto mr-2"
             >
               <option value=""></option>
-              {monthOptions.map((month) => (
+              {monthOptions.map(month => (
                 <option value={month} key={`start-${month}`}>
                   {month}
                 </option>
@@ -287,13 +271,13 @@ const MilestoneExperience = ({
             </Form.Control>
             <Form.Control
               as="select"
-              onChange={(e) => setStartYear(e.target.value)}
+              onChange={e => setStartYear(e.target.value)}
               value={startYear}
               placeholder="Year"
               className="height-auto ml-2"
             >
               <option value=""></option>
-              {yearOptions.map((year) => (
+              {yearOptions.map(year => (
                 <option value={year} key={`start-${year}`}>
                   {year}
                 </option>
@@ -310,13 +294,13 @@ const MilestoneExperience = ({
           <div className="d-flex flex-row justify-content-between">
             <Form.Control
               as="select"
-              onChange={(e) => setEndMonth(e.target.value)}
+              onChange={e => setEndMonth(e.target.value)}
               value={endMonth}
               placeholder="Month"
               className="height-auto mr-2"
             >
               <option value=""></option>
-              {monthOptions.map((month) => (
+              {monthOptions.map(month => (
                 <option value={month} key={`end-${month}`}>
                   {month}
                 </option>
@@ -324,13 +308,13 @@ const MilestoneExperience = ({
             </Form.Control>
             <Form.Control
               as="select"
-              onChange={(e) => setEndYear(e.target.value)}
+              onChange={e => setEndYear(e.target.value)}
               value={endYear}
               placeholder="Year"
               className="height-auto ml-2"
             >
               <option value=""></option>
-              {yearOptions.map((year) => (
+              {yearOptions.map(year => (
                 <option value={year} key={`end-${year}`}>
                   {year}
                 </option>
@@ -340,10 +324,7 @@ const MilestoneExperience = ({
         </div>
         <div className="w-100 mb-5">
           <P2 className="mb-2 text-primary-01" bold text="Link" />
-          <TextInput
-            onChange={(e) => changeAttribute("link", e.target.value)}
-            value={currentJourneyItem.link}
-          />
+          <TextInput onChange={e => changeAttribute("link", e.target.value)} value={currentJourneyItem.link} />
         </div>
         <div className="w-100 mb-5">
           <P2 className="mb-2 text-primary-01" bold text="Media" />
@@ -353,18 +334,12 @@ const MilestoneExperience = ({
             inputName="profiles[]"
             locale={{
               strings: {
-                chooseFiles: "Add media",
-              },
+                chooseFiles: "Add media"
+              }
             }}
           />
-          <div
-            className={cx(
-              "d-flex",
-              "flex-wrap",
-              mobile ? "justify-content-center" : "justify-content-between"
-            )}
-          >
-            {currentJourneyItem.images?.map((image) => (
+          <div className={cx("d-flex", "flex-wrap", mobile ? "justify-content-center" : "justify-content-between")}>
+            {currentJourneyItem.images?.map(image => (
               <div className="position-relative" key={`${image.imageUrl}`}>
                 <TalentProfilePicture
                   className="position-relative mt-2"
@@ -381,12 +356,7 @@ const MilestoneExperience = ({
                   size="icon"
                   onClick={() => deleteImage(image.imageUrl)}
                 >
-                  <Delete
-                    color={
-                      mode() == "light" ? lightTextPrimary01 : darkTextPrimary01
-                    }
-                    size={16}
-                  />
+                  <Delete color={mode() == "light" ? lightTextPrimary01 : darkTextPrimary01} size={16} />
                 </Button>
               </div>
             ))}
@@ -394,35 +364,15 @@ const MilestoneExperience = ({
         </div>
       </Modal.Body>
       <Divider />
-      <Modal.Footer
-        className="px-6 py-3 justify-content-between"
-        style={{ borderTop: "none" }}
-      >
+      <Modal.Footer className="px-6 py-3 justify-content-between" style={{ borderTop: "none" }}>
         {editType === "Add" ? (
-          <Button
-            type="primary-outline"
-            text="Back"
-            onClick={goToPreviousStep}
-          />
+          <Button type="primary-outline" text="Back" onClick={goToPreviousStep} />
         ) : (
-          <Button
-            type="danger-outline"
-            text="Delete experience"
-            onClick={deleteMilestone}
-          />
+          <Button type="danger-outline" text="Delete experience" onClick={deleteMilestone} />
         )}
         <div>
-          <Button
-            className="mr-2"
-            type="white-ghost"
-            text="Cancel"
-            onClick={hide}
-          />
-          <Button
-            type="primary-default"
-            text="Save"
-            onClick={editType === "Add" ? saveMilestone : updateMilestone}
-          />
+          <Button className="mr-2" type="white-ghost" text="Cancel" onClick={hide} />
+          <Button type="primary-default" text="Save" onClick={editType === "Add" ? saveMilestone : updateMilestone} />
         </div>
       </Modal.Footer>
     </>
@@ -442,21 +392,17 @@ const GoalExperience = ({
   editType,
   validationErrors,
   uppyBanner,
-  deleteImage,
+  deleteImage
 }) => {
-  const [dueMonth, setDueMonth] = useState(
-    returnMonth(currentJourneyItem.dueDate)
-  );
-  const [dueYear, setDueYear] = useState(
-    returnYear(currentJourneyItem.dueDate)
-  );
+  const [dueMonth, setDueMonth] = useState(returnMonth(currentJourneyItem.dueDate));
+  const [dueYear, setDueYear] = useState(returnYear(currentJourneyItem.dueDate));
 
   const progressOptions = [
     { value: "planned", title: "Planned" },
     { value: "executing", title: "Executing" },
     { value: "accomplished", title: "Accomplished" },
     { value: "not_accomplished", title: "Not Accomplished" },
-    { value: "abandoned", title: "Abandoned" },
+    { value: "abandoned", title: "Abandoned" }
   ];
 
   const monthOptions = [
@@ -471,7 +417,7 @@ const GoalExperience = ({
     "September",
     "October",
     "November",
-    "December",
+    "December"
   ];
 
   const yearOptions = (() => {
@@ -487,10 +433,7 @@ const GoalExperience = ({
 
   useEffect(() => {
     if (dueMonth != "" && dueYear != "") {
-      changeAttribute(
-        "dueDate",
-        dayjs(`${dueMonth}-${dueYear}`, "MMMM-YYYY").format("DD-MM-YYYY")
-      );
+      changeAttribute("dueDate", dayjs(`${dueMonth}-${dueYear}`, "MMMM-YYYY").format("DD-MM-YYYY"));
     }
   }, [dueMonth, dueYear]);
 
@@ -507,13 +450,13 @@ const GoalExperience = ({
         )}
         style={{
           maxHeight: mobile ? "" : "700px",
-          overflowY: "overlay",
+          overflowY: "overlay"
         }}
       >
         <div className="w-100 mb-5">
           <TextInput
             title="Title"
-            onChange={(e) => changeAttribute("title", e.target.value)}
+            onChange={e => changeAttribute("title", e.target.value)}
             value={currentJourneyItem.title}
             placeholder="Ex: Finding a co-founder for my startup"
             required={true}
@@ -528,13 +471,13 @@ const GoalExperience = ({
           </label>
           <Form.Control
             as="select"
-            onChange={(e) => changeAttribute("progress", e.target.value)}
+            onChange={e => changeAttribute("progress", e.target.value)}
             value={currentJourneyItem.progress}
             placeholder="Please Select"
             className="height-auto mr-2"
           >
             <option value=""></option>
-            {progressOptions.map((item) => (
+            {progressOptions.map(item => (
               <option value={item.value} key={`progress-${item.value}`}>
                 {item.title}
               </option>
@@ -544,7 +487,7 @@ const GoalExperience = ({
         <div className="w-100 mb-5">
           <TextArea
             title="Description"
-            onChange={(e) => changeAttribute("description", e.target.value)}
+            onChange={e => changeAttribute("description", e.target.value)}
             value={currentJourneyItem.description}
             rows={3}
             required={true}
@@ -560,13 +503,13 @@ const GoalExperience = ({
           <div className="d-flex flex-row justify-content-between">
             <Form.Control
               as="select"
-              onChange={(e) => setDueMonth(e.target.value)}
+              onChange={e => setDueMonth(e.target.value)}
               value={dueMonth}
               placeholder="Month"
               className="height-auto mr-2"
             >
               <option value=""></option>
-              {monthOptions.map((month) => (
+              {monthOptions.map(month => (
                 <option value={month} key={`due-${month}`}>
                   {month}
                 </option>
@@ -574,13 +517,13 @@ const GoalExperience = ({
             </Form.Control>
             <Form.Control
               as="select"
-              onChange={(e) => setDueYear(e.target.value)}
+              onChange={e => setDueYear(e.target.value)}
               value={dueYear}
               placeholder="Year"
               className="height-auto ml-2"
             >
               <option value=""></option>
-              {yearOptions.map((year) => (
+              {yearOptions.map(year => (
                 <option value={year} key={`due-${year}`}>
                   {year}
                 </option>
@@ -590,10 +533,7 @@ const GoalExperience = ({
         </div>
         <div className="w-100 mb-5">
           <P2 className="mb-2 text-primary-01" bold text="Link" />
-          <TextInput
-            onChange={(e) => changeAttribute("link", e.target.value)}
-            value={currentJourneyItem.link}
-          />
+          <TextInput onChange={e => changeAttribute("link", e.target.value)} value={currentJourneyItem.link} />
         </div>
         <div className="w-100 mb-5">
           <P2 className="mb-2 text-primary-01" bold text="Media" />
@@ -603,18 +543,12 @@ const GoalExperience = ({
             inputName="profiles[]"
             locale={{
               strings: {
-                chooseFiles: "Add media",
-              },
+                chooseFiles: "Add media"
+              }
             }}
           />
-          <div
-            className={cx(
-              "d-flex",
-              "flex-wrap",
-              mobile ? "justify-content-center" : "justify-content-between"
-            )}
-          >
-            {currentJourneyItem.images?.map((image) => (
+          <div className={cx("d-flex", "flex-wrap", mobile ? "justify-content-center" : "justify-content-between")}>
+            {currentJourneyItem.images?.map(image => (
               <div className="position-relative" key={`${image.imageUrl}`}>
                 <TalentProfilePicture
                   className="position-relative mt-2"
@@ -631,12 +565,7 @@ const GoalExperience = ({
                   size="icon"
                   onClick={() => deleteImage(image.imageUrl)}
                 >
-                  <Delete
-                    color={
-                      mode() == "light" ? lightTextPrimary01 : darkTextPrimary01
-                    }
-                    size={16}
-                  />
+                  <Delete color={mode() == "light" ? lightTextPrimary01 : darkTextPrimary01} size={16} />
                 </Button>
               </div>
             ))}
@@ -644,72 +573,38 @@ const GoalExperience = ({
         </div>
       </Modal.Body>
       <Divider />
-      <Modal.Footer
-        className="px-6 py-3 justify-content-between"
-        style={{ borderTop: "none" }}
-      >
+      <Modal.Footer className="px-6 py-3 justify-content-between" style={{ borderTop: "none" }}>
         {editType === "Add" ? (
-          <Button
-            type="primary-outline"
-            text="Back"
-            onClick={goToPreviousStep}
-          />
+          <Button type="primary-outline" text="Back" onClick={goToPreviousStep} />
         ) : (
-          <Button
-            type="danger-outline"
-            text="Delete experience"
-            onClick={deleteGoal}
-          />
+          <Button type="danger-outline" text="Delete experience" onClick={deleteGoal} />
         )}
         <div>
-          <Button
-            className="mr-2"
-            type="white-ghost"
-            text="Cancel"
-            onClick={hide}
-          />
-          <Button
-            type="primary-default"
-            text="Save"
-            onClick={editType === "Add" ? saveGoal : updateGoal}
-          />
+          <Button className="mr-2" type="white-ghost" text="Cancel" onClick={hide} />
+          <Button type="primary-default" text="Save" onClick={editType === "Add" ? saveGoal : updateGoal} />
         </div>
       </Modal.Footer>
     </>
   );
 };
 
-const EditJourneyModal = ({
-  show,
-  hide,
-  talent,
-  setTalent,
-  editType,
-  setJourneyItem,
-  journeyItem = {},
-}) => {
+const EditJourneyModal = ({ show, hide, talent, setTalent, editType, setJourneyItem, journeyItem = {} }) => {
   const { mobile } = useWindowDimensionsHook();
   const { mode } = useTheme();
   const [currentStep, setCurrentStep] = useState(1);
   const [currentJourneyItem, setCurrentJourneyItem] = useState({
     id: journeyItem?.id || "",
     title: journeyItem?.title || "",
-    startDate: journeyItem?.startDate
-      ? dayjs(journeyItem.startDate, "YYYY-MM-DD").format("YYYY-MM")
-      : "",
-    endDate: journeyItem?.endDate
-      ? dayjs(journeyItem.endDate, "YYYY-MM-DD").format("YYYY-MM")
-      : "",
-    dueDate: journeyItem?.dueDate
-      ? dayjs(journeyItem.dueDate, "YYYY-MM-DD").format("YYYY-MM")
-      : "",
+    startDate: journeyItem?.startDate ? dayjs(journeyItem.startDate, "YYYY-MM-DD").format("YYYY-MM") : "",
+    endDate: journeyItem?.endDate ? dayjs(journeyItem.endDate, "YYYY-MM-DD").format("YYYY-MM") : "",
+    dueDate: journeyItem?.dueDate ? dayjs(journeyItem.dueDate, "YYYY-MM-DD").format("YYYY-MM") : "",
     description: journeyItem?.description || "",
     link: journeyItem?.link || "",
     institution: journeyItem?.institution || "",
     inProgress: journeyItem?.inProgress || false,
     progress: journeyItem?.progress || "",
     category: journeyItem?.category || "",
-    images: journeyItem?.images || [],
+    images: journeyItem?.images || []
   });
 
   const [validationErrors, setValidationErrors] = useState({
@@ -718,7 +613,7 @@ const EditJourneyModal = ({
     dueDate: false,
     progress: false,
     description: false,
-    institution: false,
+    institution: false
   });
 
   const milestoneErrors = () => {
@@ -759,17 +654,17 @@ const EditJourneyModal = ({
     restrictions: {
       maxFileSize: 5120000,
       allowedFileTypes: [".jpg", ".png", ".jpeg", ".gif"],
-      maxNumberOfFiles: 10,
+      maxNumberOfFiles: 10
     },
-    autoProceed: true,
+    autoProceed: true
   });
 
   uppyBanner.use(AwsS3Multipart, {
     limit: 4,
     companionUrl: "/",
     companionHeaders: {
-      "X-CSRF-Token": getAuthToken(),
-    },
+      "X-CSRF-Token": getAuthToken()
+    }
   });
 
   const saveMilestone = async () => {
@@ -781,31 +676,23 @@ const EditJourneyModal = ({
 
     const response = await post(`/api/v1/talent/${talent.id}/milestones`, {
       milestone: {
-        ...snakeCaseObject(currentJourneyItem),
-      },
+        ...snakeCaseObject(currentJourneyItem)
+      }
     });
 
     if (response && !response.error) {
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
-        milestones: [...prev.milestones, camelCaseObject(response)],
+        milestones: [...prev.milestones, camelCaseObject(response)]
       }));
 
-      toast.success(
-        <ToastBody
-          heading="Success!"
-          body={"Milestone created successfully."}
-          mode={mode}
-        />,
-        { autoClose: 1500 }
-      );
+      toast.success(<ToastBody heading="Success!" body={"Milestone created successfully."} mode={mode} />, {
+        autoClose: 1500
+      });
 
       exitModal();
     } else {
-      toast.error(
-        <ToastBody heading="Error!" body={response?.error} mode={mode} />,
-        { autoClose: 5000 }
-      );
+      toast.error(<ToastBody heading="Error!" body={response?.error} mode={mode} />, { autoClose: 5000 });
     }
   };
 
@@ -816,70 +703,47 @@ const EditJourneyModal = ({
       return setValidationErrors(errors);
     }
 
-    const response = await patch(
-      `/api/v1/talent/${talent.id}/milestones/${currentJourneyItem.id}`,
-      {
-        milestone: snakeCaseObject(currentJourneyItem),
-      }
-    );
+    const response = await patch(`/api/v1/talent/${talent.id}/milestones/${currentJourneyItem.id}`, {
+      milestone: snakeCaseObject(currentJourneyItem)
+    });
 
     if (response && !response.error) {
-      const newMilestones = talent.milestones.map((milestone) => {
+      const newMilestones = talent.milestones.map(milestone => {
         if (milestone.id === response.id) {
           return { ...camelCaseObject(response) };
         }
         return { ...milestone };
       });
 
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
-        milestones: newMilestones,
+        milestones: newMilestones
       }));
 
-      toast.success(
-        <ToastBody
-          heading="Success!"
-          body={"Milestone updated successfully."}
-          mode={mode}
-        />,
-        { autoClose: 1500 }
-      );
+      toast.success(<ToastBody heading="Success!" body={"Milestone updated successfully."} mode={mode} />, {
+        autoClose: 1500
+      });
       exitModal();
     } else {
-      toast.error(
-        <ToastBody heading="Error!" body={response?.error} mode={mode} />,
-        { autoClose: 5000 }
-      );
+      toast.error(<ToastBody heading="Error!" body={response?.error} mode={mode} />, { autoClose: 5000 });
     }
   };
 
   const deleteMilestone = async () => {
-    const response = await destroy(
-      `/api/v1/talent/${talent.id}/milestones/${currentJourneyItem.id}`
-    );
+    const response = await destroy(`/api/v1/talent/${talent.id}/milestones/${currentJourneyItem.id}`);
 
     if (response) {
-      const index = talent.milestones.findIndex(
-        (milestone) => milestone.id === response.id
-      );
-      const newMilestones = [
-        ...talent.milestones.slice(0, index),
-        ...talent.milestones.slice(index + 1),
-      ];
+      const index = talent.milestones.findIndex(milestone => milestone.id === response.id);
+      const newMilestones = [...talent.milestones.slice(0, index), ...talent.milestones.slice(index + 1)];
 
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
-        milestones: newMilestones,
+        milestones: newMilestones
       }));
 
-      toast.success(
-        <ToastBody
-          heading="Success!"
-          body={"Milestone deleted successfully."}
-          mode={mode}
-        />,
-        { autoClose: 1500 }
-      );
+      toast.success(<ToastBody heading="Success!" body={"Milestone deleted successfully."} mode={mode} />, {
+        autoClose: 1500
+      });
     }
 
     exitModal();
@@ -892,34 +756,24 @@ const EditJourneyModal = ({
       return setValidationErrors(errors);
     }
 
-    const response = await post(
-      `/api/v1/career_goals/${talent.careerGoal.id}/goals`,
-      {
-        goal: snakeCaseObject(currentJourneyItem),
-      }
-    );
+    const response = await post(`/api/v1/career_goals/${talent.careerGoal.id}/goals`, {
+      goal: snakeCaseObject(currentJourneyItem)
+    });
 
     if (response && !response.error) {
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
         careerGoal: {
           ...prev.careerGoal,
-          goals: [...prev.careerGoal.goals, camelCaseObject(response)],
-        },
+          goals: [...prev.careerGoal.goals, camelCaseObject(response)]
+        }
       }));
 
-      toast.success(
-        <ToastBody
-          heading="Success!"
-          body={"Goal created successfully."}
-          mode={mode}
-        />,
-        { autoClose: 1500 }
-      );
+      toast.success(<ToastBody heading="Success!" body={"Goal created successfully."} mode={mode} />, {
+        autoClose: 1500
+      });
     } else {
-      toast.error(
-        <ToastBody heading="Error!" body={response?.error} mode={mode} />
-      );
+      toast.error(<ToastBody heading="Error!" body={response?.error} mode={mode} />);
     }
 
     exitModal();
@@ -932,99 +786,72 @@ const EditJourneyModal = ({
       return setValidationErrors(errors);
     }
 
-    const response = await patch(
-      `/api/v1/career_goals/${talent.careerGoal.id}/goals/${currentJourneyItem.id}`,
-      {
-        goal: snakeCaseObject(currentJourneyItem),
-      }
-    );
+    const response = await patch(`/api/v1/career_goals/${talent.careerGoal.id}/goals/${currentJourneyItem.id}`, {
+      goal: snakeCaseObject(currentJourneyItem)
+    });
 
     if (response && !response.error) {
-      const newGoals = talent.careerGoal.goals.map((goal) => {
+      const newGoals = talent.careerGoal.goals.map(goal => {
         if (goal.id === response.id) {
           return { ...camelCaseObject(response) };
         }
         return { ...goal };
       });
 
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
         careerGoal: {
           ...prev.careerGoal,
-          goals: newGoals,
-        },
+          goals: newGoals
+        }
       }));
 
-      toast.success(
-        <ToastBody
-          heading="Success!"
-          body={"Goal updated successfully."}
-          mode={mode}
-        />,
-        { autoClose: 1500 }
-      );
+      toast.success(<ToastBody heading="Success!" body={"Goal updated successfully."} mode={mode} />, {
+        autoClose: 1500
+      });
     } else {
-      toast.error(
-        <ToastBody heading="Error!" body={response?.error} mode={mode} />
-      );
+      toast.error(<ToastBody heading="Error!" body={response?.error} mode={mode} />);
     }
 
     exitModal();
   };
 
   const deleteGoal = async () => {
-    const response = await destroy(
-      `/api/v1/career_goals/${talent.careerGoal.id}/goals/${currentJourneyItem.id}`
-    );
+    const response = await destroy(`/api/v1/career_goals/${talent.careerGoal.id}/goals/${currentJourneyItem.id}`);
 
     if (response) {
-      const index = talent.careerGoal.goals.findIndex(
-        (goal) => goal.id === response.id
-      );
-      const newGoals = [
-        ...talent.careerGoal.goals.slice(0, index),
-        ...talent.careerGoal.goals.slice(index + 1),
-      ];
+      const index = talent.careerGoal.goals.findIndex(goal => goal.id === response.id);
+      const newGoals = [...talent.careerGoal.goals.slice(0, index), ...talent.careerGoal.goals.slice(index + 1)];
 
-      setTalent((prev) => ({
+      setTalent(prev => ({
         ...prev,
         careerGoal: {
           ...prev.careerGoal,
-          goals: newGoals,
-        },
+          goals: newGoals
+        }
       }));
 
-      toast.success(
-        <ToastBody
-          heading="Success!"
-          body={"Goal deleted successfully."}
-          mode={mode}
-        />,
-        { autoClose: 1500 }
-      );
+      toast.success(<ToastBody heading="Success!" body={"Goal deleted successfully."} mode={mode} />, {
+        autoClose: 1500
+      });
     }
 
     exitModal();
   };
 
-  const deleteImage = (imageUrl) => {
-    const index = currentJourneyItem.images.findIndex(
-      (image) => image.imageUrl === imageUrl
-    );
+  const deleteImage = imageUrl => {
+    const index = currentJourneyItem.images.findIndex(image => image.imageUrl === imageUrl);
 
-    const newImages = [
-      ...currentJourneyItem.images.slice(0, index),
-      ...currentJourneyItem.images.slice(index + 1),
-    ];
+    const newImages = [...currentJourneyItem.images.slice(0, index), ...currentJourneyItem.images.slice(index + 1)];
 
-    setCurrentJourneyItem((prev) => ({
+    setCurrentJourneyItem(prev => ({
       ...prev,
-      images: newImages,
+      images: newImages
     }));
   };
 
-  const goToNextStep = (newExperienceType) => {
-    setCurrentJourneyItem((prev) => ({ ...prev, category: newExperienceType }));
+  const goToNextStep = newExperienceType => {
+    setCurrentJourneyItem(prev => ({ ...prev, category: newExperienceType }));
     setCurrentStep(2);
   };
 
@@ -1040,14 +867,14 @@ const EditJourneyModal = ({
       institution: "",
       inProgress: false,
       category: "",
-      images: [],
+      images: []
     });
     setCurrentStep(1);
   };
 
   const changeAttribute = (attribute, value) => {
-    setValidationErrors((prev) => ({ ...prev, [attribute]: false }));
-    setCurrentJourneyItem((prev) => ({ ...prev, [attribute]: value }));
+    setValidationErrors(prev => ({ ...prev, [attribute]: false }));
+    setCurrentJourneyItem(prev => ({ ...prev, [attribute]: value }));
   };
 
   const exitModal = () => {
@@ -1062,7 +889,7 @@ const EditJourneyModal = ({
       institution: "",
       inProgress: false,
       progress: "",
-      category: "",
+      category: ""
     });
     setJourneyItem(null);
     hide();
@@ -1073,7 +900,7 @@ const EditJourneyModal = ({
       uppyBanner.reset();
     });
     uppyBanner.on("upload-success", (file, response) => {
-      setCurrentJourneyItem((prev) => ({
+      setCurrentJourneyItem(prev => ({
         ...prev,
         images: [
           ...prev.images,
@@ -1086,11 +913,11 @@ const EditJourneyModal = ({
               metadata: {
                 size: file.size,
                 filename: file.name,
-                mime_type: file.type,
-              },
-            },
-          },
-        ],
+                mime_type: file.type
+              }
+            }
+          }
+        ]
       }));
     });
     uppyBanner.on("upload", () => {});
@@ -1116,41 +943,37 @@ const EditJourneyModal = ({
     >
       {editType === "Add" ? (
         <>
-          {currentStep === 1 && (
-            <SelectExperienceType mobile={mobile} goToNextStep={goToNextStep} />
+          {currentStep === 1 && <SelectExperienceType mobile={mobile} goToNextStep={goToNextStep} />}
+          {currentStep === 2 && currentJourneyItem.category !== "Career Goal" && (
+            <MilestoneExperience
+              mobile={mobile}
+              changeAttribute={changeAttribute}
+              currentJourneyItem={currentJourneyItem}
+              goToPreviousStep={goToPreviousStep}
+              hide={exitModal}
+              saveMilestone={debouncedSaveMilestone}
+              mode={mode}
+              editType={editType}
+              validationErrors={validationErrors}
+              uppyBanner={uppyBanner}
+              deleteImage={deleteImage}
+            />
           )}
-          {currentStep === 2 &&
-            currentJourneyItem.category !== "Career Goal" && (
-              <MilestoneExperience
-                mobile={mobile}
-                changeAttribute={changeAttribute}
-                currentJourneyItem={currentJourneyItem}
-                goToPreviousStep={goToPreviousStep}
-                hide={exitModal}
-                saveMilestone={debouncedSaveMilestone}
-                mode={mode}
-                editType={editType}
-                validationErrors={validationErrors}
-                uppyBanner={uppyBanner}
-                deleteImage={deleteImage}
-              />
-            )}
-          {currentStep === 2 &&
-            currentJourneyItem.category === "Career Goal" && (
-              <GoalExperience
-                mobile={mobile}
-                changeAttribute={changeAttribute}
-                currentJourneyItem={currentJourneyItem}
-                goToPreviousStep={goToPreviousStep}
-                hide={exitModal}
-                saveGoal={debouncedSaveGoal}
-                mode={mode}
-                editType={editType}
-                validationErrors={validationErrors}
-                uppyBanner={uppyBanner}
-                deleteImage={deleteImage}
-              />
-            )}
+          {currentStep === 2 && currentJourneyItem.category === "Career Goal" && (
+            <GoalExperience
+              mobile={mobile}
+              changeAttribute={changeAttribute}
+              currentJourneyItem={currentJourneyItem}
+              goToPreviousStep={goToPreviousStep}
+              hide={exitModal}
+              saveGoal={debouncedSaveGoal}
+              mode={mode}
+              editType={editType}
+              validationErrors={validationErrors}
+              uppyBanner={uppyBanner}
+              deleteImage={deleteImage}
+            />
+          )}
         </>
       ) : (
         <>

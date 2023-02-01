@@ -4,30 +4,22 @@ import P2 from "../typography/p2";
 import OptionalTag from "../optional_tag";
 import cx from "classnames";
 
-const TagInput = ({
-  className,
-  tags,
-  label,
-  caption,
-  mode,
-  disabled,
-  onTagChange,
-}) => {
+const TagInput = ({ className, tags, label, caption, mode, disabled, onTagChange }) => {
   const [input, setInput] = useState("");
   const [localTags, setLocalTags] = useState(tags);
 
-  const onChange = (e) => {
+  const onChange = e => {
     const { value } = e.target;
     setInput(value);
   };
 
-  const onKeyDown = (e) => {
+  const onKeyDown = e => {
     const { key } = e;
 
     if (key === "Enter" && !localTags.includes(input)) {
       e.preventDefault();
       onTagChange([...localTags, input]);
-      setLocalTags((prevState) => [...prevState, input]);
+      setLocalTags(prevState => [...prevState, input]);
       setInput("");
     }
 
@@ -41,7 +33,7 @@ const TagInput = ({
     }
   };
 
-  const deleteTag = (index) => {
+  const deleteTag = index => {
     const newTags = localTags.filter((_tag, i) => i !== index);
     onTagChange(newTags);
     setLocalTags(newTags);
@@ -49,13 +41,8 @@ const TagInput = ({
 
   return (
     <div className={cx("d-flex", "flex-column", className)}>
-      {label && (
-        <P2 bold text={label} mode={mode} className="mb-2 text-black" />
-      )}
-      <label
-        disabled={disabled}
-        className={cx("tag-input", "form-control", mode)}
-      >
+      {label && <P2 bold text={label} mode={mode} className="mb-2 text-black" />}
+      <label disabled={disabled} className={cx("tag-input", "form-control", mode)}>
         <div className="tags">
           {localTags.map((tag, index) => (
             <OptionalTag
@@ -68,18 +55,10 @@ const TagInput = ({
             />
           ))}
         </div>
-        <input
-          className={mode}
-          value={input}
-          onKeyDown={onKeyDown}
-          onChange={onChange}
-          disabled={disabled}
-        />
+        <input className={mode} value={input} onKeyDown={onKeyDown} onChange={onChange} disabled={disabled} />
       </label>
 
-      {caption && (
-        <P2 className="tag-input-caption" mode={mode} text={caption} />
-      )}
+      {caption && <P2 className="tag-input-caption" mode={mode} text={caption} />}
     </div>
   );
 };
@@ -90,7 +69,7 @@ TagInput.defaultProps = {
   mode: "light",
   disabled: false,
   caption: null,
-  label: null,
+  label: null
 };
 
 TagInput.propTypes = {
@@ -99,7 +78,7 @@ TagInput.propTypes = {
   mode: string,
   disabled: bool,
   caption: string,
-  label: string,
+  label: string
 };
 
 export default TagInput;

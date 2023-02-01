@@ -3,18 +3,14 @@ import { string, number, bool, oneOfType, oneOf, node } from "prop-types";
 import cx from "classnames";
 
 const H1 = ({ bold, mode, text, children, className }) => {
-  return (
-    <h1 className={cx("h1", bold ? "bold" : "", mode, className)}>
-      {text || children}
-    </h1>
-  );
+  return <h1 className={cx("h1", bold ? "bold" : "", mode, className)}>{text || children}</h1>;
 };
 
 H1.defaultProps = {
   bold: false,
   mode: "light",
   className: "",
-  children: null,
+  children: null
 };
 
 H1.propTypes = {
@@ -22,7 +18,7 @@ H1.propTypes = {
   mode: oneOf(["light", "dark"]),
   text: oneOfType([string, number]),
   className: string,
-  children: node,
+  children: node
 };
 
 export default H1;

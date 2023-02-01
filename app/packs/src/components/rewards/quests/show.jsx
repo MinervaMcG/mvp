@@ -12,7 +12,7 @@ import { questDescription } from "src/utils/questsHelpers";
 import cx from "classnames";
 
 const QuestShow = ({ quest, user, railsContext }) => {
-  const setRailsContext = railsContextStore((state) => state.setRailsContext);
+  const setRailsContext = railsContextStore(state => state.setRailsContext);
   const { mobile } = useWindowDimensionsHook();
 
   useEffect(() => {
@@ -36,17 +36,9 @@ const QuestShow = ({ quest, user, railsContext }) => {
         <P1 className="text-primary-03" text={questDescription(quest.type)} />
       </div>
       {quest && (
-        <div
-          className={cx(
-            "w-100 d-flex flex-wrap",
-            mobile ? "justify-content-center" : "justify-start"
-          )}
-        >
-          {quest.tasks.map((task) => (
-            <div
-              key={task.id}
-              className={cx("quest-card", "mt-4", !mobile && "pr-4")}
-            >
+        <div className={cx("w-100 d-flex flex-wrap", mobile ? "justify-content-center" : "justify-start")}>
+          {quest.tasks.map(task => (
+            <div key={task.id} className={cx("quest-card", "mt-4", !mobile && "pr-4")}>
               <TaskCard
                 id={task.id}
                 title={task.title}

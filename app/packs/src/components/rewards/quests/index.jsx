@@ -31,29 +31,19 @@ const Quests = ({ quests, questId, setQuestId, withPersonaRequest }) => {
           className="text-primary-03"
         />
       </div>
-      <div
-        className={cx(
-          "d-flex flex-wrap",
-          mobile ? "justify-content-center" : "justify-start"
-        )}
-      >
+      <div className={cx("d-flex flex-wrap", mobile ? "justify-content-center" : "justify-start")}>
         {questId === null ? (
           <>
-            {quests.map((quest) => (
-              <div
-                key={quest.id}
-                className={cx("quest-card", "mt-4", !mobile && "pr-4")}
-              >
+            {quests.map(quest => (
+              <div key={quest.id} className={cx("quest-card", "mt-4", !mobile && "pr-4")}>
                 <QuestCard
                   id={quest.id}
                   title={quest.title}
                   subtitle={quest.subtitle}
                   type={quest.type}
                   allTasks={quest.tasks.length}
-                  completedTasks={
-                    quest.tasks.filter((task) => task.status === "done").length
-                  }
-                  tasksType={quest.tasks.map((task) => task.type)}
+                  completedTasks={quest.tasks.filter(task => task.status === "done").length}
+                  tasksType={quest.tasks.map(task => task.type)}
                   status={quest.status}
                   user={quest.user}
                   withPersonaRequest={withPersonaRequest}

@@ -9,11 +9,7 @@ import cx from "classnames";
 
 const MarketingCard = ({ link, title, imgUrl, description }) => {
   return (
-    <a
-      href={link}
-      target="_blank"
-      style={{textDecoration: "none"}}
-    >
+    <a href={link} target="_blank" style={{ textDecoration: "none" }}>
       <div className="marketing-card d-flex flex-column justify-content-between">
         <div className="d-flex flex-column">
           <img
@@ -28,13 +24,7 @@ const MarketingCard = ({ link, title, imgUrl, description }) => {
           <P2 className="text-primary-03" text={description} />
         </div>
         <div className="d-flex flex-row align-items-center mt-2">
-          <Link
-            className="d-flex align-items-center"
-            bold
-            href={link}
-            target="_blank"
-            text="Learn More"
-          >
+          <Link className="d-flex align-items-center" bold href={link} target="_blank" text="Learn More">
             <Caret size={12} color="currentColor" className="rotate-270 ml-2" />
           </Link>
         </div>
@@ -50,9 +40,9 @@ MarketingCard.propTypes = {
   description: string,
   user: shape({
     name: string,
-    profilePictureUrl: string,
+    profilePictureUrl: string
   }),
-  date: string,
+  date: string
 };
 
 export default MarketingCard;

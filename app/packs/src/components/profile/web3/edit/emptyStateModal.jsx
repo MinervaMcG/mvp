@@ -8,7 +8,7 @@ const EmptyStateModal = ({
   emptyStateClickAction,
   emptyStateActionTitle,
   emptyStateMessage,
-  closeModal,
+  closeModal
 }) => (
   <>
     <Modal.Header className="py-3 px-4 modal-border" closeButton>
@@ -17,11 +17,7 @@ const EmptyStateModal = ({
     <Modal.Body className="show-grid p-5">
       <div className="d-flex flex-column justify-content-between align-items-center">
         <P1 text={emptyStateMessage} className="text-primary-01 mb-5" />
-        <ThemedButton
-          onClick={() => emptyStateClickAction()}
-          type="primary-default"
-          className="mx-auto"
-        >
+        <ThemedButton onClick={() => emptyStateClickAction()} type="primary-default" className="mx-auto">
           {emptyStateActionTitle}
         </ThemedButton>
       </div>

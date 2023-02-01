@@ -75,15 +75,8 @@ const PageNumbers = ({ page, last, url }) => {
       );
     }
     return (
-      <li
-        key={`page-item-${page_number}`}
-        className={`page-item${page == page_number ? " active" : ""}`}
-      >
-        <a
-          className="page-link"
-          aria-current={page == page_number ? "page" : null}
-          href={url.toString()}
-        >
+      <li key={`page-item-${page_number}`} className={`page-item${page == page_number ? " active" : ""}`}>
+        <a className="page-link" aria-current={page == page_number ? "page" : null} href={url.toString()}>
           {page_number}
         </a>
       </li>

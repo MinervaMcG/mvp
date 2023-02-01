@@ -2,15 +2,7 @@ import React from "react";
 import { number, string } from "prop-types";
 import { black } from "src/utils/colors";
 
-const Sun = ({
-  size,
-  color,
-  fill,
-  className,
-  pathClassName,
-  style,
-  viewBox,
-}) => (
+const Sun = ({ size, color, fill, className, pathClassName, style, viewBox }) => (
   <svg
     className={className}
     viewBox={viewBox}
@@ -28,20 +20,8 @@ const Sun = ({
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <path
-      className={pathClassName}
-      d="M8.00067 1V3"
-      stroke={color}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      className={pathClassName}
-      d="M8.00067 13V15"
-      stroke={color}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+    <path className={pathClassName} d="M8.00067 1V3" stroke={color} strokeLinecap="round" strokeLinejoin="round" />
+    <path className={pathClassName} d="M8.00067 13V15" stroke={color} strokeLinecap="round" strokeLinejoin="round" />
     <path
       className={pathClassName}
       d="M15.0007 8H13.0007"
@@ -93,7 +73,7 @@ Sun.defaultProps = {
   fill: "none",
   viewBox: "0 0 16 16",
   className: "",
-  pathClassName: "",
+  pathClassName: ""
 };
 
 Sun.propTypes = {
@@ -102,7 +82,7 @@ Sun.propTypes = {
   fill: string,
   viewBox: string,
   className: string,
-  pathClassName: string,
+  pathClassName: string
 };
 
 export default Sun;
